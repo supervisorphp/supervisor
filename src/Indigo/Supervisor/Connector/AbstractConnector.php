@@ -7,37 +7,37 @@ use Indigo\Supervisor\Exception\InvalidResponseException;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
-	protected $resource;
+    protected $resource;
 
-	protected $username;
+    protected $username;
 
-	protected $password;
+    protected $password;
 
-	protected $headers = array(
-		'Content-Type' => 'text/xml'
-	);
+    protected $headers = array(
+        'Content-Type' => 'text/xml'
+    );
 
-	public function setCredentials($username, $password)
-	{
-		$this->username = $username;
-		$this->password = $password;
+    public function setCredentials($username, $password)
+    {
+        $this->username = $username;
+        $this->password = $password;
 
-		$this->setHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
-	}
+        $this->setHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
+    }
 
-	public function setHeader($name, $value)
-	{
-		$this->headers[$name] = $value;
-		return $this;
-	}
+    public function setHeader($name, $value)
+    {
+        $this->headers[$name] = $value;
+        return $this;
+    }
 
-	public function getResource()
-	{
-		return $this->resource;
-	}
+    public function getResource()
+    {
+        return $this->resource;
+    }
 
-	public function processResponse($response)
-	{
+    public function processResponse($response)
+    {
         $response = xmlrpc_decode(trim($response), 'utf-8');
 
         if ( ! $response) {
@@ -47,5 +47,5 @@ abstract class AbstractConnector implements ConnectorInterface
         }
 
         return $response;
-	}
+    }
 }
