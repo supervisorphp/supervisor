@@ -1,0 +1,19 @@
+{
+    "name": "indigophp/supervisor",
+    "description": "Supervisor PHP library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Márk Sági-Kazár",
+            "email": "mark.sagikazar@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": { "Indigo\\Supervisor\\": "src/" },
+        "files": ["src/functions.php"]
+    }
+}
