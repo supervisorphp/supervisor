@@ -20,7 +20,7 @@ class InetConnector extends AbstractConnector
 
 		$resource['port'] = $port;
 
-		$this->resource = http_build_url('/RPC2', $resource, HTTP_URL_STRIP_AUTH | HTTP_URL_STRIP_QUERY | HTTP_URL_STRIP_FRAGMENT);
+		$this->resource = http_build_url('/RPC2', $resource, HTTP_URL_REPLACE | HTTP_URL_STRIP_AUTH | HTTP_URL_STRIP_QUERY | HTTP_URL_STRIP_FRAGMENT);
 	}
 
 	public function call($namespace, $method, array $arguments = array())

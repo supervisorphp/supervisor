@@ -92,12 +92,6 @@ if (!function_exists('http_build_url'))
 				else
 					$parse_url['query'] = $parts['query'];
 			}
-
-			// replace original port with the new port
-			if (isset($parts['port']) && ! ($flags & HTTP_URL_STRIP_PORT))
-			{
-				$parse_url['port'] = $parts['port'];
-			}
 		}
 
 		// strips all the applicable sections of the URL
