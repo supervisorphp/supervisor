@@ -21,6 +21,11 @@ class SocketConnector extends AbstractConnector
         }
     }
 
+    public function __destruct()
+    {
+        fclose($this->socket);
+    }
+
     public function call($namespace, $method, array $arguments = array())
     {
         $xml = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
