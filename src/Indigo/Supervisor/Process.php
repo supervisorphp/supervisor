@@ -4,7 +4,7 @@ namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Connector\ConnectorInterface;
 
-class Process
+class Process implements \ArrayAccess, \Iterator
 {
     /**
      * Process states
@@ -61,7 +61,7 @@ class Process
      */
     public function getName()
     {
-        return $this->payload['name'];
+        return $this['name'];
     }
 
     /**
@@ -230,6 +230,63 @@ class Process
 
     public function __tostring()
     {
-        return $this->getName();
+        return $this['name'];
+    }
+
+    /***************************************************************************
+     * Implementation of ArrayAccess
+     **************************************************************************/
+
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->payload[] = $value;
+        } else {
+            $this->payload[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->payload[$offset]);
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->payload[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
+    }
+
+    /***************************************************************************
+     * Implementation of Iterable
+     **************************************************************************/
+
+    public function rewind()
+    {
+        reset($this->payload);
+    }
+
+    public function current()
+    {
+        return current($this->payload);
+    }
+
+    public function key()
+    {
+        return key($this->payload);
+    }
+
+    public function next()
+    {
+        return next($this->payload);
+    }
+
+    public function valid()
+    {
+        return key($this->payload) !== null;
     }
 }
