@@ -116,3 +116,51 @@ if (!function_exists('http_build_url'))
         ;
     }
 }
+
+if (!function_exists('http_parse_headers'))
+{
+    function http_parse_headers($rawHeaders)
+    {
+        $rawHeaders = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $rawHeaders));
+        $headers = array();
+
+        foreach ($rawHeaders as $header) {
+            $header = explode(': ', $header);
+            if (count($header) == 2) {
+                $header[0] = preg_replace_callback(
+                    '/(?<=^|[\x09\x20\x2D])./',
+                    function($matches) {
+                        return strtoupper($matches[0]);
+                    },
+                    strtolower(trim($header[0]))
+                );
+
+                if (array_key_exists($header[0], $headers)) {
+                    if ( ! is_array($headers[$header[0]])) {
+                        $headers[$header[0]] = array($headers[$header[0]]);
+                    }
+
+                    $headers[$header[0]][] = $header[1];
+                } else {
+                    $headers[$header[0]] = $header[1];
+                }
+            }
+        }
+
+        return $headers;
+    }
+}
+
+if (!function_exists('http_build_headers'))
+{
+    function http_build_headers(array $headers)
+    {
+        $rawHeaders = '';
+
+        foreach ($headers as $key => $value) {
+            $rawHeaders .= "$key: $value\r\n";
+        }
+
+        return $rawHeaders;
+    }
+}
