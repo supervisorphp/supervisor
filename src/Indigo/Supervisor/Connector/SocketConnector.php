@@ -2,73 +2,83 @@
 
 namespace Indigo\Supervisor\Connector;
 
-use Indigo\Supervisor\Exception\BadResourceException;
+use Indigo\Supervisor\Exception\InvalidResourceException;
+use Indigo\Supervisor\Exception\InvalidResponseException;
 
 class SocketConnector extends AbstractConnector
 {
     const CHUNK_SIZE = 8192;
 
-    protected $socket;
-
     public function __construct($socket, $timeout = null)
     {
-        $timeout = $timeout ?: ini_get("default_socket_timeout");
+        $timeout = $timeout ?: ini_get('default_socket_timeout');
 
-        $this->socket = fsockopen($socket, -1, $errNo, $errStr, $timeout);
+        $this->resource = @fsockopen($socket, -1, $errNo, $errStr, $timeout);
 
-        if ( ! is_resource($this->socket)) {
-            throw new BadResourceException("Cannot open socket: " . $errStr, $errNo);
+        if ( ! is_resource($this->resource)) {
+            throw new InvalidResourceException('Cannot open socket: ' . $errStr, $errNo);
         }
     }
 
     public function __destruct()
     {
-        fclose($this->socket);
+        $this->close();
+    }
+
+    public function isConnected()
+    {
+        return is_resource($this->resource);
+    }
+
+    public function close()
+    {
+        if ($this->isConnected()) {
+            @fclose($this->resource);
+        }
+    }
+
+    public function setResource($resource)
+    {
+        if (is_resource($resource)) {
+            return parent::setResource($resource);
+        } else {
+            throw new InvalidResourceException('Invalid resource');
+        }
     }
 
     public function call($namespace, $method, array $arguments = array())
     {
         $xml = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
 
-        $request = "POST /RPC2 HTTP/1.1\r\n";
+        $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
-        foreach ($this->headers as $key => $value) {
-            $request .= "$key: $value\r\n";
-        }
+        $request = "POST /RPC2 HTTP/1.1\r\n" . http_build_headers($headers) . "\r\n" . $xml;
 
-        $request .= "Content-Length: " . strlen($xml) . "\r\n\r\n" . $xml;
-
-        fwrite($this->socket, $request);
+        fwrite($this->resource, $request);
 
         $response = '';
-        $header   = null;
 
         do {
-            $response .= fread($this->socket, self::CHUNK_SIZE);
+            $response .= fread($this->resource, self::CHUNK_SIZE);
 
-            if (is_null($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
+            if ( ! isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
                 $header = substr($response, 0, $headerLength);
-                $header = explode("\r\n", $header);
-                $header = array_slice($header, 1);
 
-                foreach ($header as $key => $value) {
-                    $value = explode(': ', $value);
-                    $header[$value[0]] = $value[1];
-                    unset($header[$key]);
-                }
+                $header = http_parse_headers($header);
 
                 if (array_key_exists('Content-Length', $header)) {
                     $contentLength = $header['Content-Length'];
                 } else {
-                    throw new ResponseException('No Content-Length field found in the HTTP header.');
+                    throw new InvalidResponseException('No Content-Length field found in HTTP header.');
                 }
             }
 
-            $bodyStartPos = $headerLength + 4;
-            $bodyLength   = strlen($response) - $bodyStartPos;
+            $bodyStart  = $headerLength + 4;
+            $bodyLength = strlen($response) - $bodyStart;
 
-        } while ($bodyLength < $contentLength);
-        $response = substr($response, $bodyStartPos);
+        } while ($this->isConnected() and $bodyLength < $contentLength);
+
+        $response = substr($response, $bodyStart);
 
         return $this->processResponse($response);
     }
