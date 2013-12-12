@@ -157,8 +157,18 @@ if (!function_exists('http_build_headers'))
     {
         $rawHeaders = '';
 
-        foreach ($headers as $key => $value) {
+        $concat = function($key, $value) use(&$rawHeaders) {
             $rawHeaders .= "$key: $value\r\n";
+        };
+
+        foreach ($headers as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $v) {
+                    $concat($key, $v);
+                }
+            } else {
+                $concat($key, $value);
+            }
         }
 
         return $rawHeaders;
