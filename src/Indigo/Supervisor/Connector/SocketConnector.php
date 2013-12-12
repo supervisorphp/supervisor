@@ -7,8 +7,17 @@ use Indigo\Supervisor\Exception\InvalidResponseException;
 
 class SocketConnector extends AbstractConnector
 {
+	/**
+	 * Size of read data
+	 */
     const CHUNK_SIZE = 8192;
 
+    /**
+     * Create SocketConnector instance
+     *
+     * @param string $socket
+     * @param float  $timeout
+     */
     public function __construct($socket, $timeout = null)
     {
         $timeout = $timeout ?: ini_get('default_socket_timeout');
@@ -20,16 +29,25 @@ class SocketConnector extends AbstractConnector
         }
     }
 
+    /**
+     * Close connection
+     */
     public function __destruct()
     {
         $this->close();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isConnected()
     {
         return is_resource($this->resource);
     }
 
+    /**
+     * Close socket
+     */
     public function close()
     {
         if ($this->isConnected()) {
@@ -37,6 +55,9 @@ class SocketConnector extends AbstractConnector
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setResource($resource)
     {
         if (is_resource($resource)) {
@@ -46,6 +67,9 @@ class SocketConnector extends AbstractConnector
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function call($namespace, $method, array $arguments = array())
     {
         $xml = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
@@ -89,6 +113,10 @@ class SocketConnector extends AbstractConnector
         return $this->processResponse($response);
     }
 
+    /**
+     * Get stream metadata
+     * @return array
+     */
     protected function getStreamMetadata()
     {
         return stream_get_meta_data($this->resource);
