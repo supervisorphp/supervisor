@@ -46,8 +46,13 @@ Further info
 You can find the XML-RPC documentation here:
 [http://supervisord.org/api.html](http://supervisord.org/api.html)
 
+Notice
+------
+
+All the responses are parsed by PHP XML-RPC extension (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
 TODO
 ----
 
 * Implement multicall, the current serialization does NOT support it
+* The current implementation does not work with log tailing
