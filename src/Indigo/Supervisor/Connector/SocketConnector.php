@@ -16,7 +16,7 @@ class SocketConnector extends AbstractConnector
 
         $this->socket = fsockopen($socket, -1, $errNo, $errStr, $timeout);
 
-        if ( ! $this->socket) {
+        if ( ! is_resource($this->socket)) {
             throw new BadResourceException("Cannot open socket: " . $errStr, $errNo);
         }
     }
