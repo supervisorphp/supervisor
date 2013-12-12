@@ -4,6 +4,9 @@ namespace Indigo\Supervisor\Connector;
 
 use Indigo\Supervisor\Exception\InvalidArgumentException;
 
+/**
+ * Connect to Supervisor
+ */
 class InetConnector extends AbstractConnector
 {
     public function __construct($host, $port = 9001) {

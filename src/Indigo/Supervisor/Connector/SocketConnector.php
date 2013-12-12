@@ -5,6 +5,9 @@ namespace Indigo\Supervisor\Connector;
 use Indigo\Supervisor\Exception\InvalidResourceException;
 use Indigo\Supervisor\Exception\InvalidResponseException;
 
+/**
+ * Connect to Supervisor through unix domain socket
+ */
 class SocketConnector extends AbstractConnector
 {
 	/**
