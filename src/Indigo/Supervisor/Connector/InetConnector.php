@@ -32,16 +32,10 @@ class InetConnector extends AbstractConnector
     {
         $request = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
 
-        $headers = array();
-
-        foreach ($this->headers as $key => $value) {
-            $headers[] = "$key: $value";
-        }
-
         $options = array(
             'http' => array(
                 'method' => 'POST',
-                'header' => $headers,
+                'header' => http_build_headers($this->headers),
                 'content' => $request
             )
         );
