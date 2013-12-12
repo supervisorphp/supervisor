@@ -23,6 +23,11 @@ class InetConnector extends AbstractConnector
         $this->resource = http_build_url('/RPC2', $resource, HTTP_URL_REPLACE | HTTP_URL_STRIP_AUTH | HTTP_URL_STRIP_QUERY | HTTP_URL_STRIP_FRAGMENT);
     }
 
+    public function isConnected()
+    {
+        return true;
+    }
+
     public function call($namespace, $method, array $arguments = array())
     {
         $request = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
@@ -42,7 +47,7 @@ class InetConnector extends AbstractConnector
         );
 
         $context  = stream_context_create($options);
-        $response = file_get_contents($this->resource, false, $context);
+        $response = @file_get_contents($this->resource, false, $context);
 
         return $this->processResponse($response);
     }
