@@ -73,6 +73,12 @@ class SocketConnector extends AbstractConnector
                 }
             }
 
+            $socketInfo = $this->getStreamMetadata();
+
+            if ($socketInfo['timed_out']) {
+                throw new \RuntimeException("Read timed-out");
+            }
+
             $bodyStart  = $headerLength + 4;
             $bodyLength = strlen($response) - $bodyStart;
 
@@ -81,5 +87,10 @@ class SocketConnector extends AbstractConnector
         $response = substr($response, $bodyStart);
 
         return $this->processResponse($response);
+    }
+
+    protected function getStreamMetadata()
+    {
+        return stream_get_meta_data($this->resource);
     }
 }
