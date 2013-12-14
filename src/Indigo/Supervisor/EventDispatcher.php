@@ -7,54 +7,6 @@ use Indigo\Supervisor\EventListener;
 class EventDispatcher
 {
 	/**
-	 * Super constant
-	 */
-	const EVENT = 0;
-
-	/**
-	 * Process state constants
-	 */
-	const PROCESS_STATE          = 10;
-	const PROCESS_STATE_STARTING = 20;
-	const PROCESS_STATE_RUNNING  = 30;
-	const PROCESS_STATE_BACKOFF  = 40;
-	const PROCESS_STATE_STOPPING = 50;
-	const PROCESS_STATE_EXITED   = 60;
-	const PROCESS_STATE_STOPPED  = 70;
-	const PROCESS_STATE_FATAL    = 80;
-	const PROCESS_STATE_UNKNOWN  = 90;
-	const REMOTE_COMMUNICATION   = 100;
-
-    /**
-     * Process log constants
-     */
-	const PROCESS_LOG        = 110;
-	const PROCESS_LOG_STDOUT = 120;
-	const PROCESS_LOG_STDERR = 130;
-
-    /**
-     * Process communication constants
-     */
-	const PROCESS_COMMUNICATION        = 140;
-	const PROCESS_COMMUNICATION_STDOUT = 150;
-	const PROCESS_COMMUNICATION_STDERR = 160;
-
-    /**
-     * Supervisor state constants
-     */
-	const SUPERVISOR_STATE_CHANGE          = 170;
-	const SUPERVISOR_STATE_CHANGE_RUNNING  = 180;
-	const SUPERVISOR_STATE_CHANGE_STOPPING = 190;
-
-    /**
-     * Tick constatns
-     */
-	const TICK      = 200;
-	const TICK_5    = 210;
-	const TICK_60   = 220;
-	const TICK_3600 = 230;
-
-	/**
 	 * Responses sent to supervisor
 	 */
 	const READY = "READY\n";
