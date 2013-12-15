@@ -82,12 +82,10 @@ class EventDispatcher implements LoggerAwareInterface
 	{
 		$result = true;
 		foreach ($this->listeners as $listener) {
-			if ($listener->isListening($payload)) {
-				$result &= $listener->listen($payload);
+			$result &= $listener->listen($payload);
 
-				if ($listener->isPropagationStopped()) {
-					break;
-				}
+			if ($listener->isPropagationStopped()) {
+				break;
 			}
 		}
 
