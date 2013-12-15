@@ -42,6 +42,28 @@ class Configuration
 	}
 
 	/**
+	 * Get a specific section by name
+	 *
+	 * @param  string                $section
+	 * @return SectionInterface|null
+	 */
+	public function getSection($section)
+	{
+		if (array_key_exists($section, $this->sections)) {
+			return $this->sections[$section];
+		}
+	}
+	/**
+	 * Get all sections
+	 *
+	 * @return array
+	 */
+	public function getSections()
+	{
+		return $this->sections;
+	}
+
+	/**
 	 * Render configuration
 	 *
 	 * @return string
