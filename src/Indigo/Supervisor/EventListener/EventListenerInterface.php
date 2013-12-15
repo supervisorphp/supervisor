@@ -5,17 +5,14 @@ namespace Indigo\Supervisor\EventListener;
 interface EventListenerInterface
 {
 	/**
-	 * Listen to events
-	 *
-	 * @param  array   $payload Array of header and body
-	 * @return boolean          True on success, false on failure
+	 * Responses sent to supervisor
 	 */
-	public function listen(array $payload);
+	const READY = "READY\n";
+	const OK    = "RESULT 2\nOK";
+	const FAIL  = "RESULT 4\nFAIL";
 
 	/**
-	 * Returns whether the event propagation should continue or not
-	 *
-	 * @return boolean
+	 * Listen to events
 	 */
-	public function isPropagationStopped();
+	public function listen();
 }
