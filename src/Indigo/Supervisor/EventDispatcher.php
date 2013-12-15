@@ -10,8 +10,8 @@ class EventDispatcher
 	 * Responses sent to supervisor
 	 */
 	const READY = "READY\n";
-	const OK    = "OK";
-	const FAIL  = "FAIL";
+	const OK    = "RESULT 2\nOK";
+	const FAIL  = "RESULT 4\nFAIL";
 
 	protected $listeners = array();
 
@@ -56,6 +56,12 @@ class EventDispatcher
 
 			$result = $this->dispatch($payload);
 
+			if ($result === true) {
+				$this->write(self::OK);
+			} elseif ($result === false) {
+				$this->write(self::FAIL);
+			}
+
 			$this->write(self::READY);
 		}
 	}
@@ -67,7 +73,7 @@ class EventDispatcher
 
 			if ($listener->isListening($payload)) {
 				// ITT TARTOK: hogy legyen a visszatérési érték
-				$result = $listener->listen($payload);
+				$result &= $listener->listen($payload);
 
 				if ($listener->isPropagationStopped()) {
 					break;
