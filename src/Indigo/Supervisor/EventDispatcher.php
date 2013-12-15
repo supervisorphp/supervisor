@@ -82,6 +82,7 @@ class EventDispatcher implements LoggerAwareInterface
 	{
 		$result = true;
 		foreach ($this->listeners as $listener) {
+			// Return after failure immediately?
 			$result &= $listener->listen($payload);
 
 			if ($listener->isPropagationStopped()) {
@@ -115,11 +116,6 @@ class EventDispatcher implements LoggerAwareInterface
 	protected function write($value)
 	{
 		fwrite($this->outputStream, $value);
-	}
-
-	protected function result($result)
-	{
-		$this->write('RESULT ' . strlen($result) . "\n" . $result);
 	}
 
     /**
