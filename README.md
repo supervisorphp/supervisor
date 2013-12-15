@@ -41,6 +41,50 @@ echo $process;
 $process->getPayload();
 ```
 
+Configuration
+-------------
+
+This section is about generating configuration file(s) for supervisord.
+
+Example:
+
+```php
+use Indigo\Supervisor\Configuration;
+use Indigo\Supervisor\Section\ProgramSection;
+
+$config = new Configuration();
+
+$section = new SupervisordSection(array('identifier' => 'supervisor'));
+$config->addSection($section);
+
+$section = new ProgramSection('test', array('command' => 'cat'));
+$config->addSection($section);
+
+// same as echo $config->render()
+echo $config;
+```
+
+The following sections are available in this pacakge:
+
+* *SupervisordSection*
+* *SupervisorctlSection*
+* *UnixHttpServerSection*
+* *InetHttpServerSection*
+* *IncludeSection*
+* *GroupSection**
+* *ProgramSection**
+* *EventListenerSection**
+* *FcgiProgramSection**
+
+
+***Note**: These sections has to instantiated with a name and optionally an options array:
+```php
+$section = new ProgramSection('test', array('command' => 'cat'));
+```
+
+You can find detailed info about options for each section here:
+[http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
+
 Further info
 ------------
 You can find the XML-RPC documentation here:
