@@ -1,9 +1,12 @@
 <?php
 
 namespace Indigo\Supervisor\EventListener;
+use Psr\Log;
 
 trait EventListenerTrait implements EventListenerInterface
 {
+	use LoggerAwareTrait;
+
 	/**
 	 * Process state constants
 	 */

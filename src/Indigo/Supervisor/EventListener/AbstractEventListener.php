@@ -1,8 +1,9 @@
 <?php
 
 namespace Indigo\Supervisor\EventListener;
+use Psr\Log;
 
-abstract class AbstractEventListener implements EventListenerInterface
+abstract class AbstractEventListener implements EventListenerInterface, LoggerAwareInterface
 {
 	/**
 	 * Process state constants
@@ -51,6 +52,13 @@ abstract class AbstractEventListener implements EventListenerInterface
 	 * Super constant
 	 */
 	const EVENT = 262143;
+
+	/**
+	 * Psr logger
+	 *
+	 * @var LoggerInterface
+	 */
+	protected $logger;
 
 	/**
 	 * The current subscribed events
@@ -151,5 +159,15 @@ abstract class AbstractEventListener implements EventListenerInterface
 		$this->propagate = false;
 
 		return $this;
+	}
+
+    /**
+     * Sets a logger.
+     *
+     * @param LoggerInterface $logger
+     */
+	public function setLogger(LoggerInterface $logger)
+	{
+		$this->logger = $logger;
 	}
 }

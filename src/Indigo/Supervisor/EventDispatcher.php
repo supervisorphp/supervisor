@@ -3,8 +3,9 @@
 namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\EventListener;
+use Psr\Log;
 
-class EventDispatcher
+class EventDispatcher implements LoggerAwareInterface
 {
 	/**
 	 * Responses sent to supervisor
@@ -12,6 +13,13 @@ class EventDispatcher
 	const READY = "READY\n";
 	const OK    = "RESULT 2\nOK";
 	const FAIL  = "RESULT 4\nFAIL";
+
+	/**
+	 * Psr logger
+	 *
+	 * @var LoggerInterface
+	 */
+	protected $logger;
 
 	protected $listeners = array();
 
@@ -110,5 +118,15 @@ class EventDispatcher
 	protected function result($result)
 	{
 		$this->write('RESULT ' . strlen($result) . "\n" . $result);
+	}
+
+    /**
+     * Sets a logger.
+     *
+     * @param LoggerInterface $logger
+     */
+	public function setLogger(LoggerInterface $logger)
+	{
+		$this->logger = $logger;
 	}
 }
