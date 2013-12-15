@@ -2,9 +2,10 @@
 
 namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\EventListener;
+use Indigo\Supervisor\EventListener\EventListenerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class EventDispatcher implements LoggerAwareInterface
 {

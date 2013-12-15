@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\Indigo\Supervisor\EventListener;
+namespace Indigo\Supervisor\EventListener;
 
 class NullEventListener extends AbstractEventListener
 {

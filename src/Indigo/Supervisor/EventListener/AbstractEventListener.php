@@ -1,7 +1,8 @@
 <?php
 
 namespace Indigo\Supervisor\EventListener;
-use Psr\Log;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 abstract class AbstractEventListener implements EventListenerInterface, LoggerAwareInterface
 {
