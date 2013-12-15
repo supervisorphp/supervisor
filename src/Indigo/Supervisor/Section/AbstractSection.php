@@ -5,7 +5,7 @@ namespace Indigo\Supervisor\Section;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AbstractSection implements SectionInterface
+abstract class AbstractSection implements SectionInterface
 {
 	/**
 	 * Options
