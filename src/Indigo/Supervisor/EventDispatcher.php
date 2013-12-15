@@ -80,11 +80,9 @@ class EventDispatcher implements LoggerAwareInterface
 
 	protected function dispatch($payload)
 	{
+		$result = true;
 		foreach ($this->listeners as $listener) {
-			$listen = null;
-
 			if ($listener->isListening($payload)) {
-				// ITT TARTOK: hogy legyen a visszatérési érték
 				$result &= $listener->listen($payload);
 
 				if ($listener->isPropagationStopped()) {
@@ -92,6 +90,8 @@ class EventDispatcher implements LoggerAwareInterface
 				}
 			}
 		}
+
+		return (bool)$result;
 	}
 
 	protected function parseData($rawData)
@@ -116,7 +116,7 @@ class EventDispatcher implements LoggerAwareInterface
 
 	protected function write($value)
 	{
-		fwrite($this->inputStream, $value);
+		fwrite($this->outputStream, $value);
 	}
 
 	protected function result($result)
