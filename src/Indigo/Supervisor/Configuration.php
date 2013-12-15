@@ -6,8 +6,19 @@ use Indigo\Supervisor\Section\SectionInterface;
 
 class Configuration
 {
+	/**
+	 * Config sections
+	 *
+	 * @var array
+	 */
 	protected $sections = array();
 
+	/**
+	 * Add a section
+	 *
+	 * @param SectionInterface $section
+	 * @return Configuration
+	 */
 	public function addSection(SectionInterface $section)
 	{
 		$this->sections[$section->getName()] = $section;
@@ -15,6 +26,12 @@ class Configuration
 		return $this;
 	}
 
+	/**
+	 * Remove a section by name
+	 *
+	 * @param  string        $section
+	 * @return Configuration
+	 */
 	public function removeSection($section)
 	{
 		if (array_key_exists($section, $this->sections)) {
@@ -24,15 +41,22 @@ class Configuration
 		return $this;
 	}
 
+	/**
+	 * Render configuration
+	 *
+	 * @return string
+	 */
 	public function render()
 	{
 		$output = '';
 
 		foreach ($this->sections as $name => $section) {
+			// only continue processing this section if there are options in it
 			if ( ! $options = $section->getOptions()) {
 				continue;
 			}
 
+			// write a linefeed before sections
 			empty($output) or $output .= "\n";
 
 			$output .= "[$name]\n";
@@ -45,6 +69,9 @@ class Configuration
 		return $output;
 	}
 
+	/**
+	 * Alias to render()
+	 */
 	public function __tostring()
 	{
 		return $this->render();
