@@ -15,7 +15,8 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 	protected $logger;
 
 	/**
-	 * Whether continue propagation or not
+	 * Whether to continue propagation or not
+	 *
 	 * @var boolean
 	 */
 	protected $propagate = true;
