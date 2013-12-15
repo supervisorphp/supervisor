@@ -16,7 +16,7 @@ class Configuration
 	/**
 	 * Add a section
 	 *
-	 * @param SectionInterface $section
+	 * @param  SectionInterface $section
 	 * @return Configuration
 	 */
 	public function addSection(SectionInterface $section)
