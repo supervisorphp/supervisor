@@ -32,7 +32,7 @@ class EventDispatcher implements LoggerAwareInterface
 	{
 		$this->inputStream  = $inputStream;
 		$this->outputStream = $outputStream;
-		$this->errorStream  = $errortream;
+		$this->errorStream  = $errorStream;
 
 		$this->logger = new NullLogger();
 	}
