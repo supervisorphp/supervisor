@@ -8,6 +8,9 @@ class SupervisordSection extends AbstractSection
 {
 	protected $name = 'supervisord';
 
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setOptional(array(

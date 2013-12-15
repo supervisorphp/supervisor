@@ -8,6 +8,9 @@ class UnixHttpServerSection extends AbstractSection
 {
 	protected $name = 'unix_http_server';
 
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setOptional(array(

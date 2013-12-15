@@ -35,9 +35,7 @@ class AbstractSection implements SectionInterface
 	}
 
 	/**
-	 * Get the name of section
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getName()
 	{
@@ -45,9 +43,7 @@ class AbstractSection implements SectionInterface
 	}
 
 	/**
-	 * Get options
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function getOptions()
 	{

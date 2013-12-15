@@ -13,6 +13,9 @@ class EventListenerSection extends ProgramSection
 		$this->name = 'eventlistener:' . trim($name);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		parent::setDefaultOptions($resolver);

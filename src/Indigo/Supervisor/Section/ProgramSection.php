@@ -13,6 +13,9 @@ class ProgramSection extends AbstractSection
 		parent::__construct($options);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setRequired(array('command'));

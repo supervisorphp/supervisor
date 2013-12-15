@@ -13,6 +13,9 @@ class FcgiProgramSection extends ProgramSection
 		$this->name = 'fcgi' . $this->name;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	protected function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		parent::setDefaultOptions($resolver);
