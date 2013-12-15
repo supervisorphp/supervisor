@@ -1,14 +1,15 @@
 <?php
 
 namespace Indigo\Supervisor\EventListener;
-use Psr\Log;
+use Psr\Log\LoggerAwareTrait;
 
 trait EventListenerTrait implements EventListenerInterface
 {
 	use LoggerAwareTrait;
 
 	/**
-	 * Whether continue propagation or not
+	 * Whether to continue propagation or not
+	 *
 	 * @var boolean
 	 */
 	protected $propagate = true;
