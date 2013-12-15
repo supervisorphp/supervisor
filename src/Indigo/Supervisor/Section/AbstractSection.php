@@ -3,6 +3,7 @@
 namespace Indigo\Supervisor\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AbstractSection implements SectionInterface
 {
@@ -52,4 +53,11 @@ class AbstractSection implements SectionInterface
 	{
 		return $this->options;
 	}
+
+	/**
+	 * Set default options
+	 *
+	 * @param OptionsResolverInterface $resolver
+	 */
+	abstract protected function setDefaultOptions(OptionsResolverInterface $resolver);
 }
