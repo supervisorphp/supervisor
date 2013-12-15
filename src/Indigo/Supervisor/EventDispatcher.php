@@ -32,6 +32,8 @@ class EventDispatcher implements LoggerAwareInterface
 		$this->inputStream  = $inputStream;
 		$this->outputStream = $outputStream;
 		$this->errorStream  = $errortream;
+
+		$this->logger = new NullLogger();
 	}
 
 	public function addListener(EventListenerInterface $listener, $prepend = false)
@@ -121,7 +123,7 @@ class EventDispatcher implements LoggerAwareInterface
 	}
 
     /**
-     * Sets a logger.
+     * Sets a logger
      *
      * @param LoggerInterface $logger
      */

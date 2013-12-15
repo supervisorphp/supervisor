@@ -162,7 +162,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 	}
 
     /**
-     * Sets a logger.
+     * Sets a logger
      *
      * @param LoggerInterface $logger
      */
