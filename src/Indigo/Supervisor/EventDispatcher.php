@@ -3,6 +3,7 @@
 namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\EventListener\EventListenerInterface;
+use Indigo\Supervisor\Exception\InvalidResourceException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -23,21 +24,57 @@ class EventDispatcher implements LoggerAwareInterface
 	 */
 	protected $logger;
 
+	/**
+	 * Array of EventListenerInterfaces
+	 *
+	 * @var array
+	 */
 	protected $listeners = array();
 
+	/**
+	 * Input stream
+	 *
+	 * @var resource
+	 */
 	protected $inputStream;
-	protected $outputStream;
-	protected $errorStream;
 
-	public function __construct($inputStream = STDIN, $outputStream = STDOUT, $errorStream = STDERR)
+	/**
+	 * Output stream
+	 *
+	 * @var resource
+	 */
+	protected $outputStream;
+
+	/**
+	 * Create new EventDispatcher instance
+	 *
+	 * @param resource $inputStream
+	 * @param resource $outputStream
+	 */
+	public function __construct($inputStream = STDIN, $outputStream = STDOUT)
 	{
+		if ( ! is_resource($inputStream)) {
+			throw new InvalidResourceException('Input stream is not a valid resource');
+		}
+
+		if ( ! is_resource($outputStream)) {
+			throw new InvalidResourceException('Input stream is not a valid resource');
+		}
+
 		$this->inputStream  = $inputStream;
 		$this->outputStream = $outputStream;
-		$this->errorStream  = $errorStream;
 
+		// setting default logger
 		$this->logger = new NullLogger();
 	}
 
+	/**
+	 * Add event listener
+	 *
+	 * @param  EventListenerInterface $listener
+	 * @param  boolean                $prepend
+	 * @return EventDispatcher
+	 */
 	public function addListener(EventListenerInterface $listener, $prepend = false)
 	{
 		if ($prepend) {
@@ -49,6 +86,9 @@ class EventDispatcher implements LoggerAwareInterface
 		return $this;
 	}
 
+	/**
+	 * Listen for events
+	 */
 	public function listen()
 	{
 		$this->write(self::READY);
@@ -68,34 +108,51 @@ class EventDispatcher implements LoggerAwareInterface
 
 			$result = $this->dispatch($payload);
 
-			if ($result === true) {
+			if ($result === 0) {
 				$this->write(self::OK);
-			} elseif ($result === false) {
+			} elseif ($result === 1) {
 				$this->write(self::FAIL);
+			} else {
+				return;
 			}
 
 			$this->write(self::READY);
 		}
 	}
 
+	/**
+	 * Dispatch event and call listener
+	 *
+	 * @param  array   $payload Array of header and body
+	 * @return integer          0 on success, 1 on failure, any other will stop the dispatcher
+	 */
 	protected function dispatch($payload)
 	{
-		$result = true;
-		foreach ($this->listeners as $listener) {
-			// Return after failure immediately?
-			$result &= $listener->listen($payload);
+		// default return code is 0
+		$result = 0;
 
+		foreach ($this->listeners as $listener) {
+			$result |= $listener->listen($payload);
+
+			// stop propagation, return current result
 			if ($listener->isPropagationStopped()) {
 				break;
 			}
 		}
 
-		return (bool)$result;
+		return (int)$result;
 	}
 
+	/**
+	 * Parse colon devided data
+	 *
+	 * @param  string $rawData
+	 * @return array
+	 */
 	protected function parseData($rawData)
 	{
         $outputData = array();
+
         foreach (explode(' ', $rawData) as $data) {
         	$data = explode(':', $data);
         	$outputData[$data[0]] = $data[1];
@@ -104,6 +161,12 @@ class EventDispatcher implements LoggerAwareInterface
         return $outputData;
 	}
 
+	/**
+	 * Read data from input stream
+	 *
+	 * @param  integer $length If given read this size of bytes, read a line anyway
+	 * @return string
+	 */
 	protected function read($length = null)
 	{
 		if (is_null($length)) {
@@ -113,6 +176,11 @@ class EventDispatcher implements LoggerAwareInterface
 		}
 	}
 
+	/**
+	 * Write data to output stream
+	 *
+	 * @param  string $value
+	 */
 	protected function write($value)
 	{
 		fwrite($this->outputStream, $value);

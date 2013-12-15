@@ -7,6 +7,6 @@ class NullEventListener extends AbstractEventListener
 	public function listen(array $payload)
 	{
 		//noop
-		return true;
+		return 0;
 	}
 }
