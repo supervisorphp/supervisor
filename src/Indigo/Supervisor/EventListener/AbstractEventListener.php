@@ -65,7 +65,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 	 * The current subscribed events
 	 * @var integer
 	 */
-	protected $events;
+	protected $events = -262143;
 
 	/**
 	 * Whether continue propagation or not
@@ -91,7 +91,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 	{
 		$event = $this->getEvent($event);
 
-		return (($this->events ?: self::EVENT) & $event) == true;
+		return (abs($this->events) & $event) == true;
 	}
 
 	/**
@@ -103,6 +103,10 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 	public function subscribeEvent($event)
 	{
 		$event = $this->getEvent($event);
+
+		if ($this->events < 0) {
+			$this->events = 0;
+		}
 
 		$this->events |= $event;
 
