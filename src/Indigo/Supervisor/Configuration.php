@@ -29,11 +29,15 @@ class Configuration
 		$output = '';
 
 		foreach ($this->sections as $name => $section) {
+			if ( ! $options = $section->getOptions()) {
+				continue;
+			}
+
 			empty($output) or $output .= "\n";
 
 			$output .= "[$name]\n";
 
-			foreach ($section->getOptions() as $key => $value) {
+			foreach ($options as $key => $value) {
 				$output .= "$key = $value\n";
 			}
 		}
