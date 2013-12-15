@@ -91,7 +91,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 	{
 		$event = $this->getEvent($event);
 
-		return ($this->events & $event) == true;
+		return (($this->events ?: self::EVENT) & $event) == true;
 	}
 
 	/**
