@@ -1,6 +1,6 @@
 {
     "name": "indigophp/supervisor",
-    "description": "Supervisor PHP library",
+    "description": "PHP library for Supervisord",
     "license": "MIT",
     "authors": [
         {
