@@ -3,6 +3,7 @@
 namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Connector\ConnectorInterface;
+use Symfony\Component\Process\Process as SymfonyProcess;
 
 class Process implements \ArrayAccess, \Iterator
 {
@@ -103,6 +104,27 @@ class Process implements \ArrayAccess, \Iterator
     public function isState($state = self::RUNNING)
     {
         return $this->payload['state'] == $state;
+    }
+
+    /**
+     * Get memory usage
+     *
+     * @return integer Used memory in bytes
+     */
+    public function getMemUsage()
+    {
+        $mem = 0;
+
+        if ($this->isRunning() and ! empty($this['pid'])) {
+            $process = new SymfonyProcess('ps -orss= -p ' . $this['pid']);
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                $mem = intval($process->getOutput()) * 1024;
+            }
+        }
+
+        return $mem;
     }
 
     /**
