@@ -4,7 +4,6 @@ namespace Indigo\Supervisor\EventListener;
 use Indigo\Supervisor\Exception\InvalidResourceException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 abstract class AbstractEventListener implements EventListenerInterface, LoggerAwareInterface
 {
@@ -93,6 +92,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 
 	/**
 	 * Do the actual event handling
+	 *
 	 * @param  array   $payload
 	 * @return integer          0=success, 1=failure, 2=quit
 	 */
