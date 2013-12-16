@@ -4,6 +4,7 @@ namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Connector\ConnectorInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
+use Indigo\Supervisor\Exception\ResponseException;
 
 class Process implements \ArrayAccess, \Iterator
 {
@@ -161,6 +162,29 @@ class Process implements \ArrayAccess, \Iterator
     public function stop($wait = true)
     {
         return $this->call('supervisor', 'stopProcess', array($wait));
+    }
+
+    /**
+     * Restart the process
+     *
+     * @param  boolean $wait Wait for process to be fully stopped and started
+     * @return boolean       Always true unless error
+     */
+    public function restart($wait = true)
+    {
+        try {
+            $this->stop($wait);
+            $this->start($wait);
+        } catch (ResponseException $e) {
+            // only catch if process is 'NOT_RUNNING'
+            if ($e->getCode() == 70) {
+                return false;
+            } else {
+                throw $e;
+            }
+        }
+
+        return true;
     }
 
     /**
