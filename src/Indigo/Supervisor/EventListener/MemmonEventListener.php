@@ -31,23 +31,10 @@ class MemmonEventListener extends AbstractEventListener
 		$processes = $this->supervisor->getAllProcess();
 
 		foreach ($processes as $process) {
-			if (empty($process['pid'])) {
-				continue;
-			}
-
-			$pname = $process['group'] . ':' . $process['name'];
-
-			$process = new SymfonyProcess('ps -orss= -p ' . $process['pid']);
-			$process->run();
-
-			if ( ! $process->isSuccessful() or ($mem = intval($process->getOutput())) < 1) {
-				continue;
-			}
-
-			$mem = $mem * 1024;
+			$mem = $process->getMemUsage();
 
 			if (array_key_exists($process['name'], $this->programs) and $this->programs[$process['name']] >= $mem) {
-				$this->restart()
+				$process->restart();
 			}
 		}
 	}
