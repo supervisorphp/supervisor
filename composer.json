@@ -10,7 +10,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "symfony/options-resolver": "v2.4.0"
+        "symfony/options-resolver": "v2.4.0",
+        "symfony/process": "v2.4.0"
     },
     "autoload": {
         "psr-0": { "Indigo\\Supervisor\\": "src/" },
