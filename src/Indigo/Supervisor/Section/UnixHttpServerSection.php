@@ -6,19 +6,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UnixHttpServerSection extends AbstractSection
 {
-	protected $name = 'unix_http_server';
+    protected $name = 'unix_http_server';
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setOptional(array(
-			'file',
-			'chmod',
-			'chown',
-			'username',
-			'password',
-		));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setOptional(array(
+            'file',
+            'chmod',
+            'chown',
+            'username',
+            'password',
+        ));
+    }
 }

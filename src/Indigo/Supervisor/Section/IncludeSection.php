@@ -6,13 +6,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IncludeSection extends AbstractSection
 {
-	protected $name = 'include';
+    protected $name = 'include';
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired(array('files'));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(array('files'));
+    }
 }

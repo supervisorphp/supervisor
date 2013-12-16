@@ -10,9 +10,9 @@ use Indigo\Supervisor\Exception\InvalidResponseException;
  */
 class SocketConnector extends AbstractConnector
 {
-	/**
-	 * Size of read data
-	 */
+    /**
+     * Size of read data
+     */
     const CHUNK_SIZE = 8192;
 
     /**
