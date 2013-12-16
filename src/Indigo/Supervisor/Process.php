@@ -176,12 +176,7 @@ class Process implements \ArrayAccess, \Iterator
             $this->stop($wait);
             $this->start($wait);
         } catch (ResponseException $e) {
-            // only catch if process is 'NOT_RUNNING'
-            if ($e->getCode() == 70) {
-                return false;
-            } else {
-                throw $e;
-            }
+            return false;
         }
 
         return true;
