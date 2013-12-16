@@ -100,3 +100,7 @@ TODO
 
 * Implement multicall, the current serialization does NOT support it
 * The current implementation does not work with log tailing
+
+LICENSE
+-------
+Supervisor is released under the MIT License. See the distributed LICENSE file for details.
