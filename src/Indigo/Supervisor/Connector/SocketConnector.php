@@ -2,8 +2,9 @@
 
 namespace Indigo\Supervisor\Connector;
 
-use Indigo\Supervisor\Exception\InvalidResourceException;
 use Indigo\Supervisor\Exception\InvalidResponseException;
+use Indigo\Supervisor\Exception\InvalidResourceException;
+use Indigo\Supervisor\Exception\HttpException;
 
 /**
  * Connect to Supervisor through unix domain socket
@@ -45,7 +46,7 @@ class SocketConnector extends AbstractConnector
      */
     public function isConnected()
     {
-        return is_resource($this->resource);
+        return is_resource($this->resource) and ! feof($this->resource);
     }
 
     /**
@@ -84,12 +85,20 @@ class SocketConnector extends AbstractConnector
         fwrite($this->resource, $request);
 
         $response = '';
+        $bodyStart = 0;
 
         do {
             $response .= fread($this->resource, self::CHUNK_SIZE);
 
             if ( ! isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
                 $header = substr($response, 0, $headerLength);
+
+                $http = strtok($header, "\r\n");
+                $http = explode(' ', $http, 3);
+
+                if (intval($http[1]) !== 200) {
+                    throw new HttpException($http[2], $http[1]);
+                }
 
                 $header = http_parse_headers($header);
 
@@ -98,6 +107,8 @@ class SocketConnector extends AbstractConnector
                 } else {
                     throw new InvalidResponseException('No Content-Length field found in HTTP header.');
                 }
+
+                $bodyStart  = $headerLength + 4;
             }
 
             $socketInfo = $this->getStreamMetadata();
@@ -106,7 +117,6 @@ class SocketConnector extends AbstractConnector
                 throw new \RuntimeException("Read timed-out");
             }
 
-            $bodyStart  = $headerLength + 4;
             $bodyLength = strlen($response) - $bodyStart;
 
         } while ($this->isConnected() and $bodyLength < $contentLength);
