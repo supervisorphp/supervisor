@@ -3,7 +3,7 @@
 namespace Indigo\Supervisor\Connector;
 
 use Indigo\Supervisor\Exception\InvalidResponseException;
-use Indigo\Supervisor\Exception\InvalidResourceException;
+use Indigo\Supervisor\Exception\InvalidArgumentException;
 use Indigo\Supervisor\Exception\HttpException;
 
 /**
@@ -29,7 +29,7 @@ class SocketConnector extends AbstractConnector
         $this->resource = @fsockopen($socket, -1, $errNo, $errStr, $timeout);
 
         if ( ! is_resource($this->resource)) {
-            throw new InvalidResourceException('Cannot open socket: ' . $errStr, $errNo);
+            throw new InvalidArgumentException('Cannot open socket: ' . $errStr, $errNo);
         }
     }
 
@@ -67,7 +67,7 @@ class SocketConnector extends AbstractConnector
         if (is_resource($resource)) {
             return parent::setResource($resource);
         } else {
-            throw new InvalidResourceException('Invalid resource');
+            throw new InvalidArgumentException('Stream must be a valid resource, ' . gettype($resource) . 'given.');
         }
     }
 
