@@ -153,7 +153,9 @@ abstract class SocketConnector extends AbstractConnector
         // build request
         $request = "POST /RPC2 HTTP/1.1\r\n" . http_build_headers($headers) . "\r\n" . $xml;
 
-        $this->write($request);
+        if ( ! $this->write($request)) {
+            throw new \RuntimeException('Cannot write to socket');
+        }
 
         $response = '';
         $bodyStart = 0;
