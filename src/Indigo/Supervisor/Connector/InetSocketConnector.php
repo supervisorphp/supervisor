@@ -13,6 +13,7 @@ class InetSocketConnector extends SocketConnector
      * @var string
      */
     protected $host;
+
     /**
      * Post number
      *
