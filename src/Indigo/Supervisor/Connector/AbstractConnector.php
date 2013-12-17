@@ -75,6 +75,7 @@ abstract class AbstractConnector implements ConnectorInterface
         } else {
             $this->headers[$name] = $value;
         }
+
         return $this;
     }
 
@@ -92,11 +93,13 @@ abstract class AbstractConnector implements ConnectorInterface
      * Set resource
      * Validation of resource (if needed) is up to the class itself
      *
-     * @param mixed $resource
+     * @param mixed               $resource
+     * @return ConnectorInterface
      */
     public function setResource($resource)
     {
         $this->resource = $resource;
+
         return $this;
     }
 
