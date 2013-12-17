@@ -3,7 +3,6 @@
 namespace Indigo\Supervisor\Connector;
 
 use Indigo\Supervisor\Exception\ResponseException;
-use Indigo\Supervisor\Exception\InvalidResponseException;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
@@ -114,7 +113,7 @@ abstract class AbstractConnector implements ConnectorInterface
         $response = xmlrpc_decode(trim($response), 'utf-8');
 
         if ( ! $response) {
-            throw new InvalidResponseException('Invalid or empty response');
+            throw new \UnexpectedValueException('Invalid or empty response');
         } elseif (is_array($response) and xmlrpc_is_fault($response)) {
             throw new ResponseException($response['faultString'], $response['faultCode']);
         }

@@ -2,10 +2,9 @@
 
 namespace Indigo\Supervisor\Connector;
 
-use Indigo\Supervisor\Exception\InvalidArgumentException;
-
 /**
- * Connect to Supervisor
+ * Connect to Supervisor using simple file_get_contents
+ * allow_url_fopen must be enabled
  */
 class InetConnector extends AbstractConnector
 {
@@ -18,7 +17,7 @@ class InetConnector extends AbstractConnector
         $resource = parse_url($host);
 
         if ( ! $resource) {
-            throw new InvalidArgumentException('The following host is not a valid resource:' . $host);
+            throw new \InvalidArgumentException('The following host is not a valid resource:' . $host);
         }
 
         $resource['port'] = $port;
@@ -28,11 +27,15 @@ class InetConnector extends AbstractConnector
 
     public function isConnected()
     {
-        return true;
+        return ! empty($this->resource);
     }
 
     public function call($namespace, $method, array $arguments = array())
     {
+        if ( ! $this->isConnected()) {
+            throw new \RuntimeException('Connection dropped');
+        }
+
         $request = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
 
         $options = array(
@@ -45,6 +48,11 @@ class InetConnector extends AbstractConnector
 
         $context  = stream_context_create($options);
         $response = @file_get_contents($this->resource, false, $context);
+
+        if ( ! $response) {
+            $this->resource = null;
+            throw new \RuntimeException('Connection dropped');
+        }
 
         return $this->processResponse($response);
     }
