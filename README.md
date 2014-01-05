@@ -1,12 +1,24 @@
-Indigo Supervisor
-=================
+# Indigo Supervisor
 
-PHP library for managing supervisord through XML-RPC
+**PHP library for managing supervisord through XML-RPC**
 
-Usage
------
 
-```php
+## Install
+
+Via Composer
+
+``` json
+{
+    "require": {
+        "indigophp/supervisor": "dev-master"
+    }
+}
+```
+
+
+## Usage
+
+``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
 
@@ -41,14 +53,14 @@ echo $process;
 $process->getPayload();
 ```
 
-Configuration
--------------
+
+## Configuration
 
 This section is about generating configuration file(s) for supervisord.
 
 Example:
 
-```php
+``` php
 use Indigo\Supervisor\Configuration;
 use Indigo\Supervisor\Section\ProgramSection;
 
@@ -85,22 +97,35 @@ $section = new ProgramSection('test', array('command' => 'cat'));
 You can find detailed info about options for each section here:
 [http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
 
-Further info
-------------
+
+## Further info
+
 You can find the XML-RPC documentation here:
 [http://supervisord.org/api.html](http://supervisord.org/api.html)
 
-Notice
-------
+
+## Notice
 
 All the responses are parsed by PHP XML-RPC extension (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
-TODO
-----
+## Testing
 
-* Implement multicall, the current serialization does NOT support it
-* The current implementation does not work with log tailing
+``` bash
+$ phpunit
+```
 
-LICENSE
--------
-Supervisor is released under the MIT License. See the distributed LICENSE file for details.
+
+## Contributing
+
+Please see [CONTRIBUTING](https://github.com/indigophp/supervisor/blob/develop/CONTRIBUTING.md) for details.
+
+
+## Credits
+
+- [Márk Sági-Kazár](https://github.com/sagikazarmark)
+- [All Contributors](https://github.com/indigophp/supervisor/contributors)
+
+
+## License
+
+The MIT License (MIT). Please see [License File](https://github.com/indigophp/supervisor/blob/develop/LICENSE) for more information.

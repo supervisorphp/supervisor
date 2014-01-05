@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
+    <php>
+        <var name="host" value="localhost" />
+        <var name="port" value="9001" />
+        <var name="username" value="user" />
+        <var name="password" value="123" />
+        <var name="path" value="/var/run/supervisor.sock" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Indigo Supervisor Test Suite">
+            <directory>tests/Indigo/Supervisor</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/Indigo/Supervisor</directory>
+        </whitelist>
+    </filter>
+</phpunit>
