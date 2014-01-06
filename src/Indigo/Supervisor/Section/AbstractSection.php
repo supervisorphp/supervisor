@@ -22,16 +22,17 @@ abstract class AbstractSection implements SectionInterface
     protected $name;
 
     /**
-     * Create a new Section instance
+     * Resolve options
      *
-     * @param array $options
+     * @param  array  $options
+     * @return array Resolved options
      */
-    public function __construct(array $options = array())
+    protected function resolveOptions(array $options = array())
     {
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
 
-        $this->options = $resolver->resolve($options);
+        return $this->options = $resolver->resolve($options);
     }
 
     /**
