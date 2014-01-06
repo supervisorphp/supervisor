@@ -22,9 +22,17 @@ class InetConnectorTest extends ConnectorTest
     }
 
     /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidResource()
+    {
+        $connector = new InetConnector('xyz:\\\\_.?');
+    }
+
+    /**
      * @expectedException RuntimeException
      */
-    public function testCall()
+    public function testFaultyCall()
     {
         $this->connector->call('nothing', 'here');
     }

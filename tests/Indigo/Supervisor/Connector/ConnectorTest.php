@@ -44,6 +44,7 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(array('Test', 'Test'), $this->connector->getHeader('X-Test'));
+        $this->assertNull($this->connector->getHeader('X-Test-Null'));
     }
 
     public function testResource()
@@ -57,8 +58,64 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($connector->getResource());
     }
 
+    /**
+     * @expectedException UnexpectedValueException
+     */
+    public function testProcessNullResponse()
+    {
+        $method = new \ReflectionMethod(get_class($this->connector), 'processResponse');
+        $method->setAccessible(true);
+
+        $method->invoke($this->connector, null);
+    }
+
+    /**
+     * @expectedException Indigo\Supervisor\Exception\ResponseException
+     */
+    public function testProcessFaultyResponse()
+    {
+        $method = new \ReflectionMethod(get_class($this->connector), 'processResponse');
+        $method->setAccessible(true);
+
+        $response = '<?xml version="1.0" encoding="UTF-8"?>
+<methodResponse>
+   <fault>
+      <value>
+         <struct>
+            <member>
+               <name>faultCode</name>
+               <value><int>26</int></value>
+            </member>
+            <member>
+               <name>faultString</name>
+               <value><string>No such method!</string></value>
+            </member>
+         </struct>
+      </value>
+   </fault>
+</methodResponse>';
+
+        $method->invoke($this->connector, $response);
+    }
+
     public function testProcess()
     {
-        # code...
+        $method = new \ReflectionMethod(get_class($this->connector), 'processResponse');
+        $method->setAccessible(true);
+
+        $response = '<?xml version="1.0" encoding="UTF-8"?>
+<methodCall>
+   <methodName>fake.response</methodName>
+   <params>
+       <param>
+            <value><int>17</int></value>
+       </param>
+   </params>
+</methodCall>';
+
+        $this->assertEquals(
+            array(17),
+            $method->invoke($this->connector, $response)
+        );
     }
 }
