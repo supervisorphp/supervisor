@@ -228,8 +228,10 @@ class Process implements \ArrayAccess, \Iterator
      *
      * Requests (length) bytes from the (name)’s log, starting at (offset).
      * If the total log size is greater than (offset + length),
-     * the overflow flag is set and the (offset) is automatically increased to position the buffer at the end of the log.
-     * If less than (length) bytes are available, the maximum number of available bytes will be returned.
+     * the overflow flag is set and the (offset) is automatically increased to position
+     * the buffer at the end of the log.
+     * If less than (length) bytes are available,
+     * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
      * @param  int   $offset Offset to start reading from
@@ -247,8 +249,10 @@ class Process implements \ArrayAccess, \Iterator
      *
      * Requests (length) bytes from the (name)’s log, starting at (offset).
      * If the total log size is greater than (offset + length),
-     * the overflow flag is set and the (offset) is automatically increased to position the buffer at the end of the log.
-     * If less than (length) bytes are available, the maximum number of available bytes will be returned.
+     * the overflow flag is set and the (offset) is automatically increased to position
+     * the buffer at the end of the log.
+     * If less than (length) bytes are available,
+     * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
      * @param  int   $offset Offset to start reading from

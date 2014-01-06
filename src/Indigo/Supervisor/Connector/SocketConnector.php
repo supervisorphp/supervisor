@@ -109,12 +109,12 @@ abstract class SocketConnector extends AbstractConnector
     {
         is_null($timeout) and $timeout = ini_get("default_socket_timeout");
 
-        $timeout_ok = filter_var($timeout, FILTER_VALIDATE_FLOAT);
-        if ($timeout_ok === false || $timeout < 0) {
+        $timeoutOk = filter_var($timeout, FILTER_VALIDATE_FLOAT);
+        if ($timeoutOk === false || $timeout < 0) {
             throw new \InvalidArgumentException("Timeout must be 0 or a positive float (got $timeout)");
         }
 
-        return $timeout_ok;
+        return $timeoutOk;
     }
 
     /**
