@@ -30,15 +30,16 @@ class Configuration
      * Remove a section by name
      *
      * @param  string        $section
-     * @return Configuration
+     * @return boolean
      */
     public function removeSection($section)
     {
         if (array_key_exists($section, $this->sections)) {
             unset($this->sections[$section]);
+            return true;
         }
 
-        return $this;
+        return false;
     }
 
     /**
