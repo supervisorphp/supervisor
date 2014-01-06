@@ -92,7 +92,7 @@ abstract class AbstractConnector implements ConnectorInterface
      * Set resource
      * Validation of resource (if needed) is up to the class itself
      *
-     * @param mixed               $resource
+     * @param  mixed              $resource
      * @return ConnectorInterface
      */
     public function setResource($resource)
@@ -112,7 +112,7 @@ abstract class AbstractConnector implements ConnectorInterface
     {
         $response = xmlrpc_decode(trim($response), 'utf-8');
 
-        if ( ! $response) {
+        if (! $response) {
             throw new \UnexpectedValueException('Invalid or empty response');
         } elseif (is_array($response) and xmlrpc_is_fault($response)) {
             throw new ResponseException($response['faultString'], $response['faultCode']);

@@ -31,10 +31,10 @@ abstract class SocketConnector extends AbstractConnector
     /**
      * Create socket connection
      *
-     * @param  string   $hostname   Internet or unix domain
-     * @param  integer  $port       Port number
-     * @param  integer  $timeout    Connection timeout in seconds
-     * @param  boolean  $persistent Use persistent connection
+     * @param string  $hostname   Internet or unix domain
+     * @param integer $port       Port number
+     * @param integer $timeout    Connection timeout in seconds
+     * @param boolean $persistent Use persistent connection
      */
     protected function createSocket($hostname, $port = -1, $timeout = null, $persistent = false)
     {
@@ -103,7 +103,7 @@ abstract class SocketConnector extends AbstractConnector
      * Validate timeout
      *
      * @param  mixed $timeout Timeout value
-     * @return float          Validated float timeout
+     * @return float Validated float timeout
      */
     protected function validateTimeout($timeout = null)
     {
@@ -214,7 +214,7 @@ abstract class SocketConnector extends AbstractConnector
     /**
      * Write to resource
      *
-     * @param  mixed $data
+     * @param mixed $data
      */
     protected function write($data)
     {

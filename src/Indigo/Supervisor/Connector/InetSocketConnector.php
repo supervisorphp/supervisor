@@ -21,7 +21,8 @@ class InetSocketConnector extends SocketConnector
      */
     protected $port;
 
-    public function __construct($host, $port = 9001, $timeout = null, $persistent = false) {
+    public function __construct($host, $port = 9001, $timeout = null, $persistent = false)
+    {
         $this->createSocket($host, $port, $timeout, $persistent);
 
         $this->host = $host;

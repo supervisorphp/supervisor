@@ -8,15 +8,15 @@ namespace Indigo\Supervisor\Connector;
  */
 class InetConnector extends AbstractConnector
 {
-    public function __construct($host, $port = 9001) {
-        if( ! preg_match("#^(http|https)://#i", $host))
-        {
+    public function __construct($host, $port = 9001)
+    {
+        if ( ! preg_match("#^(http|https)://#i", $host)) {
             $host = 'http://' . $host;
         }
 
         $resource = parse_url($host);
 
-        if ( ! $resource) {
+        if (! $resource) {
             throw new \InvalidArgumentException('The following host is not a valid resource:' . $host);
         }
 
@@ -49,7 +49,7 @@ class InetConnector extends AbstractConnector
         $context  = stream_context_create($options);
         $response = @file_get_contents($this->resource, false, $context);
 
-        if ( ! $response) {
+        if (! $response) {
             $this->resource = null;
             throw new \RuntimeException('Connection dropped');
         }
