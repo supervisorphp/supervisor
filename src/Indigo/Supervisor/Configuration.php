@@ -79,6 +79,7 @@ class Configuration
             $output .= "[$name]\n";
 
             foreach ($options as $key => $value) {
+                is_array($value) and $value = implode(',', $value);
                 $output .= "$key = $value\n";
             }
         }

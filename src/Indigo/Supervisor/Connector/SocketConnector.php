@@ -46,12 +46,12 @@ abstract class SocketConnector extends AbstractConnector
             $resource = @fsockopen($hostname, $port, $errNo, $errStr, $timeout);
         }
 
-        $this->timeout = $timeout;
-        $this->persistent = $persistent;
-
         if (!is_resource($resource)) {
             throw new \UnexpectedValueException('Cannot open socket to ' . $hostname . ': ' . $errStr, $errNo);
         }
+
+        $this->timeout = $timeout;
+        $this->persistent = $persistent;
 
         return $this->resource = $resource;
     }
