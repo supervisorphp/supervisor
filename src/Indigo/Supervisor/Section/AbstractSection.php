@@ -34,7 +34,7 @@ abstract class AbstractSection implements SectionInterface
     /**
      * Resolve options
      *
-     * @param  array  $options
+     * @param  array $options
      * @return array Resolved options
      */
     protected function resolveOptions(array $options = array())

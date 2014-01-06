@@ -66,7 +66,7 @@ class SupervisordSection extends AbstractSection
                     $value = implode(',', $return);
                 }
 
-                return (string)$value;
+                return (string) $value;
             },
         ));
     }
