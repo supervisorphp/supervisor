@@ -12,17 +12,17 @@
  * @return  string  constructed URL
  */
 if (!function_exists('http_build_url')) {
-    define('HTTP_URL_REPLACE', 1);              // Replace every part of the first URL when there's one of the second URL
-    define('HTTP_URL_JOIN_PATH', 2);            // Join relative paths
-    define('HTTP_URL_JOIN_QUERY', 4);           // Join query strings
-    define('HTTP_URL_STRIP_USER', 8);           // Strip any user authentication information
-    define('HTTP_URL_STRIP_PASS', 16);          // Strip any password authentication information
-    define('HTTP_URL_STRIP_AUTH', 32);          // Strip any authentication information
-    define('HTTP_URL_STRIP_PORT', 64);          // Strip explicit port numbers
-    define('HTTP_URL_STRIP_PATH', 128);         // Strip complete path
-    define('HTTP_URL_STRIP_QUERY', 256);        // Strip query string
-    define('HTTP_URL_STRIP_FRAGMENT', 512);     // Strip any fragments (#identifier)
-    define('HTTP_URL_STRIP_ALL', 1024);         // Strip anything but scheme and host
+    define('HTTP_URL_REPLACE', 1);             // Replace every part of the first URL when there's one of the second URL
+    define('HTTP_URL_JOIN_PATH', 2);           // Join relative paths
+    define('HTTP_URL_JOIN_QUERY', 4);          // Join query strings
+    define('HTTP_URL_STRIP_USER', 8);          // Strip any user authentication information
+    define('HTTP_URL_STRIP_PASS', 16);         // Strip any password authentication information
+    define('HTTP_URL_STRIP_AUTH', 32);         // Strip any authentication information
+    define('HTTP_URL_STRIP_PORT', 64);         // Strip explicit port numbers
+    define('HTTP_URL_STRIP_PATH', 128);        // Strip complete path
+    define('HTTP_URL_STRIP_QUERY', 256);       // Strip query string
+    define('HTTP_URL_STRIP_FRAGMENT', 512);    // Strip any fragments (#identifier)
+    define('HTTP_URL_STRIP_ALL', 1024);        // Strip anything but scheme and host
 
     function http_build_url($url, $parts = array(), $flags = HTTP_URL_REPLACE, &$new_url = false)
     {
@@ -38,7 +38,7 @@ if (!function_exists('http_build_url')) {
             $flags |= HTTP_URL_STRIP_FRAGMENT;
         }
         // HTTP_URL_STRIP_AUTH becomes HTTP_URL_STRIP_USER and HTTP_URL_STRIP_PASS
-        else if ($flags & HTTP_URL_STRIP_AUTH) {
+        elseif ($flags & HTTP_URL_STRIP_AUTH) {
             $flags |= HTTP_URL_STRIP_USER;
             $flags |= HTTP_URL_STRIP_PASS;
         }

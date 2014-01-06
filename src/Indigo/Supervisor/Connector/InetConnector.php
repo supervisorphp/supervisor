@@ -10,7 +10,7 @@ class InetConnector extends AbstractConnector
 {
     public function __construct($host, $port = 9001)
     {
-        if ( ! preg_match("#^(http|https)://#i", $host)) {
+        if (!preg_match("#^(http|https)://#i", $host)) {
             $host = 'http://' . $host;
         }
 
@@ -32,7 +32,7 @@ class InetConnector extends AbstractConnector
 
     public function call($namespace, $method, array $arguments = array())
     {
-        if ( ! $this->isConnected()) {
+        if (!$this->isConnected()) {
             throw new \RuntimeException('Connection dropped');
         }
 
@@ -49,7 +49,7 @@ class InetConnector extends AbstractConnector
         $context  = stream_context_create($options);
         $response = @file_get_contents($this->resource, false, $context);
 
-        if (! $response) {
+        if (!$response) {
             $this->resource = null;
             throw new \RuntimeException('Connection dropped');
         }

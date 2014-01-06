@@ -49,7 +49,7 @@ abstract class SocketConnector extends AbstractConnector
         $this->timeout = $timeout;
         $this->persistent = $persistent;
 
-        if ( ! is_resource($resource)) {
+        if (!is_resource($resource)) {
             throw new \UnexpectedValueException('Cannot open socket to ' . $hostname . ': ' . $errStr, $errNo);
         }
 
@@ -153,7 +153,7 @@ abstract class SocketConnector extends AbstractConnector
         // build request
         $request = "POST /RPC2 HTTP/1.1\r\n" . http_build_headers($headers) . "\r\n" . $xml;
 
-        if ( ! $this->write($request)) {
+        if (!$this->write($request)) {
             throw new \RuntimeException('Cannot write to socket');
         }
 
@@ -164,7 +164,7 @@ abstract class SocketConnector extends AbstractConnector
             $response .= $this->read(self::CHUNK_SIZE);
 
             // check for headers and parse them
-            if ( ! isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
+            if (!isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
                 $header = substr($response, 0, $headerLength);
 
                 // check for status code

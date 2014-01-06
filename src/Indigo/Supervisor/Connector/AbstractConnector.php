@@ -66,7 +66,7 @@ abstract class AbstractConnector implements ConnectorInterface
         if ($replace) {
             $this->headers[$name] = $value;
         } elseif (array_key_exists($name, $this->headers)) {
-            if ( ! is_array($this->headers[$name])) {
+            if (!is_array($this->headers[$name])) {
                 $this->headers[$name] = array($this->headers[$name]);
             }
 
