@@ -68,6 +68,7 @@ class InetConnector extends AbstractConnector
         );
 
         $context  = stream_context_create($options);
+
         return @file_get_contents($this->resource, false, $context);
     }
 }

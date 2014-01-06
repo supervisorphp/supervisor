@@ -57,13 +57,13 @@ abstract class AbstractConnector implements ConnectorInterface
      * Get HTTP header(s)
      *
      * @param  string $name Header name
-     * @return mixed One specific value or all headers
+     * @return mixed  One specific value or all headers
      */
     public function getHeader($name = null)
     {
         if (is_null($name)) {
             return $this->headers;
-        } elseif(array_key_exists($name, $this->headers)) {
+        } elseif (array_key_exists($name, $this->headers)) {
             return $this->headers[$name];
         }
     }
