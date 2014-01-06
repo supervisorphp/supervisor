@@ -56,6 +56,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->config->addSection($fakeSection);
 
         $this->assertTrue($this->config->removeSection('fake'));
+    }
+
+    public function testRemoveFakeSection($value='')
+    {
         $this->assertFalse($this->config->removeSection('fake'));
     }
 

@@ -54,6 +54,8 @@ class Configuration
         if (array_key_exists($section, $this->sections)) {
             return $this->sections[$section];
         }
+
+        return null;
     }
     /**
      * Get all sections
