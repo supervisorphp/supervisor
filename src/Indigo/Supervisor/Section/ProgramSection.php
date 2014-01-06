@@ -3,6 +3,7 @@
 namespace Indigo\Supervisor\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 class ProgramSection extends AbstractSection
 {

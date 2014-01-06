@@ -8,9 +8,9 @@ class GroupSection extends AbstractSection
 {
     public function __construct($name, array $options = array())
     {
-        $this->name = 'group:' . trim($name);
+        $this->resolveOptions($options);
 
-        parent::__construct($options);
+        $this->name = 'group:' . trim($name);
     }
 
     /**
@@ -18,8 +18,11 @@ class GroupSection extends AbstractSection
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('programs'));
-
-        $resolver->setOptional(array('priority'));
+        $resolver->setRequired(array('programs'))
+            ->setOptional(array('priority'))
+            ->setAllowedTypes(array(
+                'programs' => 'array',
+                'priority' => 'integer',
+            ));
     }
 }

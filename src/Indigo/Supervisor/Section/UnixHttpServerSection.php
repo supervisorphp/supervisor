@@ -8,6 +8,11 @@ class UnixHttpServerSection extends AbstractSection
 {
     protected $name = 'unix_http_server';
 
+    public function __construct(array $options = array())
+    {
+        $this->resolveOptions($options);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +24,12 @@ class UnixHttpServerSection extends AbstractSection
             'chown',
             'username',
             'password',
+        ))->setAllowedValues(array(
+            'file'     => 'string',
+            'chmod'    => 'integer',
+            'chown'    => 'string',
+            'username' => 'string',
+            'password' => 'string',
         ));
     }
 }

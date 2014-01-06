@@ -8,6 +8,11 @@ class SupervisorctlSection extends AbstractSection
 {
     protected $name = 'supervisorctl';
 
+    public function __construct(array $options = array())
+    {
+        $this->resolveOptions($options);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +24,12 @@ class SupervisorctlSection extends AbstractSection
             'password',
             'prompt',
             'history_file',
+        ))->setAllowedTypes(array(
+            'serverurl'    => 'string',
+            'username'     => 'string',
+            'password'     => 'string',
+            'prompt'       => 'string',
+            'history_file' => 'string',
         ));
     }
 }
