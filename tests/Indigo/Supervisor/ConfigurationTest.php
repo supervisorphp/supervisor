@@ -40,6 +40,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             $this->config->getSection('test')
         );
 
+        $this->assertNull($this->config->getSection('nope'));
+
         $this->assertContains(
             $section,
             $this->config->getSections()

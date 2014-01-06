@@ -54,8 +54,6 @@ class Configuration
         if (array_key_exists($section, $this->sections)) {
             return $this->sections[$section];
         }
-
-        return null;
     }
     /**
      * Get all sections
@@ -78,7 +76,7 @@ class Configuration
 
         foreach ($this->sections as $name => $section) {
             // only continue processing this section if there are options in it
-            if ( ! $options = $section->getOptions()) {
+            if (!$options = $section->getOptions()) {
                 continue;
             }
 
