@@ -8,7 +8,7 @@ class EventListenerSection extends ProgramSection
 {
     public function __construct($name, array $options = array())
     {
-        parent::__construct($name, $options);
+        $this->resolveOptions($options);
 
         $this->name = 'eventlistener:' . trim($name);
     }
@@ -24,6 +24,10 @@ class EventListenerSection extends ProgramSection
             'buffer_size',
             'events',
             'result_handler',
+        ))->setAllowedTypes(array(
+            'buffer_size'    => 'integer',
+            'events'         => 'array',
+            'result_handler' => 'string',
         ));
     }
 }
