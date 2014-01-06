@@ -54,6 +54,21 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
+     * Get HTTP header(s)
+     *
+     * @param  string $name Header name
+     * @return mixed One specific value or all headers
+     */
+    public function getHeader($name = null)
+    {
+        if (is_null($name)) {
+            return $this->headers;
+        } elseif(array_key_exists($name, $this->headers)) {
+            return $this->headers[$name];
+        }
+    }
+
+    /**
      * Set a HTTP header for request
      *
      * @param  string             $name    Header name
@@ -108,11 +123,11 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param  string $response Raw response
      * @return mixed
      */
-    public function processResponse($response)
+    protected function processResponse($response)
     {
         $response = xmlrpc_decode(trim($response), 'utf-8');
 
-        if (! $response) {
+        if (!$response) {
             throw new \UnexpectedValueException('Invalid or empty response');
         } elseif (is_array($response) and xmlrpc_is_fault($response)) {
             throw new ResponseException($response['faultString'], $response['faultCode']);

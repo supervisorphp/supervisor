@@ -40,8 +40,25 @@ class InetConnector extends AbstractConnector
             throw new \RuntimeException('Connection dropped');
         }
 
-        $request = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
+        $request = $this->prepareRequest($namespace, $method, $arguments);
 
+        $response = $this->response($request);
+
+        if (!$response) {
+            $this->resource = null;
+            throw new \RuntimeException('Connection dropped');
+        }
+
+        return $this->processResponse($response);
+    }
+
+    protected function prepareRequest($namespace, $method, array $arguments)
+    {
+        return xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
+    }
+
+    protected function response($request)
+    {
         $options = array(
             'http' => array(
                 'method' => 'POST',
@@ -51,13 +68,6 @@ class InetConnector extends AbstractConnector
         );
 
         $context  = stream_context_create($options);
-        $response = @file_get_contents($this->resource, false, $context);
-
-        if (!$response) {
-            $this->resource = null;
-            throw new \RuntimeException('Connection dropped');
-        }
-
-        return $this->processResponse($response);
+        return @file_get_contents($this->resource, false, $context);
     }
 }
