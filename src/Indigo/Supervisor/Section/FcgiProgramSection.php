@@ -8,9 +8,9 @@ class FcgiProgramSection extends ProgramSection
 {
     public function __construct($name, array $options = array())
     {
-        parent::__construct($name, $options);
+        $this->resolveOptions($options);
 
-        $this->name = 'fcgi' . $this->name;
+        $this->name = 'fcgi-program:' . $this->name;
     }
 
     /**
@@ -21,7 +21,13 @@ class FcgiProgramSection extends ProgramSection
         parent::setDefaultOptions($resolver);
 
         $resolver->setRequired(array('socket'));
-
-        $resolver->setOptional(array('socket_owner', 'socket_mode'));
+            ->setOptional(array(
+                'socket_owner',
+                'socket_mode'
+            ))->setAllowedValues(array(
+                'socket'       => 'string',
+                'socket_owner' => 'string',
+                'socket_mode'  => 'integer',
+            ));
     }
 }
