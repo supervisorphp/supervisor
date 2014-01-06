@@ -92,11 +92,17 @@ class ProgramSection extends AbstractSection
         ))->setNormalizers(array(
             'environment' => function (Options $options, $value) {
                 if (is_array($value)) {
+                    $return = array();
+
                     foreach ($value as $key => $val) {
-                        $value[$key] .= strtoupper($key) . '="' . $val . '"';
+                        if (is_int($key)) {
+                            continue;
+                        }
+
+                        $return[$key] = strtoupper($key) . '="' . $val . '"';
                     }
 
-                    $value = implode(',', $value);
+                    $value = implode(',', $return);
                 }
 
                 return (string)$value;

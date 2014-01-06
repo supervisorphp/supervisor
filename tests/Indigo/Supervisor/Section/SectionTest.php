@@ -14,50 +14,46 @@ class SectionTest extends \PHPUnit_Framework_TestCase
     public function provider()
     {
         return array(
-            array(new EventListenerSection('test', array(
+            new EventListenerSection('test', array(
                 'command' => 'cat /path/to/file'
-            ))),
-            array(new FcgiProgramSection('test', array(
+            )),
+            new FcgiProgramSection('test', array(
                 'socket'  => '/path/to/socket',
                 'command' => 'cat /path/to/file'
-            ))),
-            array(new GroupSection('test', array(
+            )),
+            new GroupSection('test', array(
                 'programs' => array(
                     'test',
                     'empty'
                 )
-            ))),
-            array(new IncludeSection(array(
+            )),
+            new IncludeSection(array(
                 'files' => array('/etc/supervisord/conf.d/*')
-            ))),
-            array(new InetHttpServerSection(array(
+            )),
+            new InetHttpServerSection(array(
                 'port' => 9001
-            ))),
-            array(new ProgramSection('test', array(
-                'command' => 'cat /path/to/file'
-            ))),
-            array(new SupervisorctlSection),
-            array(new SupervisordSection),
-            array(new UnixHttpServerSection),
-        );
-    }
-
-    /**
-     * @dataProvider provider
-     */
-    public function testConfiguration($section)
-    {
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Configuration',
-            $this->configuration->addSection($section)
+            )),
+            new ProgramSection('test', array(
+                'command' => 'cat /path/to/file',
+                'environment' => array(
+                    'KEY' => 'value',
+                    'fake_value'
+                )
+            )),
+            new SupervisorctlSection,
+            new SupervisordSection(array(
+                'environment' => array(
+                    'KEY' => 'value',
+                    'fake_value'
+                )
+            )),
+            new UnixHttpServerSection,
         );
     }
 
     public function testSection()
     {
         foreach ($this->provider() as $section) {
-            $section = reset($section);
-
             $this->assertInstanceOf(
                 'Indigo\\Supervisor\\Section\\SectionInterface',
                 $section
