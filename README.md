@@ -1,5 +1,7 @@
 # Indigo Supervisor
 
+[![Build Status](https://travis-ci.org/indigophp/supervisor.png?branch=develop)](https://travis-ci.org/indigophp/supervisor)
+
 **PHP library for managing supervisord through XML-RPC**
 
 
