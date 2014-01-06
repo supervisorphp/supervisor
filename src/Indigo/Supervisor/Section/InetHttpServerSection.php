@@ -13,12 +13,15 @@ class InetHttpServerSection extends AbstractSection
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('port'))
-            ->setOptional(array('username', 'password'))
-            ->setAllowedTypes(array(
-                'port'     => 'integer',
-                'username' => 'string',
-                'password' => 'string',
-            ));
+        $resolver->setRequired(array(
+            'port'
+        ))->setOptional(array(
+            'username',
+            'password'
+        ))->setAllowedTypes(array(
+            'port'     => 'integer',
+            'username' => 'string',
+            'password' => 'string',
+        ));
     }
 }

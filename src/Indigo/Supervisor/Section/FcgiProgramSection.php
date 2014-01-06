@@ -20,14 +20,15 @@ class FcgiProgramSection extends ProgramSection
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setRequired(array('socket'));
-            ->setOptional(array(
-                'socket_owner',
-                'socket_mode'
-            ))->setAllowedValues(array(
-                'socket'       => 'string',
-                'socket_owner' => 'string',
-                'socket_mode'  => 'integer',
-            ));
+        $resolver->setRequired(array(
+            'socket'
+        ))->setOptional(array(
+            'socket_owner',
+            'socket_mode'
+        ))->setAllowedTypes(array(
+            'socket'       => 'string',
+            'socket_owner' => 'string',
+            'socket_mode'  => 'integer',
+        ));
     }
 }

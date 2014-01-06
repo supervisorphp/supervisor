@@ -18,11 +18,13 @@ class GroupSection extends AbstractSection
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('programs'))
-            ->setOptional(array('priority'))
-            ->setAllowedTypes(array(
-                'programs' => 'array',
-                'priority' => 'integer',
-            ));
+        $resolver->setRequired(array(
+            'programs'
+        ))->setOptional(array(
+            'priority'
+        ))->setAllowedTypes(array(
+            'programs' => 'array',
+            'priority' => 'integer',
+        ));
     }
 }

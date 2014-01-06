@@ -3,6 +3,7 @@
 namespace Indigo\Supervisor\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 class SupervisordSection extends AbstractSection
 {
@@ -45,17 +46,21 @@ class SupervisordSection extends AbstractSection
             'user'             => 'string',
             'directory'        => 'string',
             'strip_ansi'       => 'bool',
-            'environment'      => 'array',
+            'environment'      => array('array', 'string'),
             'identifier'       => 'string',
         ))->setAllowedTypes(array(
             'loglevel' => array('critical', 'error', 'warn', 'info', 'debug', 'trace', 'blather'),
         ))->setNormalizers(array(
             'environment' => function (Options $options, $value) {
-                foreach ($value as $key => $val) {
-                    $value[$key] .= strtoupper($key) . '="' . $val . '"';
+                if (is_array($value)) {
+                    foreach ($value as $key => $val) {
+                        $value[$key] .= strtoupper($key) . '="' . $val . '"';
+                    }
+
+                    $value = implode(',', $value);
                 }
 
-                return implode(',', $value);
+                return (string)$value;
             },
         ));
     }

@@ -14,12 +14,14 @@ class IncludeSection extends AbstractSection
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('files'))
-            ->setAllowedTypes(array('files' => 'array'))
-            ->setNormalizers(array(
-                'files' => function (Options $options, $value) {
-                    return implode(' ', $value);
-                }
-            ));
+        $resolver->setRequired(array(
+            'files'
+        ))->setAllowedTypes(array(
+            'files' => array('array', 'string')
+        ))->setNormalizers(array(
+            'files' => function (Options $options, $value) {
+                return implode(' ', $value);
+            }
+        ));
     }
 }
