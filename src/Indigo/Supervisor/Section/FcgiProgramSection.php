@@ -10,7 +10,7 @@ class FcgiProgramSection extends ProgramSection
     {
         $this->resolveOptions($options);
 
-        $this->name = 'fcgi-program:' . $this->name;
+        $this->name = 'fcgi-program:' . trim($name);
     }
 
     /**
