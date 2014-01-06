@@ -44,25 +44,18 @@ class Configuration
     }
 
     /**
-     * Get a specific section by name
+     * Get a specific section by name or all
      *
-     * @param  string                $section
-     * @return SectionInterface|null
+     * @param  string $section
+     * @return mixed
      */
-    public function getSection($section)
+    public function getSection($section = null)
     {
-        if (array_key_exists($section, $this->sections)) {
+        if (is_null($section)) {
+            return $this->sections;
+        } elseif (array_key_exists($section, $this->sections)) {
             return $this->sections[$section];
         }
-    }
-    /**
-     * Get all sections
-     *
-     * @return array
-     */
-    public function getSections()
-    {
-        return $this->sections;
     }
 
     /**

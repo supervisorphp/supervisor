@@ -44,7 +44,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains(
             $section,
-            $this->config->getSections()
+            $this->config->getSection()
         );
 
     }
