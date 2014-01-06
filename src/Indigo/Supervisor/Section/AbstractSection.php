@@ -22,6 +22,16 @@ abstract class AbstractSection implements SectionInterface
     protected $name;
 
     /**
+     * Default constructor
+     *
+     * @param array $options
+     */
+    public function __construct(array $options = array())
+    {
+        $this->resolveOptions($options);
+    }
+
+    /**
      * Resolve options
      *
      * @param  array  $options

@@ -8,11 +8,6 @@ class InetHttpServerSection extends AbstractSection
 {
     protected $name = 'inet_http_server';
 
-    public function __construct(array $options = array())
-    {
-        $this->resolveOptions($options);
-    }
-
     /**
      * {@inheritdoc}
      */

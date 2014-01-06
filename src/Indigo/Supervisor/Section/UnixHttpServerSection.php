@@ -8,11 +8,6 @@ class UnixHttpServerSection extends AbstractSection
 {
     protected $name = 'unix_http_server';
 
-    public function __construct(array $options = array())
-    {
-        $this->resolveOptions($options);
-    }
-
     /**
      * {@inheritdoc}
      */

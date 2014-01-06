@@ -9,11 +9,6 @@ class IncludeSection extends AbstractSection
 {
     protected $name = 'include';
 
-    public function __construct(array $options = array())
-    {
-        $this->resolveOptions($options);
-    }
-
     /**
      * {@inheritdoc}
      */

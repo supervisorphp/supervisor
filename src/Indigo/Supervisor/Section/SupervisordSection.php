@@ -8,11 +8,6 @@ class SupervisordSection extends AbstractSection
 {
     protected $name = 'supervisord';
 
-    public function __construct(array $options = array())
-    {
-        $this->resolveOptions($options);
-    }
-
     /**
      * {@inheritdoc}
      */
