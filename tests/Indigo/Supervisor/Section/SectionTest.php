@@ -59,6 +59,8 @@ class SectionTest extends \PHPUnit_Framework_TestCase
                 $this->configuration->addSection($section)
             );
         }
+
+        return $this->configuration;
     }
 
     public function testSection()
@@ -69,5 +71,13 @@ class SectionTest extends \PHPUnit_Framework_TestCase
                 $section
             );
         }
+    }
+
+    /**
+     * @depends testConfig
+     */
+    public function testRender($configuration)
+    {
+        $configuration->render();
     }
 }
