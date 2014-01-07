@@ -32,6 +32,20 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
                     'pid' => 0,
                 )
             ),
+            array(
+                array(
+                    'name' => 'test',
+                    'state' => 0,
+                    'pid' => getmypid(),
+                )
+            ),
+            array(
+                array(
+                    'name' => 'test',
+                    'state' => 20,
+                    'pid' => getmypid(),
+                )
+            ),
         );
     }
 
@@ -83,6 +97,10 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         foreach ($process as $key => $value) {
             $this->assertEquals($payload[$key], $value);
         }
+
+        $process[] = 'test';
+        $process['test'] = 'test';
+        unset($process['test']);
 
         // Assert calls
         $this->assertTrue($process->start());
