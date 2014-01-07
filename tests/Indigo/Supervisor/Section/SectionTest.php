@@ -51,6 +51,16 @@ class SectionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testConfig()
+    {
+        foreach ($this->provider() as $section) {
+            $this->assertInstanceOf(
+                'Indigo\\Supervisor\\Configuration',
+                $this->configuration->addSection($section)
+            );
+        }
+    }
+
     public function testSection()
     {
         foreach ($this->provider() as $section) {
