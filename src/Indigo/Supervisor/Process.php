@@ -84,6 +84,8 @@ class Process implements \ArrayAccess, \Iterator
     public function setConnector(ConnectorInterface $connector)
     {
         $this->connector = $connector;
+
+        return $this;
     }
 
     /**
