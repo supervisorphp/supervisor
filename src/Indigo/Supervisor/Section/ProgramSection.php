@@ -7,7 +7,11 @@ use Symfony\Component\OptionsResolver\Options;
 
 class ProgramSection extends AbstractSection
 {
-    protected $validOptions = array(
+    protected $requiredOptions = array(
+        'command' => 'string',
+    );
+
+    protected $optionalOptions = array(
         'process_name'            => 'string',
         'numprocs'                => 'integer',
         'numprocs_start'          => 'integer',
@@ -55,31 +59,29 @@ class ProgramSection extends AbstractSection
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setRequired(array(
-            'command'
-        ))->setAllowedTypes(array(
-            'command' => 'string',
-        ))->setAllowedValues(array(
-            'autorestart' => array(true, false, 'unexpected'),
-            'stopsignal' => array('TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'),
-        ))->setNormalizers(array(
-            'environment' => function (Options $options, $value) {
-                if (is_array($value)) {
-                    $return = array();
+        $resolver
+            ->setAllowedValues(array(
+                'autorestart' => array(true, false, 'unexpected'),
+                'stopsignal'  => array('TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'),
+            ))
+            ->setNormalizers(array(
+                'environment' => function (Options $options, $value) {
+                    if (is_array($value)) {
+                        $return = array();
 
-                    foreach ($value as $key => $val) {
-                        if (is_int($key)) {
-                            continue;
+                        foreach ($value as $key => $val) {
+                            if (is_int($key)) {
+                                continue;
+                            }
+
+                            $return[$key] = strtoupper($key) . '="' . $val . '"';
                         }
 
-                        $return[$key] = strtoupper($key) . '="' . $val . '"';
+                        $value = implode(',', $return);
                     }
 
-                    $value = implode(',', $return);
-                }
-
-                return (string) $value;
-            },
-        ));
+                    return (string) $value;
+                },
+            ));
     }
 }

@@ -8,7 +8,7 @@ class SupervisorctlSection extends AbstractSection
 {
     protected $name = 'supervisorctl';
 
-    protected $validOptions = array(
+    protected $optionalOptions = array(
         'serverurl'    => 'string',
         'username'     => 'string',
         'password'     => 'string',

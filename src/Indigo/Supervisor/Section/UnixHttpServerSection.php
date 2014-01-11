@@ -8,7 +8,7 @@ class UnixHttpServerSection extends AbstractSection
 {
     protected $name = 'unix_http_server';
 
-    protected $validOptions = array(
+    protected $optionalOptions = array(
         'file'     => 'string',
         'chmod'    => 'integer',
         'chown'    => 'string',

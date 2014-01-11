@@ -18,4 +18,11 @@ interface SectionInterface
      * @return array
      */
     public function getOptions();
+
+    /**
+     * Set an array of options
+     *
+     * @return SectionInterface
+     */
+    public function setOptions(array $options);
 }

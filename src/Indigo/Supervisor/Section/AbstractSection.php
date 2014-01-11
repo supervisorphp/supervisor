@@ -15,13 +15,6 @@ abstract class AbstractSection implements SectionInterface
     protected $options = array();
 
     /**
-     * Valid optional options
-     *
-     * @var array
-     */
-    protected $validOptions = array();
-
-    /**
      * Name of section (eg. supervisord or program:test)
      *
      * @var string
@@ -35,21 +28,7 @@ abstract class AbstractSection implements SectionInterface
      */
     public function __construct(array $options = array())
     {
-        $this->resolveOptions($options);
-    }
-
-    /**
-     * Resolve options
-     *
-     * @param  array $options
-     * @return array Resolved options
-     */
-    protected function resolveOptions(array $options = array())
-    {
-        $resolver = new OptionsResolver();
-        $this->setDefaultOptions($resolver);
-
-        return $this->options = $resolver->resolve($options);
+        $this->setOptions($options);
     }
 
     /**
@@ -69,15 +48,44 @@ abstract class AbstractSection implements SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setOptions(array $options = array())
+    {
+        $this->options = $this->resolveOptions($options);
+
+        return $this;
+    }
+
+    /**
+     * Resolve options
+     *
+     * @param  array $options
+     * @return array Resolved options
+     */
+    protected function resolveOptions(array $options = array())
+    {
+        $resolver = new OptionsResolver();
+        $this->setDefaultOptions($resolver);
+
+        return $resolver->resolve($options);
+    }
+
+    /**
      * Set default options
      *
      * @param OptionsResolverInterface $resolver
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        if (!empty($this->validOptions)) {
-            $resolver->setOptional(array_keys($this->validOptions))
-                ->setAllowedTypes($this->validOptions);
+        if (!empty($this->requiredOptions)) {
+            $resolver->setRequired(array_keys($this->requiredOptions))
+                ->setAllowedTypes($this->requiredOptions);
+        }
+
+        if (!empty($this->optionalOptions)) {
+            $resolver->setOptional(array_keys($this->optionalOptions))
+                ->setAllowedTypes($this->optionalOptions);
         }
     }
 }

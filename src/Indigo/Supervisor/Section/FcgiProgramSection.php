@@ -6,30 +6,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FcgiProgramSection extends ProgramSection
 {
-    protected $validOptionsOverride = array(
+    protected $requiredOptionsOverride = array(
+        'socket'  => 'string',
+    );
+
+    protected $optionalOptionsOverride = array(
         'socket_owner' => 'string',
         'socket_mode'  => 'integer',
     );
 
     public function __construct($name, array $options = array())
     {
-        $this->validOptions = array_merge($this->validOptions, $this->validOptionsOverride);
-        $this->resolveOptions($options);
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
+        $this->requiredOptions = array_merge($this->requiredOptions, $this->requiredOptionsOverride);
+        $this->setOptions($options);
 
         $this->name = 'fcgi-program:' . trim($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        parent::setDefaultOptions($resolver);
-
-        $resolver->setRequired(array(
-            'socket'
-        ))->setAllowedTypes(array(
-            'socket' => 'string',
-        ));
     }
 }

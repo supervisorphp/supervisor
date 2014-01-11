@@ -9,7 +9,7 @@ class SupervisordSection extends AbstractSection
 {
     protected $name = 'supervisord';
 
-    protected $validOptions = array(
+    protected $optionalOptions = array(
         'logfile'          => 'string',
         'logfile_maxbytes' => array('integer', 'string'),
         'logfile_backups'  => 'integer',

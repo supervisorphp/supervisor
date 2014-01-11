@@ -9,7 +9,7 @@ class IncludeSection extends AbstractSection
 {
     protected $name = 'include';
 
-    protected $validOptions = array(
+    protected $optionalOptions = array(
         'files' => array('array', 'string'),
     );
 

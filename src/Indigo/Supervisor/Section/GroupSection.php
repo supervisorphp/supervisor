@@ -6,28 +6,18 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class GroupSection extends AbstractSection
 {
-    protected $validOptions = array(
+    protected $requiredOptions = array(
+        'programs' => 'array',
+    );
+
+    protected $optionalOptions = array(
         'priority' => 'integer',
     );
 
     public function __construct($name, array $options = array())
     {
-        $this->resolveOptions($options);
+        $this->setOptions($options);
 
         $this->name = 'group:' . trim($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        parent::setDefaultOptions($resolver);
-
-        $resolver->setRequired(array(
-            'programs'
-        ))->setAllowedTypes(array(
-            'programs' => 'array',
-        ));
     }
 }

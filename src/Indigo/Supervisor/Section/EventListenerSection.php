@@ -6,7 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EventListenerSection extends ProgramSection
 {
-    protected $validOptionsOverride = array(
+    protected $optionalOptionsOverride = array(
         'buffer_size'    => 'integer',
         'events'         => 'array',
         'result_handler' => 'string',
@@ -14,7 +14,7 @@ class EventListenerSection extends ProgramSection
 
     public function __construct($name, array $options = array())
     {
-        $this->validOptions = array_merge($this->validOptions, $this->validOptionsOverride);
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
         $this->resolveOptions($options);
 
         $this->name = 'eventlistener:' . trim($name);
