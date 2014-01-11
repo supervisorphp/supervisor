@@ -9,18 +9,23 @@ class IncludeSection extends AbstractSection
 {
     protected $name = 'include';
 
+    protected $validOptions = array(
+        'files' => array('array', 'string'),
+    );
+
     /**
      * {@inheritdoc}
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array(
-            'files'
-        ))->setAllowedTypes(array(
-            'files' => array('array', 'string')
-        ))->setNormalizers(array(
+        parent::setDefaultOptions($resolver);
+
+        $resolver->setNormalizers(array(
             'files' => function (Options $options, $value) {
-                return implode(' ', $value);
+                if (is_array($value)) {
+                    $value = implode(' ', $value);
+                }
+                return $value;
             }
         ));
     }

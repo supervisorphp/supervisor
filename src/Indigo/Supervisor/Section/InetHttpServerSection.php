@@ -8,20 +8,22 @@ class InetHttpServerSection extends AbstractSection
 {
     protected $name = 'inet_http_server';
 
+    protected $validOptions = array(
+        'username' => 'string',
+        'password' => 'string',
+    );
+
     /**
      * {@inheritdoc}
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        parent::setDefaultOptions($resolver);
+
         $resolver->setRequired(array(
             'port'
-        ))->setOptional(array(
-            'username',
-            'password'
         ))->setAllowedTypes(array(
             'port'     => 'integer',
-            'username' => 'string',
-            'password' => 'string',
         ));
     }
 }

@@ -15,6 +15,13 @@ abstract class AbstractSection implements SectionInterface
     protected $options = array();
 
     /**
+     * Valid optional options
+     *
+     * @var array
+     */
+    protected $validOptions = array();
+
+    /**
      * Name of section (eg. supervisord or program:test)
      *
      * @var string
@@ -66,5 +73,11 @@ abstract class AbstractSection implements SectionInterface
      *
      * @param OptionsResolverInterface $resolver
      */
-    abstract protected function setDefaultOptions(OptionsResolverInterface $resolver);
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        if (!empty($this->validOptions)) {
+            $resolver->setOptional(array_keys($this->validOptions))
+                ->setAllowedTypes($this->validOptions);
+        }
+    }
 }

@@ -6,8 +6,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FcgiProgramSection extends ProgramSection
 {
+    protected $validOptionsOverride = array(
+        'socket_owner' => 'string',
+        'socket_mode'  => 'integer',
+    );
+
     public function __construct($name, array $options = array())
     {
+        $this->validOptions = array_merge($this->validOptions, $this->validOptionsOverride);
         $this->resolveOptions($options);
 
         $this->name = 'fcgi-program:' . trim($name);
@@ -22,13 +28,8 @@ class FcgiProgramSection extends ProgramSection
 
         $resolver->setRequired(array(
             'socket'
-        ))->setOptional(array(
-            'socket_owner',
-            'socket_mode'
         ))->setAllowedTypes(array(
-            'socket'       => 'string',
-            'socket_owner' => 'string',
-            'socket_mode'  => 'integer',
+            'socket' => 'string',
         ));
     }
 }

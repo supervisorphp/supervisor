@@ -6,6 +6,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class GroupSection extends AbstractSection
 {
+    protected $validOptions = array(
+        'priority' => 'integer',
+    );
+
     public function __construct($name, array $options = array())
     {
         $this->resolveOptions($options);
@@ -18,13 +22,12 @@ class GroupSection extends AbstractSection
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        parent::setDefaultOptions($resolver);
+
         $resolver->setRequired(array(
             'programs'
-        ))->setOptional(array(
-            'priority'
         ))->setAllowedTypes(array(
             'programs' => 'array',
-            'priority' => 'integer',
         ));
     }
 }
