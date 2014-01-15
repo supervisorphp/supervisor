@@ -152,5 +152,5 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param  mixed $request
      * @return mixed
      */
-    abstract protected function response($request);
+    abstract protected function doRequest($request);
 }

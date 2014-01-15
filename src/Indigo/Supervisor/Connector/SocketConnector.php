@@ -146,7 +146,7 @@ abstract class SocketConnector extends AbstractConnector
     {
         $request = $this->prepareRequest($namespace, $method, $arguments);
 
-        $response = $this->response($request);
+        $response = $this->doRequest($request);
 
         return $this->processResponse($response);
     }
@@ -168,7 +168,7 @@ abstract class SocketConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    protected function response($request)
+    protected function doRequest($request)
     {
         if (!$this->write($request)) {
             throw new \RuntimeException('Cannot write to socket');

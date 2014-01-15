@@ -48,7 +48,7 @@ class InetConnector extends AbstractConnector
 
         $request = $this->prepareRequest($namespace, $method, $arguments);
 
-        $response = $this->response($request);
+        $response = $this->doRequest($request);
 
         if (!$response) {
             $this->resource = null;
@@ -69,7 +69,7 @@ class InetConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    protected function response($request)
+    protected function doRequest($request)
     {
         $options = array(
             'http' => array(
