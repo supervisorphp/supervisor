@@ -144,15 +144,32 @@ abstract class SocketConnector extends AbstractConnector
      */
     public function call($namespace, $method, array $arguments = array())
     {
+        $request = $this->prepareRequest($namespace, $method, $arguments);
+
+        $response = $this->response($request);
+
+        return $this->processResponse($response);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareRequest($namespace, $method, array $arguments)
+    {
         // generate xml request
         $xml = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
 
         // add length to headers
         $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
-        // build request
-        $request = "POST /RPC2 HTTP/1.1\r\n" . http_build_headers($headers) . "\r\n" . $xml;
+        return "POST /RPC2 HTTP/1.1\r\n" . http_build_headers($headers) . "\r\n" . $xml;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function response($request)
+    {
         if (!$this->write($request)) {
             throw new \RuntimeException('Cannot write to socket');
         }
@@ -167,11 +184,9 @@ abstract class SocketConnector extends AbstractConnector
             if (!isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
                 $header = substr($response, 0, $headerLength);
 
-                // check for status code
-                $http = strtok($header, "\r\n");
-                $http = explode(' ', $http, 3);
+                $http = get_http_status($header);
 
-                if (intval($http[1]) !== 200) {
+                if ($http[1] !== 200) {
                     throw new HttpException($http[2], $http[1]);
                 }
 
@@ -180,7 +195,7 @@ abstract class SocketConnector extends AbstractConnector
                 if (array_key_exists('Content-Length', $header)) {
                     $contentLength = $header['Content-Length'];
                 } else {
-                    throw new \RuntimeException('No Content-Length field found in HTTP header.');
+                    throw new \UnexpectedValueException('No Content-Length field found in HTTP header.');
                 }
 
                 $bodyStart  = $headerLength + 4;
@@ -196,9 +211,7 @@ abstract class SocketConnector extends AbstractConnector
 
         } while ($this->isConnected() and $bodyLength < $contentLength);
 
-        $response = substr($response, $bodyStart);
-
-        return $this->processResponse($response);
+        return substr($response, $bodyStart);
     }
 
     /**

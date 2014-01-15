@@ -161,3 +161,15 @@ if (!function_exists('http_build_headers')) {
         return $rawHeaders;
     }
 }
+
+if (!function_exists('get_http_status')) {
+    function get_http_status($rawHeaders)
+    {
+        $http = strtok($rawHeaders, "\r\n");
+        $http = explode(' ', $http, 3);
+
+        $http[1] = intval($http[1]);
+
+        return $http;
+    }
+}

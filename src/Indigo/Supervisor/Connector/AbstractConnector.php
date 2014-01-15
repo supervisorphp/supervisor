@@ -135,4 +135,22 @@ abstract class AbstractConnector implements ConnectorInterface
 
         return $response;
     }
+
+    /**
+     * Prepare request
+     *
+     * @param  string $namespace
+     * @param  string $method
+     * @param  array  $arguments
+     * @return mixed
+     */
+    abstract protected function prepareRequest($namespace, $method, array $arguments);
+
+    /**
+     * Execute request
+     *
+     * @param  mixed $request
+     * @return mixed
+     */
+    abstract protected function response($request);
 }

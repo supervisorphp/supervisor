@@ -29,11 +29,17 @@ class InetConnector extends AbstractConnector
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isConnected()
     {
         return ! empty($this->resource);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function call($namespace, $method, array $arguments = array())
     {
         if (!$this->isConnected()) {
@@ -52,11 +58,17 @@ class InetConnector extends AbstractConnector
         return $this->processResponse($response);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function prepareRequest($namespace, $method, array $arguments)
     {
         return xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function response($request)
     {
         $options = array(
