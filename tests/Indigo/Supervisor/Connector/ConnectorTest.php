@@ -2,7 +2,6 @@
 
 namespace Indigo\Supervisor\Connector;
 
-
 abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
 {
     public function testCredentials()
@@ -45,17 +44,6 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('Test', 'Test'), $this->connector->getHeader('X-Test'));
         $this->assertNull($this->connector->getHeader('X-Test-Null'));
-    }
-
-    public function testResource()
-    {
-        $connector = clone $this->connector;
-        $this->assertInstanceOf(
-            get_class($connector),
-            $connector->setResource(null)
-        );
-
-        $this->assertNull($connector->getResource());
     }
 
     /**

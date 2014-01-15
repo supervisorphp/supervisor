@@ -21,6 +21,17 @@ class InetConnectorTest extends ConnectorTest
         $this->assertTrue($this->connector->isConnected());
     }
 
+    public function testResource()
+    {
+        $connector = clone $this->connector;
+        $this->assertInstanceOf(
+            get_class($connector),
+            $connector->setResource(null)
+        );
+
+        $this->assertNull($connector->getResource());
+    }
+
     /**
      * @expectedException InvalidArgumentException
      */
