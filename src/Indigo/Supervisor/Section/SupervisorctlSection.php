@@ -2,8 +2,6 @@
 
 namespace Indigo\Supervisor\Section;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 class SupervisorctlSection extends AbstractSection
 {
     protected $name = 'supervisorctl';

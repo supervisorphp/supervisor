@@ -2,8 +2,6 @@
 
 namespace Indigo\Supervisor\Section;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 class GroupSection extends AbstractSection
 {
     protected $requiredOptions = array(

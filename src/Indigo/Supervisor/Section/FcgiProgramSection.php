@@ -2,8 +2,6 @@
 
 namespace Indigo\Supervisor\Section;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 class FcgiProgramSection extends ProgramSection
 {
     protected $requiredOptionsOverride = array(

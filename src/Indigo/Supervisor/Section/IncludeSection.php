@@ -25,6 +25,7 @@ class IncludeSection extends AbstractSection
                 if (is_array($value)) {
                     $value = implode(' ', $value);
                 }
+
                 return $value;
             }
         ));
