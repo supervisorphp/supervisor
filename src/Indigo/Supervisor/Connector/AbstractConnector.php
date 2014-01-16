@@ -25,8 +25,8 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Set credentials for connection and set header
      *
-     * @param  string             $username
-     * @param  string             $password
+     * @param  string $username
+     * @param  string $password
      * @return ConnectorInterface
      */
     public function setCredentials($username, $password)
@@ -52,9 +52,9 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Set a HTTP header for request
      *
-     * @param  string             $name    Header name
-     * @param  string             $value   Header value
-     * @param  boolean            $replace Replace header if already exists
+     * @param  string  $name    Header name
+     * @param  string  $value   Header value
+     * @param  boolean $replace Replace header if already exists
      * @return ConnectorInterface
      */
     public function setHeader($name, $value, $replace = true)
