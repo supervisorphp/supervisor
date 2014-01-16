@@ -14,20 +14,6 @@ abstract class AbstractConnector implements ConnectorInterface
     protected $resource;
 
     /**
-     * Username for authentication
-     *
-     * @var string
-     */
-    protected $username;
-
-    /**
-     * Password for authentication
-     *
-     * @var string
-     */
-    protected $password;
-
-    /**
      * Headers to send
      *
      * @var array
@@ -45,12 +31,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     public function setCredentials($username, $password)
     {
-        $this->username = $username;
-        $this->password = $password;
-
-        $this->setHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
-
-        return $this;
+        return $this->setHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
     }
 
     /**
