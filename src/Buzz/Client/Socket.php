@@ -41,7 +41,7 @@ class Socket extends AbstractStream
     /**
      * Set socket
      *
-     * @param  resource $socket
+     * @param resource $socket
      * @return Socket
      */
     public function setSocket($socket)
@@ -110,7 +110,10 @@ class Socket extends AbstractStream
                 $response->setHeaders($header);
 
                 if (!$response->isOk()) {
-                    throw new ClientException('HTTP Status: ' . $response->getReasonPhrase(), $response->getStatusCode());
+                    throw new ClientException(
+                        'HTTP Status: ' . $response->getReasonPhrase(),
+                        $response->getStatusCode()
+                    );
                 }
 
                 $contentLen = $response->getHeader('Content-Length', '');
