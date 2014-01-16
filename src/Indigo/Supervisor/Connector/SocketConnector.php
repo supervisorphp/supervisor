@@ -180,32 +180,19 @@ abstract class SocketConnector extends AbstractConnector
         do {
             $response .= $this->read(self::CHUNK_SIZE);
 
-            // check for headers and parse them
             if (!isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
                 $header = substr($response, 0, $headerLength);
 
-                $http = get_http_status($header);
+                $this->checkHttpStatus($header);
 
-                if ($http[1] !== 200) {
-                    throw new HttpException($http[2], $http[1]);
-                }
-
-                $header = http_parse_headers($header);
-
-                if (array_key_exists('Content-Length', $header)) {
-                    $contentLength = $header['Content-Length'];
-                } else {
-                    throw new \UnexpectedValueException('No Content-Length field found in HTTP header.');
-                }
+                $contentLength = $this->getContentLength($header);
 
                 $bodyStart  = $headerLength + 4;
+            } else {
+                $contentLength = strlen($response);
             }
 
-            $socketInfo = $this->getStreamMetadata();
-
-            if ($socketInfo['timed_out']) {
-                throw new \RuntimeException("Read timed-out");
-            }
+            $this->checkTimedOut();
 
             $bodyLength = strlen($response) - $bodyStart;
 
@@ -222,6 +209,63 @@ abstract class SocketConnector extends AbstractConnector
     protected function getStreamMetadata()
     {
         return stream_get_meta_data($this->resource);
+    }
+
+    /**
+     * Check whether connection is timed out
+     *
+     * @return boolean
+     */
+    protected function isTimedOut()
+    {
+        $socketInfo = $this->getStreamMetadata();
+
+        return $socketInfo['timed_out'];
+    }
+
+    /**
+     * Handle connection timeout
+     *
+     * @throws RuntimeException Connection timed out
+     */
+    private function checkTimedOut()
+    {
+        if ($this->isTimedOut()) {
+            throw new \RuntimeException("Connection timed-out");
+        }
+    }
+
+    /**
+     * Check HTTP Status of response
+     *
+     * @param  string $headers Raw headers
+     * @throws HttpException HTTP request failed
+     */
+    private function checkHttpStatus($headers)
+    {
+        $http = get_http_status($header);
+
+        if ($http[1] !== 200) {
+            throw new HttpException($http[2], $http[1]);
+        }
+    }
+
+    /**
+     * Get Content-Length from headers
+     *
+     * @param  array  $headers Raw headers
+     * @throws UnexpectedValueException Content-Length not found
+     * @return integer Content-Length
+     */
+    private function getContentLength($headers)
+    {
+        $headers = http_parse_headers($headers);
+
+        if (array_key_exists('Content-Length', $headers)) {
+            return $headers['Content-Length'];
+        } else {
+            throw new \UnexpectedValueException('No Content-Length field found in HTTP header.');
+        }
     }
 
     /**
