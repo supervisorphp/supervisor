@@ -73,15 +73,15 @@ class Configuration
                 continue;
             }
 
-            // write a linefeed before sections
-            empty($output) or $output .= "\n";
-
             $output .= "[$name]\n";
 
             foreach ($options as $key => $value) {
                 is_array($value) and $value = implode(',', $value);
                 $output .= "$key = $value\n";
             }
+
+            // write a linefeed after sections
+            $output .= "\n";
         }
 
         return $output;
