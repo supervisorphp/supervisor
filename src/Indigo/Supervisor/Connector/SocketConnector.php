@@ -181,13 +181,10 @@ abstract class SocketConnector extends AbstractConnector
 
             $response .= $this->read(self::CHUNK_SIZE);
 
-            if (!isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
-                $header = substr($response, 0, $headerLength);
-                $response = substr($response, $headerLength + 4);
+            if (!isset($headers) and $headers = $this->parseHeaders($response)) {
+                $response = substr($response, strlen($headers) + 4);
 
-                $this->checkHttpStatus($header);
-
-                $contentLength = $this->getContentLength($header);
+                $contentLength = $this->getContentLength($headers);
             }
 
             $contentLength > 0 and $bodyLength = strlen($response);
@@ -231,6 +228,19 @@ abstract class SocketConnector extends AbstractConnector
         if ($this->isTimedOut()) {
             throw new \RuntimeException("Connection timed-out");
         }
+    }
+
+    private function parseHeaders($response)
+    {
+        if (($length = strpos($response, "\r\n\r\n")) !== false) {
+            $headers = substr($response, 0, $length);
+
+            $this->checkHttpStatus($headers);
+
+            return $headers;
+        }
+
+        return null;
     }
 
     /**
