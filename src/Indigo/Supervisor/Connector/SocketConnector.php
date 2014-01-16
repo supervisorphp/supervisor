@@ -243,7 +243,7 @@ abstract class SocketConnector extends AbstractConnector
      */
     private function checkHttpStatus($headers)
     {
-        $http = get_http_status($header);
+        $http = get_http_status($headers);
 
         if ($http[1] !== 200) {
             throw new HttpException($http[2], $http[1]);
