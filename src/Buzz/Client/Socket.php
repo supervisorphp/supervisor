@@ -41,7 +41,7 @@ class Socket extends AbstractStream
     /**
      * Set socket
      *
-     * @param resource $socket
+     * @param  resource $socket
      * @return Socket
      */
     public function setSocket($socket)

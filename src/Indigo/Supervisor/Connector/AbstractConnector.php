@@ -135,9 +135,9 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Prepare request
      *
-     * @param  string               $namespace
-     * @param  string               $method
-     * @param  array                $arguments
+     * @param  string                        $namespace
+     * @param  string                        $method
+     * @param  array                         $arguments
      * @return Buzz\Message\RequestInterface
      */
     abstract protected function prepareRequest($namespace, $method, array $arguments);

@@ -4,7 +4,6 @@ namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
 use Buzz\Client\Socket as Client;
-use Indigo\Supervisor\Exception\HttpException;
 
 /**
  * Connect to Supervisor through socket
