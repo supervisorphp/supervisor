@@ -170,35 +170,33 @@ abstract class SocketConnector extends AbstractConnector
      */
     protected function doRequest($request)
     {
-        if (!$this->write($request)) {
-            throw new \RuntimeException('Cannot write to socket');
-        }
+        $this->write($request);
 
         $response = '';
-        $bodyStart = 0;
+        $contentLength = 0;
+        $bodyLength = -1;
 
         do {
+            $this->checkTimedOut();
+
             $response .= $this->read(self::CHUNK_SIZE);
 
             if (!isset($header) and ($headerLength = strpos($response, "\r\n\r\n")) !== false) {
                 $header = substr($response, 0, $headerLength);
+                $response = substr($response, $headerLength + 4);
 
                 $this->checkHttpStatus($header);
 
                 $contentLength = $this->getContentLength($header);
-
-                $bodyStart = $headerLength + 4;
-            } elseif (!isset($header)) {
-                $contentLength = strlen($response) + 1;
+            } else {
+                $bodyLength = strlen($response);
             }
 
-            $this->checkTimedOut();
+        } while ($bodyLength < $contentLength);
 
-            $bodyLength = strlen($response) - $bodyStart;
+        $this->checkTimedOut();
 
-        } while ($this->isConnected() and $bodyLength < $contentLength);
-
-        return substr($response, $bodyStart);
+        return $response;
     }
 
     /**
@@ -275,7 +273,11 @@ abstract class SocketConnector extends AbstractConnector
      */
     protected function write($data)
     {
-        return @fwrite($this->resource, $data);
+        if (($write = @fwrite($this->resource, $data)) == false and strlen($data) > 0) {
+            throw new \RuntimeException('Cannot write to socket');
+        }
+
+        return $write;
     }
 
     /**
