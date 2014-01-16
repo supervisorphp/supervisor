@@ -2,6 +2,8 @@
 
 namespace Indigo\Supervisor\Connector;
 
+use Buzz\Message\Request;
+use Buzz\Client\Socket as Client;
 use Indigo\Supervisor\Exception\HttpException;
 
 /**
@@ -9,11 +11,6 @@ use Indigo\Supervisor\Exception\HttpException;
  */
 abstract class SocketConnector extends AbstractConnector
 {
-    /**
-     * Size of read data
-     */
-    const CHUNK_SIZE = 8192;
-
     /**
      * Timeout
      *
@@ -142,18 +139,6 @@ abstract class SocketConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function call($namespace, $method, array $arguments = array())
-    {
-        $request = $this->prepareRequest($namespace, $method, $arguments);
-
-        $response = $this->doRequest($request);
-
-        return $this->processResponse($response);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function prepareRequest($namespace, $method, array $arguments)
     {
         // generate xml request
@@ -162,111 +147,18 @@ abstract class SocketConnector extends AbstractConnector
         // add length to headers
         $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
-        return "POST /RPC2 HTTP/1.1\r\n" . http_build_headers($headers) . "\r\n" . $xml;
+        $request = new Request('POST', '/RPC2');
+        $request->setHeaders($headers);
+        $request->setContent($xml);
+
+        return $request;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doRequest($request)
+    protected function prepareClient()
     {
-        $this->write($request);
-
-        $response = '';
-        $contentLength = 0;
-        $bodyLength = -1;
-
-        do {
-            $this->checkTimedOut();
-
-            $response .= $this->read(self::CHUNK_SIZE);
-
-            if (!isset($header) and ($headerLen = strpos($response, "\r\n\r\n")) !== false) {
-                $header = substr($response, 0, $headerLen);
-                $response = substr($response, $headerLen + 4);
-
-                // Check HTTP status
-                $http = get_http_status($header);
-
-                if ($http[1] !== 200) {
-                    throw new HttpException($http[2], $http[1]);
-                }
-
-                // Check Content-Length header
-                $header = http_parse_headers($header);
-
-                if (array_key_exists('Content-Length', $header)) {
-                    $contentLength = $header['Content-Length'];
-                } else {
-                    throw new \UnexpectedValueException('No Content-Length field found in HTTP header.');
-                }
-            }
-
-            $contentLength > 0 and $bodyLength = strlen($response);
-
-        } while ($bodyLength < $contentLength);
-
-        $this->checkTimedOut();
-
-        return $response;
-    }
-
-    /**
-     * Get stream metadata
-     *
-     * @return array
-     */
-    protected function getStreamMetadata()
-    {
-        return stream_get_meta_data($this->resource);
-    }
-
-    /**
-     * Check whether connection is timed out
-     *
-     * @return boolean
-     */
-    protected function isTimedOut()
-    {
-        $socketInfo = $this->getStreamMetadata();
-
-        return $socketInfo['timed_out'];
-    }
-
-    /**
-     * Handle connection timeout
-     *
-     * @throws RuntimeException Connection timed out
-     */
-    private function checkTimedOut()
-    {
-        if ($this->isTimedOut()) {
-            throw new \RuntimeException("Connection timed-out");
-        }
-    }
-
-    /**
-     * Write to resource
-     *
-     * @param mixed $data
-     */
-    protected function write($data)
-    {
-        if (($write = @fwrite($this->resource, $data)) == false and strlen($data) > 0) {
-            throw new \RuntimeException('Cannot write to socket');
-        }
-
-        return $write;
-    }
-
-    /**
-     * Read from resource
-     *
-     * @param  integer $length
-     * @return mixed
-     */
-    protected function read($length)
-    {
-        return @fread($this->resource, $length);
+        return new Client($this->resource);
     }
 }
