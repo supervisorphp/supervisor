@@ -187,9 +187,9 @@ abstract class SocketConnector extends AbstractConnector
 
                 $contentLength = $this->getContentLength($header);
 
-                $bodyStart  = $headerLength + 4;
+                $bodyStart = $headerLength + 4;
             } else {
-                $contentLength = strlen($response);
+                $contentLength = strlen($response) + 1;
             }
 
             $this->checkTimedOut();
