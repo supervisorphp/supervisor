@@ -181,10 +181,25 @@ abstract class SocketConnector extends AbstractConnector
 
             $response .= $this->read(self::CHUNK_SIZE);
 
-            if (!isset($headers) and $headers = $this->parseHeaders($response)) {
-                $response = substr($response, strlen($headers) + 4);
+            if (!isset($header) and ($headerLen = strpos($response, "\r\n\r\n")) !== false) {
+                $header = substr($response, 0, $headerLen);
+                $response = substr($response, $headerLen + 4);
 
-                $contentLength = $this->getContentLength($headers);
+                // Check HTTP status
+                $http = get_http_status($header);
+
+                if ($http[1] !== 200) {
+                    throw new HttpException($http[2], $http[1]);
+                }
+
+                // Check Content-Length header
+                $header = http_parse_headers($header);
+
+                if (array_key_exists('Content-Length', $header)) {
+                    $contentLength = $header['Content-Length'];
+                } else {
+                    throw new \UnexpectedValueException('No Content-Length field found in HTTP header.');
+                }
             }
 
             $contentLength > 0 and $bodyLength = strlen($response);
@@ -227,52 +242,6 @@ abstract class SocketConnector extends AbstractConnector
     {
         if ($this->isTimedOut()) {
             throw new \RuntimeException("Connection timed-out");
-        }
-    }
-
-    private function parseHeaders($response)
-    {
-        if (($length = strpos($response, "\r\n\r\n")) !== false) {
-            $headers = substr($response, 0, $length);
-
-            $this->checkHttpStatus($headers);
-
-            return $headers;
-        }
-
-        return null;
-    }
-
-    /**
-     * Check HTTP Status of response
-     *
-     * @param  string        $headers Raw headers
-     * @throws HttpException HTTP request failed
-     */
-    private function checkHttpStatus($headers)
-    {
-        $http = get_http_status($headers);
-
-        if ($http[1] !== 200) {
-            throw new HttpException($http[2], $http[1]);
-        }
-    }
-
-    /**
-     * Get Content-Length from headers
-     *
-     * @param  array                    $headers Raw headers
-     * @throws UnexpectedValueException Content-Length not found
-     * @return integer                  Content-Length
-     */
-    private function getContentLength($headers)
-    {
-        $headers = http_parse_headers($headers);
-
-        if (array_key_exists('Content-Length', $headers)) {
-            return $headers['Content-Length'];
-        } else {
-            throw new \UnexpectedValueException('No Content-Length field found in HTTP header.');
         }
     }
 
