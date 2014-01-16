@@ -188,9 +188,9 @@ abstract class SocketConnector extends AbstractConnector
                 $this->checkHttpStatus($header);
 
                 $contentLength = $this->getContentLength($header);
-            } else {
-                $bodyLength = strlen($response);
             }
+
+            $contentLength > 0 and $bodyLength = strlen($response);
 
         } while ($bodyLength < $contentLength);
 
