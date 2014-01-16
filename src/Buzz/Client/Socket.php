@@ -109,13 +109,6 @@ class Socket extends AbstractStream
 
                 $response->setHeaders($header);
 
-                if (!$response->isOk()) {
-                    throw new ClientException(
-                        'HTTP Status: ' . $response->getReasonPhrase(),
-                        $response->getStatusCode()
-                    );
-                }
-
                 $contentLen = $response->getHeader('Content-Length', '');
             }
 
