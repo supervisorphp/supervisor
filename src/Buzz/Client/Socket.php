@@ -109,12 +109,7 @@ class Socket extends AbstractStream
 
                 $response->setHeaders($header);
 
-                if (!$response->isOk()) {
-                    throw new ClientException(
-                        'HTTP Status: ' . $response->getReasonPhrase(),
-                        $response->getStatusCode()
-                    );
-                }
+                $this->isOk($response);
 
                 $contentLen = $response->getHeader('Content-Length', '');
             }
@@ -170,5 +165,25 @@ class Socket extends AbstractStream
         if ($this->isTimedOut()) {
             throw new ClientException("Connection timed-out");
         }
+    }
+
+    /**
+     * Handle HTTP error
+     *
+     * @throws ClientException Request is not OK
+     * @return boolean
+     */
+    protected function isOk(MessageInterface $response)
+    {
+        if (!$response->isOk()) {
+            throw new ClientException(
+                'HTTP Status: ' . $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+
+            return false;
+        }
+
+        return true;
     }
 }
