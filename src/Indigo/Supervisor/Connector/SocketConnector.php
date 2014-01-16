@@ -238,7 +238,7 @@ abstract class SocketConnector extends AbstractConnector
     /**
      * Check HTTP Status of response
      *
-     * @param  string $headers Raw headers
+     * @param  string        $headers Raw headers
      * @throws HttpException HTTP request failed
      */
     private function checkHttpStatus($headers)
@@ -253,9 +253,9 @@ abstract class SocketConnector extends AbstractConnector
     /**
      * Get Content-Length from headers
      *
-     * @param  array  $headers Raw headers
+     * @param  array                    $headers Raw headers
      * @throws UnexpectedValueException Content-Length not found
-     * @return integer Content-Length
+     * @return integer                  Content-Length
      */
     private function getContentLength($headers)
     {
