@@ -2,6 +2,7 @@
 
 namespace Indigo\Supervisor\Connector;
 
+use Buzz\Message\Response;
 use Indigo\Supervisor\Exception\ResponseException;
 
 abstract class AbstractConnector implements ConnectorInterface
@@ -99,6 +100,20 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function call($namespace, $method, array $arguments = array())
+    {
+        $request = $this->prepareRequest($namespace, $method, $arguments);
+
+        $response = new Response();
+        $client = $this->prepareClient();
+        $client->send($request, $response);
+
+        return $this->processResponse($response->getContent());
+    }
+
+    /**
      * Process HTTP response
      *
      * @param  string $response Raw response
@@ -120,10 +135,17 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Prepare request
      *
-     * @param  string $namespace
-     * @param  string $method
-     * @param  array  $arguments
-     * @return mixed
+     * @param  string               $namespace
+     * @param  string               $method
+     * @param  array                $arguments
+     * @return Buzz\Message\RequestInterface
      */
     abstract protected function prepareRequest($namespace, $method, array $arguments);
+
+    /**
+     * Prepare client
+     *
+     * @return Buzz\Client\ClientInterface
+     */
+    abstract protected function prepareClient();
 }

@@ -3,7 +3,6 @@
 namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
-use Buzz\Message\Response;
 use Buzz\Client\Socket as Client;
 use Indigo\Supervisor\Exception\HttpException;
 
@@ -12,11 +11,6 @@ use Indigo\Supervisor\Exception\HttpException;
  */
 abstract class SocketConnector extends AbstractConnector
 {
-    /**
-     * Size of read data
-     */
-    const CHUNK_SIZE = 8192;
-
     /**
      * Timeout
      *
@@ -145,21 +139,6 @@ abstract class SocketConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function call($namespace, $method, array $arguments = array())
-    {
-        $request = $this->prepareRequest($namespace, $method, $arguments);
-
-        $response = new Response();
-        $client = new Client($this->resource);
-
-        $client->send($request, $response);
-
-        return $this->processResponse($response->getContent());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function prepareRequest($namespace, $method, array $arguments)
     {
         // generate xml request
@@ -169,10 +148,17 @@ abstract class SocketConnector extends AbstractConnector
         $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
         $request = new Request('POST', '/RPC2');
-        $request->setProtocolVersion(1.1);
         $request->setHeaders($headers);
         $request->setContent($xml);
 
         return $request;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareClient()
+    {
+        return new Client($this->resource);
     }
 }
