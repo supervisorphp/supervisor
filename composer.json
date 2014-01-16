@@ -14,10 +14,14 @@
         "psr/log": "~1.0"
     },
     "require-dev": {
-        "mockery/mockery": "dev-master@dev"
+        "mockery/mockery": "dev-master@dev",
+        "kriswallsmith/buzz": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Indigo\\Supervisor\\": "src/" },
+        "psr-0": {
+            "Indigo\\Supervisor\\": "src/",
+            "Buzz\\": "src/"
+        },
         "files": ["src/functions.php"]
     }
 }
