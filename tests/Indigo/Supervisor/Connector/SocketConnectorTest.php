@@ -14,7 +14,7 @@ abstract class SocketConnectorTest extends ConnectorTest
 
     /**
      * @depends testMethodCreateSocket
-     * @expectedException UnexpectedValueException
+     * @expectedException RuntimeException
      */
     public function testFaultCreateSocket(\ReflectionMethod $method)
     {

@@ -47,7 +47,7 @@ abstract class SocketConnector extends AbstractConnector
         }
 
         if (!is_resource($resource)) {
-            throw new \UnexpectedValueException('Cannot open socket to ' . $hostname . ': ' . $errStr, $errNo);
+            throw new \RuntimeException('Cannot open socket to ' . $hostname . ': ' . $errStr, $errNo);
         }
 
         $this->timeout = $timeout;
