@@ -188,7 +188,7 @@ abstract class SocketConnector extends AbstractConnector
                 $contentLength = $this->getContentLength($header);
 
                 $bodyStart = $headerLength + 4;
-            } else {
+            } elseif (!isset($header)) {
                 $contentLength = strlen($response) + 1;
             }
 
