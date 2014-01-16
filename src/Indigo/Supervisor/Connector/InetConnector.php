@@ -67,7 +67,10 @@ class InetConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdoc}
+     * Execute request
+     *
+     * @param  mixed $request
+     * @return mixed
      */
     protected function doRequest($request)
     {
