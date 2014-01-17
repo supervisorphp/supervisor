@@ -1,7 +1,6 @@
 <?php
 
 namespace Indigo\Supervisor\EventListener;
-use Indigo\Supervisor\Exception\InvalidResourceException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
@@ -38,7 +37,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 		if (is_resource($stream)) {
 			$this->inputStream = $stream;
 		} else {
-			throw new InvalidResourceException('Invalid resource for input stream');
+			throw new \InvalidArgumentException('Invalid resource for input stream');
 		}
 	}
 
@@ -52,7 +51,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 		if (is_resource($stream)) {
 			$this->inputStream = $stream;
 		} else {
-			throw new InvalidResourceException('Invalid resource for input stream');
+			throw new \InvalidArgumentException('Invalid resource for input stream');
 		}
 	}
 
