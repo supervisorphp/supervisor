@@ -41,7 +41,7 @@ class Socket extends AbstractStream
     /**
      * Set socket
      *
-     * @param resource $socket
+     * @param  resource $socket
      * @return Socket
      */
     public function setSocket($socket)
@@ -89,9 +89,9 @@ class Socket extends AbstractStream
     /**
      * Send request
      *
-     * @param  string  $request Raw request
+     * @param  string          $request Raw request
      * @throws ClientException If writting to socket failed
-     * @return integer Bytes written
+     * @return integer         Bytes written
      */
     protected function sendRequest($request)
     {
@@ -105,7 +105,7 @@ class Socket extends AbstractStream
     /**
      * Receive response
      *
-     * @param  MessageInterface $response
+     * @param MessageInterface $response
      */
     protected function receiveResponse(MessageInterface $response)
     {
