@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
@@ -7,6 +16,8 @@ use Buzz\Client\Socket as Client;
 
 /**
  * Connect to Supervisor through socket
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 abstract class SocketConnector extends AbstractConnector
 {
@@ -52,9 +63,6 @@ abstract class SocketConnector extends AbstractConnector
         return $this->resource = $resource;
     }
 
-    /**
-     * Close connection
-     */
     public function __destruct()
     {
         $this->close();
@@ -131,7 +139,7 @@ abstract class SocketConnector extends AbstractConnector
         if (is_resource($resource)) {
             return parent::setResource($resource);
         } else {
-            throw new \InvalidArgumentException('Stream must be a valid resource, ' . gettype($resource) . 'given.');
+            throw new \InvalidArgumentException('Stream must be a valid resource, ' . gettype($resource) . ' given.');
         }
     }
 
@@ -147,6 +155,7 @@ abstract class SocketConnector extends AbstractConnector
         $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
         $request = new Request('POST', '/RPC2');
+        $request->setProtocolVersion(1.1);
         $request->setHeaders($headers);
         $request->setContent($xml);
 

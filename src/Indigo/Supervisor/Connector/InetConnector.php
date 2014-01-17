@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
@@ -8,6 +17,8 @@ use Buzz\Client\FileGetContents as Client;
 /**
  * Connect to Supervisor using simple file_get_contents
  * allow_url_fopen must be enabled
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 class InetConnector extends AbstractConnector
 {
@@ -52,6 +63,7 @@ class InetConnector extends AbstractConnector
         $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
         $request = new Request('POST', '/RPC2', $this->resource);
+        $request->setProtocolVersion(1.1);
         $request->setHeaders($headers);
         $request->setContent($xml);
 

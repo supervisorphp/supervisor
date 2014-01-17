@@ -1,6 +1,10 @@
 # Indigo Supervisor
 
 [![Build Status](https://travis-ci.org/indigophp/supervisor.png?branch=develop)](https://travis-ci.org/indigophp/supervisor)
+[![Code Coverage](https://scrutinizer-ci.com/g/indigophp/supervisor/badges/coverage.png?s=fb01dfd7a7c8f4b08e4aba045631b1f1bb02dec3)](https://scrutinizer-ci.com/g/indigophp/supervisor/)
+[![Latest Stable Version](https://poser.pugx.org/indigophp/supervisor/v/stable.png)](https://packagist.org/packages/indigophp/supervisor)
+[![Total Downloads](https://poser.pugx.org/indigophp/supervisor/downloads.png)](https://packagist.org/packages/indigophp/supervisor)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/indigophp/supervisor/badges/quality-score.png?s=6aaa222466e706bbb6417ba4906c544d72741cbe)](https://scrutinizer-ci.com/g/indigophp/supervisor/)
 
 **PHP library for managing supervisord through XML-RPC**
 
@@ -23,13 +27,14 @@ Via Composer
 ``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
+use Indigo\Supervisor\Connector;
 
-$connector = new Indigo\Supervisor\Connector\InetConnector('localhost', 9001);
-//$connector = new Indigo\Supervisor\Connector\SocketConnector('unix:///var/run/supervisor.lock');
+$connector = new Connector\InetConnector('localhost', 9001);
+//$connector = new Connector\SocketConnector('unix:///var/run/supervisor.lock');
 
 $connector->setCredentials('user', '123');
 
-$supervisor = new Indigo\Supervisor\Supervisor($connector);
+$supervisor = new Supervisor($connector);
 
 // returns Process object
 $process->$supervisor->getProcess('test_process');
@@ -91,8 +96,8 @@ The following sections are available in this pacakge:
 * *FcgiProgramSection**
 
 
-***Note**: These sections has to instantiated with a name and optionally an options array:
-```php
+***Note**: These sections has to be instantiated with a name and optionally an options array:
+``` php
 $section = new ProgramSection('test', array('command' => 'cat'));
 ```
 

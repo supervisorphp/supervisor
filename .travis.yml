@@ -12,3 +12,7 @@ before_script:
 
 after_script:
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+notifications:
+    email:
+        secure: "n8cY+cDe0Z3/CHaJdMe7MZaxASM0AC06uEOxCir9ZXe7gpcGqtZUiNpmEPl471YUUVPEnxhBbiqO740/f84bIXB1AoqCT0c57r7RPlcJaJ7QeNK1LuSjhUzVB+qP4iwUEh9ZNCkR24MQMV922W8D1sEEEgg4mqR6JQFqQuKGbtE="

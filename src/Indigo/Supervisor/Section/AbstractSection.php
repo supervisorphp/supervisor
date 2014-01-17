@@ -1,10 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
+/**
+ * Abstract Section class
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 abstract class AbstractSection implements SectionInterface
 {
     /**
@@ -87,5 +102,26 @@ abstract class AbstractSection implements SectionInterface
             $resolver->setOptional(array_keys($this->optionalOptions))
                 ->setAllowedTypes($this->optionalOptions);
         }
+    }
+
+    protected function environmentNormalizer()
+    {
+        return function (Options $options, $value) {
+            if (is_array($value)) {
+                $return = array();
+
+                foreach ($value as $key => $val) {
+                    if (is_int($key)) {
+                        continue;
+                    }
+
+                    $return[$key] = strtoupper($key) . '="' . $val . '"';
+                }
+
+                $value = implode(',', $return);
+            }
+
+            return (string) $value;
+        };
     }
 }

@@ -1,10 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\OptionsResolver\Options;
 
+/**
+ * Supervisord Section
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class SupervisordSection extends AbstractSection
 {
     protected $name = 'supervisord';
@@ -38,23 +51,7 @@ class SupervisordSection extends AbstractSection
         $resolver->setAllowedValues(array(
             'loglevel' => array('critical', 'error', 'warn', 'info', 'debug', 'trace', 'blather'),
         ))->setNormalizers(array(
-            'environment' => function (Options $options, $value) {
-                if (is_array($value)) {
-                    $return = array();
-
-                    foreach ($value as $key => $val) {
-                        if (is_int($key)) {
-                            continue;
-                        }
-
-                        $return[$key] = strtoupper($key) . '="' . $val . '"';
-                    }
-
-                    $value = implode(',', $return);
-                }
-
-                return (string) $value;
-            },
+            'environment' => $this->environmentNormalizer(),
         ));
     }
 }

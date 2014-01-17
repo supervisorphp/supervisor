@@ -1,11 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Connector\ConnectorInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Indigo\Supervisor\Exception\ResponseException;
 
+/**
+ * Process object holding data for a single process
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class Process implements \ArrayAccess, \Iterator
 {
     /**

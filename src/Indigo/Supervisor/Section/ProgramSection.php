@@ -1,10 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\OptionsResolver\Options;
 
+/**
+ * Program Section
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class ProgramSection extends AbstractSection
 {
     protected $requiredOptions = array(
@@ -65,23 +78,7 @@ class ProgramSection extends AbstractSection
                 'stopsignal'  => array('TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'),
             ))
             ->setNormalizers(array(
-                'environment' => function (Options $options, $value) {
-                    if (is_array($value)) {
-                        $return = array();
-
-                        foreach ($value as $key => $val) {
-                            if (is_int($key)) {
-                                continue;
-                            }
-
-                            $return[$key] = strtoupper($key) . '="' . $val . '"';
-                        }
-
-                        $value = implode(',', $return);
-                    }
-
-                    return (string) $value;
-                },
+                'environment' => $this->environmentNormalizer(),
             ));
     }
 }

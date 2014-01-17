@@ -1,9 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Connector\ConnectorInterface;
 
+/**
+ * Manage supervisor instance
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class Supervisor
 {
     /**
@@ -44,11 +58,14 @@ class Supervisor
     /**
      * Set connector
      *
-     * @param ConnectorInterface $connector
+     * @param  ConnectorInterface $connector
+     * @return Supervisor
      */
     public function setConnector(ConnectorInterface $connector)
     {
         $this->connector = $connector;
+
+        return $this;
     }
 
     /**
