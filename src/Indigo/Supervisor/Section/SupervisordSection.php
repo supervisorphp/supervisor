@@ -38,23 +38,7 @@ class SupervisordSection extends AbstractSection
         $resolver->setAllowedValues(array(
             'loglevel' => array('critical', 'error', 'warn', 'info', 'debug', 'trace', 'blather'),
         ))->setNormalizers(array(
-            'environment' => function (Options $options, $value) {
-                if (is_array($value)) {
-                    $return = array();
-
-                    foreach ($value as $key => $val) {
-                        if (is_int($key)) {
-                            continue;
-                        }
-
-                        $return[$key] = strtoupper($key) . '="' . $val . '"';
-                    }
-
-                    $value = implode(',', $return);
-                }
-
-                return (string) $value;
-            },
+            'environment' => $this->environmentNormalizer(),
         ));
     }
 }

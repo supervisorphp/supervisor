@@ -4,6 +4,7 @@ namespace Indigo\Supervisor\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\Options;
 
 abstract class AbstractSection implements SectionInterface
 {
@@ -87,5 +88,26 @@ abstract class AbstractSection implements SectionInterface
             $resolver->setOptional(array_keys($this->optionalOptions))
                 ->setAllowedTypes($this->optionalOptions);
         }
+    }
+
+    protected function environmentNormalizer()
+    {
+        return function (Options $options, $value) {
+            if (is_array($value)) {
+                $return = array();
+
+                foreach ($value as $key => $val) {
+                    if (is_int($key)) {
+                        continue;
+                    }
+
+                    $return[$key] = strtoupper($key) . '="' . $val . '"';
+                }
+
+                $value = implode(',', $return);
+            }
+
+            return (string) $value;
+        };
     }
 }

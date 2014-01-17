@@ -65,23 +65,7 @@ class ProgramSection extends AbstractSection
                 'stopsignal'  => array('TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'),
             ))
             ->setNormalizers(array(
-                'environment' => function (Options $options, $value) {
-                    if (is_array($value)) {
-                        $return = array();
-
-                        foreach ($value as $key => $val) {
-                            if (is_int($key)) {
-                                continue;
-                            }
-
-                            $return[$key] = strtoupper($key) . '="' . $val . '"';
-                        }
-
-                        $value = implode(',', $return);
-                    }
-
-                    return (string) $value;
-                },
+                'environment' => $this->environmentNormalizer(),
             ));
     }
 }
