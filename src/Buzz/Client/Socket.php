@@ -52,9 +52,8 @@ class Socket extends AbstractStream
     }
 
     /**
+     * {@inheritdoc}
      * @see ClientInterface
-     *
-     * @throws ClientException
      */
     public function send(RequestInterface $request, MessageInterface $response)
     {
@@ -65,6 +64,12 @@ class Socket extends AbstractStream
         return $response->getContent();
     }
 
+    /**
+     * Create raw HTTP request
+     *
+     * @param  RequestInterface $request
+     * @return string
+     */
     protected function prepareRequest(RequestInterface $request)
     {
         $rawRequest = sprintf(
@@ -81,6 +86,13 @@ class Socket extends AbstractStream
         return $rawRequest;
     }
 
+    /**
+     * Send request
+     *
+     * @param  string  $request Raw request
+     * @throws ClientException If writting to socket failed
+     * @return integer Bytes written
+     */
     protected function sendRequest($request)
     {
         if (!$write = $this->write($request)) {
@@ -90,6 +102,11 @@ class Socket extends AbstractStream
         return $write;
     }
 
+    /**
+     * Receive response
+     *
+     * @param  MessageInterface $response
+     */
     protected function receiveResponse(MessageInterface $response)
     {
         $data       = '';
@@ -121,11 +138,22 @@ class Socket extends AbstractStream
         $response->setContent($data);
     }
 
+    /**
+     * Write to socket
+     * @param  string  $data Data
+     * @return integer Bytes written
+     */
     protected function write($data)
     {
         return @fwrite($this->socket, $data);
     }
 
+    /**
+     * Read from socket
+     *
+     * @param  integer $length Length of data to read
+     * @return string
+     */
     protected function read($length)
     {
         return @fread($this->socket, $length);
