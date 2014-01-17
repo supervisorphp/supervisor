@@ -85,7 +85,40 @@ abstract class SocketConnectorTest extends ConnectorTest
         $this->connector->setResource(null);
     }
 
+    public function testPrepareRequest()
+    {
+        $method = new \ReflectionMethod(get_class($this->connector), 'prepareRequest');
+        $method->setAccessible(true);
+
+        $this->assertInstanceOf(
+            'Buzz\\Message\\RequestInterface',
+            $method->invoke($this->connector, 'namespace', 'method', array())
+        );
+    }
+
+    public function testPrepareClient()
+    {
+        $method = new \ReflectionMethod(get_class($this->connector), 'prepareClient');
+        $method->setAccessible(true);
+
+        $this->assertInstanceOf(
+            'Buzz\\Client\\ClientInterface',
+            $method->invoke($this->connector)
+        );
+    }
+
     public function testClose()
+    {
+        $connector = clone $this->connector;
+        $connector->close();
+
+        $this->assertFalse($connector->isConnected());
+
+        $timeout = $this->connector->setTimeout(null);
+        $this->assertFalse($timeout);
+    }
+
+    public function testDestruct()
     {
         $connector = clone $this->connector;
         unset($connector);

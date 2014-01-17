@@ -52,9 +52,6 @@ abstract class SocketConnector extends AbstractConnector
         return $this->resource = $resource;
     }
 
-    /**
-     * Close connection
-     */
     public function __destruct()
     {
         $this->close();
@@ -131,7 +128,7 @@ abstract class SocketConnector extends AbstractConnector
         if (is_resource($resource)) {
             return parent::setResource($resource);
         } else {
-            throw new \InvalidArgumentException('Stream must be a valid resource, ' . gettype($resource) . 'given.');
+            throw new \InvalidArgumentException('Stream must be a valid resource, ' . gettype($resource) . ' given.');
         }
     }
 
