@@ -3,6 +3,7 @@
 namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Response;
+use Buzz\Exception\ClientException;
 use Indigo\Supervisor\Exception\ResponseException;
 
 abstract class AbstractConnector implements ConnectorInterface
@@ -109,6 +110,13 @@ abstract class AbstractConnector implements ConnectorInterface
         $response = new Response();
         $client = $this->prepareClient();
         $client->send($request, $response);
+
+        if (!$response->isOk()) {
+            throw new ClientException(
+                'HTTP Status: ' . $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
 
         return $this->processResponse($response->getContent());
     }
