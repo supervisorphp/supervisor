@@ -63,7 +63,6 @@ class InetConnector extends AbstractConnector
         $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
         $request = new Request('POST', '/RPC2', $this->resource);
-        $request->setProtocolVersion(1.1);
         $request->setHeaders($headers);
         $request->setContent($xml);
 
