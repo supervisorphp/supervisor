@@ -8,7 +8,7 @@ class UnixHttpServerSection extends AbstractSection
 
     protected $optionalOptions = array(
         'file'     => 'string',
-        'chmod'    => 'integer',
+        'chmod'    => array('integer', 'string'),
         'chown'    => 'string',
         'username' => 'string',
         'password' => 'string',

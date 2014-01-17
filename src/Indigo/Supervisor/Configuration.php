@@ -13,6 +13,18 @@ class Configuration
      */
     protected $sections = array();
 
+    protected $mapSections = array(
+        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
+        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
+        'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
+        'include'          => 'Indigo\\Supervisor\\Section\\IncludeSection',
+        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServerSection',
+        'program'          => 'Indigo\\Supervisor\\Section\\ProgramSection',
+        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\SupervisorctlSection',
+        'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
+        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
+    );
+
     /**
      * Add a section
      *
@@ -59,6 +71,19 @@ class Configuration
     }
 
     /**
+     * Reset Configuration
+     *
+     * @return array Array of previous sections
+     */
+    public function reset()
+    {
+        $sections = $this->sections;
+        $this->sections = array();
+
+        return $sections;
+    }
+
+    /**
      * Render configuration
      *
      * @return string
@@ -97,6 +122,71 @@ class Configuration
         $output .= "\n";
 
         return $output;
+    }
+
+    /**
+     * Parse INI file
+     *
+     * @param  string        $file
+     * @return Configuration
+     */
+    public function parseFile($file)
+    {
+        $ini = parse_ini_file($file, true);
+        $this->parseIni($ini);
+
+        return $this;
+    }
+
+    /**
+     * Parse INI string
+     *
+     * @param  string        $string
+     * @return Configuration
+     */
+    public function parseString($string)
+    {
+        $ini = parse_ini_string($string, true);
+        $this->parseIni($ini);
+
+        return $this;
+    }
+
+    /**
+     * Parse INI array
+     *
+     * @param  array  $ini
+     */
+    protected function parseIni(array $ini)
+    {
+        foreach ($ini as $name => $section) {
+            $name = explode(':', $name);
+            if (array_key_exists($name[0], $this->mapSections)) {
+                $section = $this->parseIniSection($this->mapSections[$name[0]], $name, $section);
+                $this->addSection($section);
+            } else {
+                throw new \UnexpectedValueException('Unexpected section name: ' . $name[0]);
+            }
+        }
+    }
+
+    /**
+     * Parse individual section
+     *
+     * @param  string           $class   Name of SectionInterface class
+     * @param  mixed            $name    Section name or array of name and option
+     * @param  array            $section Array representation of section
+     * @return SectionInterface
+     */
+    protected function parseIniSection($class, array $name, array $section)
+    {
+        if (isset($name[1])) {
+            $section = new $class($name[1], $section);
+        } else {
+            $section = new $class($section);
+        }
+
+        return $section;
     }
 
     /**
