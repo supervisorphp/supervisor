@@ -46,25 +46,29 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->connector->getHeader('X-Test-Null'));
     }
 
-    /**
-     * @expectedException UnexpectedValueException
-     */
-    public function testProcessNullResponse()
+    public function testAccessProcessResponse()
     {
         $method = new \ReflectionMethod(get_class($this->connector), 'processResponse');
         $method->setAccessible(true);
 
+        return $method;
+    }
+
+    /**
+     * @expectedException UnexpectedValueException
+     * @depends testAccessProcessResponse
+     */
+    public function testProcessNullResponse($method)
+    {
         $method->invoke($this->connector, null);
     }
 
     /**
      * @expectedException Indigo\Supervisor\Exception\ResponseException
+     * @depends testAccessProcessResponse
      */
-    public function testProcessFaultyResponse()
+    public function testProcessFaultyResponse($method)
     {
-        $method = new \ReflectionMethod(get_class($this->connector), 'processResponse');
-        $method->setAccessible(true);
-
         $response = '<?xml version="1.0" encoding="UTF-8"?>
 <methodResponse>
    <fault>
@@ -86,11 +90,11 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
         $method->invoke($this->connector, $response);
     }
 
-    public function testProcess()
+    /**
+     * @depends testAccessProcessResponse
+     */
+    public function testProcessResponse($method)
     {
-        $method = new \ReflectionMethod(get_class($this->connector), 'processResponse');
-        $method->setAccessible(true);
-
         $response = '<?xml version="1.0" encoding="UTF-8"?>
 <methodCall>
    <methodName>fake.response</methodName>
