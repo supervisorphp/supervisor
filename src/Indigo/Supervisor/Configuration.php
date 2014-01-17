@@ -68,21 +68,33 @@ class Configuration
         $output = '';
 
         foreach ($this->sections as $name => $section) {
-            // only continue processing this section if there are options in it
-            if (!$options = $section->getOptions()) {
-                continue;
+            // Only continue processing this section if there are options in it
+            if ($options = $section->getOptions()) {
+                $output .= $this->renderSection($name, $options);
             }
-
-            $output .= "[$name]\n";
-
-            foreach ($options as $key => $value) {
-                is_array($value) and $value = implode(',', $value);
-                $output .= "$key = $value\n";
-            }
-
-            // write a linefeed after sections
-            $output .= "\n";
         }
+
+        return $output;
+    }
+
+    /**
+     * Render section
+     *
+     * @param  string $name
+     * @param  array  $section
+     * @return string
+     */
+    protected function renderSection($name, array $section)
+    {
+        $output = "[$name]\n";
+
+        foreach ($section as $key => $value) {
+            is_array($value) and $value = implode(',', $value);
+            $output .= "$key = $value\n";
+        }
+
+        // Write a linefeed after sections
+        $output .= "\n";
 
         return $output;
     }
