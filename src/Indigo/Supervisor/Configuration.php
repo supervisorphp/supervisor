@@ -13,6 +13,18 @@ class Configuration
      */
     protected $sections = array();
 
+    protected $mapSections = array(
+        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
+        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
+        'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
+        'include'          => 'Indigo\\Supervisor\\Section\\IncludeSection',
+        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServerSection',
+        'program'          => 'Indigo\\Supervisor\\Section\\ProgramSection',
+        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\SupervisorctlSection',
+        'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
+        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
+    );
+
     /**
      * Add a section
      *
@@ -97,6 +109,55 @@ class Configuration
         $output .= "\n";
 
         return $output;
+    }
+
+    /**
+     * Parse INI file
+     *
+     * @param  string        $file
+     * @return Configuration
+     */
+    public function parseFile($file)
+    {
+        $ini = parse_ini_file($file, true);
+        $this->parseIni($ini);
+
+        return $this;
+    }
+
+    /**
+     * Parse INI string
+     *
+     * @param  string        $string
+     * @return Configuration
+     */
+    public function parseString($string)
+    {
+        $ini = parse_ini_string($string, true);
+        $this->parseIni($ini);
+
+        return $this;
+    }
+
+    /**
+     * Parse INI array
+     *
+     * @param  array  $ini
+     */
+    protected function parseIni(array $ini)
+    {
+        foreach ($ini as $name => $section) {
+            $name = explode(':', $name);
+            if (array_key_exists($name[0], $this->mapSections)) {
+                if (!empty($name[1])) {
+                    $section = new $this->mapSections[$name[0]]($name[1], $section);
+                } else {
+                    $section = new $this->mapSections[$name[0]]($section);
+                }
+
+                $this->addSection($section);
+            }
+        }
     }
 
     /**
