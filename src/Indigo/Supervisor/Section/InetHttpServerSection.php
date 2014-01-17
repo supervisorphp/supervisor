@@ -7,7 +7,7 @@ class InetHttpServerSection extends AbstractSection
     protected $name = 'inet_http_server';
 
     protected $requiredOptions = array(
-        'port' => 'integer',
+        'port' => 'string',
     );
 
     protected $optionalOptions = array(
