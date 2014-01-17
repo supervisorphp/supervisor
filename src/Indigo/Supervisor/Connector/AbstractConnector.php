@@ -1,11 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Response;
 use Buzz\Exception\ClientException;
 use Indigo\Supervisor\Exception\ResponseException;
 
+/**
+ * Abstract Connector class
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 abstract class AbstractConnector implements ConnectorInterface
 {
     /**
