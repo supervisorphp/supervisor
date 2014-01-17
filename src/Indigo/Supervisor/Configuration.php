@@ -162,13 +162,17 @@ class Configuration
         foreach ($ini as $name => $section) {
             $name = explode(':', $name);
             if (array_key_exists($name[0], $this->mapSections)) {
-                if (!empty($name[1])) {
-                    $section = new $this->mapSections[$name[0]]($name[1], $section);
+                $class = $this->mapSections[$name[0]];
+
+                if (isset($name[1])) {
+                    $section = new $class($name[1], $section);
                 } else {
-                    $section = new $this->mapSections[$name[0]]($section);
+                    $section = new $class($section);
                 }
 
                 $this->addSection($section);
+            } else {
+                throw new \UnexpectedValueException('Unexpected section name: ' . $name[0]);
             }
         }
     }
