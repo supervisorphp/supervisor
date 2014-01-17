@@ -73,7 +73,7 @@ class Socket extends AbstractStream
     protected function prepareRequest(RequestInterface $request)
     {
         $rawRequest = sprintf(
-            "%s %s HTTP/%.1f\r\n",
+            "%s %s HTTP/%.1F\r\n",
             $request->getMethod(),
             $request->getResource(),
             $request->getProtocolVersion()
