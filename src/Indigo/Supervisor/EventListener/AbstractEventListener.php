@@ -80,7 +80,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     protected function getPayload()
     {
         if ($payload = $this->read()) {
-            $headers = $this->parseData($headers);
+            $headers = $this->parseData($payload);
 
             $payload = $this->read($headers['len']);
 
