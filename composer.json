@@ -11,11 +11,11 @@
     "require": {
         "symfony/options-resolver": "v2.4.0",
         "symfony/process": "v2.4.0",
-        "psr/log": "~1.0"
+        "psr/log": "~1.0",
+        "kriswallsmith/buzz": "dev-master"
     },
     "require-dev": {
-        "mockery/mockery": "dev-master@dev",
-        "kriswallsmith/buzz": "dev-master"
+        "mockery/mockery": "dev-master@dev"
     },
     "autoload": {
         "psr-0": {
