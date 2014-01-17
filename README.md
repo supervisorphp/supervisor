@@ -23,13 +23,14 @@ Via Composer
 ``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
+use Indigo\Supervisor\Connector;
 
-$connector = new Indigo\Supervisor\Connector\InetConnector('localhost', 9001);
-//$connector = new Indigo\Supervisor\Connector\SocketConnector('unix:///var/run/supervisor.lock');
+$connector = new Connector\InetConnector('localhost', 9001);
+//$connector = new Connector\SocketConnector('unix:///var/run/supervisor.lock');
 
 $connector->setCredentials('user', '123');
 
-$supervisor = new Indigo\Supervisor\Supervisor($connector);
+$supervisor = new Supervisor($connector);
 
 // returns Process object
 $process->$supervisor->getProcess('test_process');
@@ -91,8 +92,8 @@ The following sections are available in this pacakge:
 * *FcgiProgramSection**
 
 
-***Note**: These sections has to instantiated with a name and optionally an options array:
-```php
+***Note**: These sections has to be instantiated with a name and optionally an options array:
+``` php
 $section = new ProgramSection('test', array('command' => 'cat'));
 ```
 
