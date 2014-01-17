@@ -84,4 +84,41 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($render, (string)$this->config);
     }
+
+    public function testParseFile()
+    {
+        $this->config->reset();
+        $this->config->parseFile(__DIR__ . '/../../supervisord.conf');
+
+        $this->assertInstanceOf(
+            'Indigo\\Supervisor\\Section\\SupervisordSection',
+            $this->config->getSection('supervisord')
+        );
+    }
+
+    public function testParseString()
+    {
+        $this->config->reset();
+
+        $string = @file_get_contents(__DIR__ . '/../../supervisord.conf');
+        $this->config->parseString($string);
+
+        $this->assertInstanceOf(
+            'Indigo\\Supervisor\\Section\\SupervisordSection',
+            $this->config->getSection('supervisord')
+        );
+    }
+
+    /**
+     * @expectedException UnexpectedValueException
+     */
+    public function testParseFailure()
+    {
+        $this->config->reset();
+
+        $string = "[fake_section]
+option = fake";
+
+        $this->config->parseString($string);
+    }
 }

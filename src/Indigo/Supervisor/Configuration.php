@@ -78,7 +78,7 @@ class Configuration
     public function reset()
     {
         $sections = $this->sections;
-        $this->sections = array()
+        $this->sections = array();
 
         return $sections;
     }
@@ -162,19 +162,31 @@ class Configuration
         foreach ($ini as $name => $section) {
             $name = explode(':', $name);
             if (array_key_exists($name[0], $this->mapSections)) {
-                $class = $this->mapSections[$name[0]];
-
-                if (isset($name[1])) {
-                    $section = new $class($name[1], $section);
-                } else {
-                    $section = new $class($section);
-                }
-
+                $section = $this->parseIniSection($this->mapSections[$name[0]], $name, $section);
                 $this->addSection($section);
             } else {
                 throw new \UnexpectedValueException('Unexpected section name: ' . $name[0]);
             }
         }
+    }
+
+    /**
+     * Parse individual section
+     *
+     * @param  string           $class   Name of SectionInterface class
+     * @param  mixed            $name    Section name or array of name and option
+     * @param  array            $section Array representation of section
+     * @return SectionInterface
+     */
+    protected function parseIniSection($class, array $name, array $section)
+    {
+        if (isset($name[1])) {
+            $section = new $class($name[1], $section);
+        } else {
+            $section = new $class($section);
+        }
+
+        return $section;
     }
 
     /**
