@@ -44,11 +44,14 @@ class Supervisor
     /**
      * Set connector
      *
-     * @param ConnectorInterface $connector
+     * @param  ConnectorInterface $connector
+     * @return Supervisor
      */
     public function setConnector(ConnectorInterface $connector)
     {
         $this->connector = $connector;
+
+        return $this;
     }
 
     /**
