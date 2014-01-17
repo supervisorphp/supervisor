@@ -15,37 +15,44 @@ class SectionTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             new EventListenerSection('test', array(
-                'command' => 'cat /path/to/file'
+                'command' => 'cat /path/to/file',
             )),
             new FcgiProgramSection('test', array(
                 'socket'  => '/path/to/socket',
-                'command' => 'cat /path/to/file'
+                'command' => 'cat /path/to/file',
             )),
             new GroupSection('test', array(
                 'programs' => array(
                     'test',
-                    'empty'
-                )
+                    'empty',
+                ),
             )),
             new IncludeSection(array(
-                'files' => array('/etc/supervisord/conf.d/*')
+                'files' => array('/etc/supervisord/conf.d/*'),
             )),
             new InetHttpServerSection(array(
-                'port' => 9001
+                'port' => 9001,
             )),
             new ProgramSection('test', array(
                 'command' => 'cat /path/to/file',
                 'environment' => array(
                     'KEY' => 'value',
-                    'fake_value'
-                )
+                    'fake_value',
+                ),
+            )),
+            new ProgramSection('test', array(
+                'command'    => 'cat /path/to/file',
+                'stopsignal' => 'TERM',
             )),
             new SupervisorctlSection,
             new SupervisordSection(array(
                 'environment' => array(
                     'KEY' => 'value',
                     'fake_value'
-                )
+                ),
+            )),
+            new SupervisordSection(array(
+                'loglevel' => 'warn',
             )),
             new UnixHttpServerSection,
         );
