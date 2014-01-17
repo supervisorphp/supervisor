@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
@@ -7,6 +16,8 @@ use Buzz\Client\Socket as Client;
 
 /**
  * Connect to Supervisor through socket
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 abstract class SocketConnector extends AbstractConnector
 {
