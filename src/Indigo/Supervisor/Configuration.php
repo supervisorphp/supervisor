@@ -155,7 +155,7 @@ class Configuration
     /**
      * Parse INI array
      *
-     * @param  array  $ini
+     * @param array $ini
      */
     protected function parseIni(array $ini)
     {
