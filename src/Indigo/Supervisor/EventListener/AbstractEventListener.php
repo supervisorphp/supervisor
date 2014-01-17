@@ -60,13 +60,26 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
      */
     public function listen()
     {
-        $this->write(self::READY);
+        $this->statusReady();
 
         while (true) {
-            if ( ! $headers = $this->read()) {
+            if (!$payload = $this->getPayload()) {
                 continue;
             }
 
+            $result = $this->doListen($payload);
+
+            if (!$this->processResult($result)) {
+                return;
+            }
+
+            $this->statusReady();
+        }
+    }
+
+    protected function getPayload()
+    {
+        if ($payload = $this->read()) {
             $headers = $this->parseData($headers);
 
             $payload = $this->read($headers['len']);
@@ -74,19 +87,31 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
             $payload = explode("\n", $payload, 2);
 
             $payload[0] = array_merge($headers, $this->parseData($payload[0]));
-
-            $result = $this->doListen($payload);
-
-            if ($result === 0) {
-                $this->write(self::OK);
-            } elseif ($result === 1) {
-                $this->write(self::FAIL);
-            } else {
-                return;
-            }
-
-            $this->write(self::READY);
         }
+
+        return $payload;
+    }
+
+    protected function processResult($result)
+    {
+        switch ($result) {
+            case 0:
+                $this->write(self::OK);
+                break;
+            case 1:
+                $this->write(self::FAIL);
+                break;
+            default:
+                return false;
+                break;
+        }
+
+        return true;
+    }
+
+    protected function statusReady()
+    {
+        $this->write(self::READY);
     }
 
     /**
