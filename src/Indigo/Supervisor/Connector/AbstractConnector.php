@@ -2,8 +2,9 @@
 
 namespace Indigo\Supervisor\Connector;
 
+use Buzz\Message\Response;
+use Buzz\Exception\ClientException;
 use Indigo\Supervisor\Exception\ResponseException;
-use Indigo\Supervisor\Exception\InvalidResponseException;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
@@ -13,20 +14,6 @@ abstract class AbstractConnector implements ConnectorInterface
      * @var mixed
      */
     protected $resource;
-
-    /**
-     * Username for authentication
-     *
-     * @var string
-     */
-    protected $username;
-
-    /**
-     * Password for authentication
-     *
-     * @var string
-     */
-    protected $password;
 
     /**
      * Headers to send
@@ -46,12 +33,22 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     public function setCredentials($username, $password)
     {
-        $this->username = $username;
-        $this->password = $password;
+        return $this->setHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
+    }
 
-        $this->setHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
-
-        return $this;
+    /**
+     * Get HTTP header(s)
+     *
+     * @param  string $name Header name
+     * @return mixed  One specific value or all headers
+     */
+    public function getHeader($name = null)
+    {
+        if (is_null($name)) {
+            return $this->headers;
+        } elseif (array_key_exists($name, $this->headers)) {
+            return $this->headers[$name];
+        }
     }
 
     /**
@@ -67,7 +64,7 @@ abstract class AbstractConnector implements ConnectorInterface
         if ($replace) {
             $this->headers[$name] = $value;
         } elseif (array_key_exists($name, $this->headers)) {
-            if ( ! is_array($this->headers[$name])) {
+            if (!is_array($this->headers[$name])) {
                 $this->headers[$name] = array($this->headers[$name]);
             }
 
@@ -75,6 +72,7 @@ abstract class AbstractConnector implements ConnectorInterface
         } else {
             $this->headers[$name] = $value;
         }
+
         return $this;
     }
 
@@ -92,12 +90,35 @@ abstract class AbstractConnector implements ConnectorInterface
      * Set resource
      * Validation of resource (if needed) is up to the class itself
      *
-     * @param mixed $resource
+     * @param  mixed              $resource
+     * @return ConnectorInterface
      */
     public function setResource($resource)
     {
         $this->resource = $resource;
+
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function call($namespace, $method, array $arguments = array())
+    {
+        $request = $this->prepareRequest($namespace, $method, $arguments);
+
+        $response = new Response();
+        $client = $this->prepareClient();
+        $client->send($request, $response);
+
+        if (!$response->isOk()) {
+            throw new ClientException(
+                'HTTP Status: ' . $response->getReasonPhrase(),
+                $response->getStatusCode()
+            );
+        }
+
+        return $this->processResponse($response->getContent());
     }
 
     /**
@@ -106,16 +127,33 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param  string $response Raw response
      * @return mixed
      */
-    public function processResponse($response)
+    protected function processResponse($response)
     {
         $response = xmlrpc_decode(trim($response), 'utf-8');
 
-        if ( ! $response) {
-            throw new InvalidResponseException('Invalid or empty response');
+        if (!$response) {
+            throw new \UnexpectedValueException('Invalid or empty response');
         } elseif (is_array($response) and xmlrpc_is_fault($response)) {
             throw new ResponseException($response['faultString'], $response['faultCode']);
         }
 
         return $response;
     }
+
+    /**
+     * Prepare request
+     *
+     * @param  string                        $namespace
+     * @param  string                        $method
+     * @param  array                         $arguments
+     * @return Buzz\Message\RequestInterface
+     */
+    abstract protected function prepareRequest($namespace, $method, array $arguments);
+
+    /**
+     * Prepare client
+     *
+     * @return Buzz\Client\ClientInterface
+     */
+    abstract protected function prepareClient();
 }

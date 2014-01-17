@@ -2,19 +2,16 @@
 
 namespace Indigo\Supervisor\Section;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 class InetHttpServerSection extends AbstractSection
 {
-	protected $name = 'inet_http_server';
+    protected $name = 'inet_http_server';
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired(array('port'));
+    protected $requiredOptions = array(
+        'port' => 'integer',
+    );
 
-		$resolver->setOptional(array('username', 'password'));
-	}
+    protected $optionalOptions = array(
+        'username' => 'string',
+        'password' => 'string',
+    );
 }

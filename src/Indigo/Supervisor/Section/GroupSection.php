@@ -2,24 +2,20 @@
 
 namespace Indigo\Supervisor\Section;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 class GroupSection extends AbstractSection
 {
-	public function __construct($name, array $options = array())
-	{
-		$this->name = 'group:' . trim($name);
+    protected $requiredOptions = array(
+        'programs' => 'array',
+    );
 
-		parent::__construct($options);
-	}
+    protected $optionalOptions = array(
+        'priority' => 'integer',
+    );
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired(array('programs'));
+    public function __construct($name, array $options = array())
+    {
+        $this->setOptions($options);
 
-		$resolver->setOptional(array('priority'));
-	}
+        $this->name = 'group:' . trim($name);
+    }
 }

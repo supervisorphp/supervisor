@@ -11,27 +11,25 @@
  *
  * @return  string  constructed URL
  */
-if (!function_exists('http_build_url'))
-{
-    define('HTTP_URL_REPLACE', 1);              // Replace every part of the first URL when there's one of the second URL
-    define('HTTP_URL_JOIN_PATH', 2);            // Join relative paths
-    define('HTTP_URL_JOIN_QUERY', 4);           // Join query strings
-    define('HTTP_URL_STRIP_USER', 8);           // Strip any user authentication information
-    define('HTTP_URL_STRIP_PASS', 16);          // Strip any password authentication information
-    define('HTTP_URL_STRIP_AUTH', 32);          // Strip any authentication information
-    define('HTTP_URL_STRIP_PORT', 64);          // Strip explicit port numbers
-    define('HTTP_URL_STRIP_PATH', 128);         // Strip complete path
-    define('HTTP_URL_STRIP_QUERY', 256);        // Strip query string
-    define('HTTP_URL_STRIP_FRAGMENT', 512);     // Strip any fragments (#identifier)
-    define('HTTP_URL_STRIP_ALL', 1024);         // Strip anything but scheme and host
+if (!function_exists('http_build_url')) {
+    define('HTTP_URL_REPLACE', 1);             // Replace every part of the first URL when there's one of the second URL
+    define('HTTP_URL_JOIN_PATH', 2);           // Join relative paths
+    define('HTTP_URL_JOIN_QUERY', 4);          // Join query strings
+    define('HTTP_URL_STRIP_USER', 8);          // Strip any user authentication information
+    define('HTTP_URL_STRIP_PASS', 16);         // Strip any password authentication information
+    define('HTTP_URL_STRIP_AUTH', 32);         // Strip any authentication information
+    define('HTTP_URL_STRIP_PORT', 64);         // Strip explicit port numbers
+    define('HTTP_URL_STRIP_PATH', 128);        // Strip complete path
+    define('HTTP_URL_STRIP_QUERY', 256);       // Strip query string
+    define('HTTP_URL_STRIP_FRAGMENT', 512);    // Strip any fragments (#identifier)
+    define('HTTP_URL_STRIP_ALL', 1024);        // Strip anything but scheme and host
 
     function http_build_url($url, $parts = array(), $flags = HTTP_URL_REPLACE, &$new_url = false)
     {
         $keys = array('user','pass','port','path','query','fragment');
 
         // HTTP_URL_STRIP_ALL becomes all the HTTP_URL_STRIP_Xs
-        if ($flags & HTTP_URL_STRIP_ALL)
-        {
+        if ($flags & HTTP_URL_STRIP_ALL) {
             $flags |= HTTP_URL_STRIP_USER;
             $flags |= HTTP_URL_STRIP_PASS;
             $flags |= HTTP_URL_STRIP_PORT;
@@ -40,8 +38,7 @@ if (!function_exists('http_build_url'))
             $flags |= HTTP_URL_STRIP_FRAGMENT;
         }
         // HTTP_URL_STRIP_AUTH becomes HTTP_URL_STRIP_USER and HTTP_URL_STRIP_PASS
-        else if ($flags & HTTP_URL_STRIP_AUTH)
-        {
+        elseif ($flags & HTTP_URL_STRIP_AUTH) {
             $flags |= HTTP_URL_STRIP_USER;
             $flags |= HTTP_URL_STRIP_PASS;
         }
@@ -55,8 +52,7 @@ if (!function_exists('http_build_url'))
         isset($parse_url['path']) or $parse_url['path'] = '';
 
         // make the path absolute if needed
-        if ( ! empty($parse_url['path']) and substr($parse_url['path'], 0, 1) != '/')
-        {
+        if ( ! empty($parse_url['path']) and substr($parse_url['path'], 0, 1) != '/') {
             $parse_url['path'] = '/'.$parse_url['path'];
         }
 
@@ -65,19 +61,14 @@ if (!function_exists('http_build_url'))
         isset($parts['host']) and $parse_url['host'] = $parts['host'];
 
         // replace the original URL with it's new parts (if applicable)
-        if ($flags & HTTP_URL_REPLACE)
-        {
-            foreach ($keys as $key)
-            {
+        if ($flags & HTTP_URL_REPLACE) {
+            foreach ($keys as $key) {
                 if (isset($parts[$key]))
                     $parse_url[$key] = $parts[$key];
             }
-        }
-        else
-        {
+        } else {
             // join the original URL path with the new path
-            if (isset($parts['path']) && ($flags & HTTP_URL_JOIN_PATH))
-            {
+            if (isset($parts['path']) && ($flags & HTTP_URL_JOIN_PATH)) {
                 if (isset($parse_url['path']))
                     $parse_url['path'] = rtrim(str_replace(basename($parse_url['path']), '', $parse_url['path']), '/') . '/' . ltrim($parts['path'], '/');
                 else
@@ -85,8 +76,7 @@ if (!function_exists('http_build_url'))
             }
 
             // join the original query string with the new query string
-            if (isset($parts['query']) && ($flags & HTTP_URL_JOIN_QUERY))
-            {
+            if (isset($parts['query']) && ($flags & HTTP_URL_JOIN_QUERY)) {
                 if (isset($parse_url['query']))
                     $parse_url['query'] .= '&' . $parts['query'];
                 else
@@ -96,9 +86,8 @@ if (!function_exists('http_build_url'))
 
         // strips all the applicable sections of the URL
         // note: scheme and host are never stripped
-        foreach ($keys as $key)
-        {
-            if ($flags & (int)constant('HTTP_URL_STRIP_' . strtoupper($key)))
+        foreach ($keys as $key) {
+            if ($flags & (int) constant('HTTP_URL_STRIP_' . strtoupper($key)))
                 unset($parse_url[$key]);
         }
 
@@ -117,8 +106,7 @@ if (!function_exists('http_build_url'))
     }
 }
 
-if (!function_exists('http_parse_headers'))
-{
+if (!function_exists('http_parse_headers')) {
     function http_parse_headers($rawHeaders)
     {
         $rawHeaders = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $rawHeaders));
@@ -129,7 +117,7 @@ if (!function_exists('http_parse_headers'))
             if (count($header) == 2) {
                 $header[0] = preg_replace_callback(
                     '/(?<=^|[\x09\x20\x2D])./',
-                    function($matches) {
+                    function ($matches) {
                         return strtoupper($matches[0]);
                     },
                     strtolower(trim($header[0]))
@@ -151,13 +139,12 @@ if (!function_exists('http_parse_headers'))
     }
 }
 
-if (!function_exists('http_build_headers'))
-{
+if (!function_exists('http_build_headers')) {
     function http_build_headers(array $headers)
     {
         $rawHeaders = '';
 
-        $concat = function($key, $value) use(&$rawHeaders) {
+        $concat = function ($key, $value) use (&$rawHeaders) {
             $rawHeaders .= "$key: $value\r\n";
         };
 
@@ -172,5 +159,17 @@ if (!function_exists('http_build_headers'))
         }
 
         return $rawHeaders;
+    }
+}
+
+if (!function_exists('get_http_status')) {
+    function get_http_status($rawHeaders)
+    {
+        $http = strtok($rawHeaders, "\r\n");
+        $http = explode(' ', $http, 3);
+
+        $http[1] = intval($http[1]);
+
+        return $http;
     }
 }

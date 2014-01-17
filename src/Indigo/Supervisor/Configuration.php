@@ -6,96 +6,92 @@ use Indigo\Supervisor\Section\SectionInterface;
 
 class Configuration
 {
-	/**
-	 * Config sections
-	 *
-	 * @var array
-	 */
-	protected $sections = array();
+    /**
+     * Config sections
+     *
+     * @var array
+     */
+    protected $sections = array();
 
-	/**
-	 * Add a section
-	 *
-	 * @param  SectionInterface $section
-	 * @return Configuration
-	 */
-	public function addSection(SectionInterface $section)
-	{
-		$this->sections[$section->getName()] = $section;
+    /**
+     * Add a section
+     *
+     * @param  SectionInterface $section
+     * @return Configuration
+     */
+    public function addSection(SectionInterface $section)
+    {
+        $this->sections[$section->getName()] = $section;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Remove a section by name
-	 *
-	 * @param  string        $section
-	 * @return Configuration
-	 */
-	public function removeSection($section)
-	{
-		if (array_key_exists($section, $this->sections)) {
-			unset($this->sections[$section]);
-		}
+    /**
+     * Remove a section by name
+     *
+     * @param  string  $section
+     * @return boolean
+     */
+    public function removeSection($section)
+    {
+        if (array_key_exists($section, $this->sections)) {
+            unset($this->sections[$section]);
 
-		return $this;
-	}
+            return true;
+        }
 
-	/**
-	 * Get a specific section by name
-	 *
-	 * @param  string                $section
-	 * @return SectionInterface|null
-	 */
-	public function getSection($section)
-	{
-		if (array_key_exists($section, $this->sections)) {
-			return $this->sections[$section];
-		}
-	}
-	/**
-	 * Get all sections
-	 *
-	 * @return array
-	 */
-	public function getSections()
-	{
-		return $this->sections;
-	}
+        return false;
+    }
 
-	/**
-	 * Render configuration
-	 *
-	 * @return string
-	 */
-	public function render()
-	{
-		$output = '';
+    /**
+     * Get a specific section by name or all
+     *
+     * @param  string $section
+     * @return mixed
+     */
+    public function getSection($section = null)
+    {
+        if (is_null($section)) {
+            return $this->sections;
+        } elseif (array_key_exists($section, $this->sections)) {
+            return $this->sections[$section];
+        }
+    }
 
-		foreach ($this->sections as $name => $section) {
-			// only continue processing this section if there are options in it
-			if ( ! $options = $section->getOptions()) {
-				continue;
-			}
+    /**
+     * Render configuration
+     *
+     * @return string
+     */
+    public function render()
+    {
+        $output = '';
 
-			// write a linefeed before sections
-			empty($output) or $output .= "\n";
+        foreach ($this->sections as $name => $section) {
+            // only continue processing this section if there are options in it
+            if (!$options = $section->getOptions()) {
+                continue;
+            }
 
-			$output .= "[$name]\n";
+            $output .= "[$name]\n";
 
-			foreach ($options as $key => $value) {
-				$output .= "$key = $value\n";
-			}
-		}
+            foreach ($options as $key => $value) {
+                is_array($value) and $value = implode(',', $value);
+                $output .= "$key = $value\n";
+            }
 
-		return $output;
-	}
+            // write a linefeed after sections
+            $output .= "\n";
+        }
 
-	/**
-	 * Alias to render()
-	 */
-	public function __tostring()
-	{
-		return $this->render();
-	}
+        return $output;
+    }
+
+    /**
+     * Alias to render()
+     */
+    public function __tostring()
+    {
+        return $this->render();
+    }
 }

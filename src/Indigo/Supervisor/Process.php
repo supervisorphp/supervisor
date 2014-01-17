@@ -84,6 +84,8 @@ class Process implements \ArrayAccess, \Iterator
     public function setConnector(ConnectorInterface $connector)
     {
         $this->connector = $connector;
+
+        return $this;
     }
 
     /**
@@ -116,7 +118,7 @@ class Process implements \ArrayAccess, \Iterator
     {
         $mem = 0;
 
-        if ($this->isRunning() and ! empty($this['pid'])) {
+        if ($this->isRunning() and !empty($this['pid'])) {
             $process = new SymfonyProcess('ps -orss= -p ' . $this['pid']);
             $process->run();
 
@@ -139,6 +141,7 @@ class Process implements \ArrayAccess, \Iterator
     public function call($namespace, $method, array $arguments = array())
     {
         $arguments = array_merge(array($this->payload['name']), $arguments);
+
         return $this->connector->call($namespace, $method, $arguments);
     }
 
@@ -146,7 +149,7 @@ class Process implements \ArrayAccess, \Iterator
      * Start the process
      *
      * @param  boolean $wait Wait for process to be fully started
-     * @return boolean       Always true unless error
+     * @return boolean Always true unless error
      */
     public function start($wait = true)
     {
@@ -157,7 +160,7 @@ class Process implements \ArrayAccess, \Iterator
      * Stop the process
      *
      * @param  boolean $wait Wait for process to be fully stopped
-     * @return boolean       Always true unless error
+     * @return boolean Always true unless error
      */
     public function stop($wait = true)
     {
@@ -168,7 +171,7 @@ class Process implements \ArrayAccess, \Iterator
      * Restart the process
      *
      * @param  boolean $wait Wait for process to be fully stopped and started
-     * @return boolean       Always true unless error
+     * @return boolean Always true unless error
      */
     public function restart($wait = true)
     {
@@ -189,8 +192,8 @@ class Process implements \ArrayAccess, \Iterator
      * If the process is not running, raise NOT_RUNNING.
      * If the process’ stdin cannot accept input (e.g. it was closed by the child process), raise NO_FILE.
      *
-     * @param  string  $data    The character data to send to the process
-     * @return boolean          Always return True unless error
+     * @param  string  $data The character data to send to the process
+     * @return boolean Always return True unless error
      */
     public function sendStdin($data)
     {
@@ -200,9 +203,9 @@ class Process implements \ArrayAccess, \Iterator
     /**
      * Read length bytes from stdout log starting at offset
      *
-     * @param  int    $offset  Offset to start reading from
-     * @param  int    $length  Number of bytes to read from the log
-     * @return string          Result Bytes of log
+     * @param  int    $offset Offset to start reading from
+     * @param  int    $length Number of bytes to read from the log
+     * @return string Result Bytes of log
      */
     public function readStdoutLog($offset, $length)
     {
@@ -212,9 +215,9 @@ class Process implements \ArrayAccess, \Iterator
     /**
      * Read length bytes from stderr log starting at offset
      *
-     * @param  int    $offset  Offset to start reading from
-     * @param  int    $length  Number of bytes to read from the log
-     * @return string          Result Bytes of log
+     * @param  int    $offset Offset to start reading from
+     * @param  int    $length Number of bytes to read from the log
+     * @return string Result Bytes of log
      */
     public function readStderrLog($offset, $length)
     {
@@ -227,13 +230,15 @@ class Process implements \ArrayAccess, \Iterator
      *
      * Requests (length) bytes from the (name)’s log, starting at (offset).
      * If the total log size is greater than (offset + length),
-     * the overflow flag is set and the (offset) is automatically increased to position the buffer at the end of the log.
-     * If less than (length) bytes are available, the maximum number of available bytes will be returned.
+     * the overflow flag is set and the (offset) is automatically increased to position
+     * the buffer at the end of the log.
+     * If less than (length) bytes are available,
+     * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
-     * @param  int   $offset  Offset to start reading from
-     * @param  int   $length  Maximum number of bytes to return
-     * @return array          [string bytes, int offset, bool overflow]
+     * @param  int   $offset Offset to start reading from
+     * @param  int   $length Maximum number of bytes to return
+     * @return array [string bytes, int offset, bool overflow]
      */
     public function tailStdoutLog($offset, $length)
     {
@@ -246,13 +251,15 @@ class Process implements \ArrayAccess, \Iterator
      *
      * Requests (length) bytes from the (name)’s log, starting at (offset).
      * If the total log size is greater than (offset + length),
-     * the overflow flag is set and the (offset) is automatically increased to position the buffer at the end of the log.
-     * If less than (length) bytes are available, the maximum number of available bytes will be returned.
+     * the overflow flag is set and the (offset) is automatically increased to position
+     * the buffer at the end of the log.
+     * If less than (length) bytes are available,
+     * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
-     * @param  int   $offset  Offset to start reading from
-     * @param  int   $length  Maximum number of bytes to return
-     * @return array          [string bytes, int offset, bool overflow]
+     * @param  int   $offset Offset to start reading from
+     * @param  int   $length Maximum number of bytes to return
+     * @return array [string bytes, int offset, bool overflow]
      */
     public function tailStderrLog($offset, $length)
     {

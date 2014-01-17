@@ -2,26 +2,23 @@
 
 namespace Indigo\Supervisor\Section;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 class FcgiProgramSection extends ProgramSection
 {
-	public function __construct($name, array $options = array())
-	{
-		parent::__construct($name, $options);
+    protected $requiredOptionsOverride = array(
+        'socket'  => 'string',
+    );
 
-		$this->name = 'fcgi' . $this->name;
-	}
+    protected $optionalOptionsOverride = array(
+        'socket_owner' => 'string',
+        'socket_mode'  => 'integer',
+    );
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		parent::setDefaultOptions($resolver);
+    public function __construct($name, array $options = array())
+    {
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
+        $this->requiredOptions = array_merge($this->requiredOptions, $this->requiredOptionsOverride);
+        $this->setOptions($options);
 
-		$resolver->setRequired(array('socket'));
-
-		$resolver->setOptional(array('socket_owner', 'socket_mode'));
-	}
+        $this->name = 'fcgi-program:' . trim($name);
+    }
 }

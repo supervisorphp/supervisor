@@ -2,28 +2,19 @@
 
 namespace Indigo\Supervisor\Section;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 class EventListenerSection extends ProgramSection
 {
-	public function __construct($name, array $options = array())
-	{
-		parent::__construct($name, $options);
+    protected $optionalOptionsOverride = array(
+        'buffer_size'    => 'integer',
+        'events'         => 'array',
+        'result_handler' => 'string',
+    );
 
-		$this->name = 'eventlistener:' . trim($name);
-	}
+    public function __construct($name, array $options = array())
+    {
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
+        $this->resolveOptions($options);
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		parent::setDefaultOptions($resolver);
-
-		$resolver->setOptional(array(
-			'buffer_size',
-			'events',
-			'result_handler',
-		));
-	}
+        $this->name = 'eventlistener:' . trim($name);
+    }
 }
