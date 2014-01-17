@@ -147,6 +147,7 @@ abstract class SocketConnector extends AbstractConnector
         $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
 
         $request = new Request('POST', '/RPC2');
+        $request->setProtocolVersion(1.1);
         $request->setHeaders($headers);
         $request->setContent($xml);
 
