@@ -58,6 +58,16 @@ class SectionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function realProvider()
+    {
+        $provider = array();
+        foreach ($this->provider() as $section) {
+            $provider[] = array($section);
+        }
+
+        return $provider;
+    }
+
     public function testConfig()
     {
         foreach ($this->provider() as $section) {
@@ -78,6 +88,19 @@ class SectionTest extends \PHPUnit_Framework_TestCase
                 $section
             );
         }
+    }
+
+    /**
+     * @expectedException Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+     * @dataProvider realProvider
+     */
+    public function testFaultySection($section)
+    {
+        $options = array(
+            'fake' => null,
+        );
+
+        $section->setOptions($options);
     }
 
     /**
