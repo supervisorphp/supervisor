@@ -71,6 +71,19 @@ class Configuration
     }
 
     /**
+     * Reset Configuration
+     *
+     * @return array Array of previous sections
+     */
+    public function reset()
+    {
+        $sections = $this->sections;
+        $this->sections = array()
+
+        return $sections;
+    }
+
+    /**
      * Render configuration
      *
      * @return string
