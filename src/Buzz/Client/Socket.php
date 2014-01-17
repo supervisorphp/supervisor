@@ -96,7 +96,7 @@ class Socket extends AbstractStream
     protected function sendRequest($request)
     {
         if (!$write = $this->write($request)) {
-            throw new ClientException('Cannot write' . strlen($request) . ' bytes to socket');
+            throw new ClientException('Cannot write ' . strlen($request) . ' bytes to socket');
         }
 
         return $write;
