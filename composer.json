@@ -18,7 +18,11 @@
         "kriswallsmith/buzz": "v0.10"
     },
     "require-dev": {
-        "mockery/mockery": "dev-master@dev"
+        "mockery/mockery": "dev-master@dev",
+        "symfony/console": "v2.4.1"
+    },
+    "suggest": {
+        "symfony/console": "Used for CLI application"
     },
     "autoload": {
         "psr-0": {
