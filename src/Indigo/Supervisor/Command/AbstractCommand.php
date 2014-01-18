@@ -26,13 +26,13 @@ abstract class AbstractCommand extends Command
             null,
             InputOption::VALUE_OPTIONAL,
             'Use Unix socket for connection',
+            '/var/run/supervisor.sock'
         ),
         array(
             'host',
             null,
             InputOption::VALUE_OPTIONAL,
             'Use Internet socket for connection',
-            'localhost',
         ),
         array(
             'port',
@@ -76,14 +76,14 @@ abstract class AbstractCommand extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('unix')) {
-            $connector = new UnixSocketConnector($input->getOption('unix'), $input->getOption('timeout'));
-        } else {
+        if ($input->getOption('host')) {
             $connector = new InetSocketConnector(
                 $input->getOption('host'),
                 $input->getOption('port'),
                 $input->getOption('timeout')
             );
+        } else {
+            $connector = new UnixSocketConnector($input->getOption('unix'), $input->getOption('timeout'));
         }
 
         if ($input->getOption('user') and $input->getOption('pass')) {
