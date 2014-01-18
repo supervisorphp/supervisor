@@ -15,7 +15,7 @@ class SupervisorCommand extends AbstractCommand
             'method',
             InputArgument::OPTIONAL,
             'What do you want to do?',
-            'list',
+            'info',
         ),
     );
 
@@ -32,17 +32,17 @@ class SupervisorCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         switch ($input->getArgument('method')) {
-            case 'state':
-                $this->methodState($output);
+            case 'info':
+                $this->methodInfo($output);
                 break;
-            case 'stop':
-                $this->methodStop($input, $output);
+            case 'shutdown':
+                $this->methodShutdown($output);
                 break;
             case 'restart':
-                $this->methodRestart($input, $output);
+                $this->methodRestart($output);
                 break;
-            case 'list':
-                $this->methodList($output);
+            case 'clear':
+                $this->methodClear($output);
                 break;
             default:
                 $output->write($this->getHelp());
@@ -50,34 +50,42 @@ class SupervisorCommand extends AbstractCommand
         }
     }
 
-    private function methodState(OutputInterface $output)
+    private function methodInfo(OutputInterface $output)
     {
+        $data = array();
+
         $state = $this->supervisor->getState();
-        $output->writeln('<info>Supervisor status: ' . $state['statename'] . '</info>');
+        $data[] = array('State', $state['statename']);
+
+        $data[] = array('PID', $this->supervisor->getPID());
+        $data[] = array('Version', $this->supervisor->getSupervisorVersion());
+        $data[] = array('API Version', $this->supervisor->getAPIVersion());
+
+        $table = $this->getHelperSet()->get('table');
+        $table
+            ->setHeaders(array('Variable', 'Value'))
+            ->setRows($data)
+        ;
+
+        $output->writeln('<info>Supervisor status</info>');
+        $table->render($output);
     }
 
-    private function methodStart(InputInterface $input, OutputInterface $output)
+    private function methodShutdown(OutputInterface $output)
     {
-        $process = $input->getArgument('process');
-
-        $output->writeln('<info>Starting process: ' . $process . '</info>');
-        $this->supervisor->startProcess($process, false);
+        $output->writeln('<info>Shutting down supervisor</info>');
+        $this->supervisor->shutdown();
     }
 
-    private function methodStop(InputInterface $input, OutputInterface $output)
+    private function methodRestart(OutputInterface $output)
     {
-        $process = $input->getArgument('process');
-
-        $output->writeln('<info>Stopping process: ' . $process . '</info>');
-        $this->supervisor->stopProcess($process, false);
+        $output->writeln('<info>Restarting supervisor</info>');
+        $this->supervisor->restart();
     }
 
-    private function methodRestart(InputInterface $input, OutputInterface $output)
+    private function methodClear(OutputInterface $output)
     {
-        $process = $input->getArgument('process');
-
-        $output->writeln('<info>Restarting process: ' . $process . '</info>');
-        $this->supervisor->stopProcess($process);
-        $this->supervisor->startProcess($porcess, false);
+        $output->writeln('<info>Clearing logs</info>');
+        $this->supervisor->clearLog();
     }
 }

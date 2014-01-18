@@ -73,6 +73,7 @@ class ProcessCommand extends AbstractCommand
             ->setHeaders(array('State', 'Name', 'Group', 'PID'))
             ->setRows($data)
         ;
+
         $table->render($output);
     }
 
