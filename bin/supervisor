@@ -22,13 +22,13 @@ if (!class_exists('Symfony\\Component\\Console\\Application')) {
 $application = new Application();
 
 // Adding Process commands
-$application->add(new Process\ListProcessCommand);
 $application->add(new Process\StartProcessCommand);
 $application->add(new Process\StopProcessCommand);
 $application->add(new Process\RestartProcessCommand);
 
 // Adding Supervisor commands
 $application->add(new Supervisor\InfoSupervisorCommand);
+$application->add(new Supervisor\ListSupervisorCommand);
 $application->add(new Supervisor\ShutdownSupervisorCommand);
 $application->add(new Supervisor\RestartSupervisorCommand);
 $application->add(new Supervisor\ClearSupervisorCommand);

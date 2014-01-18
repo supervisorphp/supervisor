@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Command\Process;
+namespace Indigo\Supervisor\Command\Supervisor;
 
 use Indigo\Supervisor\Command\AbstractCommand;
 
@@ -19,16 +19,16 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * List Process Command
+ * List Supervisor Command
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ListProcessCommand extends AbstractCommand
+class ListSupervisorCommand extends AbstractCommand
 {
     protected function configure()
     {
         $this
-            ->setName('process:list')
+            ->setName('supervisor:list')
             ->setDescription('List processes')
         ;
 
