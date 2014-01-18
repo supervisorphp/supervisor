@@ -13,6 +13,8 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 
 use Indigo\Supervisor\Command\Process;
 use Indigo\Supervisor\Command\Supervisor;
+use Indigo\Supervisor\Command\EventListener;
+
 use Symfony\Component\Console\Application;
 
 if (!class_exists('Symfony\\Component\\Console\\Application')) {
@@ -32,5 +34,8 @@ $application->add(new Supervisor\ListSupervisorCommand);
 $application->add(new Supervisor\ShutdownSupervisorCommand);
 $application->add(new Supervisor\RestartSupervisorCommand);
 $application->add(new Supervisor\ClearSupervisorCommand);
+
+// Adding EventListener commands
+$application->add(new EventListener\MemmonEventListenerCommand);
 
 $application->run();
