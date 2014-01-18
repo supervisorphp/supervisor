@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    // dependencies were installed via composer - this is the main project
+    require __DIR__ . '/../vendor/autoload.php';
+} elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
+    // installed as a dependency in `vendor`
+    require __DIR__ . '/../../../autoload.php';
+} else {
+    throw new \Exception('Can\'t find autoload.php. Did you install dependencies via composer?');
+}
+
+use Indigo\Supervisor\Command\Process;
+use Indigo\Supervisor\Command\Supervisor;
+use Symfony\Component\Console\Application;
+
+if (!class_exists('Symfony\\Component\\Console\\Application')) {
+    throw new \Exception('Can\'t find Symfony Console. Please install it via composer!');
+}
+
+$application = new Application();
+
+// Adding Process commands
+$application->add(new Process\StartProcessCommand);
+$application->add(new Process\StopProcessCommand);
+$application->add(new Process\RestartProcessCommand);
+
+// Adding Supervisor commands
+$application->add(new Supervisor\InfoSupervisorCommand);
+$application->add(new Supervisor\ListSupervisorCommand);
+$application->add(new Supervisor\ShutdownSupervisorCommand);
+$application->add(new Supervisor\RestartSupervisorCommand);
+$application->add(new Supervisor\ClearSupervisorCommand);
+
+$application->run();
