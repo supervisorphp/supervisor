@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
@@ -7,6 +16,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Supervisor Command
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class SupervisorCommand extends AbstractCommand
 {
     protected $options = array();

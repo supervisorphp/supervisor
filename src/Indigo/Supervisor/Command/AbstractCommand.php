@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -12,6 +21,11 @@ use Indigo\Supervisor\Connector\UnixSocketConnector;
 use Indigo\Supervisor\Connector\InetSocketConnector;
 use Indigo\Supervisor\Supervisor;
 
+/**
+ * Abstract Symfony Command
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 abstract class AbstractCommand extends Command
 {
     const VALUE_OPTIONAL_ARRAY = 12;
