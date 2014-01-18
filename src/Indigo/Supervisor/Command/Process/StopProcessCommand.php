@@ -11,8 +11,6 @@
 
 namespace Indigo\Supervisor\Command\Process;
 
-use Indigo\Supervisor\Command\AbstractCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,16 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class StopProcessCommand extends AbstractCommand
+class StopProcessCommand extends ProcessCommand
 {
-    protected $arguments = array(
-        array(
-            'process',
-            InputArgument::REQUIRED,
-            'Process to stop'
-        ),
-    );
-
     protected function configure()
     {
         $this

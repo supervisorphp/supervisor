@@ -11,8 +11,6 @@
 
 namespace Indigo\Supervisor\Command\Process;
 
-use Indigo\Supervisor\Command\AbstractCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,16 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class RestartProcessCommand extends AbstractCommand
+class RestartProcessCommand extends ProcessCommand
 {
-    protected $arguments = array(
-        array(
-            'process',
-            InputArgument::REQUIRED,
-            'Process to restart'
-        ),
-    );
-
     protected function configure()
     {
         $this
@@ -49,6 +39,6 @@ class RestartProcessCommand extends AbstractCommand
 
         $output->writeln('<info>Restarting process: ' . $process . '</info>');
         $this->supervisor->stopProcess($process);
-        $this->supervisor->startProcess($porcess, false);
+        $this->supervisor->startProcess($process, false);
     }
 }
