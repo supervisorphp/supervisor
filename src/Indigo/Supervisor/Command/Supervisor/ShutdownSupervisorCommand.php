@@ -13,9 +13,7 @@ namespace Indigo\Supervisor\Command\Supervisor;
 
 use Indigo\Supervisor\Command\AbstractCommand;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -29,8 +27,7 @@ class ShutdownSupervisorCommand extends AbstractCommand
     {
         $this
             ->setName('supervisor:shutdown')
-            ->setDescription('Shutdown supervisor')
-        ;
+            ->setDescription('Shutdown supervisor');
 
         parent::configure();
     }

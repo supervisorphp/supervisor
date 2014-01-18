@@ -13,9 +13,7 @@ namespace Indigo\Supervisor\Command\Supervisor;
 
 use Indigo\Supervisor\Command\AbstractCommand;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -29,8 +27,7 @@ class ListSupervisorCommand extends AbstractCommand
     {
         $this
             ->setName('supervisor:list')
-            ->setDescription('List processes')
-        ;
+            ->setDescription('List processes');
 
         parent::configure();
     }
@@ -51,8 +48,7 @@ class ListSupervisorCommand extends AbstractCommand
         $table = $this->getHelperSet()->get('table');
         $table
             ->setHeaders(array('State', 'Name', 'Group', 'PID'))
-            ->setRows($data)
-        ;
+            ->setRows($data);
 
         $table->render($output);
     }

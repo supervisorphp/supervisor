@@ -13,9 +13,7 @@ namespace Indigo\Supervisor\Command\Supervisor;
 
 use Indigo\Supervisor\Command\AbstractCommand;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -29,8 +27,7 @@ class RestartSupervisorCommand extends AbstractCommand
     {
         $this
             ->setName('supervisor:restart')
-            ->setDescription('Restart supervisor')
-        ;
+            ->setDescription('Restart supervisor');
 
         parent::configure();
     }

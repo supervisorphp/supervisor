@@ -11,9 +11,7 @@
 
 namespace Indigo\Supervisor\Command\Process;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -27,8 +25,7 @@ class StartProcessCommand extends ProcessCommand
     {
         $this
             ->setName('process:start')
-            ->setDescription('Start a process')
-        ;
+            ->setDescription('Start a process');
 
         parent::configure();
     }

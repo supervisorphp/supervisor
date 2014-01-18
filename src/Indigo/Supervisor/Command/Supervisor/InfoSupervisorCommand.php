@@ -13,9 +13,7 @@ namespace Indigo\Supervisor\Command\Supervisor;
 
 use Indigo\Supervisor\Command\AbstractCommand;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -29,8 +27,7 @@ class InfoSupervisorCommand extends AbstractCommand
     {
         $this
             ->setName('supervisor:info')
-            ->setDescription('Get info about supervisor')
-        ;
+            ->setDescription('Get info about supervisor');
 
         parent::configure();
     }
@@ -49,8 +46,7 @@ class InfoSupervisorCommand extends AbstractCommand
         $table = $this->getHelperSet()->get('table');
         $table
             ->setHeaders(array('Variable', 'Value'))
-            ->setRows($data)
-        ;
+            ->setRows($data);
 
         $output->writeln('<info>Supervisor status</info>');
         $table->render($output);
