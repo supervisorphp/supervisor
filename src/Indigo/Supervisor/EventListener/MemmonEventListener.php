@@ -69,9 +69,10 @@ class MemmonEventListener extends AbstractEventListener
 
         $message = $result ? '[Success]' : '[Failure]';
         $message .= '(' . ($this->name ? $this->name . '/' : '') . $process['name'] . ') ';
+        $context = array('subject' => $message);
         $message .= 'Process restart at ' . $mem . ' bytes';
 
-        $this->logger->info($message, $process);
+        $this->logger->info($message, $process, $context);
 
         return $result;
     }

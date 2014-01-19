@@ -87,10 +87,8 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
      */
     protected function getEvent()
     {
-        $event = false;
-
-        if ($headers = $this->read()) {
-            $headers = $this->parseData($headers);
+        if ($event = $this->read()) {
+            $headers = $this->parseData($event);
 
             $payload = $this->read($headers['len']);
             $payload = explode("\n", $payload, 2);
@@ -108,7 +106,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         return $event;
     }
 
-    protected function resolveEvent(array $headers = array(), array $payload = array(), $body = null)
+    protected function resolveEvent(array $headers, array $payload, $body = null)
     {
         return new Event($headers, $payload, $body);
     }

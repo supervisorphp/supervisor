@@ -17,7 +17,7 @@ abstract class AbstractEvent implements EventInterface
     protected $payload = array();
     protected $body = null;
 
-    public function __construct(array $headers = array(), array $payload = array(), $body = null)
+    public function __construct(array $headers, array $payload, $body = null)
     {
         $this->setHeader($headers);
         $this->setPayload($payload);
