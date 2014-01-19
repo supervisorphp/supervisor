@@ -77,6 +77,11 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         }
     }
 
+    /**
+     * Get payload from input stream
+     *
+     * @return array Payload
+     */
     protected function getPayload()
     {
         if ($payload = $this->read()) {
@@ -92,6 +97,12 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         return $payload;
     }
 
+    /**
+     * Process result
+     *
+     * @param  integer $result Result code
+     * @return boolean Listener should exit or not
+     */
     protected function processResult($result)
     {
         switch ($result) {
@@ -109,6 +120,9 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         return true;
     }
 
+    /**
+     * Print ready status to output stream
+     */
     protected function statusReady()
     {
         $this->write(self::READY);
