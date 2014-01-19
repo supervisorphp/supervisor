@@ -133,7 +133,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
      * Do the actual event handling
      *
      * @param  array   $payload
-     * @return integer          0=success, 1=failure, 2=quit
+     * @return integer 0=success, 1=failure
      */
     abstract protected function doListen(array $payload);
 
