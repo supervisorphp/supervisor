@@ -44,6 +44,18 @@ class MemmonEventListenerCommand extends AbstractCommand
             InputOption::VALUE_OPTIONAL,
             'Any memory limit'
         ),
+        array(
+            'uptime',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Minimum uptime before restart'
+        ),
+        array(
+            'name',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Name of memmon instance'
+        ),
     );
 
     protected function configure()
@@ -60,6 +72,8 @@ class MemmonEventListenerCommand extends AbstractCommand
         $program = $input->getOption('program');
         $group   = $input->getOption('group');
         $any     = $input->getOption('any');
+        $uptime  = $input->getOption('uptime');
+        $name    = $input->getOption('name');
 
         if (empty($program) and empty($group) and empty($any)) {
             throw new \Exception('You have to specify at least on program, group, or any option.');
@@ -68,7 +82,7 @@ class MemmonEventListenerCommand extends AbstractCommand
         $program = $this->parseOption($program);
         $group = $this->parseOption($group);
 
-        $listener = new MemmonEventListener($this->supervisor, $program, $group, $any);
+        $listener = new MemmonEventListener($this->supervisor, $program, $group, $any, $uptime, $name);
 
         $listener->listen();
     }
