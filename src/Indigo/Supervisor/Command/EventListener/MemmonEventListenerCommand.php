@@ -76,7 +76,13 @@ class MemmonEventListenerCommand extends AbstractCommand
     private function parseOption(array $option)
     {
         return array_map(function ($item) {
-            return explode('=', $item);
+            $program = explode('=', $item);
+
+            if (count($program) !== 2) {
+                throw new \InvalidArgumentException('Option should be in option=memory_limit form');
+            }
+
+            return $program;
         }, $option);
     }
 }

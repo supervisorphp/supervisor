@@ -3,7 +3,9 @@
 namespace Indigo\Supervisor\EventListener;
 
 use Indigo\Supervisor\Supervisor;
+use Indigo\Supervisor\Process;
 use Symfony\Component\Process\Process as SymfonyProcess;
+use Psr\Log\NullLogger;
 
 class MemmonEventListener extends AbstractEventListener
 {
@@ -11,15 +13,24 @@ class MemmonEventListener extends AbstractEventListener
     protected $program = array();
     protected $group = array();
     protected $any;
+    protected $uptime;
     protected $name = null;
 
-    public function __construct(Supervisor $supervisor, array $program = array(), array $group = array(), $any, $name = null)
-    {
+    public function __construct(
+        Supervisor $supervisor,
+        array $program = array(),
+        array $group = array(),
+        $any,
+        $uptime = 60,
+        $name = null
+    ) {
         $this->supervisor = $supervisor;
-        $this->program = $program;
-        $this->group = $group;
-        $this->any = $any;
-        $this->name = $name;
+        $this->program    = $program;
+        $this->group      = $group;
+        $this->any        = intval($any);
+        $this->uptime     = $uptime;
+        $this->name       = $name;
+        $this->logger     = new NullLogger;
     }
 
     protected function doListen(array $payload)
@@ -31,13 +42,14 @@ class MemmonEventListener extends AbstractEventListener
         $processes = $this->supervisor->getAllProcess();
 
         foreach ($processes as $process) {
-            $mem = $process->getMemUsage();
+            if (!$this->checkProcess($process)) {
+                continue;
+            }
 
-            if ($maxMem = $this->isListeningTo(array($process['name'], $pname), $this->programs) and $mem > $maxMem) {
-                $this->restart($process, $mem);
-            } elseif ($maxMem = $this->isListeningTo($process['group'], $this->groups) and $mem > $maxMem) {
-                $this->restart($process, $mem);
-            } elseif ($mem > intval($this->any)) {
+            $mem = $process->getMemUsage();
+            $max = $this->getMaxMemory($process);
+
+            if ($max > 0 and $mem > $max) {
                 $this->restart($process, $mem);
             }
         }
@@ -45,25 +57,56 @@ class MemmonEventListener extends AbstractEventListener
         return 0;
     }
 
-    protected function restart($process, $mem)
+    protected function restart(Process $process, $mem)
     {
-        $process->restart();
-    }
-
-    protected function isListeningTo($what, $to = array())
-    {
-        if (is_array($what)) {
-            foreach ($what as $w) {
-                if (array_key_exists($w, $to)) {
-                    return $to[$w];
-                }
-            }
-        } else {
-            if (array_key_exists($what, $to)) {
-                return $to[$what];
-            }
+        try {
+            $process->restart();
+            $result = true;
+        } catch (\Exception $e) {
+            $result = false;
         }
 
-        return false;
+        $message = $result ? '[Success]' : '[Failure]';
+        $message .= '(' . ($this->name ? $this->name . '/' : '') . $process['name'] . ') ';
+        $message .= 'Process restart at ' . $mem . ' bytes';
+
+        $this->logger->info($message, $process);
+
+        return $result;
+    }
+
+    protected function checkProcess(Process $process)
+    {
+        if (!$process->isRunning()) {
+            return false;
+        } elseif ($process['now'] - $process['start'] < $this->uptime) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function getMaxMemory(Process $process)
+    {
+        $pname = $process['group'] . ':' . $process['name'];
+
+        $mem = array(
+        	$this->hasProgram($process['name']),
+        	$this->hasProgram($pname),
+        	$this->hasGroup($process['group']),
+        	$this->any,
+        );
+
+        return abs(max($mem));
+    }
+
+    protected function hasProgram($program)
+    {
+        return array_key_exists($program, $this->programs) ? $this->programs[$program] ? false;
+    }
+
+    protected function hasGroup($group)
+    {
+        return array_key_exists($group, $this->groups) ? $this->groups[$group] ? false;
     }
 }

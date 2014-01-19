@@ -51,7 +51,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         if (is_resource($stream)) {
             $this->inputStream = $stream;
         } else {
-            throw new \InvalidArgumentException('Invalid resource for input stream');
+            throw new \InvalidArgumentException('Invalid resource for output stream');
         }
     }
 
