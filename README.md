@@ -122,16 +122,10 @@ Supervisor has this pretty good feature: notify you(r listener) about it's event
 
 It is important that this is only the logic of event processing. Making it work is your task. You have to create a console application which calls the `EventDispatcher`. You also have to create your own listeners, however, there are some included. Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
 
-The basic of usage: you have to create an instance of `EventDispatcher`. This will notify your listeners about events.
 
 ``` php
 use Indigo\Supervisor;
 use Indigo\Supervisor\EventListener;
-
-$dispatcher = new EventDispatcher();
-
-// optional
-$dispatcher->setLogger(new \Psr\Log\NullLogger());
 
 // this is an example listener for development purposes
 $listener = new NullEventListener();
@@ -139,21 +133,11 @@ $listener = new NullEventListener();
 // optional
 $listener->setLogger(new \Psr\Log\NullLogger());
 
-// subscribe to event
-$listener->subscribeEvent($listener::PROCESS_STATE_STOPPED);
-
-// stop propagation after this listener is done
-// this should not be called here but in your listener
-$listener->stopPropagation();
-
-// optional second parameter true: prepend
-$dispatcher->addListener($listener, true);
-
 // start listening
-$dispatcher->listen();
-```$payload[2]
+$listener->listen();
+```
 
-You may have noticed that I used PSR-3 LoggerInterface. By default, the dispatcher uses a NullLogger, so you don't need to add a logger instance to it, but you can if you want.
+You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a NullLogger, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractEventListener`.
 
 
 ### Writting an EventListener
