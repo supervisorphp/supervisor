@@ -4,6 +4,7 @@ namespace Indigo\Supervisor\EventListener;
 
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
+use Indigo\Supervisor\Event\EventInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Psr\Log\NullLogger;
 
@@ -33,9 +34,9 @@ class MemmonEventListener extends AbstractEventListener
         $this->logger     = new NullLogger;
     }
 
-    protected function doListen(array $payload)
+    protected function doListen(EventInterface $event)
     {
-        if (strpos($payload[0]['eventname'], 'TICK') == false) {
+        if (strpos($event->getHeader('eventname', ''), 'TICK') == false) {
             return 0;
         }
 
@@ -102,11 +103,11 @@ class MemmonEventListener extends AbstractEventListener
 
     protected function hasProgram($program)
     {
-        return array_key_exists($program, $this->programs) ? $this->programs[$program] ? false;
+        return array_key_exists($program, $this->programs) ? $this->programs[$program] : false;
     }
 
     protected function hasGroup($group)
     {
-        return array_key_exists($group, $this->groups) ? $this->groups[$group] ? false;
+        return array_key_exists($group, $this->groups) ? $this->groups[$group] : false;
     }
 }

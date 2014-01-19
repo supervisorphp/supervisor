@@ -1,6 +1,9 @@
 <?php
 
 namespace Indigo\Supervisor\EventListener;
+
+use Indigo\Supervisor\Event\Event;
+use Indigo\Supervisor\Event\EventInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
@@ -63,11 +66,11 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         $this->statusReady();
 
         while (true) {
-            if (!$payload = $this->getPayload()) {
+            if (!$event = $this->getEvent()) {
                 continue;
             }
 
-            $result = $this->doListen($payload);
+            $result = $this->doListen($event);
 
             if (!$this->processResult($result)) {
                 return;
@@ -78,24 +81,36 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Get payload from input stream
+     * Get event from input stream
      *
-     * @return array Payload
+     * @return Event|false Event object
      */
-    protected function getPayload()
+    protected function getEvent()
     {
-        if ($payload = $this->read()) {
-            $headers = $this->parseData($payload);
+        $event = false;
+
+        if ($headers = $this->read()) {
+            $headers = $this->parseData($headers);
 
             $payload = $this->read($headers['len']);
-
             $payload = explode("\n", $payload, 2);
+            isset($payload[1]) or $payload[1] = null;
 
-            $payload[0] = $this->parseData($payload[0]);
-            array_unshift($payload, $headers);
+            list($payload, $body) = $payload;
+
+            $event = $this->resolveEvent(
+                $headers,
+                $this->parseData($payload),
+                $body
+            );
         }
 
-        return $payload;
+        return $event;
+    }
+
+    protected function resolveEvent(array $headers = array(), array $payload = array(), $body = null)
+    {
+        return new Event($headers, $payload, $body);
     }
 
     /**
@@ -132,10 +147,10 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     /**
      * Do the actual event handling
      *
-     * @param  array   $payload
+     * @param  EventInterface   $event
      * @return integer 0=success, 1=failure
      */
-    abstract protected function doListen(array $payload);
+    abstract protected function doListen(EventInterface $event);
 
     /**
      * Parse colon devided data
