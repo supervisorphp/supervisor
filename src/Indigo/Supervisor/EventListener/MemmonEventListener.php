@@ -70,7 +70,7 @@ class MemmonEventListener extends AbstractEventListener
         Supervisor $supervisor,
         array $program = array(),
         array $group = array(),
-        $any,
+        $any = 0,
         $uptime = 60,
         $name = null
     ) {
