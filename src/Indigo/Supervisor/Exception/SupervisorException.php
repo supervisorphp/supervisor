@@ -16,6 +16,6 @@ namespace Indigo\Supervisor\Exception;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ResponseException extends \Exception implements ExceptionInterface
+class SupervisorException extends \Exception implements ExceptionInterface
 {
 }

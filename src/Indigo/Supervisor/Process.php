@@ -13,7 +13,7 @@ namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Connector\ConnectorInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
-use Indigo\Supervisor\Exception\ResponseException;
+use Indigo\Supervisor\Exception\SupervisorException;
 
 /**
  * Process object holding data for a single process
@@ -192,7 +192,7 @@ class Process implements \ArrayAccess, \Iterator
         try {
             $this->stop($wait);
             $this->start($wait);
-        } catch (ResponseException $e) {
+        } catch (SupervisorException $e) {
             return false;
         }
 

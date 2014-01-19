@@ -64,7 +64,7 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Indigo\Supervisor\Exception\ResponseException
+     * @expectedException Indigo\Supervisor\Exception\SupervisorException
      * @depends testAccessProcessResponse
      */
     public function testProcessFaultyResponse($method)
