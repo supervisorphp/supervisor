@@ -18,7 +18,7 @@ abstract class SocketConnectorTest extends ConnectorTest
      */
     public function testFaultCreateSocket(\ReflectionMethod $method)
     {
-        $method->invoke($this->connector, 'kaki');
+        $method->invoke($this->connector, 'fake');
     }
 
     /**

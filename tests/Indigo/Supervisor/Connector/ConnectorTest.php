@@ -110,4 +110,9 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
             $method->invoke($this->connector, $response)
         );
     }
+
+    public function testIsLocal()
+    {
+        $this->assertTrue(is_bool($this->connector->isLocal()));
+    }
 }

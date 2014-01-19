@@ -54,6 +54,15 @@ class InetConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
+    public function isLocal()
+    {
+        $host = parse_url($this->resource, PHP_URL_HOST);
+        return gethostbyname($host) == '127.0.0.1';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function prepareRequest($namespace, $method, array $arguments)
     {
         // generate xml request

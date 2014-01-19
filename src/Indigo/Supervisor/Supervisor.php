@@ -69,6 +69,16 @@ class Supervisor
     }
 
     /**
+     * Check whether connecting to a local Supervisor instance
+     *
+     * @return boolean
+     */
+    public function isLocal()
+    {
+        return $this->connector->isLocal();
+    }
+
+    /**
      * Call a method
      *
      * @param  string $namespace Namespace of method

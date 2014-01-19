@@ -13,6 +13,9 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
             function ($mock) {
                 $mock->shouldReceive('call')
                     ->andReturn(true);
+
+                $mock->shouldReceive('isLocal')
+                    ->andReturn(true);
             }
         );
     }
