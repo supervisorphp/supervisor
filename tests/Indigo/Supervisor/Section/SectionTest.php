@@ -55,6 +55,7 @@ class SectionTest extends \PHPUnit_Framework_TestCase
                 'loglevel' => 'warn',
             )),
             new UnixHttpServerSection,
+            new RpcInterfaceSection('test'),
         );
     }
 

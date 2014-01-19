@@ -11,7 +11,13 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
+        $this->connector = \Mockery::mock(
+            'Indigo\\Supervisor\\Connector\\ConnectorInterface',
+            function ($mock) {
+                $mock->shouldReceive('isLocal')
+                    ->andReturn(true);
+            }
+        );
         $this->supervisor = new Supervisor($this->connector);
     }
 
@@ -223,6 +229,11 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
         );
 
         return $connector;
+    }
+
+    public function testIsLocal()
+    {
+        $this->assertTrue($this->supervisor->isLocal());
     }
 
     public function tearDown()

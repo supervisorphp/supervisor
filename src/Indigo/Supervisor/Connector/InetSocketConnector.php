@@ -39,4 +39,12 @@ class InetSocketConnector extends SocketConnector
         $this->host = $host;
         $this->port = $port;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocal()
+    {
+        return gethostbyname($this->host) == '127.0.0.1';
+    }
 }

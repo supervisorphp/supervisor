@@ -37,6 +37,7 @@ class Configuration
         'supervisorctl'    => 'Indigo\\Supervisor\\Section\\SupervisorctlSection',
         'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
         'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
+        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterfaceSection',
     );
 
     /**

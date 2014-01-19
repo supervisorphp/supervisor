@@ -35,4 +35,12 @@ class UnixSocketConnector extends SocketConnector
 
         $this->socket = $socket;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocal()
+    {
+        return true;
+    }
 }

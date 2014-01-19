@@ -17,6 +17,9 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src/Indigo/Supervisor</directory>
+            <exclude>
+                <directory suffix=".php">src/Indigo/Supervisor/Command</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>

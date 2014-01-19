@@ -64,7 +64,7 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Indigo\Supervisor\Exception\ResponseException
+     * @expectedException Indigo\Supervisor\Exception\SupervisorException
      * @depends testAccessProcessResponse
      */
     public function testProcessFaultyResponse($method)
@@ -109,5 +109,10 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
             array(17),
             $method->invoke($this->connector, $response)
         );
+    }
+
+    public function testIsLocal()
+    {
+        $this->assertTrue(is_bool($this->connector->isLocal()));
     }
 }

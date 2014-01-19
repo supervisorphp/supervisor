@@ -35,4 +35,11 @@ interface ConnectorInterface
      * @return boolean
      */
     public function isConnected();
+
+    /**
+     * Check whether connecting to a local Supervisor instance
+     *
+     * @return boolean
+     */
+    public function isLocal();
 }

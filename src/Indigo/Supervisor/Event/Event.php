@@ -9,13 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Exception;
+namespace Indigo\Supervisor\Event;
 
 /**
- * Thrown in case of faulty XMLRPC response
+ * Event
+ *
+ * Default Event
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ResponseException extends \Exception implements ExceptionInterface
+class Event extends AbstractEvent
 {
+
 }

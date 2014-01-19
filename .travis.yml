@@ -14,5 +14,5 @@ after_script:
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
 notifications:
-    email:
-        secure: "n8cY+cDe0Z3/CHaJdMe7MZaxASM0AC06uEOxCir9ZXe7gpcGqtZUiNpmEPl471YUUVPEnxhBbiqO740/f84bIXB1AoqCT0c57r7RPlcJaJ7QeNK1LuSjhUzVB+qP4iwUEh9ZNCkR24MQMV922W8D1sEEEgg4mqR6JQFqQuKGbtE="
+    webhooks:
+        secure: "aGUTR/3LuAgWx/VtSfQR/WCv14PUU9Zb/9Td9ybSQSgLKO+mdS4N0CmvJObtGiJTNSKUpu5Wb0LWpKEKs42oP42rO82ljTXQ2cpL/Zin/zARenNWn9zDu8j3mxzR6t6OHDGr+yD2yQYK/FMSc0vKtPOeETig1CmJziwdV849ScA="
