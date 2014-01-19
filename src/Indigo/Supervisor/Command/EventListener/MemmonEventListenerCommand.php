@@ -76,7 +76,7 @@ class MemmonEventListenerCommand extends AbstractCommand
     private function parseOption(array $option)
     {
         return array_map(function ($item) {
-            return explode(':', $item);
+            return explode('=', $item);
         }, $option);
     }
 }
