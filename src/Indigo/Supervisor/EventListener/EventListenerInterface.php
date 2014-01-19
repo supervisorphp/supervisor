@@ -13,10 +13,8 @@ interface EventListenerInterface
 
     /**
      * Listen to events
-     *
-     * @param boolean $once Listen should run only once if true
      */
-    public function listen($once = false);
+    public function listen();
 
     /**
      * Set input stream

@@ -4,6 +4,15 @@ namespace Indigo\Supervisor\EventListener;
 
 use Indigo\Supervisor\Process;
 
+class TestMemmonEventListener extends MemmonEventListener
+{
+    protected function processResult($result)
+    {
+        parent::processResult($result);
+        return false;
+    }
+}
+
 class MemmonEventListenerTest extends EventListenerTest
 {
     public function setUp()
@@ -74,7 +83,7 @@ class MemmonEventListenerTest extends EventListenerTest
                 ));
         });
 
-        $this->listener = new MemmonEventListener($supervisor, array(), array(), 1024, 60, 'memmon');
+        $this->listener = new TestMemmonEventListener($supervisor, array(), array(), 1024, 60, 'memmon');
     }
 
     public function testInstance()
@@ -92,14 +101,12 @@ class MemmonEventListenerTest extends EventListenerTest
     {
         $this->regenerate($input, $output);
 
-        fwrite($input, "ver:3.0 server:supervisor serial:21 pool:listener poolserial:10 eventname:PROCESS_COMMUNICATION_STDOUT len:54\nprocess_name:foo group_name:bar pid:123\nThis is the data that was sent between the tags");
-
+        fwrite($input, "ver:3.0 server:supervisor serial:21 pool:listener poolserial:10 eventname:PROCESS_COMMUNICATION_STDOUT len:87\nprocess_name:foo group_name:bar pid:123\nThis is the data that was sent between the tags");
         rewind($input);
 
-        $this->listener->listen(true);
+        $this->listener->listen();
 
         rewind($output);
-
         $this->assertEquals("READY\n", fgets($output));
         $this->assertEquals("RESULT 2\n", fgets($output));
         $this->assertEquals('OK', fgets($output));
@@ -110,11 +117,11 @@ class MemmonEventListenerTest extends EventListenerTest
         $this->regenerate($input, $output);
 
         fwrite($input, "ver:3.0 server:supervisor serial:21 pool:listener poolserial:10 eventname:TICK_5 len:54\nprocess_name:foo group_name:bar pid:123\nThis is the data that was sent between the tags");
-
         rewind($input);
-        $this->listener->listen(true);
-        rewind($output);
 
+        $this->listener->listen();
+
+        rewind($output);
         $this->assertEquals("READY\n", fgets($output));
         $this->assertEquals("RESULT 2\n", fgets($output));
         $this->assertEquals('OK', fgets($output));
