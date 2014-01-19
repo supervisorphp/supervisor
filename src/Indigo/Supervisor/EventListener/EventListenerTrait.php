@@ -1,8 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\EventListener;
+
+use Indigo\Supervisor\Event\Event;
+use Indigo\Supervisor\Event\EventInterface;
 use Psr\Log\LoggerAwareTrait;
 
+/**
+ * EventListener Trait
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 trait EventListenerTrait implements EventListenerInterface
 {
     use LoggerAwareTrait;
@@ -22,73 +39,130 @@ trait EventListenerTrait implements EventListenerInterface
     protected $outputStream = STDOUT;
 
     /**
-     * Set input stream
-     *
-     * @param resource $stream
+     * {@inheritdoc}
      */
     public function setInputStream($stream)
     {
         if (is_resource($stream)) {
             $this->inputStream = $stream;
         } else {
-            throw new InvalidResourceException('Invalid resource for input stream');
+            throw new \InvalidArgumentException('Invalid resource for input stream');
         }
+
+        return $this;
     }
 
     /**
-     * Set output stream
-     *
-     * @param resource $stream
+     * {@inheritdoc}
      */
     public function setOutputStream($stream)
     {
         if (is_resource($stream)) {
-            $this->inputStream = $stream;
+            $this->outputStream = $stream;
         } else {
-            throw new InvalidResourceException('Invalid resource for input stream');
+            throw new \InvalidArgumentException('Invalid resource for output stream');
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function listen()
+    {
+        while (true) {
+            $this->statusReady();
+
+            if (!$event = $this->getEvent()) {
+                continue;
+            }
+
+            $result = $this->doListen($event);
+
+            if (!$this->processResult($result)) {
+                return;
+            }
         }
     }
 
     /**
-     * Listen for events
+     * Get event from input stream
+     *
+     * @return Event|false Event object
      */
-    public function listen()
+    protected function getEvent()
+    {
+        if ($event = $this->read()) {
+            $header = $this->parseData($event);
+
+            $payload = $this->read($header['len']);
+            $payload = explode("\n", $payload, 2);
+            isset($payload[1]) or $payload[1] = null;
+
+            list($payload, $body) = $payload;
+
+            $event = $this->resolveEvent(
+                $header,
+                $this->parseData($payload),
+                $body
+            );
+        }
+
+        return $event;
+    }
+
+    /**
+     * Resolve EventInterface
+     *
+     * @param  array          $header
+     * @param  array          $payload
+     * @param  string         $body
+     * @return EventInterface
+     */
+    protected function resolveEvent(array $header, array $payload, $body = null)
+    {
+        return new Event($header, $payload, $body);
+    }
+
+    /**
+     * Process result
+     *
+     * @param  integer $result Result code
+     * @return boolean Listener should exit or not
+     */
+    protected function processResult($result)
+    {
+        switch ($result) {
+            case 0:
+                $this->write(self::OK);
+                break;
+            case 1:
+                $this->write(self::FAIL);
+                break;
+            default:
+                return false;
+                break;
+        }
+
+        return true;
+    }
+
+    /**
+     * Print ready status to output stream
+     */
+    protected function statusReady()
     {
         $this->write(self::READY);
-
-        while (true) {
-            if ( ! $headers = $this->read()) {
-                continue;
-            }
-
-            $headers = $this->parseData($headers);
-
-            $payload = $this->read($headers['len']);
-
-            $payload = explode("\n", $payload, 2);
-
-            $payload[0] = array_merge($headers, $this->parseData($payload[0]));
-
-            $result = $this->doListen($payload);
-
-            if ($result === 0) {
-                $this->write(self::OK);
-            } elseif ($result === 1) {
-                $this->write(self::FAIL);
-            } else {
-                return;
-            }
-
-            $this->write(self::READY);
-        }
     }
 
     /**
      * Do the actual event handling
-     * @param  array   $payload
-     * @return integer          0=success, 1=failure, 2=quit
+     *
+     * @param  EventInterface   $event
+     * @return integer 0=success, 1=failure
      */
-    abstract protected function doListen(array $payload);
+    abstract protected function doListen(EventInterface $event);
 
     /**
      * Parse colon devided data
@@ -130,6 +204,6 @@ trait EventListenerTrait implements EventListenerInterface
      */
     protected function write($value)
     {
-        fwrite($this->outputStream, $value);
+        return @fwrite($this->outputStream, $value);
     }
 }

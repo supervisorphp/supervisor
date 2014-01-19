@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\EventListener;
 
 use Indigo\Supervisor\Event\Event;
@@ -7,6 +16,11 @@ use Indigo\Supervisor\Event\EventInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Abstract EventListener
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 abstract class AbstractEventListener implements EventListenerInterface, LoggerAwareInterface
 {
     /**
@@ -33,6 +47,14 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     /**
      * {@inheritdoc}
      */
+    public function getInputStream()
+    {
+        return $this->inputStream;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setInputStream($stream)
     {
         if (is_resource($stream)) {
@@ -42,6 +64,14 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOutputStream()
+    {
+        return $this->outputStream;
     }
 
     /**
@@ -104,6 +134,14 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         return $event;
     }
 
+    /**
+     * Resolve EventInterface
+     *
+     * @param  array          $header
+     * @param  array          $payload
+     * @param  string         $body
+     * @return EventInterface
+     */
     protected function resolveEvent(array $header, array $payload, $body = null)
     {
         return new Event($header, $payload, $body);

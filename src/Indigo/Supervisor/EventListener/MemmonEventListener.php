@@ -1,20 +1,69 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) IndigoPHP Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Indigo\Supervisor\EventListener;
 
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Event\EventInterface;
-use Symfony\Component\Process\Process as SymfonyProcess;
 use Psr\Log\NullLogger;
 
+/**
+ * Memmon EventListener
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class MemmonEventListener extends AbstractEventListener
 {
+    /**
+     * Supervisor instance
+     *
+     * @var Supervisor
+     */
     protected $supervisor;
+
+    /**
+     * Array of program=>limit pairs
+     *
+     * @var array
+     */
     protected $program = array();
+
+    /**
+     * Array of group=>limit pairs
+     *
+     * @var array
+     */
     protected $group = array();
+
+    /**
+     * Any memory limit
+     *
+     * @var integer
+     */
     protected $any;
+
+    /**
+     * Minimum uptime before restart
+     *
+     * @var integer
+     */
     protected $uptime;
+
+    /**
+     * Name of memmon instance
+     * Only has a meaning if you use logging
+     *
+     * @var string
+     */
     protected $name = null;
 
     public function __construct(
@@ -34,6 +83,9 @@ class MemmonEventListener extends AbstractEventListener
         $this->logger     = new NullLogger;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function doListen(EventInterface $event)
     {
         if (strpos($event->getHeader('eventname', ''), 'TICK') === false) {
@@ -58,6 +110,13 @@ class MemmonEventListener extends AbstractEventListener
         return 0;
     }
 
+    /**
+     * Restart process
+     *
+     * @param  Process $process
+     * @param  integer $mem     Current memory usage
+     * @return boolean Whether restart is successful
+     */
     protected function restart(Process $process, $mem)
     {
         try {
@@ -76,6 +135,12 @@ class MemmonEventListener extends AbstractEventListener
         return $result;
     }
 
+    /**
+     * Check whether listener should care about this process
+     *
+     * @param  Process $process
+     * @return boolean
+     */
     protected function checkProcess(Process $process)
     {
         if (!$process->isRunning()) {
@@ -87,6 +152,12 @@ class MemmonEventListener extends AbstractEventListener
         return true;
     }
 
+    /**
+     * Get the maximum memory allowed for this process
+     *
+     * @param  Process $process
+     * @return integer
+     */
     protected function getMaxMemory(Process $process)
     {
         $pname = $process['group'] . ':' . $process['name'];
@@ -101,13 +172,25 @@ class MemmonEventListener extends AbstractEventListener
         return abs(max($mem));
     }
 
+    /**
+     * Check whether listener has limit for the given program and return it
+     *
+     * @param  string  $program
+     * @return integer
+     */
     protected function hasProgram($program)
     {
-        return array_key_exists($program, $this->program) ? $this->program[$program] : false;
+        return array_key_exists($program, $this->program) ? $this->program[$program] : 0;
     }
 
+    /**
+     * Check whether listener has limit for the given group and return it
+     *
+     * @param  string  $program
+     * @return integer
+     */
     protected function hasGroup($group)
     {
-        return array_key_exists($group, $this->group) ? $this->group[$group] : false;
+        return array_key_exists($group, $this->group) ? $this->group[$group] : 0;
     }
 }

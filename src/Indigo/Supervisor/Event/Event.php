@@ -11,6 +11,13 @@
 
 namespace Indigo\Supervisor\Event;
 
+/**
+ * Event
+ *
+ * Default Event
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class Event extends AbstractEvent
 {
 
