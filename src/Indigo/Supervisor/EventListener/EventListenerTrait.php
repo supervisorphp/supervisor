@@ -5,131 +5,131 @@ use Psr\Log\LoggerAwareTrait;
 
 trait EventListenerTrait implements EventListenerInterface
 {
-	use LoggerAwareTrait;
+    use LoggerAwareTrait;
 
-	/**
-	 * Input stream
-	 *
-	 * @var resource
-	 */
-	protected $inputStream = STDIN;
+    /**
+     * Input stream
+     *
+     * @var resource
+     */
+    protected $inputStream = STDIN;
 
-	/**
-	 * Output stream
-	 *
-	 * @var resource
-	 */
-	protected $outputStream = STDOUT;
+    /**
+     * Output stream
+     *
+     * @var resource
+     */
+    protected $outputStream = STDOUT;
 
-	/**
-	 * Set input stream
-	 *
-	 * @param resource $stream
-	 */
-	public function setInputStream($stream)
-	{
-		if (is_resource($stream)) {
-			$this->inputStream = $stream;
-		} else {
-			throw new InvalidResourceException('Invalid resource for input stream');
-		}
-	}
+    /**
+     * Set input stream
+     *
+     * @param resource $stream
+     */
+    public function setInputStream($stream)
+    {
+        if (is_resource($stream)) {
+            $this->inputStream = $stream;
+        } else {
+            throw new InvalidResourceException('Invalid resource for input stream');
+        }
+    }
 
-	/**
-	 * Set output stream
-	 *
-	 * @param resource $stream
-	 */
-	public function setOutputStream($stream)
-	{
-		if (is_resource($stream)) {
-			$this->inputStream = $stream;
-		} else {
-			throw new InvalidResourceException('Invalid resource for input stream');
-		}
-	}
+    /**
+     * Set output stream
+     *
+     * @param resource $stream
+     */
+    public function setOutputStream($stream)
+    {
+        if (is_resource($stream)) {
+            $this->inputStream = $stream;
+        } else {
+            throw new InvalidResourceException('Invalid resource for input stream');
+        }
+    }
 
-	/**
-	 * Listen for events
-	 */
-	public function listen()
-	{
-		$this->write(self::READY);
+    /**
+     * Listen for events
+     */
+    public function listen()
+    {
+        $this->write(self::READY);
 
-		while (true) {
-			if ( ! $headers = $this->read()) {
-				continue;
-			}
+        while (true) {
+            if ( ! $headers = $this->read()) {
+                continue;
+            }
 
-			$headers = $this->parseData($headers);
+            $headers = $this->parseData($headers);
 
-			$payload = $this->read($headers['len']);
+            $payload = $this->read($headers['len']);
 
-			$payload = explode("\n", $payload, 2);
+            $payload = explode("\n", $payload, 2);
 
-			$payload[0] = array_merge($headers, $this->parseData($payload[0]));
+            $payload[0] = array_merge($headers, $this->parseData($payload[0]));
 
-			$result = $this->doListen($payload);
+            $result = $this->doListen($payload);
 
-			if ($result === 0) {
-				$this->write(self::OK);
-			} elseif ($result === 1) {
-				$this->write(self::FAIL);
-			} else {
-				return;
-			}
+            if ($result === 0) {
+                $this->write(self::OK);
+            } elseif ($result === 1) {
+                $this->write(self::FAIL);
+            } else {
+                return;
+            }
 
-			$this->write(self::READY);
-		}
-	}
+            $this->write(self::READY);
+        }
+    }
 
-	/**
-	 * Do the actual event handling
-	 * @param  array   $payload
-	 * @return integer          0=success, 1=failure, 2=quit
-	 */
-	abstract protected function doListen(array $payload);
+    /**
+     * Do the actual event handling
+     * @param  array   $payload
+     * @return integer          0=success, 1=failure, 2=quit
+     */
+    abstract protected function doListen(array $payload);
 
-	/**
-	 * Parse colon devided data
-	 *
-	 * @param  string $rawData
-	 * @return array
-	 */
-	protected function parseData($rawData)
-	{
+    /**
+     * Parse colon devided data
+     *
+     * @param  string $rawData
+     * @return array
+     */
+    protected function parseData($rawData)
+    {
         $outputData = array();
 
         foreach (explode(' ', $rawData) as $data) {
-        	$data = explode(':', $data);
-        	$outputData[$data[0]] = $data[1];
+            $data = explode(':', $data);
+            $outputData[$data[0]] = $data[1];
         }
 
         return $outputData;
-	}
+    }
 
-	/**
-	 * Read data from input stream
-	 *
-	 * @param  integer $length If given read this size of bytes, read a line anyway
-	 * @return string
-	 */
-	protected function read($length = null)
-	{
-		if (is_null($length)) {
-			return trim(fgets($this->inputStream));
-		} else {
-			return fread($this->inputStream, $length);
-		}
-	}
+    /**
+     * Read data from input stream
+     *
+     * @param  integer $length If given read this size of bytes, read a line anyway
+     * @return string
+     */
+    protected function read($length = null)
+    {
+        if (is_null($length)) {
+            return trim(fgets($this->inputStream));
+        } else {
+            return fread($this->inputStream, $length);
+        }
+    }
 
-	/**
-	 * Write data to output stream
-	 *
-	 * @param  string $value
-	 */
-	protected function write($value)
-	{
-		fwrite($this->outputStream, $value);
-	}
+    /**
+     * Write data to output stream
+     *
+     * @param  string $value
+     */
+    protected function write($value)
+    {
+        fwrite($this->outputStream, $value);
+    }
 }

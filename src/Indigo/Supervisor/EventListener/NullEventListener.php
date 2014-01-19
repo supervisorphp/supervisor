@@ -4,9 +4,9 @@ namespace Indigo\Supervisor\EventListener;
 
 class NullEventListener extends AbstractEventListener
 {
-	public function doListen(array $payload)
-	{
-		// Noop
-		return 0;
-	}
+    public function doListen(array $payload)
+    {
+        // Noop
+        return 0;
+    }
 }
