@@ -151,9 +151,44 @@ $dispatcher->addListener($listener, true);
 
 // start listening
 $dispatcher->listen();
-```
+```$payload[2]
 
 You may have noticed that I used PSR-3 LoggerInterface. By default, the dispatcher uses a NullLogger, so you don't need to add a logger instance to it, but you can if you want.
+
+
+### Writting an EventListener
+
+There are three ways to write an event listener:
+* By implementing `EventListenerInterface` and writting the whole logic on your own
+* By extending `AbstractEventListener` and writting only the event process logic
+* By using `EventListenerTrait` and writting only the event process logic
+
+An example if you chose one of the las two points:
+
+``` php
+protected function doListen (array $payload)
+{
+    // Checking event name in header
+    if ($payload[0]['eventname'] !== 'TICK_5') {
+        // Invalid event, but we want to continue running the listener itself
+        return true;
+    }
+
+    // Do some logic
+    $process = $payload[1]['process_name'];
+    $body = isset($payload[2]) ? $payload[2] : null;
+
+    if ($process == 'kill_me') {
+        exec('kill -9 ' . $payload[1]['pid']);
+        return 0;
+    } elseif ($process == 'stop_listener') {
+        // Stop listener
+        return 2;
+    }
+}
+```
+
+**Note**: Exit code 2 does not have the meaning exit. Anything else than 0 and 1 (success and failure) means exit now. This may change in the future.
 
 
 ## Further info
