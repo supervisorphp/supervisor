@@ -49,7 +49,7 @@ class MemmonEventListenerCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('event:memmon')
+            ->setName('listener:memmon')
             ->setDescription('Start a Memmon EventListener');
 
         parent::configure();
