@@ -91,7 +91,8 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 
             $payload = explode("\n", $payload, 2);
 
-            $payload[0] = array_merge($headers, $this->parseData($payload[0]));
+            $payload[0] = $this->parseData($payload[0]);
+            array_unshift($payload, $headers);
         }
 
         return $payload;
