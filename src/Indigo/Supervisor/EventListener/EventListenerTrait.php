@@ -159,8 +159,8 @@ trait EventListenerTrait implements EventListenerInterface
     /**
      * Do the actual event handling
      *
-     * @param  EventInterface   $event
-     * @return integer 0=success, 1=failure
+     * @param  EventInterface $event
+     * @return integer        0=success, 1=failure
      */
     abstract protected function doListen(EventInterface $event);
 
@@ -200,7 +200,7 @@ trait EventListenerTrait implements EventListenerInterface
     /**
      * Write data to output stream
      *
-     * @param  string $value
+     * @param string $value
      */
     protected function write($value)
     {

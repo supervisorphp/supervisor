@@ -57,6 +57,7 @@ class InetConnector extends AbstractConnector
     public function isLocal()
     {
         $host = parse_url($this->resource, PHP_URL_HOST);
+
         return gethostbyname($host) == '127.0.0.1';
     }
 

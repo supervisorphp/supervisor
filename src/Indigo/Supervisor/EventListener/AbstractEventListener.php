@@ -181,8 +181,8 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     /**
      * Do the actual event handling
      *
-     * @param  EventInterface   $event
-     * @return integer 0=success, 1=failure
+     * @param  EventInterface $event
+     * @return integer        0=success, 1=failure
      */
     abstract protected function doListen(EventInterface $event);
 
@@ -222,7 +222,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     /**
      * Write data to output stream
      *
-     * @param  string $value
+     * @param string $value
      */
     protected function write($value)
     {

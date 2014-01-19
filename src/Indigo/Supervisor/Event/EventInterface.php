@@ -31,7 +31,7 @@ interface EventInterface
     /**
      * Set header values
      *
-     * @param array $header
+     * @param  array          $header
      * @return EventInterface
      */
     public function setHeader(array $header);
@@ -49,7 +49,7 @@ interface EventInterface
     /**
      * Set payload values
      *
-     * @param array $payload
+     * @param  array          $payload
      * @return EventInterface
      */
     public function setPayload(array $payload);
@@ -64,7 +64,7 @@ interface EventInterface
     /**
      * Set body
      *
-     * @param string $body
+     * @param  string         $body
      * @return EventInterface
      */
     public function setBody($body);
