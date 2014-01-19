@@ -13,35 +13,39 @@ namespace Indigo\Supervisor\Event;
 
 abstract class AbstractEvent implements EventInterface
 {
-    protected $headers = array();
+    protected $header = array();
     protected $payload = array();
     protected $body = null;
 
-    public function __construct(array $headers, array $payload, $body = null)
+    public function __construct(array $header, array $payload, $body = null)
     {
-        $this->setHeader($headers);
+        $this->setHeader($header);
         $this->setPayload($payload);
         $this->setBody($body);
     }
 
     public function getHeader($key = null, $default = null)
     {
-        $this->arrGet($this->headers, $key, $default);
+        return $this->arrGet($this->header, $key, $default);
     }
 
-    public function setHeader(array $headers)
+    public function setHeader(array $header)
     {
-        $this->headers = $headers;
+        $this->header = $header;
+
+        return $this;
     }
 
     public function getPayload($key = null, $default = null)
     {
-        $this->arrGet($this->payload, $key, $default);
+        return $this->arrGet($this->payload, $key, $default);
     }
 
     public function setPayload(array $payload)
     {
         $this->payload = $payload;
+
+        return $this;
     }
 
     public function getBody()
@@ -52,6 +56,8 @@ abstract class AbstractEvent implements EventInterface
     public function setBody($body)
     {
         $this->body = $body;
+
+        return $this;
     }
 
     private function arrGet(array $array, $key = null, $default = null)

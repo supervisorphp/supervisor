@@ -15,7 +15,7 @@ interface EventInterface
 {
     public function getHeader($key = null, $default = null);
 
-    public function setHeader(array $headers);
+    public function setHeader(array $header);
 
     public function getPayload($key = null, $default = null);
 

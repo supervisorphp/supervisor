@@ -31,9 +31,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     protected $outputStream = STDOUT;
 
     /**
-     * Set input stream
-     *
-     * @param resource $stream
+     * {@inheritdoc}
      */
     public function setInputStream($stream)
     {
@@ -42,26 +40,28 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         } else {
             throw new \InvalidArgumentException('Invalid resource for input stream');
         }
+
+        return $this;
     }
 
     /**
-     * Set output stream
-     *
-     * @param resource $stream
+     * {@inheritdoc}
      */
     public function setOutputStream($stream)
     {
         if (is_resource($stream)) {
-            $this->inputStream = $stream;
+            $this->outputStream = $stream;
         } else {
             throw new \InvalidArgumentException('Invalid resource for output stream');
         }
+
+        return $this;
     }
 
     /**
-     * Listen for events
+     * {@inheritdoc}
      */
-    public function listen()
+    public function listen($once = false)
     {
         $this->statusReady();
 
@@ -72,7 +72,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 
             $result = $this->doListen($event);
 
-            if (!$this->processResult($result)) {
+            if (!$this->processResult($result) or $once === true) {
                 return;
             }
 

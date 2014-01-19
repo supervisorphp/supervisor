@@ -36,7 +36,7 @@ class MemmonEventListener extends AbstractEventListener
 
     protected function doListen(EventInterface $event)
     {
-        if (strpos($event->getHeader('eventname', ''), 'TICK') == false) {
+        if (strpos($event->getHeader('eventname', ''), 'TICK') === false) {
             return 0;
         }
 
@@ -61,8 +61,7 @@ class MemmonEventListener extends AbstractEventListener
     protected function restart(Process $process, $mem)
     {
         try {
-            $process->restart();
-            $result = true;
+            $result = $process->restart();
         } catch (\Exception $e) {
             $result = false;
         }
@@ -93,10 +92,10 @@ class MemmonEventListener extends AbstractEventListener
         $pname = $process['group'] . ':' . $process['name'];
 
         $mem = array(
-        	$this->hasProgram($process['name']),
-        	$this->hasProgram($pname),
-        	$this->hasGroup($process['group']),
-        	$this->any,
+            $this->hasProgram($process['name']),
+            $this->hasProgram($pname),
+            $this->hasGroup($process['group']),
+            $this->any,
         );
 
         return abs(max($mem));
@@ -104,11 +103,11 @@ class MemmonEventListener extends AbstractEventListener
 
     protected function hasProgram($program)
     {
-        return array_key_exists($program, $this->programs) ? $this->programs[$program] : false;
+        return array_key_exists($program, $this->program) ? $this->program[$program] : false;
     }
 
     protected function hasGroup($group)
     {
-        return array_key_exists($group, $this->groups) ? $this->groups[$group] : false;
+        return array_key_exists($group, $this->group) ? $this->group[$group] : false;
     }
 }

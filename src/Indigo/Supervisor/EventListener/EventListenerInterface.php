@@ -13,6 +13,24 @@ interface EventListenerInterface
 
     /**
      * Listen to events
+     *
+     * @param boolean $once Listen should run only once if true
      */
-    public function listen();
+    public function listen($once = false);
+
+    /**
+     * Set input stream
+     *
+     * @param  resource               $stream
+     * @return EventListenerInterface
+     */
+    public function setInputStream($stream);
+
+    /**
+     * Set output stream
+     *
+     * @param  resource               $stream
+     * @return EventListenerInterface
+     */
+    public function setOutputStream($stream);
 }
