@@ -4,6 +4,8 @@ namespace Indigo\Supervisor\Connector;
 
 abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
 {
+    protected $connector;
+
     public function testCredentials()
     {
         $this->assertInstanceOf(
