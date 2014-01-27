@@ -1,7 +1,9 @@
 <?php
 
-namespace Indigo\Supervisor;
+namespace Indigo\Supervisor\Test;
 
+use Indigo\Supervisor\Supervisor;
+use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Section\SectionInterface;
 
 class SupervisorTest extends \PHPUnit_Framework_TestCase

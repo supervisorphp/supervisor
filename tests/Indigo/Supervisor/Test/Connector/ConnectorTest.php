@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Indigo\Supervisor\Test\Connector;
 
 abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
 {

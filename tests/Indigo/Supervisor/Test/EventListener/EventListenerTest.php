@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\EventListener;
+namespace Indigo\Supervisor\Test\EventListener;
 
 abstract class EventListenerTest extends \PHPUnit_Framework_TestCase
 {

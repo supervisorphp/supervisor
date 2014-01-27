@@ -1,6 +1,8 @@
 <?php
 
-namespace Indigo\Supervisor\Event;
+namespace Indigo\Supervisor\Test\Event;
+
+use Indigo\Supervisor\Event\Event;
 
 class EventTest extends AbstractEventTest
 {

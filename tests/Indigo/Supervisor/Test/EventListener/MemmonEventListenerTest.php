@@ -1,7 +1,8 @@
 <?php
 
-namespace Indigo\Supervisor\EventListener;
+namespace Indigo\Supervisor\Test\EventListener;
 
+use Indigo\Supervisor\EventListener\MemmonEventListener;
 use Indigo\Supervisor\Process;
 
 class TestMemmonEventListener extends MemmonEventListener
@@ -12,6 +13,7 @@ class TestMemmonEventListener extends MemmonEventListener
         return false;
     }
 }
+
 
 class MemmonEventListenerTest extends EventListenerTest
 {

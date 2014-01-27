@@ -1,6 +1,8 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Indigo\Supervisor\Test\Connector;
+
+use Indigo\Supervisor\Connector\SocketConnector;
 
 abstract class SocketConnectorTest extends ConnectorTest
 {
