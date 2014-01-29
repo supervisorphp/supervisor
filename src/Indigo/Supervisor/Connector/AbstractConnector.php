@@ -14,6 +14,7 @@ namespace Indigo\Supervisor\Connector;
 use Buzz\Message\Response;
 use Buzz\Exception\ClientException;
 use Indigo\Supervisor\Exception\SupervisorException;
+use UnexpectedValueException;
 
 /**
  * Abstract Connector class
@@ -146,7 +147,7 @@ abstract class AbstractConnector implements ConnectorInterface
         $response = xmlrpc_decode(trim($response), 'utf-8');
 
         if (!$response) {
-            throw new \UnexpectedValueException('Invalid or empty response');
+            throw new UnexpectedValueException('Invalid or empty response');
         } elseif (is_array($response) and xmlrpc_is_fault($response)) {
             throw new SupervisorException($response['faultString'], $response['faultCode']);
         }

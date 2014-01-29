@@ -12,6 +12,7 @@
 namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Section\SectionInterface;
+use UnexpectedValueException;
 
 /**
  * Supervisor configuration parser and generator
@@ -180,7 +181,7 @@ class Configuration
                 $section = $this->parseIniSection($this->mapSections[$name[0]], $name, $section);
                 $this->addSection($section);
             } else {
-                throw new \UnexpectedValueException('Unexpected section name: ' . $name[0]);
+                throw new UnexpectedValueException('Unexpected section name: ' . $name[0]);
             }
         }
     }

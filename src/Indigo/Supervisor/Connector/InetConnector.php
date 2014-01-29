@@ -13,6 +13,7 @@ namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
 use Buzz\Client\FileGetContents as Client;
+use InvalidArgumentException;
 
 /**
  * Connect to Supervisor using simple file_get_contents
@@ -31,7 +32,7 @@ class InetConnector extends AbstractConnector
         $resource = parse_url($host);
 
         if (!$resource) {
-            throw new \InvalidArgumentException('The following host is not a valid resource:' . $host);
+            throw new InvalidArgumentException('The following host is not a valid resource:' . $host);
         }
 
         $resource['port'] = $port;

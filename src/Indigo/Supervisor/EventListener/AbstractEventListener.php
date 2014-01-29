@@ -15,6 +15,7 @@ use Indigo\Supervisor\Event\Event;
 use Indigo\Supervisor\Event\EventInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use InvalidArgumentException;
 
 /**
  * Abstract EventListener
@@ -60,7 +61,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         if (is_resource($stream)) {
             $this->inputStream = $stream;
         } else {
-            throw new \InvalidArgumentException('Invalid resource for input stream');
+            throw new InvalidArgumentException('Invalid resource for input stream');
         }
 
         return $this;
@@ -82,7 +83,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         if (is_resource($stream)) {
             $this->outputStream = $stream;
         } else {
-            throw new \InvalidArgumentException('Invalid resource for output stream');
+            throw new InvalidArgumentException('Invalid resource for output stream');
         }
 
         return $this;

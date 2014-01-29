@@ -11,11 +11,13 @@
 
 namespace Indigo\Supervisor\Exception;
 
+use Exception;
+
 /**
  * Thrown in case of faulty XMLRPC response
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class SupervisorException extends \Exception implements ExceptionInterface
+class SupervisorException extends Exception implements ExceptionInterface
 {
 }

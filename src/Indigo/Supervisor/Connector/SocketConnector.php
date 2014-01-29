@@ -13,6 +13,8 @@ namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
 use Buzz\Client\Socket as Client;
+use RuntimeException;
+use InvalidArgumentException;
 
 /**
  * Connect to Supervisor through socket
@@ -54,7 +56,7 @@ abstract class SocketConnector extends AbstractConnector
         }
 
         if (!is_resource($resource)) {
-            throw new \RuntimeException('Cannot open socket to ' . $hostname . ': ' . $errStr, $errNo);
+            throw new RuntimeException('Cannot open socket to ' . $hostname . ': ' . $errStr, $errNo);
         }
 
         $this->timeout = $timeout;
@@ -115,7 +117,7 @@ abstract class SocketConnector extends AbstractConnector
 
         $timeoutOk = filter_var($timeout, FILTER_VALIDATE_FLOAT);
         if ($timeoutOk === false || $timeout < 0) {
-            throw new \InvalidArgumentException("Timeout must be 0 or a positive float (got $timeout)");
+            throw new InvalidArgumentException("Timeout must be 0 or a positive float (got $timeout)");
         }
 
         return $timeoutOk;
@@ -139,7 +141,7 @@ abstract class SocketConnector extends AbstractConnector
         if (is_resource($resource)) {
             return parent::setResource($resource);
         } else {
-            throw new \InvalidArgumentException('Stream must be a valid resource, ' . gettype($resource) . ' given.');
+            throw new InvalidArgumentException('Stream must be a valid resource, ' . gettype($resource) . ' given.');
         }
     }
 

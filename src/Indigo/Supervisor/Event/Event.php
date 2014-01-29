@@ -20,5 +20,4 @@ namespace Indigo\Supervisor\Event;
  */
 class Event extends AbstractEvent
 {
-
 }
