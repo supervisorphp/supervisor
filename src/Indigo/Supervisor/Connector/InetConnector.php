@@ -32,17 +32,13 @@ class InetConnector extends AbstractConnector
         $resource = parse_url($host);
 
         if (!$resource) {
-            throw new InvalidArgumentException('The following host is not a valid resource:' . $host);
+            throw new InvalidArgumentException('The following host is not a valid resource: ' . $host);
         }
 
         $resource['port'] = $port;
+        $flags = HTTP_URL_REPLACE | HTTP_URL_STRIP_AUTH | HTTP_URL_STRIP_QUERY | HTTP_URL_STRIP_FRAGMENT;
 
-        $this->resource = http_build_url(
-            '',
-            $resource,
-            HTTP_URL_REPLACE | HTTP_URL_STRIP_AUTH | HTTP_URL_STRIP_QUERY | HTTP_URL_STRIP_FRAGMENT
-        );
-
+        $this->resource = http_build_url('', $resource, $flags);
         $this->local = $this->checkHost($resource['host']);
     }
 
