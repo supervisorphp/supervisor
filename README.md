@@ -101,6 +101,20 @@ The following sections are available in this pacakge:
 $section = new ProgramSection('test', array('command' => 'cat'));
 ```
 
+
+### Existing configuration
+
+You can parse your existing configuration, and use it as a `Configuration` object.
+
+``` php
+$configuration = new Configuration;
+
+$configuration->parseFile('/etc/supervisor/supervisord.conf');
+
+$ini = file_get_contents('/etc/supervisor/supervisord.conf');
+$configuration->parseIni($ini);
+```
+
 You can find detailed info about options for each section here:
 [http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
 

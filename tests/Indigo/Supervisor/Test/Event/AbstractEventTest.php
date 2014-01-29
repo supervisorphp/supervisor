@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\Event;
+namespace Indigo\Supervisor\Test\Event;
 
 abstract class AbstractEventTest extends \PHPUnit_Framework_TestCase
 {

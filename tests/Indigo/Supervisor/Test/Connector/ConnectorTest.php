@@ -1,9 +1,11 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Indigo\Supervisor\Test\Connector;
 
 abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
 {
+    protected $connector;
+
     public function testCredentials()
     {
         $this->assertInstanceOf(

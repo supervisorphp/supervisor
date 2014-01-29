@@ -1,6 +1,8 @@
 <?php
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor\Test\Section;
+
+use Indigo\Supervisor\Section;
 
 class SectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,48 +16,48 @@ class SectionTest extends \PHPUnit_Framework_TestCase
     public function provider()
     {
         return array(
-            new EventListenerSection('test', array(
+            new Section\EventListenerSection('test', array(
                 'command' => 'cat /path/to/file',
             )),
-            new FcgiProgramSection('test', array(
+            new Section\FcgiProgramSection('test', array(
                 'socket'  => '/path/to/socket',
                 'command' => 'cat /path/to/file',
             )),
-            new GroupSection('test', array(
+            new Section\GroupSection('test', array(
                 'programs' => array(
                     'test',
                     'empty',
                 ),
             )),
-            new IncludeSection(array(
+            new Section\IncludeSection(array(
                 'files' => array('/etc/supervisord/conf.d/*'),
             )),
-            new InetHttpServerSection(array(
+            new Section\InetHttpServerSection(array(
                 'port' => 9001,
             )),
-            new ProgramSection('test', array(
+            new Section\ProgramSection('test', array(
                 'command' => 'cat /path/to/file',
                 'environment' => array(
                     'KEY' => 'value',
                     'fake_value',
                 ),
             )),
-            new ProgramSection('test', array(
+            new Section\ProgramSection('test', array(
                 'command'    => 'cat /path/to/file',
                 'stopsignal' => 'TERM',
             )),
-            new SupervisorctlSection,
-            new SupervisordSection(array(
+            new Section\SupervisorctlSection,
+            new Section\SupervisordSection(array(
                 'environment' => array(
                     'KEY' => 'value',
                     'fake_value'
                 ),
             )),
-            new SupervisordSection(array(
+            new Section\SupervisordSection(array(
                 'loglevel' => 'warn',
             )),
-            new UnixHttpServerSection,
-            new RpcInterfaceSection('test'),
+            new Section\UnixHttpServerSection,
+            new Section\RpcInterfaceSection('test'),
         );
     }
 
