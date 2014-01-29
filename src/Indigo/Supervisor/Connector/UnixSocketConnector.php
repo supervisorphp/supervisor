@@ -34,13 +34,6 @@ class UnixSocketConnector extends SocketConnector
         $this->createSocket($socket, -1, $timeout, $persistent);
 
         $this->socket = $socket;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLocal()
-    {
-        return true;
+        $this->local = true;
     }
 }

@@ -40,6 +40,21 @@ abstract class AbstractConnector implements ConnectorInterface
     );
 
     /**
+     * Whether Supervisor is local or not
+     *
+     * @var boolean
+     */
+    protected $local;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocal()
+    {
+        return $this->local;
+    }
+
+    /**
      * Set credentials for connection and set header
      *
      * @param  string             $username

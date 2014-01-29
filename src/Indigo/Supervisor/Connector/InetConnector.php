@@ -37,6 +37,8 @@ class InetConnector extends AbstractConnector
 
         $resource['port'] = $port;
 
+        $this->local = gethostbyname($resource['host']) == '127.0.0.1';
+
         $this->resource = http_build_url(
             '',
             $resource,
@@ -50,16 +52,6 @@ class InetConnector extends AbstractConnector
     public function isConnected()
     {
         return ! empty($this->resource);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLocal()
-    {
-        $host = parse_url($this->resource, PHP_URL_HOST);
-
-        return gethostbyname($host) == '127.0.0.1';
     }
 
     /**
