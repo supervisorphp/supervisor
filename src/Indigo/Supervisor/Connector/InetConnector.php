@@ -37,13 +37,13 @@ class InetConnector extends AbstractConnector
 
         $resource['port'] = $port;
 
-        $this->local = gethostbyname($resource['host']) == '127.0.0.1';
-
         $this->resource = http_build_url(
             '',
             $resource,
             HTTP_URL_REPLACE | HTTP_URL_STRIP_AUTH | HTTP_URL_STRIP_QUERY | HTTP_URL_STRIP_FRAGMENT
         );
+
+        $this->local = $this->checkHost($resource['host']);
     }
 
     /**

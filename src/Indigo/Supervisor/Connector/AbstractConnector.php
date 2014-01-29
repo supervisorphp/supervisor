@@ -55,6 +55,17 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
+     * Check whether the given host is local
+     *
+     * @param  string  $host
+     * @return boolean
+     */
+    protected function checkHost($host)
+    {
+        return gethostbyname($host) == '127.0.0.1';
+    }
+
+    /**
      * Set credentials for connection and set header
      *
      * @param  string             $username
