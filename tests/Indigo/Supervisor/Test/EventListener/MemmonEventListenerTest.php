@@ -45,10 +45,11 @@ class MemmonEventListenerTest extends EventListenerTest
                     'group' => 'test',
                     'now' => 1000,
                     'start' => 0,
+                    'pid' => getmypid(),
                 ), $connector),
                 function ($mock) {
                     $mock->shouldReceive('getMemUsage')
-                        ->andReturn(1024);
+                        ->andReturn(1025);
 
                     $mock->shouldReceive('isRunning')
                         ->andReturn(true);

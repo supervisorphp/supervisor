@@ -130,7 +130,7 @@ class MemmonEventListener extends AbstractEventListener
         $context = array('subject' => $message);
         $message .= 'Process restart at ' . $mem . ' bytes';
 
-        $this->logger->info($message, $process, $context);
+        $this->logger->info($message, $process->getPayload(), $context);
 
         return $result;
     }
