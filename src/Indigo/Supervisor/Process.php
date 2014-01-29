@@ -79,7 +79,7 @@ class Process implements ArrayAccess, Iterator
      */
     public function getName()
     {
-        return $this['name'];
+        return $this->payload['name'];
     }
 
     /**
