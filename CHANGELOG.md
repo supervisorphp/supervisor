@@ -1,6 +1,12 @@
 # CHANGELOG
 
 
+## 1.1.1 (released 2014-01-29)
+
+* Unit tests moved into Test namespace
+* Fixed license issues
+
+
 ## 1.1.0 (released 2014-01-20)
 
 * Added Symfony Commands
