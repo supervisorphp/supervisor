@@ -10,15 +10,15 @@
 
     <testsuites>
         <testsuite name="Indigo Supervisor Test Suite">
-            <directory>tests/Indigo/Supervisor</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src/Indigo/Supervisor</directory>
+            <directory suffix=".php">src/</directory>
             <exclude>
-                <directory suffix=".php">src/Indigo/Supervisor/Command</directory>
+                <directory suffix=".php">src/Command</directory>
             </exclude>
         </whitelist>
     </filter>

@@ -27,9 +27,11 @@
     },
     "autoload": {
         "psr-0": {
-            "Indigo\\Supervisor\\": ["src/", "tests/"],
-            "Buzz\\": "src/"
+            "Buzz\\": "lib/"
         },
-        "files": ["src/functions.php"]
+        "psr-4": {
+            "Indigo\\Supervisor\\": ["src/", "tests/"]
+        },
+        "files": ["lib/functions.php"]
     }
 }
