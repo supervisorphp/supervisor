@@ -2,8 +2,8 @@
     "name": "indigophp/supervisor",
     "description": "PHP library for Supervisord",
     "license": "MIT",
-    "homepage": "https://indigophp.com",
     "keywords": ["supervisor", "process manager"],
+    "homepage": "https://indigophp.com",
     "authors": [
         {
             "name": "Márk Sági-Kazár",
