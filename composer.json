@@ -13,14 +13,14 @@
     "require": {
         "php": ">=5.3.3",
         "ext-xmlrpc": "*",
-        "symfony/options-resolver": "v2.4.0",
-        "symfony/process": "v2.4.0",
+        "symfony/options-resolver": "v2.4.*",
+        "symfony/process": "v2.4.*",
         "psr/log": "~1.0",
         "kriswallsmith/buzz": "v0.10"
     },
     "require-dev": {
         "mockery/mockery": "dev-master@dev",
-        "symfony/console": "v2.4.1"
+        "symfony/console": "v2.4.*"
     },
     "suggest": {
         "symfony/console": "Used for CLI application"
