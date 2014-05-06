@@ -9,6 +9,7 @@ script: phpunit -v --coverage-clover=coverage.clover
 before_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - composer install --dev --prefer-source
+  -socket -bls /tmp/supervisor.sock
 
 after_script:
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
