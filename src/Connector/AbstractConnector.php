@@ -143,6 +143,7 @@ abstract class AbstractConnector implements ConnectorInterface
 
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function call($namespace, $method, array $arguments = array())
     {

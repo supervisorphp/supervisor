@@ -24,6 +24,11 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers \Indigo\Supervisor\Connector\AbstractConnector::setHeader
+     * @covers \Indigo\Supervisor\Connector\AbstractConnector::getHeader
+     * @group  Supervisor
+     */
     public function testHeaders()
     {
         $this->assertInstanceOf(
@@ -48,6 +53,9 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->connector->getHeader('X-Test-Null'));
     }
 
+    /**
+     * @group Supervisor
+     */
     public function testAccessProcessResponse()
     {
         $method = new \ReflectionMethod(get_class($this->connector), 'processResponse');
@@ -57,8 +65,10 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            \Indigo\Supervisor\Connector\AbstractConnector::processResponse
+     * @depends           testAccessProcessResponse
      * @expectedException UnexpectedValueException
-     * @depends testAccessProcessResponse
+     * @group             Supervisor
      */
     public function testProcessNullResponse($method)
     {
@@ -66,8 +76,11 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Indigo\Supervisor\Exception\SupervisorException
-     * @depends testAccessProcessResponse
+     * @covers            \Indigo\Supervisor\Connector\AbstractConnector::processResponse
+     * @covers            \Indigo\Supervisor\Exception\SupervisorException
+     * @depends           testAccessProcessResponse
+     * @expectedException \Indigo\Supervisor\Exception\SupervisorException
+     * @group             Supervisor
      */
     public function testProcessFaultyResponse($method)
     {
@@ -93,7 +106,9 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers  \Indigo\Supervisor\Connector\AbstractConnector::processResponse
      * @depends testAccessProcessResponse
+     * @group   Supervisor
      */
     public function testProcessResponse($method)
     {
@@ -113,6 +128,10 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers \Indigo\Supervisor\Connector\AbstractConnector::isLocal
+     * @group  Supervisor
+     */
     public function testIsLocal()
     {
         $this->assertTrue(is_bool($this->connector->isLocal()));
