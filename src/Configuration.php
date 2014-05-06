@@ -49,8 +49,8 @@ class Configuration
     /**
      * Add or override default section map
      *
-     * @param string         $section
-     * @param string         $className
+     * @param  string        $section
+     * @param  string        $className
      * @return Configuration
      */
     public function addSectionMap($section, $className)
