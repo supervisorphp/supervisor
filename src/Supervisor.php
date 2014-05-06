@@ -208,6 +208,8 @@ class Supervisor
      * Get all processes as Process objects
      *
      * @return array Array of Process objects
+     *
+     * @codeCoverageIgnore
      */
     public function getAllProcess()
     {
