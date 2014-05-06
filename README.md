@@ -32,7 +32,7 @@ use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Connector;
 
 $connector = new Connector\InetConnector('localhost', 9001);
-//$connector = new Connector\SocketConnector('unix:///var/run/supervisor.lock');
+//$connector = new Connector\UnixSocketConnector('unix:///var/run/supervisor.lock');
 
 $connector->setCredentials('user', '123');
 
