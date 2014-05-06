@@ -11,9 +11,9 @@ class UnixSocketConnectorTest extends SocketConnectorTest
 {
     public function setUp()
     {
-        $this->connector = new UnixSocketConnector($GLOBALS['socket']);
-
-        if (!$this->connector->isConnected()) {
+        try {
+            $this->connector = new UnixSocketConnector($GLOBALS['socket']);
+        } catch (\RuntimeException $e) {
             $this->markTestSkipped(
                 'Supervisor is not available.'
             );
