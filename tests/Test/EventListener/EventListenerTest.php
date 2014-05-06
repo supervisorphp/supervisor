@@ -34,6 +34,13 @@ abstract class EventListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->setInputStream($input)->setOutputStream($output);
     }
 
+    /**
+     * @covers ::getInputStream
+     * @covers ::setInputStream
+     * @covers ::getOutputStream
+     * @covers ::setOutputStream
+     * @group  Supervisor
+     */
     public function testStreams()
     {
         $this->regenerate($input, $output);
@@ -53,7 +60,9 @@ abstract class EventListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            ::setInputStream
      * @expectedException InvalidArgumentException
+     * @group             Supervisor
      */
     public function testInputStreamFailure()
     {
@@ -61,13 +70,19 @@ abstract class EventListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            ::setOutputStream
      * @expectedException InvalidArgumentException
+     * @group             Supervisor
      */
     public function testOutputStreamFailure()
     {
         $this->listener->setOutputStream(false);
     }
 
+    /**
+     * @covers ::processResult
+     * @group  Supervisor
+     */
     public function testProcessResult()
     {
         $method = new \ReflectionMethod(get_class($this->listener), 'processResult');

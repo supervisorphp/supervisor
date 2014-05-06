@@ -14,7 +14,9 @@ class TestMemmonEventListener extends MemmonEventListener
     }
 }
 
-
+/**
+ * @coversDefaultClass \Indigo\Supervisor\EventListener\MemmonEventListener
+ */
 class MemmonEventListenerTest extends EventListenerTest
 {
     public function setUp()
@@ -55,7 +57,7 @@ class MemmonEventListenerTest extends EventListenerTest
                         ->andReturn(true);
 
                     $mock->shouldReceive('restart')
-                        ->andReturn(false);
+                        ->andThrow(new \Exception);
                 }
             );
 
@@ -89,6 +91,15 @@ class MemmonEventListenerTest extends EventListenerTest
         $this->listener = new TestMemmonEventListener($supervisor, array(), array(), 1024, 60, 'memmon');
     }
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
+    /**
+     * @covers ::__construct
+     * @group  Supervisor
+     */
     public function testInstance()
     {
         $supervisor = \Mockery::mock('Indigo\\Supervisor\\Supervisor');
@@ -100,6 +111,9 @@ class MemmonEventListenerTest extends EventListenerTest
         );
     }
 
+    /**
+     * @group Supervisor
+     */
     public function testBasic()
     {
         $this->regenerate($input, $output);
@@ -115,6 +129,9 @@ class MemmonEventListenerTest extends EventListenerTest
         $this->assertEquals('OK', fgets($output));
     }
 
+    /**
+     * @group Supervisor
+     */
     public function testAdvanced()
     {
         $this->regenerate($input, $output);
@@ -128,10 +145,5 @@ class MemmonEventListenerTest extends EventListenerTest
         $this->assertEquals("READY\n", fgets($output));
         $this->assertEquals("RESULT 2\n", fgets($output));
         $this->assertEquals('OK', fgets($output));
-    }
-
-    public function tearDown()
-    {
-        \Mockery::close();
     }
 }

@@ -91,6 +91,8 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
 
     /**
      * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
      */
     public function listen()
     {
@@ -234,6 +236,8 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
      * Sets a logger
      *
      * @param LoggerInterface $logger
+     *
+     * @codeCoverageIgnore
      */
     public function setLogger(LoggerInterface $logger)
     {
