@@ -3,7 +3,11 @@
 namespace Indigo\Supervisor\Test;
 
 use Indigo\Supervisor\Process;
+use Indigo\Supervisor\Exception\SupervisorException;
 
+/**
+ * @coversDefaultClass \Indigo\Supervisor\Process
+ */
 class ProcessTest extends \PHPUnit_Framework_TestCase
 {
     protected $connector;
@@ -13,9 +17,6 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         $this->connector = \Mockery::mock(
             'Indigo\\Supervisor\\Connector\\ConnectorInterface',
             function ($mock) {
-                $mock->shouldReceive('call')
-                    ->andReturn(true);
-
                 $mock->shouldReceive('isLocal')
                     ->andReturn(true);
             }
@@ -54,6 +55,11 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers ::getConnector
+     * @covers ::setConnector
+     * @group  Supervisor
+     */
     public function testConnector()
     {
         $process = new Process(array(), $this->connector);
@@ -71,10 +77,13 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider provider
+     * @group        Supervisor
      */
     public function testProcess($payload)
     {
         $process = new Process($payload, $this->connector);
+
+        $this->connector->shouldReceive('call')->andReturn(true);
 
         $this->assertEquals($payload, $process->getPayload());
         $this->assertEquals($payload['name'], $process->getName());
@@ -117,5 +126,21 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($process->readStderrLog(0, 100));
         $this->assertTrue($process->tailStdoutLog(0, 100));
         $this->assertTrue($process->tailStderrLog(0, 100));
+    }
+
+    /**
+     * @covers            ::restart
+     * @covers            \Indigo\Supervisor\Exception\SupervisorException
+     * @dataProvider      provider
+     * @group             Supervisor
+     */
+    public function testProcessRestartFailure($payload)
+    {
+        $exception = new SupervisorException;
+        $this->connector->shouldReceive('call')->andThrow($exception);
+
+        $process = new Process($payload, $this->connector);
+
+        $this->assertFalse($process->restart());
     }
 }
