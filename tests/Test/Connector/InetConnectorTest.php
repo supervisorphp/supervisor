@@ -62,7 +62,7 @@ class InetConnectorTest extends ConnectorTest
      * @covers            ::prepareRequest
      * @covers            ::prepareClient
      * @covers            \Indigo\Supervisor\Exception\SupervisorException
-     * @expectedException \Exception
+     * @expectedException Exception
      * @group             Supervisor
      */
     public function testFaultyCall()
