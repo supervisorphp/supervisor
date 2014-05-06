@@ -5,6 +5,7 @@
 [![Latest Stable Version](https://poser.pugx.org/indigophp/supervisor/v/stable.png)](https://packagist.org/packages/indigophp/supervisor)
 [![Total Downloads](https://poser.pugx.org/indigophp/supervisor/downloads.png)](https://packagist.org/packages/indigophp/supervisor)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/indigophp/supervisor/badges/quality-score.png?s=6aaa222466e706bbb6417ba4906c544d72741cbe)](https://scrutinizer-ci.com/g/indigophp/supervisor/)
+[![License](https://poser.pugx.org/indigophp/supervisor/license.png)](https://packagist.org/packages/indigophp/supervisor)
 
 **PHP library for managing supervisord through XML-RPC**
 
@@ -16,10 +17,12 @@ Via Composer
 ``` json
 {
     "require": {
-        "indigophp/supervisor": "dev-master"
+        "indigophp/supervisor": "@stable"
     }
 }
 ```
+
+**Note**: Package uses PSR-4 autoloader, make sure you have a fresh version of Composer.
 
 
 ## Usage
@@ -30,7 +33,7 @@ use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Connector;
 
 $connector = new Connector\InetConnector('localhost', 9001);
-//$connector = new Connector\SocketConnector('unix:///var/run/supervisor.lock');
+//$connector = new Connector\UnixSocketConnector('unix:///var/run/supervisor.lock');
 
 $connector->setCredentials('user', '123');
 
@@ -71,7 +74,7 @@ Example:
 use Indigo\Supervisor\Configuration;
 use Indigo\Supervisor\Section\ProgramSection;
 
-$config = new Configuration();
+$config = new Configuration;
 
 $section = new SupervisordSection(array('identifier' => 'supervisor'));
 $config->addSection($section);
@@ -85,15 +88,15 @@ echo $config;
 
 The following sections are available in this pacakge:
 
-* *SupervisordSection*
-* *SupervisorctlSection*
-* *UnixHttpServerSection*
-* *InetHttpServerSection*
-* *IncludeSection*
-* *GroupSection**
-* *ProgramSection**
-* *EventListenerSection**
-* *FcgiProgramSection**
+* _SupervisordSection_
+* _SupervisorctlSection_
+* _UnixHttpServerSection_
+* _InetHttpServerSection_
+* _IncludeSection_
+* _GroupSection_*
+* _ProgramSection_*
+* _EventListenerSection_*
+* _FcgiProgramSection_*
 
 
 ***Note**: These sections has to be instantiated with a name and optionally an options array:
@@ -121,7 +124,7 @@ You can find detailed info about options for each section here:
 
 ## CLI Usage
 
-You can use CLI commands to manage your Supervisor instance and Processes. If you want to use this feature you need to include [symfony/console](https://github.com/symfony/console) into "require" key in your own composer.json.
+You can use CLI commands to manage your Supervisor instance and Processes. If you want to use this feature you need to require [symfony/console](https://github.com/symfony/console) in your own composer.json.
 
 For full list of commands run:
 
@@ -134,7 +137,7 @@ supervisor list
 
 Supervisor has this pretty good feature: notify you(r listener) about it's events, so it was obivious to implement this.
 
-It is important that this is only the logic of event processing. Making it work is your task. You have to create a console application which calls the `EventDispatcher`. You also have to create your own listeners, however, there are some included. Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
+It is important that this is only the logic of event processing. Making it work is your task. You have to create a console application which calls your `EventListener`. You also have to create your own listeners, however, there are some included. Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
 
 
 ``` php
@@ -151,7 +154,7 @@ $listener->setLogger(new \Psr\Log\NullLogger());
 $listener->listen();
 ```
 
-You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a NullLogger, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractEventListener`.
+You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a `NullLogger`, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractEventListener`.
 
 
 ### Writting an EventListener
@@ -159,25 +162,22 @@ You may have noticed that I used PSR-3 LoggerInterface. By default, the included
 There are three ways to write an event listener:
 * By implementing `EventListenerInterface` and writting the whole logic on your own
 * By extending `AbstractEventListener` and writting only the event process logic
-* By using `EventListenerTrait` and writting only the event process logic
 
-An example if you chose one of the las two points:
+An example if you choose the last option:
 
 ``` php
-protected function doListen (array $payload)
+protected function doListen(EventInterface $event)
 {
     // Checking event name in header
-    if ($payload[0]['eventname'] !== 'TICK_5') {
-        // Invalid event, but we want to continue running the listener itself
+    if ($event->getHeader('eventname', '') !== 'TICK_5') {
         return true;
     }
 
-    // Do some logic
-    $process = $payload[1]['process_name'];
-    $body = isset($payload[2]) ? $payload[2] : null;
+    $process = $event->getPayload('process_name');
+    $pid = $event->getPayload('pid');
 
     if ($process == 'kill_me') {
-        exec('kill -9 ' . $payload[1]['pid']);
+        exec('kill -9 ' . $pid);
         return 0;
     } elseif ($process == 'stop_listener') {
         // Stop listener

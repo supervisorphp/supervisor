@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## 1.2.0 (released 2014-05-06)
+
+* Code coverage improved
+* Unit tests improved
+* Travis build improved
+* Minor fixes
+
+
 ## 1.1.1 (released 2014-01-29)
 
 * Unit tests moved into Test namespace
