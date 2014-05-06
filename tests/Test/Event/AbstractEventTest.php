@@ -24,6 +24,15 @@ abstract class AbstractEventTest extends \PHPUnit_Framework_TestCase
 
     protected $body = 'This is the data that was sent between the tags';
 
+    /**
+     * @covers ::getHeader
+     * @covers ::setHeader
+     * @covers ::getPayload
+     * @covers ::setPayload
+     * @covers ::getBody
+     * @covers ::setBody
+     * @group  Supervisor
+     */
     public function testGetSet()
     {
         $this->assertNull($this->event->getHeader('fake'));
@@ -51,13 +60,5 @@ abstract class AbstractEventTest extends \PHPUnit_Framework_TestCase
             $this->event->setBody($this->body)
         );
         $this->assertEquals($this->body, $this->event->getBody());
-    }
-
-    public function testInstance()
-    {
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Event\\EventInterface',
-            $this->event
-        );
     }
 }
