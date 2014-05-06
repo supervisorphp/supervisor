@@ -4,6 +4,9 @@ namespace Indigo\Supervisor\Test\Connector;
 
 use Indigo\Supervisor\Connector\InetSocketConnector;
 
+/**
+ * @coversDefaultClass \Indigo\Supervisor\Connector\InetSocketConnector
+ */
 class InetSocketConnectorTest extends SocketConnectorTest
 {
     public function setUp()
@@ -11,6 +14,11 @@ class InetSocketConnectorTest extends SocketConnectorTest
         $this->connector = new InetSocketConnector('google.hu', 80);
     }
 
+    /**
+     * @covers ::__construct
+     * @covers ::isConnected
+     * @group  Supervisor
+     */
     public function testInstance()
     {
         $connector = new InetSocketConnector('google.hu', 80);

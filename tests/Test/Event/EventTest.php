@@ -4,6 +4,9 @@ namespace Indigo\Supervisor\Test\Event;
 
 use Indigo\Supervisor\Event\Event;
 
+/**
+ * @coversDefaultClass \Indigo\Supervisor\Event\Event
+ */
 class EventTest extends AbstractEventTest
 {
     public function setUp()

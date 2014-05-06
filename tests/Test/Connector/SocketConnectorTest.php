@@ -6,6 +6,14 @@ use Indigo\Supervisor\Connector\SocketConnector;
 
 abstract class SocketConnectorTest extends ConnectorTest
 {
+    public function tearDown()
+    {
+        unset($this->connector);
+    }
+
+    /**
+     * @group Supervisor
+     */
     public function testMethodCreateSocket()
     {
         $method = new \ReflectionMethod(get_class($this->connector), 'createSocket');
@@ -15,8 +23,10 @@ abstract class SocketConnectorTest extends ConnectorTest
     }
 
     /**
-     * @depends testMethodCreateSocket
+     * @covers            ::createSocket
+     * @depends           testMethodCreateSocket
      * @expectedException RuntimeException
+     * @group             Supervisor
      */
     public function testFaultCreateSocket(\ReflectionMethod $method)
     {
@@ -24,7 +34,9 @@ abstract class SocketConnectorTest extends ConnectorTest
     }
 
     /**
+     * @covers  ::createSocket
      * @depends testMethodCreateSocket
+     * @group   Supervisor
      */
     public function testCreateSocket(\ReflectionMethod $method)
     {
@@ -34,7 +46,9 @@ abstract class SocketConnectorTest extends ConnectorTest
     }
 
     /**
+     * @covers  ::createSocket
      * @depends testMethodCreateSocket
+     * @group   Supervisor
      */
     public function testCreatePersistentSocket(\ReflectionMethod $method)
     {
@@ -43,11 +57,20 @@ abstract class SocketConnectorTest extends ConnectorTest
         $this->assertTrue(is_resource($resource));
     }
 
+    /**
+     * @covers ::isPersistent
+     * @group  Supervisor
+     */
     public function testPersistent()
     {
         $this->assertTrue(is_bool($this->connector->isPersistent()));
     }
 
+    /**
+     * @covers ::setTimeout
+     * @covers ::validateTimeout
+     * @group  Supervisor
+     */
     public function testTimeout()
     {
         $timeout = $this->connector->setTimeout(null);
@@ -60,13 +83,21 @@ abstract class SocketConnectorTest extends ConnectorTest
     }
 
     /**
+     * @covers            ::setTimeout
+     * @covers            ::validateTimeout
      * @expectedException InvalidArgumentException
+     * @group             Supervisor
      */
     public function testTimeoutFailure()
     {
         $this->connector->setTimeout('null');
     }
 
+    /**
+     * @covers ::getResource
+     * @covers ::setResource
+     * @group  Supervisor
+     */
     public function testResource()
     {
         if ($this->connector->isConnected()) {
@@ -80,13 +111,19 @@ abstract class SocketConnectorTest extends ConnectorTest
     }
 
     /**
+     * @covers            ::setResource
      * @expectedException InvalidArgumentException
+     * @group             Supervisor
      */
     public function testResourceFailure()
     {
         $this->connector->setResource(null);
     }
 
+    /**
+     * @covers ::prepareRequest
+     * @group  Supervisor
+     */
     public function testPrepareRequest()
     {
         $method = new \ReflectionMethod(get_class($this->connector), 'prepareRequest');
@@ -98,6 +135,10 @@ abstract class SocketConnectorTest extends ConnectorTest
         );
     }
 
+    /**
+     * @covers ::prepareClient
+     * @group  Supervisor
+     */
     public function testPrepareClient()
     {
         $method = new \ReflectionMethod(get_class($this->connector), 'prepareClient');
@@ -109,6 +150,12 @@ abstract class SocketConnectorTest extends ConnectorTest
         );
     }
 
+    /**
+     * @covers ::close
+     * @covers ::isConnected
+     * @covers ::setTimeout
+     * @group  Supervisor
+     */
     public function testClose()
     {
         $connector = clone $this->connector;
@@ -120,14 +167,14 @@ abstract class SocketConnectorTest extends ConnectorTest
         $this->assertFalse($timeout);
     }
 
+    /**
+     * @covers ::__destruct
+     * @covers ::close
+     * @group  Supervisor
+     */
     public function testDestruct()
     {
         $connector = clone $this->connector;
         unset($connector);
-    }
-
-    public function tearDown()
-    {
-        unset($this->connector);
     }
 }

@@ -15,6 +15,7 @@ use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Event\EventInterface;
 use Psr\Log\NullLogger;
+use Exception;
 
 /**
  * Memmon EventListener
@@ -121,7 +122,7 @@ class MemmonEventListener extends AbstractEventListener
     {
         try {
             $result = $process->restart();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result = false;
         }
 

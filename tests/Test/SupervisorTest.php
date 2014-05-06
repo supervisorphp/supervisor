@@ -6,6 +6,9 @@ use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Section\SectionInterface;
 
+/**
+ * @coversDefaultClass \Indigo\Supervisor\Supervisor
+ */
 class SupervisorTest extends \PHPUnit_Framework_TestCase
 {
     protected $connector;
@@ -23,6 +26,16 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
         $this->supervisor = new Supervisor($this->connector);
     }
 
+    public function tearDown()
+    {
+        \Mockery::mock();
+    }
+
+    /**
+     * @covers ::getConnector
+     * @covers ::setConnector
+     * @group  Supervisor
+     */
     public function testConnector()
     {
         $this->assertInstanceOf(
@@ -36,6 +49,10 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers ::getstate
+     * @group  Supervisor
+     */
     public function testGetState()
     {
         $connector = clone $this->connector;
@@ -60,7 +77,9 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::isState
      * @depends testGetState
+     * @group  Supervisor
      */
     public function testIsState($connector)
     {
@@ -69,7 +88,9 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::isRunning
      * @depends testGetState
+     * @group  Supervisor
      */
     public function testIsRunning($connector)
     {
@@ -108,6 +129,7 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
             array('startProcess', true, array($process)),
             array('stopProcess', true, array($process)),
             array('startProcessGroup', true, array('test')),
+            array('stopProcessGroup', true, array('test')),
             array('sendRemoteCommEvent', true, array('test', 'fake')),
             array('addProcessGroup', true, array('test')),
             array('removeProcessGroup', true, array('test')),
@@ -167,6 +189,7 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider callProvider
+     * @group  Supervisor
      */
     public function testCallReturn($method, $value, $params = array())
     {
@@ -190,6 +213,11 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @covers ::getProcess
+     * @covers \Indigo\Supervisor\Process
+     * @group  Supervisor
+     */
     public function testGetProcess()
     {
         $connector = clone $this->connector;
@@ -209,6 +237,10 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
         return $connector;
     }
 
+    /**
+     * @covers ::sendProcessStdin
+     * @group  Supervisor
+     */
     public function testSendProcessStdin()
     {
         $connector = clone $this->connector;
@@ -233,13 +265,12 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
         return $connector;
     }
 
+    /**
+     * @covers ::isLocal
+     * @group  Supervisor
+     */
     public function testIsLocal()
     {
         $this->assertTrue($this->supervisor->isLocal());
-    }
-
-    public function tearDown()
-    {
-        \Mockery::mock();
     }
 }

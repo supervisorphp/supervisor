@@ -108,6 +108,8 @@ abstract class AbstractEvent implements EventInterface
      * @param  string|null $key
      * @param  mixed       $default
      * @return mixed
+     *
+     * @codeCoverageIgnore
      */
     private function arrGet(array $array, $key = null, $default = null)
     {

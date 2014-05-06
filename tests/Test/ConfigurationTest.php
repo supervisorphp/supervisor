@@ -5,6 +5,9 @@ namespace Indigo\Supervisor\Test;
 use Indigo\Supervisor\Configuration;
 use Indigo\Supervisor\Section\SectionInterface;
 
+/**
+ * @coversDefaultClass \Indigo\Supervisor\Configuration
+ */
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     protected $config;
@@ -19,6 +22,42 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         \Mockery::mock();
     }
 
+    /**
+     * @covers ::addSectionMap
+     * @group  Supervisor
+     */
+    public function testSectionMap()
+    {
+        $this->assertInstanceOf(
+            'Indigo\\Supervisor\\Configuration',
+            $this->config->addSectionMap('supervisor', 'Fake\\Supervisor')
+        );
+    }
+
+    /**
+     * @covers ::reset
+     * @group  Supervisor
+     */
+    public function testReset()
+    {
+        $section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
+            $mock->shouldReceive('getName')->andReturn('test');
+            $mock->shouldReceive('getOptions')->andReturn(array('test' => true));
+        });
+
+        $this->config->addSection($section);
+
+        $this->assertEquals(
+            array($section->getName() => $section),
+            $this->config->reset()
+        );
+    }
+
+    /**
+     * @covers ::addSection
+     * @covers ::getSection
+     * @group  Supervisor
+     */
     public function testSection()
     {
         $section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
@@ -47,9 +86,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             $section,
             $this->config->getSection()
         );
-
     }
 
+        /**
+     * @covers ::addSection
+     * @covers ::removeSection
+     * @group  Supervisor
+     */
     public function testRemoveSection()
     {
         $fakeSection = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
@@ -61,11 +104,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->config->removeSection('fake'));
     }
 
-    public function testRemoveFakeSection($value='')
+        /**
+     * @covers ::removeSection
+     * @group  Supervisor
+     */
+    public function testRemoveFakeSection()
     {
         $this->assertFalse($this->config->removeSection('fake'));
     }
 
+    /**
+     * @covers ::render
+     * @covers ::__toString
+     * @group  Supervisor
+     */
     public function testRender()
     {
         $section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
@@ -83,12 +135,17 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $render = $this->config->render();
 
-        $this->assertEquals($render, (string)$this->config);
+        $this->assertEquals($render, (string) $this->config);
     }
 
+    /**
+     * @covers ::parseFile
+     * @covers ::parseIni
+     * @covers ::parseIniSection
+     * @group  Supervisor
+     */
     public function testParseFile()
     {
-        $this->config->reset();
         $this->config->parseFile(__DIR__ . '/../supervisord.conf');
 
         $this->assertInstanceOf(
@@ -97,10 +154,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers ::parseString
+     * @covers ::parseIni
+     * @covers ::parseIniSection
+     * @group  Supervisor
+     */
     public function testParseString()
     {
-        $this->config->reset();
-
         $string = @file_get_contents(__DIR__ . '/../supervisord.conf');
         $this->config->parseString($string);
 
@@ -111,12 +172,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            ::parseString
+     * @covers            ::parseIni
+     * @covers            ::parseIniSection
      * @expectedException UnexpectedValueException
+     * @group             Supervisor
      */
     public function testParseFailure()
     {
-        $this->config->reset();
-
         $string = "[fake_section]
 option = fake";
 

@@ -4,6 +4,9 @@ namespace Indigo\Supervisor\Test\Connector;
 
 use Indigo\Supervisor\Connector\InetConnector;
 
+/**
+ * @coversDefaultClass \Indigo\Supervisor\Connector\InetConnector
+ */
 class InetConnectorTest extends ConnectorTest
 {
     public function setUp()
@@ -11,6 +14,11 @@ class InetConnectorTest extends ConnectorTest
         $this->connector = new InetConnector('localhost');
     }
 
+    /**
+     * @covers ::__construct
+     * @covers ::isConnected
+     * @group  Supervisor
+     */
     public function testInstance()
     {
         $connector = new InetConnector('localhost');
@@ -23,6 +31,11 @@ class InetConnectorTest extends ConnectorTest
         $this->assertTrue($this->connector->isConnected());
     }
 
+    /**
+     * @covers ::setResource
+     * @covers ::getResource
+     * @group  Supervisor
+     */
     public function testResource()
     {
         $connector = clone $this->connector;
@@ -35,7 +48,9 @@ class InetConnectorTest extends ConnectorTest
     }
 
     /**
+     * @covers            ::__construct
      * @expectedException InvalidArgumentException
+     * @group             Supervisor
      */
     public function testInvalidResource()
     {
@@ -43,7 +58,11 @@ class InetConnectorTest extends ConnectorTest
     }
 
     /**
+     * @covers            ::call
+     * @covers            ::prepareRequest
+     * @covers            ::prepareClient
      * @expectedException RuntimeException
+     * @group             Supervisor
      */
     public function testFaultyCall()
     {
@@ -51,7 +70,11 @@ class InetConnectorTest extends ConnectorTest
     }
 
     /**
+     * @covers            ::call
+     * @covers            ::prepareRequest
+     * @covers            ::prepareClient
      * @expectedException RuntimeException
+     * @group             Supervisor
      */
     public function testCallFailure()
     {
