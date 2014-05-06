@@ -7,13 +7,11 @@
         <var name="password" value="123" />
         <var name="path" value="/var/run/supervisor.sock" />
     </php>
-
     <testsuites>
         <testsuite name="Indigo Supervisor Test Suite">
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
-
     <filter>
         <whitelist>
             <directory suffix=".php">src/</directory>
@@ -22,4 +20,8 @@
             </exclude>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-html" target="./coverage" charset="UTF-8" yui="true" highlight="false" lowUpperBound="49" highLowerBound="75"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+    </logging>
 </phpunit>
