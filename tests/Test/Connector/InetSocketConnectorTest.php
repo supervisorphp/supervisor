@@ -11,7 +11,7 @@ class InetSocketConnectorTest extends SocketConnectorTest
 {
     public function setUp()
     {
-        $this->connector = new InetSocketConnector('google.hu', 80);
+        $this->connector = new InetSocketConnector($GLOBALS['host'], $GLOBALS['port']);
     }
 
     /**
@@ -21,7 +21,7 @@ class InetSocketConnectorTest extends SocketConnectorTest
      */
     public function testInstance()
     {
-        $connector = new InetSocketConnector('google.hu', 80);
+        $connector = new InetSocketConnector($GLOBALS['host'], $GLOBALS['port']);
 
         $this->assertInstanceOf(
             'Indigo\\Supervisor\\Connector\\InetSocketConnector',

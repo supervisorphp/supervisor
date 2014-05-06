@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit bootstrap="vendor/autoload.php" colors="true">
     <php>
-        <var name="host" value="localhost" />
-        <var name="port" value="9001" />
+        <var name="host" value="google.hu" />
+        <var name="port" value="80" />
         <var name="username" value="user" />
         <var name="password" value="123" />
         <var name="socket" value="/var/run/supervisor.sock" />

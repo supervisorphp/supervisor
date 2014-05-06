@@ -11,7 +11,7 @@ class InetConnectorTest extends ConnectorTest
 {
     public function setUp()
     {
-        $this->connector = new InetConnector('localhost');
+        $this->connector = new InetConnector($GLOBALS['host'], $GLOBALS['port']);
     }
 
     /**
@@ -21,7 +21,7 @@ class InetConnectorTest extends ConnectorTest
      */
     public function testInstance()
     {
-        $connector = new InetConnector('localhost');
+        $connector = new InetConnector($GLOBALS['host'], $GLOBALS['port']);
 
         $this->assertInstanceOf(
             'Indigo\\Supervisor\\Connector\\InetConnector',
@@ -61,7 +61,8 @@ class InetConnectorTest extends ConnectorTest
      * @covers            ::call
      * @covers            ::prepareRequest
      * @covers            ::prepareClient
-     * @expectedException RuntimeException
+     * @covers            \Indigo\Supervisor\Exception\SupervisorException
+     * @expectedException \Exception
      * @group             Supervisor
      */
     public function testFaultyCall()

@@ -16,7 +16,8 @@
         "symfony/options-resolver": "~2.4.0",
         "symfony/process": "~2.4.0",
         "psr/log": "~1.0",
-        "kriswallsmith/buzz": "v0.10"
+        "kriswallsmith/buzz": "v0.10",
+        "jakeasmith/http_build_url": "~0.1.0"
     },
     "require-dev": {
         "mockery/mockery": "dev-master@dev",
@@ -31,7 +32,6 @@
         },
         "psr-4": {
             "Indigo\\Supervisor\\": ["src/", "tests/"]
-        },
-        "files": ["lib/functions.php"]
+        }
     }
 }
