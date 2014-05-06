@@ -28,7 +28,12 @@ class Configuration
      */
     protected $sections = array();
 
-    protected $mapSections = array(
+    /**
+     * Available sections
+     *
+     * @var array
+     */
+    protected $sectionMap = array(
         'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
         'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
         'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
@@ -40,6 +45,20 @@ class Configuration
         'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
         'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterfaceSection',
     );
+
+    /**
+     * Add or override default section map
+     *
+     * @param string         $section
+     * @param string         $className
+     * @return Configuration
+     */
+    public function addSectionMap($section, $className)
+    {
+        $this->sectionMap[$section] = $className;
+
+        return $this;
+    }
 
     /**
      * Add a section
@@ -177,8 +196,8 @@ class Configuration
     {
         foreach ($ini as $name => $section) {
             $name = explode(':', $name);
-            if (array_key_exists($name[0], $this->mapSections)) {
-                $section = $this->parseIniSection($this->mapSections[$name[0]], $name, $section);
+            if (array_key_exists($name[0], $this->sectionMap)) {
+                $section = $this->parseIniSection($this->sectionMap[$name[0]], $name, $section);
                 $this->addSection($section);
             } else {
                 throw new UnexpectedValueException('Unexpected section name: ' . $name[0]);
