@@ -146,7 +146,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseFile()
     {
-        $this->config->parseFile(__DIR__ . '/../supervisord.conf');
+        $this->config->parseFile(__DIR__ . '/../resources/supervisord.conf');
 
         $this->assertInstanceOf(
             'Indigo\\Supervisor\\Section\\SupervisordSection',
@@ -162,7 +162,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseString()
     {
-        $string = @file_get_contents(__DIR__ . '/../supervisord.conf');
+        $string = @file_get_contents(__DIR__ . '/../resources/supervisord.conf');
         $this->config->parseString($string);
 
         $this->assertInstanceOf(

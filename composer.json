@@ -31,7 +31,12 @@
             "Buzz\\": "lib/"
         },
         "psr-4": {
-            "Indigo\\Supervisor\\": ["src/", "tests/"]
+            "Indigo\\Supervisor\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Indigo\\Supervisor\\Test\\": "tests/"
         }
     }
 }
