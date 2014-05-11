@@ -7,7 +7,11 @@ use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Section\SectionInterface;
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\Supervisor
+ * Tests for Supervisor
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Supervisor
  */
 class SupervisorTest extends \PHPUnit_Framework_TestCase
 {
@@ -189,7 +193,7 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider callProvider
-     * @group  Supervisor
+     * @group        Supervisor
      */
     public function testCallReturn($method, $value, $params = array())
     {
@@ -215,7 +219,7 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::getProcess
-     * @covers \Indigo\Supervisor\Process
+     * @covers Indigo\Supervisor\Process
      * @group  Supervisor
      */
     public function testGetProcess()

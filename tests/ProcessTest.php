@@ -6,7 +6,11 @@ use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Exception\SupervisorException;
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\Process
+ * Tests for Process
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Process
  */
 class ProcessTest extends \PHPUnit_Framework_TestCase
 {
@@ -130,7 +134,7 @@ class ProcessTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers            ::restart
-     * @covers            \Indigo\Supervisor\Exception\SupervisorException
+     * @covers            Indigo\Supervisor\Exception\SupervisorException
      * @dataProvider      provider
      * @group             Supervisor
      */

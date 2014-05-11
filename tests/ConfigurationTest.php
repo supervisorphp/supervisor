@@ -6,7 +6,7 @@ use Indigo\Supervisor\Configuration;
 use Indigo\Supervisor\Section\SectionInterface;
 
 /**
- * Tests for Inet Connector
+ * Tests for Configuration
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *

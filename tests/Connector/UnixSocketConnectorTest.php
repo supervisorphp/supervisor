@@ -5,7 +5,7 @@ namespace Indigo\Supervisor\Test\Connector;
 use Indigo\Supervisor\Connector\UnixSocketConnector;
 
 /**
- * Tests for Inet Connector
+ * Tests for Unix Socket Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *

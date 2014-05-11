@@ -5,7 +5,7 @@ namespace Indigo\Supervisor\Test\EventListener;
 use Indigo\Supervisor\EventListener\NullEventListener;
 
 /**
- * Tests for Inet Connector
+ * Tests for Null EventListener
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *

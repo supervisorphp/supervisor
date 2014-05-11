@@ -4,6 +4,11 @@ namespace Indigo\Supervisor\Test\Section;
 
 use Indigo\Supervisor\Section;
 
+/**
+ * Tests for Sections
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
 class SectionTest extends \PHPUnit_Framework_TestCase
 {
     protected $configuration;
