@@ -5,7 +5,11 @@ namespace Indigo\Supervisor\Test\Connector;
 use Indigo\Supervisor\Connector\InetSocketConnector;
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\Connector\InetSocketConnector
+ * Tests for Inet Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Connector\InetSocketConnector
  */
 class InetSocketConnectorTest extends SocketConnectorTest
 {

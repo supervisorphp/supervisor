@@ -15,7 +15,11 @@ class TestMemmonEventListener extends MemmonEventListener
 }
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\EventListener\MemmonEventListener
+ * Tests for Inet Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\EventListener\MemmonEventListener
  */
 class MemmonEventListenerTest extends EventListenerTest
 {

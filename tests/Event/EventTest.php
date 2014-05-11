@@ -5,7 +5,11 @@ namespace Indigo\Supervisor\Test\Event;
 use Indigo\Supervisor\Event\Event;
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\Event\Event
+ * Tests for Inet Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Event\Event
  */
 class EventTest extends AbstractEventTest
 {

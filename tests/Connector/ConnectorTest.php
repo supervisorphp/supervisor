@@ -25,8 +25,8 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Indigo\Supervisor\Connector\AbstractConnector::setHeader
-     * @covers \Indigo\Supervisor\Connector\AbstractConnector::getHeader
+     * @covers Indigo\Supervisor\Connector\AbstractConnector::setHeader
+     * @covers Indigo\Supervisor\Connector\AbstractConnector::getHeader
      * @group  Supervisor
      */
     public function testHeaders()
@@ -65,7 +65,7 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            \Indigo\Supervisor\Connector\AbstractConnector::processResponse
+     * @covers            Indigo\Supervisor\Connector\AbstractConnector::processResponse
      * @depends           testAccessProcessResponse
      * @expectedException UnexpectedValueException
      * @group             Supervisor
@@ -76,10 +76,10 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            \Indigo\Supervisor\Connector\AbstractConnector::processResponse
-     * @covers            \Indigo\Supervisor\Exception\SupervisorException
+     * @covers            Indigo\Supervisor\Connector\AbstractConnector::processResponse
+     * @covers            Indigo\Supervisor\Exception\SupervisorException
      * @depends           testAccessProcessResponse
-     * @expectedException \Indigo\Supervisor\Exception\SupervisorException
+     * @expectedException Indigo\Supervisor\Exception\SupervisorException
      * @group             Supervisor
      */
     public function testProcessFaultyResponse($method)
@@ -106,7 +106,7 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers  \Indigo\Supervisor\Connector\AbstractConnector::processResponse
+     * @covers  Indigo\Supervisor\Connector\AbstractConnector::processResponse
      * @depends testAccessProcessResponse
      * @group   Supervisor
      */
@@ -129,7 +129,7 @@ abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Indigo\Supervisor\Connector\AbstractConnector::isLocal
+     * @covers Indigo\Supervisor\Connector\AbstractConnector::isLocal
      * @group  Supervisor
      */
     public function testIsLocal()

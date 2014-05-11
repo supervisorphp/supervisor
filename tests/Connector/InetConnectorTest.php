@@ -5,7 +5,11 @@ namespace Indigo\Supervisor\Test\Connector;
 use Indigo\Supervisor\Connector\InetConnector;
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\Connector\InetConnector
+ * Tests for Inet Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Connector\InetConnector
  */
 class InetConnectorTest extends ConnectorTest
 {
@@ -61,7 +65,7 @@ class InetConnectorTest extends ConnectorTest
      * @covers            ::call
      * @covers            ::prepareRequest
      * @covers            ::prepareClient
-     * @covers            \Indigo\Supervisor\Exception\SupervisorException
+     * @covers            Indigo\Supervisor\Exception\SupervisorException
      * @expectedException Exception
      * @group             Supervisor
      */

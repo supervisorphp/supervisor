@@ -6,7 +6,11 @@ use Indigo\Supervisor\Configuration;
 use Indigo\Supervisor\Section\SectionInterface;
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\Configuration
+ * Tests for Inet Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Configuration
  */
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {

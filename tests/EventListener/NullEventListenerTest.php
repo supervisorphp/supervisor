@@ -5,7 +5,11 @@ namespace Indigo\Supervisor\Test\EventListener;
 use Indigo\Supervisor\EventListener\NullEventListener;
 
 /**
- * @coversDefaultClass \Indigo\Supervisor\EventListener\NullEventListener
+ * Tests for Inet Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\EventListener\NullEventListener
  */
 class NullEventListenerTest extends EventListenerTest
 {
