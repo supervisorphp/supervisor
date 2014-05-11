@@ -12,7 +12,7 @@ before_script:
   - sudo apt-get install -y -qq python-pip
   - sudo pip install -q supervisor
   - sudo mkdir -p /var/log/supervisor/
-  - supervisord -c resources/supervisord.conf
+  - sudo supervisord -c resources/supervisord.conf
 
 after_script:
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
