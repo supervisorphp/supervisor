@@ -5,7 +5,7 @@
         <var name="port" value="80" />
         <var name="username" value="user" />
         <var name="password" value="123" />
-        <var name="socket" value="/tmp/supervisor.sock" />
+        <var name="socket" value="/var/run/supervisor.sock" />
     </php>
     <testsuites>
         <testsuite name="Indigo Supervisor Test Suite">
