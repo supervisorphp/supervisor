@@ -9,9 +9,9 @@ script: phpunit -v --coverage-clover=coverage.clover
 before_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - composer install --dev --prefer-source
-  - sudo apt-get install -y supervisor
-  - sudo cp resources/supervisord.conf /etc/supervisor/
-  - sudo service supervisor restart
+  - sudo apt-get install -y -qq python-pip
+  - sudo pip install -q supervisor
+  - supervisor -c resources/supervisord.conf
 
 after_script:
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
