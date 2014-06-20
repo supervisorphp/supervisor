@@ -1,8 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\Test\EventListener;
-
-use Indigo\Supervisor\EventListener\NullEventListener;
+namespace Indigo\Supervisor\EventListener;
 
 /**
  * Tests for Null EventListener

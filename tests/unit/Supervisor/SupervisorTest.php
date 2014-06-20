@@ -1,9 +1,8 @@
 <?php
 
-namespace Indigo\Supervisor\Test;
+namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Supervisor;
-use Indigo\Supervisor\Process;
+use Codeception\TestCase\Test;
 use Indigo\Supervisor\Section\SectionInterface;
 
 /**
@@ -13,12 +12,12 @@ use Indigo\Supervisor\Section\SectionInterface;
  *
  * @coversDefaultClass Indigo\Supervisor\Supervisor
  */
-class SupervisorTest extends \PHPUnit_Framework_TestCase
+class SupervisorTest extends Test
 {
     protected $connector;
     protected $supervisor;
 
-    public function setUp()
+    public function _before()
     {
         $this->connector = \Mockery::mock(
             'Indigo\\Supervisor\\Connector\\ConnectorInterface',
@@ -28,11 +27,6 @@ class SupervisorTest extends \PHPUnit_Framework_TestCase
             }
         );
         $this->supervisor = new Supervisor($this->connector);
-    }
-
-    public function tearDown()
-    {
-        \Mockery::mock();
     }
 
     /**

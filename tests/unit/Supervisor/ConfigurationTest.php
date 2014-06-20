@@ -1,8 +1,8 @@
 <?php
 
-namespace Indigo\Supervisor\Test;
+namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Configuration;
+use Codeception\TestCase\Test;
 use Indigo\Supervisor\Section\SectionInterface;
 
 /**
@@ -12,18 +12,13 @@ use Indigo\Supervisor\Section\SectionInterface;
  *
  * @coversDefaultClass Indigo\Supervisor\Configuration
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends Test
 {
     protected $config;
 
-    public function setUp()
+    public function _before()
     {
         $this->config = new Configuration;
-    }
-
-    public function tearDown()
-    {
-        \Mockery::mock();
     }
 
     /**
@@ -150,7 +145,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseFile()
     {
-        $this->config->parseFile(__DIR__ . '/../resources/supervisord.conf');
+        $this->config->parseFile(__DIR__ . '/../../../resources/supervisord.conf');
 
         $this->assertInstanceOf(
             'Indigo\\Supervisor\\Section\\SupervisordSection',
@@ -166,7 +161,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseString()
     {
-        $string = @file_get_contents(__DIR__ . '/../resources/supervisord.conf');
+        $string = @file_get_contents(__DIR__ . '/../../../resources/supervisord.conf');
         $this->config->parseString($string);
 
         $this->assertInstanceOf(

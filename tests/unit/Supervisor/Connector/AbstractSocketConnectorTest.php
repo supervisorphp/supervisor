@@ -1,12 +1,12 @@
 <?php
 
-namespace Indigo\Supervisor\Test\Connector;
+namespace Indigo\Supervisor\Connector;
 
-use Indigo\Supervisor\Connector\SocketConnector;
+use Codeception\TestCase\Test;
 
-abstract class SocketConnectorTest extends ConnectorTest
+abstract class AbstractSocketConnectorTest extends Test
 {
-    public function tearDown()
+    public function _after()
     {
         unset($this->connector);
     }

@@ -1,8 +1,10 @@
 <?php
 
-namespace Indigo\Supervisor\Test\Connector;
+namespace Indigo\Supervisor\Connector;
 
-abstract class ConnectorTest extends \PHPUnit_Framework_TestCase
+use Codeception\TestCase\Test;
+
+abstract class ConnectorTest extends Test
 {
     protected $connector;
 

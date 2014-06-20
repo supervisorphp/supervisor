@@ -1,8 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\Test\Connector;
-
-use Indigo\Supervisor\Connector\UnixSocketConnector;
+namespace Indigo\Supervisor\Connector;
 
 /**
  * Tests for Unix Socket Connector
@@ -11,9 +9,9 @@ use Indigo\Supervisor\Connector\UnixSocketConnector;
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\UnixSocketConnector
  */
-class UnixSocketConnectorTest extends SocketConnectorTest
+class UnixSocketConnectorTest extends AbstractSocketConnectorTest
 {
-    public function setUp()
+    public function _before()
     {
         try {
             $this->connector = new UnixSocketConnector($GLOBALS['socket']);

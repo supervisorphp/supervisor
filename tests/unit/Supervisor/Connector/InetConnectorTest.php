@@ -1,8 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\Test\Connector;
-
-use Indigo\Supervisor\Connector\InetConnector;
+namespace Indigo\Supervisor\Connector;
 
 /**
  * Tests for Inet Connector
@@ -13,7 +11,7 @@ use Indigo\Supervisor\Connector\InetConnector;
  */
 class InetConnectorTest extends ConnectorTest
 {
-    public function setUp()
+    public function _before()
     {
         $this->connector = new InetConnector($GLOBALS['host'], $GLOBALS['port']);
     }

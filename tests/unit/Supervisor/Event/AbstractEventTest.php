@@ -1,8 +1,10 @@
 <?php
 
-namespace Indigo\Supervisor\Test\Event;
+namespace Indigo\Supervisor\Event;
 
-abstract class AbstractEventTest extends \PHPUnit_Framework_TestCase
+use Codeception\TestCase\Test;
+
+abstract class AbstractEventTest extends Test
 {
     protected $event;
 

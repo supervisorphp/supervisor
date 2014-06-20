@@ -1,8 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\Test\Event;
-
-use Indigo\Supervisor\Event\Event;
+namespace Indigo\Supervisor\Event;
 
 /**
  * Tests for Event

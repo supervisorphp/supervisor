@@ -20,7 +20,8 @@
         "jakeasmith/http_build_url": "~0.1.0"
     },
     "require-dev": {
-        "mockery/mockery": "dev-master@dev",
+        "codeception/codeception": "~1.8.0",
+        "codeception/mockery-module": "dev-master",
         "symfony/console": "~2.4.0"
     },
     "suggest": {
@@ -32,11 +33,6 @@
         },
         "psr-4": {
             "Indigo\\Supervisor\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Indigo\\Supervisor\\Test\\": "tests/"
         }
     }
 }

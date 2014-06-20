@@ -1,8 +1,10 @@
 <?php
 
-namespace Indigo\Supervisor\Test\EventListener;
+namespace Indigo\Supervisor\EventListener;
 
-abstract class EventListenerTest extends \PHPUnit_Framework_TestCase
+use Codeception\TestCase\Test;
+
+abstract class EventListenerTest extends Test
 {
     protected $listener;
     protected $input;
