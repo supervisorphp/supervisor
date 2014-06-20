@@ -15,7 +15,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Indigo\Supervisor\Connector\UnixSocketConnector;
 use Indigo\Supervisor\Connector\InetSocketConnector;
 use Indigo\Supervisor\Supervisor;
@@ -33,7 +32,7 @@ abstract class AbstractCommand extends Command
     protected $arguments = array();
     protected $supervisor;
 
-    private $abstractOptions = array(
+    private $defaultOptions = array(
         array(
             'unix',
             null,
@@ -74,9 +73,12 @@ abstract class AbstractCommand extends Command
         ),
     );
 
+    /**
+     * {@inheritdocs}
+     */
     protected function configure()
     {
-        $options = array_merge($this->options, $this->abstractOptions);
+        $options = array_merge($this->options, $this->defaultOptions);
 
         foreach ($options as $option) {
             call_user_func_array(array($this, 'addOption'), $option);
@@ -87,6 +89,9 @@ abstract class AbstractCommand extends Command
         }
     }
 
+    /**
+     * {@inheritdocs}
+     */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('host')) {

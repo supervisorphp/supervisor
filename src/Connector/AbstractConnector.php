@@ -55,22 +55,12 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * Check whether the given host is local
-     *
-     * @param  string  $host
-     * @return boolean
-     */
-    protected function checkHost($host)
-    {
-        return gethostbyname($host) == '127.0.0.1';
-    }
-
-    /**
      * Set credentials for connection and set header
      *
-     * @param  string             $username
-     * @param  string             $password
-     * @return ConnectorInterface
+     * @param string $username
+     * @param string $password
+     *
+     * @return this
      */
     public function setCredentials($username, $password)
     {
@@ -80,8 +70,9 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Get HTTP header(s)
      *
-     * @param  string $name Header name
-     * @return mixed  One specific value or all headers
+     * @param string $name Header name
+     *
+     * @return mixed One specific value or all headers
      */
     public function getHeader($name = null)
     {
@@ -95,17 +86,18 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Set a HTTP header for request
      *
-     * @param  string             $name    Header name
-     * @param  string             $value   Header value
-     * @param  boolean            $replace Replace header if already exists
-     * @return ConnectorInterface
+     * @param string  $name    Header name
+     * @param string  $value   Header value
+     * @param boolean $replace Replace header if already exists
+     *
+     * @return this
      */
     public function setHeader($name, $value, $replace = true)
     {
         if ($replace) {
             $this->headers[$name] = $value;
         } elseif (array_key_exists($name, $this->headers)) {
-            if (!is_array($this->headers[$name])) {
+            if (is_array($this->headers[$name]) === false) {
                 $this->headers[$name] = array($this->headers[$name]);
             }
 
@@ -131,8 +123,9 @@ abstract class AbstractConnector implements ConnectorInterface
      * Set resource
      * Validation of resource (if needed) is up to the class itself
      *
-     * @param  mixed              $resource
-     * @return ConnectorInterface
+     * @param mixed $resource
+     *
+     * @return this
      */
     public function setResource($resource)
     {
@@ -143,6 +136,7 @@ abstract class AbstractConnector implements ConnectorInterface
 
     /**
      * {@inheritdoc}
+     *
      * @codeCoverageIgnore
      */
     public function call($namespace, $method, array $arguments = array())
@@ -166,8 +160,11 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Process HTTP response
      *
-     * @param  string $response Raw response
+     * @param string $response Raw response
+     *
      * @return mixed
+     *
+     * @codeCoverageIgnore
      */
     protected function processResponse($response)
     {
@@ -185,10 +182,13 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Prepare request
      *
-     * @param  string                        $namespace
-     * @param  string                        $method
-     * @param  array                         $arguments
+     * @param  string $namespace
+     * @param  string $method
+     * @param  array  $arguments
+     *
      * @return Buzz\Message\RequestInterface
+     *
+     * @codeCoverageIgnore
      */
     abstract protected function prepareRequest($namespace, $method, array $arguments);
 
@@ -196,6 +196,8 @@ abstract class AbstractConnector implements ConnectorInterface
      * Prepare client
      *
      * @return Buzz\Client\ClientInterface
+     *
+     * @codeCoverageIgnore
      */
     abstract protected function prepareClient();
 }

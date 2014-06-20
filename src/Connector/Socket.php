@@ -55,7 +55,7 @@ abstract class SocketConnector extends AbstractConnector
             $resource = @fsockopen($hostname, $port, $errNo, $errStr, $timeout);
         }
 
-        if (!is_resource($resource)) {
+        if (is_resource($resource) === false) {
             throw new RuntimeException('Cannot open socket to ' . $hostname . ': ' . $errStr, $errNo);
         }
 

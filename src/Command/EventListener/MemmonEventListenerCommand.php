@@ -13,7 +13,6 @@ namespace Indigo\Supervisor\Command\EventListener;
 
 use Indigo\Supervisor\Command\AbstractCommand;
 use Indigo\Supervisor\EventListener\MemmonEventListener;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,7 +56,9 @@ class MemmonEventListenerCommand extends AbstractCommand
             'Name of memmon instance'
         ),
     );
-
+    /**
+     * {@inheritdocs}
+     */
     protected function configure()
     {
         $this
@@ -67,6 +68,9 @@ class MemmonEventListenerCommand extends AbstractCommand
         parent::configure();
     }
 
+    /**
+     * {@inheritdocs}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $program = $input->getOption('program');

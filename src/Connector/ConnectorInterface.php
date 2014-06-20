@@ -21,9 +21,10 @@ interface ConnectorInterface
     /**
      * Send a new request to the XML-RPC server
      *
-     * @param  string $namespace Namespace
-     * @param  string $method    Method
-     * @param  array  $arguments Optional arguments
+     * @param string $namespace Namespace
+     * @param string $method    Method
+     * @param array  $arguments Optional arguments
+     *
      * @return mixed
      */
     public function call($namespace, $method, array $arguments = array());

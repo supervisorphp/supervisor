@@ -21,15 +21,17 @@ use InvalidArgumentException;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class InetConnector extends AbstractConnector
+class Inet extends AbstractConnector
 {
     public function __construct($host, $port = 9001)
     {
-        if (!preg_match("#^(http|https)://#i", $host)) {
-            $host = 'http://' . $host;
-        }
-
         $resource = parse_url($host);
+
+        $validScheme = array('http', 'https');
+
+        if (array_key_exists('scheme', $resource) === false or in_array($resource['scheme'], $validScheme) === false) {
+            $resource['scheme'] = 'http';
+        }
 
         if (!$resource) {
             throw new InvalidArgumentException('The following host is not a valid resource: ' . $host);
@@ -39,7 +41,7 @@ class InetConnector extends AbstractConnector
         $flags = HTTP_URL_REPLACE | HTTP_URL_STRIP_AUTH | HTTP_URL_STRIP_QUERY | HTTP_URL_STRIP_FRAGMENT;
 
         $this->resource = http_build_url('', $resource, $flags);
-        $this->local = $this->checkHost($resource['host']);
+        $this->local = gethostbyname($resource['host']) == '127.0.0.1';
     }
 
     /**
@@ -47,7 +49,7 @@ class InetConnector extends AbstractConnector
      */
     public function isConnected()
     {
-        return ! empty($this->resource);
+        return empty($this->resource) === false;
     }
 
     /**
