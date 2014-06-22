@@ -10,8 +10,6 @@ use Exception;
 
 class Stream extends AbstractStream
 {
-    const CHUNK_SIZE = 4096;
-
     /**
      * Stream socket
      *
@@ -20,13 +18,21 @@ class Stream extends AbstractStream
     protected $stream;
 
     /**
-     * Creates socket client
+     * Creates a class using a stream
      *
      * @param resource $stream
      */
     public function __construct($stream)
     {
         $this->stream = $stream;
+    }
+
+    /**
+     * Closes the stream
+     */
+    public function __destruct()
+    {
+        $this->close();
     }
 
     /**
@@ -38,7 +44,7 @@ class Stream extends AbstractStream
      *
      * @return Stream
      */
-    public static function create($remote_socket, $timeout = 30, $flags = STREAM_CLIENT_CONNECT)
+    public static function createSocket($remote_socket, $timeout = 30, $flags = STREAM_CLIENT_CONNECT)
     {
         $errno = 0;
         $errstr = null;
@@ -84,6 +90,18 @@ class Stream extends AbstractStream
     }
 
     /**
+     * Closes the stream
+     */
+    public function close()
+    {
+        if (is_resource($this->stream)) {
+            fclose($this->stream);
+
+            $this->stream = null;
+        }
+    }
+
+    /**
      * {@inheritdocs}
      *
      * @see ClientInterface
@@ -95,30 +113,28 @@ class Stream extends AbstractStream
         }
 
         $this->readResponse($response);
-
-        return $response->getContent();
     }
 
+    /**
+     * Reads response from server
+     *
+     * @param MessageInterface $response
+     */
     public function readResponse(MessageInterface $response)
     {
         $headers = array();
-        $hasHeaders = false;
-        $body = '';
 
-        while ($this->isEof() === false) {
-            if ($hasHeaders === false) {
-                $data = $this->readLine();
+        while ($this->eof() === false) {
+            $data = $this->readLine(4096);
 
-                if (empty($data))
-                {
-                    $response->setHeaders($headers);
-                    $hasHeaders = true;
-                }
-
-                $headers[] = $data;
-            } else {
-                $data .= $this->read(self::CHUNK_SIZE);
+            // End of headers
+            if (empty($data))
+            {
+                $response->setHeaders($headers);
+                break;
             }
+
+            $headers[] = $data;
         }
 
         $response->setContent($this->getContents());
@@ -164,7 +180,7 @@ class Stream extends AbstractStream
      *
      * @return string
      */
-    protected function readLine($length = self::CHUNK_SIZE, $ending = "\r\n")
+    protected function readLine($length, $ending = "\r\n")
     {
         return stream_get_line($this->stream, $length, $ending);
     }
@@ -185,10 +201,8 @@ class Stream extends AbstractStream
      * Check whether stream pointer is at EOF
      *
      * @return boolean
-     *
-     * @since 2.0
      */
-    public function isEof()
+    public function eof()
     {
         return feof($this->stream);
     }
@@ -210,35 +224,9 @@ class Stream extends AbstractStream
      * @param integer  $microseconds
      *
      * @return boolean
-     *
-     * @since 2.0
      */
     public function setTimeout($seconds, $microseconds = 0)
     {
         return stream_set_timeout($this->stream, $seconds, $microseconds);
-    }
-
-    /**
-     * Check whether connection is timed out
-     *
-     * @return boolean
-     */
-    protected function isTimedOut()
-    {
-        $info = $this->getStreamMetadata();
-
-        return $info['timed_out'];
-    }
-
-    /**
-     * Handle connection timeout
-     *
-     * @throws ClientException Connection timed out
-     */
-    protected function checkTimedOut()
-    {
-        if ($this->isTimedOut()) {
-            throw new ClientException("Connection timed-out");
-        }
     }
 }

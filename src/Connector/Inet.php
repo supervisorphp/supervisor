@@ -12,6 +12,7 @@
 namespace Indigo\Supervisor\Connector;
 
 use Buzz\Message\Request;
+use Buzz\Message\RequestInterface as Request;
 use Buzz\Client\FileGetContents as Client;
 use InvalidArgumentException;
 
@@ -21,9 +22,9 @@ use InvalidArgumentException;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Inet extends AbstractConnector
+class Inet extends RequestConnector
 {
-    public function __construct($host, $port = 9001)
+    public function __construct(Client $client, $host, $port = 9001)
     {
         $resource = parse_url($host);
 
@@ -42,39 +43,17 @@ class Inet extends AbstractConnector
 
         $this->resource = http_build_url('', $resource, $flags);
         $this->local = gethostbyname($resource['host']) == '127.0.0.1';
+
+        parent::__construct($client);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isConnected()
+    public function prepareRequest(Request $request, $content)
     {
-        return empty($this->resource) === false;
-    }
+        parent::prepareRequest($request, $content);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareRequest($namespace, $method, array $arguments)
-    {
-        // generate xml request
-        $xml = xmlrpc_encode_request($namespace . '.' . $method, $arguments, array('encoding' => 'utf-8'));
-
-        // add length to headers
-        $headers = array_merge($this->headers, array('Content-Length' => strlen($xml)));
-
-        $request = new Request('POST', '/RPC2', $this->resource);
-        $request->setHeaders($headers);
-        $request->setContent($xml);
-
-        return $request;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareClient()
-    {
-        return new Client();
+        $request->setHost($this->host);
     }
 }

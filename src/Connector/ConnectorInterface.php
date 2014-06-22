@@ -19,6 +19,16 @@ namespace Indigo\Supervisor\Connector;
 interface ConnectorInterface
 {
     /**
+     * Sets optional credentials
+     *
+     * @param string $username
+     * @param string $password
+     *
+     * @return this
+     */
+    public function setCredentials($username, $password);
+
+    /**
      * Send a new request to the XML-RPC server
      *
      * @param string $namespace Namespace
@@ -28,14 +38,6 @@ interface ConnectorInterface
      * @return mixed
      */
     public function call($namespace, $method, array $arguments = array());
-
-    /**
-     * Check whether connector is connected to the service
-     * The return value should always return true, if a connection is present or available.
-     *
-     * @return boolean
-     */
-    public function isConnected();
 
     /**
      * Check whether connecting to a local Supervisor instance
