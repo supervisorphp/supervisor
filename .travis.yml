@@ -1,10 +1,10 @@
 language: php
 php:
-  - 5.5
-  - 5.4
   - 5.3
+  - 5.4
+  - 5.5
 
-script: phpunit -v --coverage-clover=coverage.clover
+script: vendor/bin/codecept run unit --coverage --xml
 
 before_script:
   - wget https://scrutinizer-ci.com/ocular.phar
@@ -15,8 +15,4 @@ before_script:
   - sudo supervisord -c resources/supervisord.conf
 
 after_script:
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
-
-notifications:
-    webhooks:
-        secure: "aGUTR/3LuAgWx/VtSfQR/WCv14PUU9Zb/9Td9ybSQSgLKO+mdS4N0CmvJObtGiJTNSKUpu5Wb0LWpKEKs42oP42rO82ljTXQ2cpL/Zin/zARenNWn9zDu8j3mxzR6t6OHDGr+yD2yQYK/FMSc0vKtPOeETig1CmJziwdV849ScA="
+  - php ocular.phar code-coverage:upload --format=php-clover tests/_log/coverage.xml

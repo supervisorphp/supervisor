@@ -10,6 +10,7 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle
+ * @requires PHP 5.4
  */
 class GuzzleTest extends Test
 {
