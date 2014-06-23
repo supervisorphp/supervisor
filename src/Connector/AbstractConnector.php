@@ -11,11 +11,6 @@
 
 namespace Indigo\Supervisor\Connector;
 
-use Buzz\Message\Response;
-use Buzz\Exception\ClientException;
-use Indigo\Supervisor\Exception\SupervisorException;
-use UnexpectedValueException;
-
 /**
  * Abstract Connector class
  *

@@ -16,16 +16,19 @@
         "symfony/options-resolver": "~2.4.0",
         "symfony/process": "~2.4.0",
         "psr/log": "~1.0",
-        "kriswallsmith/buzz": "v0.10",
         "jakeasmith/http_build_url": "~0.1.0"
     },
     "require-dev": {
         "codeception/codeception": "~1.8.0",
         "codeception/mockery-module": "dev-master",
+        "guzzlehttp/guzzle": "~4.1.0",
+        "guzzle/guzzle": "~3.9.0",
         "symfony/console": "~2.4.0"
     },
     "suggest": {
-        "symfony/console": "Used for CLI application"
+        "symfony/console": "Used for CLI application",
+        "guzzlehttp/guzzle": "GuzzleHttp 4 HTTP client",
+        "guzzle/guzzle": "Guzzle 3 HTTP client"
     },
     "autoload": {
         "psr-0": {
