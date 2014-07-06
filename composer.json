@@ -15,8 +15,7 @@
         "ext-xmlrpc": "*",
         "symfony/options-resolver": "~2.4.0",
         "symfony/process": "~2.4.0",
-        "psr/log": "~1.0",
-        "jakeasmith/http_build_url": "~0.1.0"
+        "psr/log": "~1.0"
     },
     "require-dev": {
         "codeception/codeception": "~1.8.0",
@@ -31,9 +30,6 @@
         "guzzle/guzzle": "Guzzle 3 HTTP client"
     },
     "autoload": {
-        "psr-0": {
-            "Buzz\\": "lib/"
-        },
         "psr-4": {
             "Indigo\\Supervisor\\": "src/"
         }
