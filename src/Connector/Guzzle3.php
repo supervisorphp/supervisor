@@ -69,8 +69,6 @@ class Guzzle3 extends AbstractXmlrpcConnector
 
     /**
      * {@inheritdoc}
-     *
-     * @codeCoverageIgnore
      */
     public function call($namespace, $method, array $arguments = array())
     {
@@ -104,7 +102,7 @@ class Guzzle3 extends AbstractXmlrpcConnector
         }
 
         // Set request specific data and body
-        $request->setHeaders($headers)
+        $request->addHeaders($headers)
             ->setPath('/RPC2')
             ->setBody($body);
     }

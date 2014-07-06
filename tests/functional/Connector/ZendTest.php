@@ -1,9 +1,9 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Test\Functional;
 
 use Zend\XmlRpc\Client;
-use Codeception\TestCase\Test;
+use Indigo\Supervisor\Connector\Zend;
 
 /**
  * Tests for Zend connector
@@ -12,12 +12,14 @@ use Codeception\TestCase\Test;
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\Zend
  */
-class ZendFunctionalTest extends AbstractConnectorFunctionalTest
+class ZendTest extends AbstractConnectorTest
 {
     public function _before()
     {
         $client = new Client($GLOBALS['host']);
 
         $this->connector = new Zend($client);
+
+        parent::_before();
     }
 }

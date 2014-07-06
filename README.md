@@ -7,7 +7,7 @@
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/indigophp/supervisor/badges/quality-score.png?s=6aaa222466e706bbb6417ba4906c544d72741cbe)](https://scrutinizer-ci.com/g/indigophp/supervisor/)
 [![License](https://poser.pugx.org/indigophp/supervisor/license.png)](https://packagist.org/packages/indigophp/supervisor)
 
-**PHP library for managing supervisord through XML-RPC**
+**PHP library for managing supervisord through XML-RPC API.**
 
 
 ## Install
@@ -29,6 +29,8 @@ Via Composer
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
 
+// Create new Connector
+// See available connectors
 $connector = new ConnectorInterface;
 
 $connector->setCredentials('user', '123');
@@ -63,6 +65,7 @@ $process->getPayload();
 
 * Guzzle
 * Guzzle3
+* Zend XML-RPC
 
 
 ## Configuration

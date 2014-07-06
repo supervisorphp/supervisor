@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Test\Functional;
 
 use Codeception\TestCase\Test;
 
@@ -11,7 +11,7 @@ use Codeception\TestCase\Test;
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\ConnectorInterface
  */
-abstract class AbstractConnectorFunctionalTest extends Test
+abstract class AbstractConnectorTest extends Test
 {
     /**
      * Connector
@@ -19,6 +19,13 @@ abstract class AbstractConnectorFunctionalTest extends Test
      * @var Indigo\Supervisor\Connector\ConnectorInterface
      */
     protected $connector;
+
+    public function _before()
+    {
+        if (isset($GLOBALS['username'])) {
+            $this->connector->setCredentials($GLOBALS['username'], $GLOBALS['password']);
+        }
+    }
 
     /**
      * @covers ::call

@@ -145,7 +145,7 @@ class ConfigurationTest extends Test
      */
     public function testParseFile()
     {
-        $this->config->parseFile(__DIR__ . '/../../../resources/supervisord.conf');
+        $this->config->parseFile(__DIR__ . '/../../resources/supervisord.conf');
 
         $this->assertInstanceOf(
             'Indigo\\Supervisor\\Section\\SupervisordSection',
@@ -161,7 +161,7 @@ class ConfigurationTest extends Test
      */
     public function testParseString()
     {
-        $string = @file_get_contents(__DIR__ . '/../../../resources/supervisord.conf');
+        $string = @file_get_contents(__DIR__ . '/../../resources/supervisord.conf');
         $this->config->parseString($string);
 
         $this->assertInstanceOf(

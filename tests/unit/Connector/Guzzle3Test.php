@@ -62,7 +62,7 @@ class Guzzle3Test extends Test
         $request->shouldReceive('setAuth')
             ->andReturn($request);
 
-        $request->shouldReceive('setHeaders')
+        $request->shouldReceive('addHeaders')
             ->andReturn($request);
 
         $request->shouldReceive('setPath')
