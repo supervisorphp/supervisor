@@ -62,4 +62,17 @@ class ZendTest extends Test
             $this->connector->setCredentials('user', '123')
         );
     }
+
+    /**
+     * @covers            ::call
+     * @expectedException Indigo\Supervisor\Exception\SupervisorException
+     * @group             Supervisor
+     */
+    public function testCallException()
+    {
+        $this->client->shouldReceive('call')
+            ->andThrow('Zend\\XmlRpc\\Client\\Exception\\FaultException');
+
+        $this->connector->call('asd', 'dsa');
+    }
 }
