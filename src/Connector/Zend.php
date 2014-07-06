@@ -13,6 +13,7 @@ namespace Indigo\Supervisor\Connector;
 
 use Zend\XmlRpc\Client;
 use Zend\Http\Client as HttpClient;
+use Zend\XmlRpc\Client\Exception\FaultException;
 
 /**
  * Zend connector class
@@ -77,6 +78,10 @@ class Zend extends AbstractConnector
      */
     public function call($namespace, $method, array $arguments = array())
     {
-        return $this->client->call($namespace.'.'.$method, $arguments);
+        try {
+            return $this->client->call($namespace.'.'.$method, $arguments);
+        } catch (FaultException $e) {
+            throw new SupervisorException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }
