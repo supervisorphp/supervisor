@@ -36,7 +36,7 @@ class Supervisor
     protected $connector;
 
     /**
-     * Create new Supervisor instance
+     * Creates new Supervisor instance
      *
      * @param ConnectorInterface $connector
      */
@@ -46,7 +46,7 @@ class Supervisor
     }
 
     /**
-     * Return connector object
+     * Returns connector object
      *
      * @return ConnectorInterface
      */
@@ -56,9 +56,10 @@ class Supervisor
     }
 
     /**
-     * Set connector
+     * Sets connector
      *
-     * @param  ConnectorInterface $connector
+     * @param ConnectorInterface $connector
+     *
      * @return Supervisor
      */
     public function setConnector(ConnectorInterface $connector)
@@ -69,7 +70,7 @@ class Supervisor
     }
 
     /**
-     * Check whether connecting to a local Supervisor instance
+     * Checks whether connecting to a local Supervisor instance
      *
      * @return boolean
      */
@@ -79,11 +80,12 @@ class Supervisor
     }
 
     /**
-     * Call a method
+     * Calls a method
      *
-     * @param  string $namespace Namespace of method
-     * @param  string $method    Method name
-     * @param  array  $arguments Argument list
+     * @param string $namespace Namespace of method
+     * @param string $method    Method name
+     * @param array  $arguments Argument list
+     *
      * @return mixed
      */
     public function call($namespace, $method, array $arguments = array())
@@ -106,9 +108,10 @@ class Supervisor
     }
 
     /**
-     * Check against state
+     * Checks if supervisord is in given state
      *
-     * @param  int     $isState
+     * @param integer $isState
+     *
      * @return boolean
      */
     public function isState($isState = self::RUNNING)
@@ -119,7 +122,7 @@ class Supervisor
     }
 
     /**
-     * Return the version of the RPC API used by supervisord
+     * Returns the version of the RPC API used by supervisord
      *
      * @return string
      */
@@ -129,7 +132,7 @@ class Supervisor
     }
 
     /**
-     * Return the version of the supervisor package in use by supervisord
+     * Returns the version of the supervisor package in use by supervisord
      *
      * @return string
      */
@@ -139,9 +142,9 @@ class Supervisor
     }
 
     /**
-     * Return the PID of supervisord
+     * Returns the PID of supervisord
      *
-     * @return int
+     * @return integer
      */
     public function getPID()
     {
@@ -149,7 +152,7 @@ class Supervisor
     }
 
     /**
-     * Return current state of supervisord
+     * Returns the current state of supervisord
      *
      * @return array Array of string statecode, int statename
      */
@@ -159,10 +162,11 @@ class Supervisor
     }
 
     /**
-     * Read length bytes from the main log starting at offset
+     * Reads length bytes from the main log starting at offset
      *
-     * @param  int    $offset Offset to start reading from
-     * @param  int    $length Number of bytes to read from the log
+     * @param integer $offset Offset to start reading from
+     * @param integer $length Number of bytes to read from the log
+     *
      * @return string Result Bytes of log
      */
     public function readLog($offset, $length)
@@ -171,7 +175,7 @@ class Supervisor
     }
 
     /**
-     * Clear the main log
+     * Clears the main log
      *
      * @return boolean Always true unless error
      */
@@ -181,7 +185,7 @@ class Supervisor
     }
 
     /**
-     * Shut down the supervisor process
+     * Shuts down the supervisor process
      *
      * @return boolean Always true unless error
      */
@@ -191,7 +195,7 @@ class Supervisor
     }
 
     /**
-     * Restart the supervisor process
+     * Restarts the supervisor process
      *
      * @return boolean Always true unless error
      */
@@ -205,7 +209,7 @@ class Supervisor
      */
 
     /**
-     * Get all processes as Process objects
+     * Returns all processes as Process objects
      *
      * @return array Array of Process objects
      *
@@ -223,7 +227,7 @@ class Supervisor
     }
 
     /**
-     * Get info about all processes
+     * Returns info about all processes
      *
      * @return array
      */
@@ -233,8 +237,10 @@ class Supervisor
     }
 
     /**
-     * Get a specific Process
-     * @param  string  $name Process name or 'group:name'
+     * Returns a specific Process
+     *
+     * @param string $name Process name or 'group:name'
+     *
      * @return Process
      */
     public function getProcess($name)
@@ -243,9 +249,10 @@ class Supervisor
     }
 
     /**
-     * Get info about a process named name
+     * Returns info about a specific process
      *
-     * @param  string $name Process name or 'group:name'
+     * @param string $name Process name or 'group:name'
+     *
      * @return array
      */
     public function getProcessInfo($name)
@@ -254,10 +261,11 @@ class Supervisor
     }
 
     /**
-     * Start all processes listed in the configuration file
+     * Starts all processes listed in the configuration file
      *
-     * @param  boolean $wait Wait for each process to be fully started
-     * @return array   An array of process status info arrays
+     * @param boolean $wait Wait for each process to be fully started
+     *
+     * @return array An array of process status info arrays
      */
     public function startAllProcesses($wait = true)
     {
@@ -265,11 +273,12 @@ class Supervisor
     }
 
     /**
-     * Start a process
+     * Starts a process
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @param  boolean        $wait    Wait for process to be fully started
-     * @return boolean        Always true unless error
+     * @param string|Process $process Process name or 'group:name' or Process object
+     * @param boolean        $wait    Wait for process to be fully started
+     *
+     * @return boolean Always true unless error
      */
     public function startProcess($process, $wait = true)
     {
@@ -281,11 +290,12 @@ class Supervisor
     }
 
     /**
-     * Start all processes in the group named ‘name’
+     * Starts all processes in a specific group
      *
-     * @param  string  $groupName Group name
-     * @param  boolean $wait      Wait for each process to be fully started
-     * @return array   An array of process status info arrays
+     * @param string  $groupName Group name
+     * @param boolean $wait      Wait for each process to be fully started
+     *
+     * @return array An array of process status info arrays
      */
     public function startProcessGroup($groupName, $wait = true)
     {
@@ -293,9 +303,10 @@ class Supervisor
     }
 
     /**
-     * Stop all processes listed in the configuration file
+     * Stops all processes listed in the configuration file
      *
-     * @param  boolean $wait Wait for each process to be fully stopped
+     * @param boolean $wait Wait for each process to be fully stopped
+     *
      * @return boolean An array of process status info arrays
      */
     public function stopAllProcesses($wait = true)
@@ -304,11 +315,12 @@ class Supervisor
     }
 
     /**
-     * Stop a process
+     * Stops a process
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @param  boolean        $wait    Wait for process to be fully stopped
-     * @return boolean        Always true unless error
+     * @param string|Process $process Process name or 'group:name' or Process object
+     * @param boolean        $wait    Wait for process to be fully stopped
+     *
+     * @return boolean Always true unless error
      */
     public function stopProcess($process, $wait = true)
     {
@@ -320,11 +332,12 @@ class Supervisor
     }
 
     /**
-     * Stop all processes in the group named ‘name’
+     * Stops all processes in a specific group
      *
-     * @param  string  $groupName Group name
-     * @param  boolean $wait      Wait for each process to be fully stopped
-     * @return array   An array of process status info arrays
+     * @param string  $groupName Group name
+     * @param boolean $wait      Wait for each process to be fully stopped
+     *
+     * @return array An array of process status info arrays
      */
     public function stopProcessGroup($groupName, $wait = true)
     {
@@ -332,15 +345,16 @@ class Supervisor
     }
 
     /**
-     * Send a string of chars to the stdin of the process name.
+     * Sends a string of chars to the stdin of the process name.
      * If non-7-bit data is sent (unicode), it is encoded to utf-8 before being sent to the process’ stdin.
      * If chars is not a string or is not unicode, raise INCORRECT_PARAMETERS.
      * If the process is not running, raise NOT_RUNNING.
      * If the process’ stdin cannot accept input (e.g. it was closed by the child process), raise NO_FILE.
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @param  string         $data    The character data to send to the process
-     * @return boolean        Always return True unless error
+     * @param string|Process $process Process name or 'group:name' or Process object
+     * @param string         $data    The character data to send to the process
+     *
+     * @return boolean Always return True unless error
      */
     public function sendProcessStdin($process, $data)
     {
@@ -352,10 +366,11 @@ class Supervisor
     }
 
     /**
-     * Send an event that will be received by event listener subprocesses subscribing to the RemoteCommunicationEvent.
+     * Sends an event that will be received by event listener subprocesses subscribing to the RemoteCommunicationEvent.
      *
-     * @param  string  $type String for the “type” key in the event header
-     * @param  string  $data Data for the event body
+     * @param string $type String for the “type” key in the event header
+     * @param string $data Data for the event body
+     *
      * @return boolean Always return True unless error
      */
     public function sendRemoteCommEvent($type, $data)
@@ -364,9 +379,10 @@ class Supervisor
     }
 
     /**
-     * Update the config for a running process from config file
+     * Updates the config for a running process from config file
      *
-     * @param  string  $name Name of process group to add
+     * @param string $name Name of process group to add
+     *
      * @return boolean
      */
     public function addProcessGroup($name)
@@ -375,9 +391,10 @@ class Supervisor
     }
 
     /**
-     * Remove a stopped process from the active configuration
+     * Removes a stopped process from the active configuration
      *
-     * @param  string  $name Name of process group to remove
+     * @param string $name Name of process group to remove
+     *
      * @return boolean
      */
     public function removeProcessGroup($name)
@@ -390,12 +407,13 @@ class Supervisor
      */
 
     /**
-     * Read length bytes from name’s stdout log starting at offset
+     * Reads length bytes from name’s stdout log starting at offset
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @param  int            $offset  Offset to start reading from
-     * @param  int            $length  Number of bytes to read from the log
-     * @return string         Result Bytes of log
+     * @param string|Process $process Process name or 'group:name' or Process object
+     * @param integer        $offset  Offset to start reading from
+     * @param integer        $length  Number of bytes to read from the log
+     *
+     * @return string Result Bytes of log
      */
     public function readProcessStdoutLog($process, $offset, $length)
     {
@@ -407,12 +425,13 @@ class Supervisor
     }
 
     /**
-     * Read length bytes from name’s stderr log starting at offset
+     * Reads length bytes from name’s stderr log starting at offset
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @param  int            $offset  Offset to start reading from
-     * @param  int            $length  Number of bytes to read from the log
-     * @return string         Result Bytes of log
+     * @param string|Process $process Process name or 'group:name' or Process object
+     * @param integer        $offset  Offset to start reading from
+     * @param integer        $length  Number of bytes to read from the log
+     *
+     * @return string Result Bytes of log
      */
     public function readProcessStderrLog($process, $offset, $length)
     {
@@ -435,10 +454,11 @@ class Supervisor
      * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @param  int            $offset  Offset to start reading from
-     * @param  int            $length  Maximum number of bytes to return
-     * @return array          [string bytes, int offset, bool overflow]
+     * @param string|Process $process Process name or 'group:name' or Process object
+     * @param integer        $offset  Offset to start reading from
+     * @param integer        $length  Maximum number of bytes to return
+     *
+     * @return array [string bytes, integer offset, boolean overflow]
      */
     public function tailProcessStdoutLog($process, $offset, $length)
     {
@@ -461,10 +481,11 @@ class Supervisor
      * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @param  int            $offset  Offset to start reading from
-     * @param  int            $length  Maximum number of bytes to return
-     * @return array          [string bytes, int offset, bool overflow]
+     * @param string|Process $process Process name or 'group:name' or Process object
+     * @param integer        $offset  Offset to start reading from
+     * @param integer        $length  Maximum number of bytes to return
+     *
+     * @return array [string bytes, integer offset, boolean overflow]
      */
     public function tailProcessStderrLog($process, $offset, $length)
     {
@@ -476,7 +497,7 @@ class Supervisor
     }
 
     /**
-     * Clear all process log files
+     * Clears all process log files
      *
      * @return boolean Always return true
      */
@@ -486,10 +507,11 @@ class Supervisor
     }
 
     /**
-     * Clear the stdout and stderr logs for the named process and reopen them.
+     * Clears the stdout and stderr logs for the named process and reopen them.
      *
-     * @param  string|Process $process Process name or 'group:name' or Process object
-     * @return boolean        Always return true unless error
+     * @param string|Process $process Process name or 'group:name' or Process object
+     *
+     * @return boolean Always return true unless error
      */
     public function clearProcessLogs($process)
     {
