@@ -6,6 +6,7 @@
 * Removes HTTP request parts
 * Uses Guzzle as HTTP Client by default
 * Renamed classes for simplicity
+* Adds Zend XML-RPC connector
 
 
 ## 1.2.0 (released 2014-05-06)

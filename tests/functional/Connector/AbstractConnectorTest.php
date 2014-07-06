@@ -8,8 +8,6 @@ use Codeception\TestCase\Test;
  * Tests for connectors
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
- *
- * @coversDefaultClass Indigo\Supervisor\Connector\ConnectorInterface
  */
 abstract class AbstractConnectorTest extends Test
 {
@@ -34,5 +32,16 @@ abstract class AbstractConnectorTest extends Test
     public function testVersion()
     {
         $this->assertGreaterThanOrEqual(3, $this->connector->call('supervisor', 'getAPIVersion'));
+    }
+
+    /**
+     * @covers                   ::call
+     * @expectedException        Indigo\Supervisor\Exception\SupervisorException
+     * @expectedExceptionMessage UNKNOWN_METHOD
+     * @group                    Supervisor
+     */
+    public function testFaultyCall()
+    {
+        $this->connector->call('non', 'existent');
     }
 }

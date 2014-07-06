@@ -1,8 +1,9 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Test\Unit;
 
 use Codeception\TestCase\Test;
+use Indigo\Supervisor\Connector\Zend;
 
 /**
  * Tests for Zend connector
@@ -11,22 +12,8 @@ use Codeception\TestCase\Test;
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\Zend
  */
-class ZendTest extends Test
+class ZendTest extends AbstractConnectorTest
 {
-    /**
-     * Zend Client
-     *
-     * @var Zend\XmlRpc\Client
-     */
-    protected $client;
-
-    /**
-     * Zend connector
-     *
-     * @var Indigo\Supervisor\Connector\Zend
-     */
-    protected $connector;
-
     public function _before()
     {
         $this->client = \Mockery::mock('Zend\\XmlRpc\\Client');
@@ -38,16 +25,12 @@ class ZendTest extends Test
 
     /**
      * @covers ::__construct
-     * @covers ::getClient
-     * @covers ::setClient
      * @group  Supervisor
      */
     public function testInstance()
     {
         $connector = new Zend($this->client);
 
-        $this->assertSame($this->client, $connector->getClient());
-        $this->assertSame($connector, $connector->setClient($this->client));
         $this->assertSame($this->client, $connector->getClient());
     }
 

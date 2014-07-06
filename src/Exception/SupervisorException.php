@@ -11,13 +11,13 @@
 
 namespace Indigo\Supervisor\Exception;
 
-use Exception;
+use BadMethodCallException;
 
 /**
  * Thrown in case of faulty XMLRPC response
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class SupervisorException extends Exception implements ExceptionInterface
+class SupervisorException extends BadMethodCallException
 {
 }

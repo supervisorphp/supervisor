@@ -1,8 +1,9 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Test\Unit;
 
 use Codeception\TestCase\Test;
+use Indigo\Supervisor\Connector\DummyXmlrpcConnector;
 
 /**
  * Tests for Xmlrpc connector

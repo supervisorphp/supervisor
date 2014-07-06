@@ -1,8 +1,9 @@
 <?php
 
-namespace Indigo\Supervisor\Connector;
+namespace Test\Unit;
 
 use Codeception\TestCase\Test;
+use Indigo\Supervisor\Connector\Guzzle3;
 
 /**
  * Tests for Guzzle 3 connector
@@ -11,25 +12,12 @@ use Codeception\TestCase\Test;
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle3
  */
-class Guzzle3Test extends Test
+class Guzzle3Test extends AbstractConnectorTest
 {
-    /**
-     * Guzzle Client
-     *
-     * @var Guzzle\Http\ClientInterface
-     */
-    protected $client;
-
-    /**
-     * Guzzle 3 connector
-     *
-     * @var Indigo\Supervisor\Connector\Guzzle3
-     */
-    protected $connector;
-
     public function _before()
     {
         $this->client = \Mockery::mock('Guzzle\\Http\\ClientInterface');
+
         $this->client->shouldReceive('getBaseUrl')
             ->andReturn($GLOBALS['host']);
 
@@ -37,17 +25,13 @@ class Guzzle3Test extends Test
     }
 
     /**
-     * @covers ::__construct
      * @covers ::getClient
-     * @covers ::setClient
      * @group  Supervisor
      */
-    public function testInstance()
+    public function testConstruct()
     {
         $connector = new Guzzle3($this->client);
 
-        $this->assertSame($this->client, $connector->getClient());
-        $this->assertSame($connector, $connector->setClient($this->client));
         $this->assertSame($this->client, $connector->getClient());
     }
 
