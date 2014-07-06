@@ -10,7 +10,7 @@ use Indigo\Supervisor\Connector\Guzzle3;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle
+ * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle3
  */
 class Guzzle3Test extends AbstractConnectorTest
 {
