@@ -27,7 +27,7 @@ class ZendTest extends AbstractConnectorTest
      * @covers ::__construct
      * @group  Supervisor
      */
-    public function testInstance()
+    public function testConstruct()
     {
         $connector = new Zend($this->client);
 

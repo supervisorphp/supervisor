@@ -15,10 +15,17 @@ use Indigo\Supervisor\Section\SectionInterface;
 class ConfigurationTest extends Test
 {
     protected $config;
+    protected $section;
 
     public function _before()
     {
         $this->config = new Configuration;
+
+        $this->section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface');
+
+        $this->section->shouldReceive('getName')->andReturn('test')->byDefault();
+        $this->section->shouldReceive('getOptions')->andReturn(array('test' => true))->byDefault();
+        $this->section->shouldReceive('hasOptions')->andReturn(true)->byDefault();
     }
 
     /**
@@ -27,8 +34,8 @@ class ConfigurationTest extends Test
      */
     public function testSectionMap()
     {
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Configuration',
+        $this->assertSame(
+            $this->config,
             $this->config->addSectionMap('supervisor', 'Fake\\Supervisor')
         );
     }
@@ -39,51 +46,48 @@ class ConfigurationTest extends Test
      */
     public function testReset()
     {
-        $section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
-            $mock->shouldReceive('getName')->andReturn('test');
-            $mock->shouldReceive('getOptions')->andReturn(array('test' => true));
-        });
-
-        $this->config->addSection($section);
+        $this->config->addSection($this->section);
 
         $this->assertEquals(
-            array($section->getName() => $section),
+            $this->config->getSections(),
             $this->config->reset()
         );
     }
 
     /**
-     * @covers ::addSection
      * @covers ::getSection
+     * @covers ::getSections
+     * @covers ::hasSection
+     * @covers ::addSection
+     * @covers ::addSections
      * @group  Supervisor
      */
     public function testSection()
     {
-        $section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
-            $mock->shouldReceive('getName')->andReturn('test');
-            $mock->shouldReceive('getOptions')->andReturn(array('test' => true));
-        });
+        $this->assertFalse($this->config->hasSection('test'));
 
-        $emptySection = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
-            $mock->shouldReceive('getName')->andReturn('empty');
-            $mock->shouldReceive('getOptions')->andReturn(false);
-        });
-
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Configuration',
-            $this->config->addSection($section)
+        $this->assertSame(
+            $this->config,
+            $this->config->addSection($this->section)
         );
 
-        $this->assertInstanceOf(
-            get_class($section),
+        $this->assertSame(
+            $this->config,
+            $this->config->addSections(array($this->section))
+        );
+
+        $this->assertTrue($this->config->hasSection('test'));
+
+        $this->assertSame(
+            $this->section,
             $this->config->getSection('test')
         );
 
         $this->assertNull($this->config->getSection('nope'));
 
         $this->assertContains(
-            $section,
-            $this->config->getSection()
+            $this->section,
+            $this->config->getSections()
         );
     }
 
@@ -94,11 +98,9 @@ class ConfigurationTest extends Test
      */
     public function testRemoveSection()
     {
-        $fakeSection = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
-            $mock->shouldReceive('getName')->andReturn('fake');
-        });
+        $this->section->shouldReceive('getName')->andReturn('fake');
 
-        $this->config->addSection($fakeSection);
+        $this->config->addSection($this->section);
 
         $this->assertTrue($this->config->removeSection('fake'));
     }
@@ -119,22 +121,25 @@ class ConfigurationTest extends Test
      */
     public function testRender()
     {
-        $section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
-            $mock->shouldReceive('getName')->andReturn('test');
-            $mock->shouldReceive('getOptions')->andReturn(array('test' => true));
-        });
-
-        $emptySection = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface', function ($mock) {
-            $mock->shouldReceive('getName')->andReturn('empty');
-            $mock->shouldReceive('getOptions')->andReturn(false);
-        });
-
-        $this->config->addSection($section);
-        $this->config->addSection($emptySection);
+        $this->config->addSection($this->section);
 
         $render = $this->config->render();
 
         $this->assertEquals($render, (string) $this->config);
+    }
+
+    /**
+     * @covers ::renderSection
+     * @group  Supervisor
+     */
+    public function testRenderSection()
+    {
+        $this->config->addSection($this->section);
+
+        $render1 = $this->config->renderSection($this->section);
+        $render2 = $this->config->render();
+
+        $this->assertEquals($render1, $render2);
     }
 
     /**
@@ -148,7 +153,7 @@ class ConfigurationTest extends Test
         $this->config->parseFile(__DIR__ . '/../../resources/supervisord.conf');
 
         $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Section\\SupervisordSection',
+            'Indigo\\Supervisor\\Section\\Supervisord',
             $this->config->getSection('supervisord')
         );
     }
@@ -165,7 +170,7 @@ class ConfigurationTest extends Test
         $this->config->parseString($string);
 
         $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Section\\SupervisordSection',
+            'Indigo\\Supervisor\\Section\\Supervisord',
             $this->config->getSection('supervisord')
         );
     }

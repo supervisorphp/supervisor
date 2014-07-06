@@ -19,7 +19,7 @@ namespace Indigo\Supervisor\Section;
 interface SectionInterface
 {
     /**
-     * Get the section name
+     * Gets the section name
      * Should be set explicitly for single sections (eg. supervisord)
      *
      * @return string
@@ -27,16 +27,23 @@ interface SectionInterface
     public function getName();
 
     /**
-     * Get the options as an array
+     * Returns the options as an array
      *
      * @return array
      */
     public function getOptions();
 
     /**
-     * Set an array of options
+     * Sets an array of options
      *
      * @return SectionInterface
      */
     public function setOptions(array $options);
+
+    /**
+     * Checks whether section has any options
+     *
+     * @return boolean
+     */
+    public function hasOptions();
 }

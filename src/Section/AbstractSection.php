@@ -37,6 +37,20 @@ abstract class AbstractSection implements SectionInterface
     protected $name;
 
     /**
+     * Required options
+     *
+     * @var array
+     */
+    protected $requiredOptions = array();
+
+    /**
+     * Optional options
+     *
+     * @var array
+     */
+    protected $optionalOptions = array();
+
+    /**
      * Default constructor
      *
      * @param array $options
@@ -73,15 +87,30 @@ abstract class AbstractSection implements SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function hasOptions()
+    {
+        return empty($this->options) === false;
+    }
+
+    /**
      * Resolve options
      *
-     * @param  array $options
+     * @param array $options
+     *
      * @return array Resolved options
+     *
+     * @codeCoverageIgnore
      */
     protected function resolveOptions(array $options = array())
     {
-        $resolver = new OptionsResolver();
-        $this->setDefaultOptions($resolver);
+        static $resolver;
+
+        if ($resolver === null) {
+            $resolver = new OptionsResolver;
+            $this->setDefaultOptions($resolver);
+        }
 
         return $resolver->resolve($options);
     }
@@ -90,20 +119,25 @@ abstract class AbstractSection implements SectionInterface
      * Set default options
      *
      * @param OptionsResolverInterface $resolver
+     *
+     * @codeCoverageIgnore
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        if (!empty($this->requiredOptions)) {
+        if (empty($this->requiredOptions) === false) {
             $resolver->setRequired(array_keys($this->requiredOptions))
                 ->setAllowedTypes($this->requiredOptions);
         }
 
-        if (!empty($this->optionalOptions)) {
+        if (empty($this->optionalOptions) === false) {
             $resolver->setOptional(array_keys($this->optionalOptions))
                 ->setAllowedTypes($this->optionalOptions);
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     protected function environmentNormalizer()
     {
         return function (Options $options, $value) {

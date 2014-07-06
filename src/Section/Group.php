@@ -16,20 +16,24 @@ namespace Indigo\Supervisor\Section;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class GroupSection extends AbstractSection
+class Group extends AbstractNamedSection
 {
+    /**
+     * {@inheritdocs}
+     */
+    protected $sectionName = 'group';
+
+    /**
+     * {@inheritdocs}
+     */
     protected $requiredOptions = array(
         'programs' => 'array',
     );
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'priority' => 'integer',
     );
-
-    public function __construct($name, array $options = array())
-    {
-        $this->setOptions($options);
-
-        $this->name = 'group:' . trim($name);
-    }
 }

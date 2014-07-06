@@ -7,5 +7,6 @@
 - [ ] Review EventListenerInterface
 - [ ] Implement more HTTP client adapters
 - [ ] Find an easy way to use Guzzle with unix socket
+- [ ] Make decision: follow PSR coding style or not
 - [x] ~~Throw a `SupervisorException` when Zend connector returns with fault~~
 - [x] ~~Review `SupervisorException`~~

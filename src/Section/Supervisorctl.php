@@ -12,19 +12,25 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Unix HTTP Section
+ * Supervisorctl Section
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class UnixHttpServerSection extends AbstractSection
+class Supervisorctl extends AbstractSection
 {
-    protected $name = 'unix_http_server';
+    /**
+     * {@inheritdocs}
+     */
+    protected $name = 'supervisorctl';
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
-        'file'     => 'string',
-        'chmod'    => array('integer', 'string'),
-        'chown'    => 'string',
-        'username' => 'string',
-        'password' => 'string',
+        'serverurl'    => 'string',
+        'username'     => 'string',
+        'password'     => 'string',
+        'prompt'       => 'string',
+        'history_file' => 'string',
     );
 }

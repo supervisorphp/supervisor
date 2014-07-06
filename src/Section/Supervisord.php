@@ -18,10 +18,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class SupervisordSection extends AbstractSection
+class Supervisord extends AbstractSection
 {
+    /**
+     * {@inheritdocs}
+     */
     protected $name = 'supervisord';
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'logfile'          => 'string',
         'logfile_maxbytes' => array('integer', 'string'),
@@ -43,6 +49,8 @@ class SupervisordSection extends AbstractSection
 
     /**
      * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {

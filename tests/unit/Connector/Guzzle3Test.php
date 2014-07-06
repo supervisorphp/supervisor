@@ -25,7 +25,7 @@ class Guzzle3Test extends AbstractConnectorTest
     }
 
     /**
-     * @covers ::getClient
+     * @covers ::__construct
      * @group  Supervisor
      */
     public function testConstruct()

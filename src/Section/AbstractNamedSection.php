@@ -12,20 +12,31 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * RPC Interface Section
+ * Named section
+ *
+ * Uses a custom name
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class RpcInterfaceSection extends AbstractSection
+class AbstractNamedSection extends AbstractSection
 {
-    protected $optionalOptions = array(
-        'supervisor.rpcinterface_factory' => 'string',
-    );
+    /**
+     * Predefined section name
+     *
+     * @var string
+     */
+    protected $sectionName;
 
+    /**
+     * Creates a Named section
+     *
+     * @param string $name
+     * @param array  $options
+     */
     public function __construct($name, array $options = array())
     {
-        $this->setOptions($options);
+        $this->name = $this->sectionName . ':' . trim($name);
 
-        $this->name = 'rpcinterface:' . trim($name);
+        parent::__construct($options);
     }
 }

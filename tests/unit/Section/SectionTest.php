@@ -1,121 +1,57 @@
 <?php
 
-namespace Indigo\Supervisor\Section;
+namespace Test\Unit;
 
 use Codeception\TestCase\Test;
+use Indigo\Supervisor\Section\DummySection;
 
 /**
  * Tests for Sections
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Section\AbstractSection
  */
 class SectionTest extends Test
 {
-    protected $configuration;
+    protected $section;
 
     public function setUp()
     {
-        $this->configuration = new \Indigo\Supervisor\Configuration;
-    }
-
-    public function provider()
-    {
-        return array(
-            new EventListenerSection('test', array(
-                'command' => 'cat /path/to/file',
-            )),
-            new FcgiProgramSection('test', array(
-                'socket'  => '/path/to/socket',
-                'command' => 'cat /path/to/file',
-            )),
-            new GroupSection('test', array(
-                'programs' => array(
-                    'test',
-                    'empty',
-                ),
-            )),
-            new IncludeSection(array(
-                'files' => array('/etc/supervisord/conf.d/*'),
-            )),
-            new InetHttpServerSection(array(
-                'port' => 9001,
-            )),
-            new ProgramSection('test', array(
-                'command' => 'cat /path/to/file',
-                'environment' => array(
-                    'KEY' => 'value',
-                    'fake_value',
-                ),
-            )),
-            new ProgramSection('test', array(
-                'command'    => 'cat /path/to/file',
-                'stopsignal' => 'TERM',
-            )),
-            new SupervisorctlSection,
-            new SupervisordSection(array(
-                'environment' => array(
-                    'KEY' => 'value',
-                    'fake_value'
-                ),
-            )),
-            new SupervisordSection(array(
-                'loglevel' => 'warn',
-            )),
-            new UnixHttpServerSection,
-            new RpcInterfaceSection('test'),
-        );
-    }
-
-    public function realProvider()
-    {
-        $provider = array();
-        foreach ($this->provider() as $section) {
-            $provider[] = array($section);
-        }
-
-        return $provider;
-    }
-
-    public function testConfig()
-    {
-        foreach ($this->provider() as $section) {
-            $this->assertInstanceOf(
-                'Indigo\\Supervisor\\Configuration',
-                $this->configuration->addSection($section)
-            );
-        }
-
-        return $this->configuration;
-    }
-
-    public function testSection()
-    {
-        foreach ($this->provider() as $section) {
-            $this->assertInstanceOf(
-                'Indigo\\Supervisor\\Section\\SectionInterface',
-                $section
-            );
-        }
+        $this->section = new DummySection;
     }
 
     /**
-     * @expectedException Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
-     * @dataProvider realProvider
+     * @covers ::__construct
+     * @group  Supervisor
      */
-    public function testFaultySection($section)
+    public function testConstruct()
     {
-        $options = array(
-            'fake' => null,
-        );
+        $section = new DummySection(array('optional' => 1));
 
-        $section->setOptions($options);
+        $this->assertEquals(array('optional' => 1), $section->getOptions());
     }
 
     /**
-     * @depends testConfig
+     * @covers ::getName
+     * @group  Supervisor
      */
-    public function testRender($configuration)
+    public function testName()
     {
-        $configuration->render();
+        $this->assertEquals('dummy', $this->section->getName());
+    }
+
+    /**
+     * @covers ::getOptions
+     * @covers ::setOptions
+     * @covers ::hasOptions
+     * @group  Supervisor
+     */
+    public function testOptions()
+    {
+        $this->assertFalse($this->section->hasOptions());
+        $this->assertSame($this->section, $this->section->setOptions(array('optional' => 2)));
+        $this->assertEquals(array('optional' => 2), $this->section->getOptions());
+        $this->assertTrue($this->section->hasOptions());
     }
 }

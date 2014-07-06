@@ -34,23 +34,24 @@ class Configuration
      * @var array
      */
     protected $sectionMap = array(
-        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
-        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
-        'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
-        'include'          => 'Indigo\\Supervisor\\Section\\IncludeSection',
-        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServerSection',
-        'program'          => 'Indigo\\Supervisor\\Section\\ProgramSection',
-        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\SupervisorctlSection',
-        'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
-        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
-        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterfaceSection',
+        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListener',
+        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgram',
+        'group'            => 'Indigo\\Supervisor\\Section\\Group',
+        'include'          => 'Indigo\\Supervisor\\Section\\Config',
+        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServer',
+        'program'          => 'Indigo\\Supervisor\\Section\\Program',
+        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\Supervisorctl',
+        'supervisord'      => 'Indigo\\Supervisor\\Section\\Supervisord',
+        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServer',
+        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterface',
     );
 
     /**
-     * Add or override default section map
+     * Adds or overrides default section map
      *
-     * @param  string        $section
-     * @param  string        $className
+     * @param string $section
+     * @param string $className
+     *
      * @return Configuration
      */
     public function addSectionMap($section, $className)
@@ -61,9 +62,46 @@ class Configuration
     }
 
     /**
-     * Add a section
+     * Returns a specific section by name
      *
-     * @param  SectionInterface $section
+     * @param string $section
+     *
+     * @return SectionInterface|null
+     */
+    public function getSection($section)
+    {
+        if ($this->hasSection($section)) {
+            return $this->sections[$section];
+        }
+    }
+
+    /**
+     * Checks whether section exists in Configuration
+     *
+     * @param string $section
+     *
+     * @return boolean
+     */
+    public function hasSection($section)
+    {
+        return array_key_exists($section, $this->sections);
+    }
+
+    /**
+     * Returns all sections
+     *
+     * @return array
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * Adds or overrides a section
+     *
+     * @param SectionInterface $section
+     *
      * @return Configuration
      */
     public function addSection(SectionInterface $section)
@@ -74,39 +112,39 @@ class Configuration
     }
 
     /**
-     * Remove a section by name
+     * Adds or overrides an array sections
      *
-     * @param  string  $section
+     * @param array $sections
+     *
+     * @return Configuration
+     */
+    public function addSections(array $sections)
+    {
+        foreach ($sections as $section) {
+            $this->addSection($section);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Removes a section by name
+     *
+     * @param string $section
+     *
      * @return boolean
      */
     public function removeSection($section)
     {
-        if (array_key_exists($section, $this->sections)) {
+        if ($has = $this->hasSection($section)) {
             unset($this->sections[$section]);
-
-            return true;
         }
 
-        return false;
+        return $has;
     }
 
     /**
-     * Get a specific section by name or all
-     *
-     * @param  string $section
-     * @return mixed
-     */
-    public function getSection($section = null)
-    {
-        if (is_null($section)) {
-            return $this->sections;
-        } elseif (array_key_exists($section, $this->sections)) {
-            return $this->sections[$section];
-        }
-    }
-
-    /**
-     * Reset Configuration
+     * Resets Configuration
      *
      * @return array Array of previous sections
      */
@@ -119,7 +157,7 @@ class Configuration
     }
 
     /**
-     * Render configuration
+     * Renders configuration
      *
      * @return string
      */
@@ -129,8 +167,8 @@ class Configuration
 
         foreach ($this->sections as $name => $section) {
             // Only continue processing this section if there are options in it
-            if ($options = $section->getOptions()) {
-                $output .= $this->renderSection($name, $options);
+            if ($section->hasOptions()) {
+                $output .= $this->renderSection($section);
             }
         }
 
@@ -138,17 +176,18 @@ class Configuration
     }
 
     /**
-     * Render section
+     * Renders a section
      *
-     * @param  string $name
-     * @param  array  $section
+     * @param string $name
+     * @param array  $section
+     *
      * @return string
      */
-    protected function renderSection($name, array $section)
+    public function renderSection(SectionInterface $section)
     {
-        $output = "[$name]\n";
+        $output = '['.$section->getName()."]\n";
 
-        foreach ($section as $key => $value) {
+        foreach ($section->getOptions() as $key => $value) {
             is_array($value) and $value = implode(',', $value);
             $output .= "$key = $value\n";
         }
@@ -160,9 +199,10 @@ class Configuration
     }
 
     /**
-     * Parse INI file
+     * Parses an INI file
      *
-     * @param  string        $file
+     * @param string $file
+     *
      * @return Configuration
      */
     public function parseFile($file)
@@ -174,9 +214,10 @@ class Configuration
     }
 
     /**
-     * Parse INI string
+     * Parses an INI string
      *
-     * @param  string        $string
+     * @param string $string
+     *
      * @return Configuration
      */
     public function parseString($string)
@@ -188,7 +229,7 @@ class Configuration
     }
 
     /**
-     * Parse INI array
+     * Parses an INI array
      *
      * @param array $ini
      */
@@ -206,11 +247,12 @@ class Configuration
     }
 
     /**
-     * Parse individual section
+     * Parses an individual section
      *
-     * @param  string           $class   Name of SectionInterface class
-     * @param  mixed            $name    Section name or array of name and option
-     * @param  array            $section Array representation of section
+     * @param  string $class   Name of SectionInterface class
+     * @param  mixed  $name    Section name or array of name and option
+     * @param  array  $section Array representation of section
+     *
      * @return SectionInterface
      */
     protected function parseIniSection($class, array $name, array $section)

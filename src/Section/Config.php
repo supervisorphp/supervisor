@@ -19,16 +19,24 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class IncludeSection extends AbstractSection
+class Config extends AbstractSection
 {
+    /**
+     * {@inheritdocs}
+     */
     protected $name = 'include';
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'files' => array('array', 'string'),
     );
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
+     *
+     * @codeCoverageIgnore
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
