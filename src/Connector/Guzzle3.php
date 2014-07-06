@@ -62,7 +62,7 @@ class Guzzle3 extends AbstractXmlrpcConnector
     {
         $this->client = $client;
 
-        $this->local = gethostbyname(parse_url($client->getBaseUrl(),  PHP_URL_HOST)) === '127.0.0.1';
+        $this->local = gethostbyname(parse_url($client->getBaseUrl(), PHP_URL_HOST)) === '127.0.0.1';
 
         return $this;
     }
@@ -96,8 +96,7 @@ class Guzzle3 extends AbstractXmlrpcConnector
         );
 
         // Add authentication to headers
-        if (isset($this->username))
-        {
+        if (isset($this->username)) {
             $request->setAuth($this->username, $this->password);
         }
 
