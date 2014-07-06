@@ -14,6 +14,7 @@ namespace Indigo\Supervisor\Connector;
 use Zend\XmlRpc\Client;
 use Zend\Http\Client as HttpClient;
 use Zend\XmlRpc\Client\Exception\FaultException;
+use Indigo\Supervisor\Exception\SupervisorException;
 
 /**
  * Zend connector class
