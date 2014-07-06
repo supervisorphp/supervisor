@@ -45,6 +45,8 @@ class FcgiProgram extends Program
      *
      * @param string $name
      * @param array  $options
+     *
+     * @codeCoverageIgnore
      */
     public function __construct($name, array $options = array())
     {
