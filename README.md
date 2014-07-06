@@ -22,18 +22,14 @@ Via Composer
 }
 ```
 
-**Note**: Package uses PSR-4 autoloader, make sure you have a fresh version of Composer.
-
 
 ## Usage
 
 ``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
-use Indigo\Supervisor\Connector;
 
-$connector = new Connector\InetConnector('localhost', 9001);
-//$connector = new Connector\UnixSocketConnector('unix:///var/run/supervisor.lock');
+$connector = new ConnectorInterface;
 
 $connector->setCredentials('user', '123');
 
@@ -63,6 +59,11 @@ echo $process;
 $process->getPayload();
 ```
 
+**Currently available connectors:**
+
+* Guzzle
+* Guzzle3
+
 
 ## Configuration
 
@@ -72,14 +73,14 @@ Example:
 
 ``` php
 use Indigo\Supervisor\Configuration;
-use Indigo\Supervisor\Section\ProgramSection;
+use Indigo\Supervisor\Section\Program;
 
 $config = new Configuration;
 
-$section = new SupervisordSection(array('identifier' => 'supervisor'));
+$section = new Supervisord(array('identifier' => 'supervisor'));
 $config->addSection($section);
 
-$section = new ProgramSection('test', array('command' => 'cat'));
+$section = new Program('test', array('command' => 'cat'));
 $config->addSection($section);
 
 // same as echo $config->render()
@@ -88,20 +89,20 @@ echo $config;
 
 The following sections are available in this pacakge:
 
-* _SupervisordSection_
-* _SupervisorctlSection_
-* _UnixHttpServerSection_
-* _InetHttpServerSection_
-* _IncludeSection_
-* _GroupSection_*
-* _ProgramSection_*
-* _EventListenerSection_*
-* _FcgiProgramSection_*
+* _Supervisord_
+* _Supervisorctl_
+* _UnixHttpServer_
+* _InetHttpServer_
+* _Include_
+* _Group_*
+* _Program_*
+* _EventListener_*
+* _FcgiProgram_*
 
 
 ***Note**: These sections has to be instantiated with a name and optionally an options array:
 ``` php
-$section = new ProgramSection('test', array('command' => 'cat'));
+$section = new Program('test', array('command' => 'cat'));
 ```
 
 
@@ -203,7 +204,7 @@ All the responses are parsed by PHP XML-RPC extension (which is marked as *EXPER
 ## Testing
 
 ``` bash
-$ phpunit
+$ codecept run
 ```
 
 

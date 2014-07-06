@@ -5,3 +5,5 @@
 * Way to add multiple Sections to Configuration at once
 * Get Section option
 * Review EventListenerInterface
+* Implement more HTTP client adapters
+* Find an easy way to use Guzzle with unix socket
