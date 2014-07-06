@@ -8,9 +8,7 @@ script: vendor/bin/codecept run --coverage --xml
 before_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - composer install --dev --prefer-source
-  - sudo apt-get install -y -qq python-pip
-  - sudo pip install -q supervisor
-  - sudo mkdir -p /var/log/supervisor/
+  - scripts/supervisor.sh
   - sudo supervisord -c resources/supervisord.conf
 
 after_script:
