@@ -19,13 +19,11 @@ class SupervisorTest extends Test
 
     public function _before()
     {
-        $this->connector = \Mockery::mock(
-            'Indigo\\Supervisor\\Connector\\ConnectorInterface',
-            function ($mock) {
-                $mock->shouldReceive('isLocal')
-                    ->andReturn(true);
-            }
-        );
+        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
+
+        $this->connector->shouldReceive('isLocal')
+            ->andReturn(true);
+
         $this->supervisor = new Supervisor($this->connector);
     }
 
@@ -48,20 +46,18 @@ class SupervisorTest extends Test
     }
 
     /**
-     * @covers ::getstate
+     * @covers ::getState
+     * @covers ::isState
+     * @covers ::isRunning
      * @group  Supervisor
      */
-    public function testGetState()
+    public function testState()
     {
-        $connector = clone $this->connector;
-        $connector
-            ->shouldReceive('call')
+        $this->connector->shouldReceive('call')
             ->andReturn(array(
                 'statecode' => 1,
                 'statename' => 'RUNNING'
             ));
-
-        $this->supervisor->setConnector($connector);
 
         $this->assertEquals(
             array(
@@ -71,36 +67,14 @@ class SupervisorTest extends Test
             $this->supervisor->getState()
         );
 
-        return $connector;
-    }
-
-    /**
-     * @covers ::isState
-     * @depends testGetState
-     * @group  Supervisor
-     */
-    public function testIsState($connector)
-    {
-        $this->supervisor->setConnector($connector);
         $this->assertTrue($this->supervisor->isState());
-    }
-
-    /**
-     * @covers ::isRunning
-     * @depends testGetState
-     * @group  Supervisor
-     */
-    public function testIsRunning($connector)
-    {
-        $this->supervisor->setConnector($connector);
         $this->assertTrue($this->supervisor->isRunning());
     }
 
     public function callProvider()
     {
         $connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
-        $connector
-            ->shouldReceive('call')
+        $connector->shouldReceive('call')
             ->andReturn(true);
 
         $process = new Process(array('name' => 'test'), $connector);
@@ -191,14 +165,11 @@ class SupervisorTest extends Test
      */
     public function testCallReturn($method, $value, $params = array())
     {
-        $connector = clone $this->connector;
-        $connector
+        $this->connector
             ->shouldReceive('call')
             ->andReturn($value);
 
-        $this->supervisor->setConnector($connector);
-
-        if (!empty($params)) {
+        if (empty($params) === false) {
             $this->assertEquals(
                 $value,
                 call_user_func_array(
@@ -218,21 +189,16 @@ class SupervisorTest extends Test
      */
     public function testGetProcess()
     {
-        $connector = clone $this->connector;
-
-        $connector
+        $this->connector
             ->shouldReceive('call')
             ->andReturn(array('name' => 'test'));
 
-        $this->supervisor->setConnector($connector);
-        $process = new Process(array('name' => 'test'), $connector);
+        $process = new Process(array('name' => 'test'), $this->connector);
 
         $this->assertEquals(
             $process,
             $this->supervisor->getProcess('test')
         );
-
-        return $connector;
     }
 
     /**
@@ -241,26 +207,14 @@ class SupervisorTest extends Test
      */
     public function testSendProcessStdin()
     {
-        $connector = clone $this->connector;
-
-        $connector
-            ->shouldReceive('call')
+        $this->connector->shouldReceive('call')
             ->andReturn(true);
 
-        $this->supervisor->setConnector($connector);
-        $process = new Process(array('name' => 'test'), $connector);
+        $process = new Process(array('name' => 'test'), $this->connector);
 
-        $this->assertEquals(
-            true,
-            $this->supervisor->sendProcessStdin('test', 'fake')
-        );
+        $this->assertTrue($this->supervisor->sendProcessStdin('test', 'fake'));
 
-        $this->assertEquals(
-            true,
-            $this->supervisor->sendProcessStdin($process, 'fake')
-        );
-
-        return $connector;
+        $this->assertTrue($this->supervisor->sendProcessStdin($process, 'fake'));
     }
 
     /**
