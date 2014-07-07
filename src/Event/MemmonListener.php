@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\EventListener;
+namespace Indigo\Supervisor\Event;
 
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
-use Indigo\Supervisor\Event\EventInterface;
 use Psr\Log\NullLogger;
 use Exception;
 
@@ -22,7 +21,7 @@ use Exception;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class MemmonEventListener extends AbstractEventListener
+class MemmonListener extends AbstractListener
 {
     /**
      * Supervisor instance
@@ -67,6 +66,16 @@ class MemmonEventListener extends AbstractEventListener
      */
     protected $name = null;
 
+    /**
+     * Creates a MemmonListener
+     *
+     * @param Supervisor $supervisor Supervisor instance
+     * @param array      $program    Limit of specified programs
+     * @param array      $group      Limit of specified groups
+     * @param integer    $any        Limit of any programs or groups
+     * @param integer    $uptime     Minimum uptime before restart
+     * @param string     $name       Listener name
+     */
     public function __construct(
         Supervisor $supervisor,
         array $program = array(),
@@ -96,15 +105,13 @@ class MemmonEventListener extends AbstractEventListener
         $processes = $this->supervisor->getAllProcess();
 
         foreach ($processes as $process) {
-            if (!$this->checkProcess($process)) {
-                continue;
-            }
+            if ($this->checkProcess($process)) {
+                $mem = $process->getMemUsage();
+                $max = $this->getMaxMemory($process);
 
-            $mem = $process->getMemUsage();
-            $max = $this->getMaxMemory($process);
-
-            if ($max > 0 and $mem > $max) {
-                $this->restart($process, $mem);
+                if ($max > 0 and $mem > $max) {
+                    $this->restart($process, $mem);
+                }
             }
         }
 
@@ -112,10 +119,11 @@ class MemmonEventListener extends AbstractEventListener
     }
 
     /**
-     * Restart process
+     * Restarts a process
      *
-     * @param  Process $process
-     * @param  integer $mem     Current memory usage
+     * @param Process $process
+     * @param integer $mem     Current memory usage
+     *
      * @return boolean Whether restart is successful
      */
     protected function restart(Process $process, $mem)
@@ -128,35 +136,41 @@ class MemmonEventListener extends AbstractEventListener
 
         $message = $result ? '[Success]' : '[Failure]';
         $message .= '(' . ($this->name ? $this->name . '/' : '') . $process['name'] . ') ';
-        $context = array('subject' => $message);
+        $context = array(
+            'subject' => $message,
+            'payload' => $process->getPayload(),
+        );
+
         $message .= 'Process restart at ' . $mem . ' bytes';
 
-        $this->logger->info($message, $process->getPayload(), $context);
+        $this->logger->info($message, $context);
 
         return $result;
     }
 
     /**
-     * Check whether listener should care about this process
+     * Checks whether listener should care about this process
      *
-     * @param  Process $process
+     * @param Process $process
+     *
      * @return boolean
      */
     protected function checkProcess(Process $process)
     {
-        if (!$process->isRunning()) {
-            return false;
-        } elseif ($process['now'] - $process['start'] < $this->uptime) {
-            return false;
+        $return = $process->isRunning();
+
+        if ($return) {
+            $return = $process['now'] - $process['start'] > $this->uptime;
         }
 
-        return true;
+        return $return;
     }
 
     /**
-     * Get the maximum memory allowed for this process
+     * Returns the maximum memory allowed for this process
      *
-     * @param  Process $process
+     * @param Process $process
+     *
      * @return integer
      */
     protected function getMaxMemory(Process $process)
@@ -174,9 +188,10 @@ class MemmonEventListener extends AbstractEventListener
     }
 
     /**
-     * Check whether listener has limit for the given program and return it
+     * Checks whether listener has limit for the given program and return it
      *
-     * @param  string  $program
+     * @param string $program
+     *
      * @return integer
      */
     protected function hasProgram($program)
@@ -185,9 +200,10 @@ class MemmonEventListener extends AbstractEventListener
     }
 
     /**
-     * Check whether listener has limit for the given group and return it
+     * Checks whether listener has limit for the given group and return it
      *
-     * @param  string  $program
+     * @param string $group
+     *
      * @return integer
      */
     protected function hasGroup($group)

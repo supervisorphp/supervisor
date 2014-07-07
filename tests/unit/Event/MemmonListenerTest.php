@@ -3,9 +3,9 @@
 namespace Test\Unit;
 
 use Indigo\Supervisor\Process;
-use Indigo\Supervisor\EventListener\MemmonEventListener;
+use Indigo\Supervisor\Event\MemmonListener;
 
-class TestMemmonEventListener extends MemmonEventListener
+class TestMemmonListener extends MemmonListener
 {
     protected function processResult($result)
     {
@@ -19,9 +19,9 @@ class TestMemmonEventListener extends MemmonEventListener
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\EventListener\MemmonEventListener
+ * @coversDefaultClass Indigo\Supervisor\Event\MemmonListener
  */
-class MemmonEventListenerTest extends AbstractEventListenerTest
+class MemmonListenerTest extends AbstractListenerTest
 {
     public function setUp()
     {
@@ -92,7 +92,7 @@ class MemmonEventListenerTest extends AbstractEventListenerTest
                 ));
         });
 
-        $this->listener = new TestMemmonEventListener($supervisor, array(), array(), 1024, 60, 'memmon');
+        $this->listener = new TestMemmonListener($supervisor, array(), array(), 1024, 60, 'memmon');
     }
 
     /**
@@ -102,10 +102,10 @@ class MemmonEventListenerTest extends AbstractEventListenerTest
     public function testInstance()
     {
         $supervisor = \Mockery::mock('Indigo\\Supervisor\\Supervisor');
-        $listener = new MemmonEventListener($supervisor, array(), array(), 1024, 60, 'memmon');
+        $listener = new MemmonListener($supervisor, array(), array(), 1024, 60, 'memmon');
 
         $this->assertInstanceOf(
-            'Indigo\\Supervisor\\EventListener\\MemmonEventListener',
+            'Indigo\\Supervisor\\Event\\MemmonListener',
             $listener
         );
     }

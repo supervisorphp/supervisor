@@ -9,10 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\EventListener;
+namespace Indigo\Supervisor\Event;
 
-use Indigo\Supervisor\Event\Event;
-use Indigo\Supervisor\Event\EventInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use InvalidArgumentException;
@@ -22,7 +20,7 @@ use InvalidArgumentException;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-abstract class AbstractEventListener implements EventListenerInterface, LoggerAwareInterface
+abstract class AbstractListener implements ListenerInterface, LoggerAwareInterface
 {
     /**
      * Psr logger
@@ -110,7 +108,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Get event from input stream
+     * Returns event from input stream if available
      *
      * @return Event Event object
      */
@@ -193,7 +191,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     abstract protected function doListen(EventInterface $event);
 
     /**
-     * Parse colon devided data
+     * Parses colon devided data
      *
      * @param string $rawData
      *

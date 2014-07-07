@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\EventListener;
+namespace Indigo\Supervisor\Event;
 
 /**
- * EventListener Interface
+ * Listener Interface
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-interface EventListenerInterface
+interface ListenerInterface
 {
     /**
      * Responses sent to supervisor

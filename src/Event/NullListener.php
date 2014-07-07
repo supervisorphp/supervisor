@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\EventListener;
-
-use Indigo\Supervisor\Event\EventInterface;
+namespace Indigo\Supervisor\Event;
 
 /**
  * Null EventListener
@@ -20,7 +18,7 @@ use Indigo\Supervisor\Event\EventInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class NullEventListener extends AbstractEventListener
+class NullListener extends AbstractListener
 {
     /**
      * {@inheritdocs}

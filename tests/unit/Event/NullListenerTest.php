@@ -2,20 +2,20 @@
 
 namespace Test\Unit;
 
-use Indigo\Supervisor\EventListener\NullEventListener;
+use Indigo\Supervisor\Event\NullListener;
 
 /**
- * Tests for Null EventListener
+ * Tests for Null Listener
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\EventListener\NullEventListener
+ * @coversDefaultClass Indigo\Supervisor\Event\NullListener
  */
-class NullEventListenerTest extends AbstractEventListenerTest
+class NullListenerTest extends AbstractListenerTest
 {
     public function setUp()
     {
-        $this->listener = new NullEventListener;
+        $this->listener = new NullListener;
     }
 
     /**

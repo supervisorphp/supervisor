@@ -146,10 +146,10 @@ It is important that this is only the logic of event processing. Making it work 
 
 ``` php
 use Indigo\Supervisor;
-use Indigo\Supervisor\EventListener;
+use Indigo\Supervisor\Event\NullListener;
 
 // this is an example listener for development purposes
-$listener = new NullEventListener();
+$listener = new NullListener();
 
 // optional
 $listener->setLogger(new \Psr\Log\NullLogger());
@@ -158,14 +158,14 @@ $listener->setLogger(new \Psr\Log\NullLogger());
 $listener->listen();
 ```
 
-You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a `NullLogger`, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractEventListener`.
+You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a `NullLogger`, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractListener`.
 
 
-### Writting an EventListener
+### Writting an Event Listener
 
 There are three ways to write an event listener:
-* By implementing `EventListenerInterface` and writting the whole logic on your own
-* By extending `AbstractEventListener` and writting only the event process logic
+* By implementing `ListenerInterface` and writting the whole logic on your own
+* By extending `AbstractListener` and writting only the event process logic
 
 An example if you choose the last option:
 

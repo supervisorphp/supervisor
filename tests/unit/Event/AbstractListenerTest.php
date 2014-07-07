@@ -4,7 +4,7 @@ namespace Test\Unit;
 
 use Codeception\TestCase\Test;
 
-abstract class AbstractEventListenerTest extends Test
+abstract class AbstractListenerTest extends Test
 {
     protected $listener;
     protected $input;
