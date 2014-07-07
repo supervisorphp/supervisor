@@ -22,7 +22,7 @@ use Guzzle\Http\Stream\StreamInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Guzzle3 extends AbstractXmlrpcConnector
+class Guzzle3Connector extends AbstractXmlrpcConnector
 {
     /**
      * Client object

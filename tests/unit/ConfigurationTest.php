@@ -153,7 +153,7 @@ class ConfigurationTest extends Test
         $this->config->parseFile(__DIR__ . '/../../resources/supervisord.conf');
 
         $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Section\\Supervisord',
+            'Indigo\\Supervisor\\Section\\SupervisordSection',
             $this->config->getSection('supervisord')
         );
     }
@@ -170,7 +170,7 @@ class ConfigurationTest extends Test
         $this->config->parseString($string);
 
         $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Section\\Supervisord',
+            'Indigo\\Supervisor\\Section\\SupervisordSection',
             $this->config->getSection('supervisord')
         );
     }

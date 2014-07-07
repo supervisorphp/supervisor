@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Supervisord extends AbstractSection
+class SupervisordSection extends AbstractSection
 {
     /**
      * {@inheritdocs}

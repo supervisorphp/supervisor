@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class InetHttpServer extends AbstractSection
+class InetHttpServerSection extends AbstractSection
 {
     /**
      * {@inheritdocs}

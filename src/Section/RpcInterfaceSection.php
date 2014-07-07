@@ -12,28 +12,21 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Group Section
+ * RPC Interface Section
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Group extends AbstractNamedSection
+class RpcInterfaceSection extends AbstractNamedSection
 {
     /**
      * {@inheritdocs}
      */
-    protected $sectionName = 'group';
-
-    /**
-     * {@inheritdocs}
-     */
-    protected $requiredOptions = array(
-        'programs' => 'array',
-    );
+    protected $sectionName = 'rpcinterface';
 
     /**
      * {@inheritdocs}
      */
     protected $optionalOptions = array(
-        'priority' => 'integer',
+        'supervisor.rpcinterface_factory' => 'string',
     );
 }

@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Config extends AbstractSection
+class IncludeSection extends AbstractSection
 {
     /**
      * {@inheritdocs}

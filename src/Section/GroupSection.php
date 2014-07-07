@@ -12,25 +12,28 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Unix HTTP Section
+ * Group Section
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class UnixHttpServer extends AbstractSection
+class GroupSection extends AbstractNamedSection
 {
     /**
      * {@inheritdocs}
      */
-    protected $name = 'unix_http_server';
+    protected $sectionName = 'group';
+
+    /**
+     * {@inheritdocs}
+     */
+    protected $requiredOptions = array(
+        'programs' => 'array',
+    );
 
     /**
      * {@inheritdocs}
      */
     protected $optionalOptions = array(
-        'file'     => 'string',
-        'chmod'    => array('integer', 'string'),
-        'chown'    => 'string',
-        'username' => 'string',
-        'password' => 'string',
+        'priority' => 'integer',
     );
 }

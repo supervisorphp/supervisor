@@ -34,16 +34,16 @@ class Configuration
      * @var array
      */
     protected $sectionMap = array(
-        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListener',
-        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgram',
-        'group'            => 'Indigo\\Supervisor\\Section\\Group',
-        'include'          => 'Indigo\\Supervisor\\Section\\Config',
-        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServer',
-        'program'          => 'Indigo\\Supervisor\\Section\\Program',
-        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\Supervisorctl',
-        'supervisord'      => 'Indigo\\Supervisor\\Section\\Supervisord',
-        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServer',
-        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterface',
+        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
+        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
+        'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
+        'include'          => 'Indigo\\Supervisor\\Section\\IncludeSection',
+        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServerSection',
+        'program'          => 'Indigo\\Supervisor\\Section\\ProgramSection',
+        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\SupervisorctlSection',
+        'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
+        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
+        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterfaceSection',
     );
 
     /**

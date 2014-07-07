@@ -3,14 +3,14 @@
 namespace Test\Unit;
 
 use Codeception\TestCase\Test;
-use Indigo\Supervisor\Connector\Guzzle;
+use Indigo\Supervisor\Connector\GuzzleConnector;
 
 /**
  * Tests for Guzzle connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle
+ * @coversDefaultClass Indigo\Supervisor\Connector\GuzzleConnector
  * @requires PHP 5.4
  */
 class GuzzleTest extends AbstractConnectorTest
@@ -21,7 +21,7 @@ class GuzzleTest extends AbstractConnectorTest
         $this->client->shouldReceive('getBaseUrl')
             ->andReturn($GLOBALS['host']);
 
-        $this->connector = new Guzzle($this->client);
+        $this->connector = new GuzzleConnector($this->client);
     }
 
     /**
@@ -30,7 +30,7 @@ class GuzzleTest extends AbstractConnectorTest
      */
     public function testConstruct()
     {
-        $connector = new Guzzle($this->client);
+        $connector = new GuzzleConnector($this->client);
 
         $this->assertSame($this->client, $connector->getClient());
     }

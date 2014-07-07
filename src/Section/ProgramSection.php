@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Program extends AbstractNamedSection
+class ProgramSection extends AbstractNamedSection
 {
     /**
      * {@inheritdocs}

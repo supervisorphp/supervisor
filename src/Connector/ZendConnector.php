@@ -21,7 +21,7 @@ use Indigo\Supervisor\Exception\SupervisorException;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Zend extends AbstractConnector
+class ZendConnector extends AbstractConnector
 {
     /**
      * Client object

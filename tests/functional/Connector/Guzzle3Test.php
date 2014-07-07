@@ -3,14 +3,14 @@
 namespace Test\Functional;
 
 use Guzzle\Http\Client;
-use Indigo\Supervisor\Connector\Guzzle3;
+use Indigo\Supervisor\Connector\Guzzle3Connector;
 
 /**
  * Tests for Guzzle connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle3
+ * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle3Connector
  */
 class Guzzle3Test extends AbstractConnectorTest
 {
@@ -18,7 +18,7 @@ class Guzzle3Test extends AbstractConnectorTest
     {
         $client = new Client($GLOBALS['host']);
 
-        $this->connector = new Guzzle3($client);
+        $this->connector = new Guzzle3Connector($client);
 
         parent::_before();
     }

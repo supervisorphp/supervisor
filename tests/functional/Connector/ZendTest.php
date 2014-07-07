@@ -3,14 +3,14 @@
 namespace Test\Functional;
 
 use Zend\XmlRpc\Client;
-use Indigo\Supervisor\Connector\Zend;
+use Indigo\Supervisor\Connector\ZendConnector;
 
 /**
  * Tests for Zend connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\Zend
+ * @coversDefaultClass Indigo\Supervisor\Connector\ZendConnector
  */
 class ZendTest extends AbstractConnectorTest
 {
@@ -18,7 +18,7 @@ class ZendTest extends AbstractConnectorTest
     {
         $client = new Client($GLOBALS['host']);
 
-        $this->connector = new Zend($client);
+        $this->connector = new ZendConnector($client);
 
         parent::_before();
     }

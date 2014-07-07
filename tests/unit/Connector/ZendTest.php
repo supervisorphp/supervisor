@@ -3,14 +3,14 @@
 namespace Test\Unit;
 
 use Codeception\TestCase\Test;
-use Indigo\Supervisor\Connector\Zend;
+use Indigo\Supervisor\Connector\ZendConnector;
 
 /**
  * Tests for Zend connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\Zend
+ * @coversDefaultClass Indigo\Supervisor\Connector\ZendConnector
  */
 class ZendTest extends AbstractConnectorTest
 {
@@ -20,7 +20,7 @@ class ZendTest extends AbstractConnectorTest
 
         $this->client->shouldReceive('getHttpClient->setAuth');
 
-        $this->connector = new Zend($this->client);
+        $this->connector = new ZendConnector($this->client);
     }
 
     /**
@@ -29,7 +29,7 @@ class ZendTest extends AbstractConnectorTest
      */
     public function testConstruct()
     {
-        $connector = new Zend($this->client);
+        $connector = new ZendConnector($this->client);
 
         $this->assertSame($this->client, $connector->getClient());
     }

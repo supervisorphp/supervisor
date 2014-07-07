@@ -12,30 +12,34 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Event Listener section
+ * Fcgi Program Section
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
- *
- * @codeCoverageIgnore
  */
-class EventListener extends Program
+class FcgiProgramSection extends ProgramSection
 {
     /**
      * {@inheritdocs}
      */
-    protected $sectionName = 'eventlistener';
+    protected $sectionName = 'fcgi-program';
 
     /**
      * {@inheritdocs}
      */
-    protected $optionalOptions = array(
-        'buffer_size'    => 'integer',
-        'events'         => 'array',
-        'result_handler' => 'string',
+    protected $requiredOptionsOverride = array(
+        'socket'  => 'string',
     );
 
     /**
-     * Creates an EventListener section
+     * {@inheritdocs}
+     */
+    protected $optionalOptionsOverride = array(
+        'socket_owner' => 'string',
+        'socket_mode'  => 'integer',
+    );
+
+    /**
+     * Creates an Fcgi-Program section
      *
      * @param string $name
      * @param array  $options
@@ -44,7 +48,9 @@ class EventListener extends Program
      */
     public function __construct($name, array $options = array())
     {
-        $this->optionalOptions = array_merge(parent::$optionalOptions, $this->optionalOptions);
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
+        $this->requiredOptions = array_merge($this->requiredOptions, $this->requiredOptionsOverride);
+
 
         parent::__construct($name, $options);
     }

@@ -80,10 +80,10 @@ use Indigo\Supervisor\Section\Program;
 
 $config = new Configuration;
 
-$section = new Supervisord(array('identifier' => 'supervisor'));
+$section = new SupervisordSection(array('identifier' => 'supervisor'));
 $config->addSection($section);
 
-$section = new Program('test', array('command' => 'cat'));
+$section = new ProgramSection('test', array('command' => 'cat'));
 $config->addSection($section);
 
 // same as echo $config->render()
@@ -105,7 +105,7 @@ The following sections are available in this pacakge:
 
 ***Note**: These sections has to be instantiated with a name and optionally an options array:
 ``` php
-$section = new Program('test', array('command' => 'cat'));
+$section = new ProgramSection('test', array('command' => 'cat'));
 ```
 
 
@@ -201,7 +201,7 @@ You can find the XML-RPC documentation here:
 
 ## Notice
 
-All the responses are parsed by PHP XML-RPC extension (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
+All the connectors that extends `AbstractXmlrpcConnector` use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
 
 ## Testing
