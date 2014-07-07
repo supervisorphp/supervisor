@@ -106,16 +106,26 @@ class MemmonListener extends AbstractListener
 
         foreach ($processes as $process) {
             if ($this->checkProcess($process)) {
-                $mem = $process->getMemUsage();
-                $max = $this->getMaxMemory($process);
-
-                if ($max > 0 and $mem > $max) {
-                    $this->restart($process, $mem);
-                }
+                $this->handleProcess($process);
             }
         }
 
         return 0;
+    }
+
+    /**
+     * Handle process
+     *
+     * @param Process $process
+     */
+    protected function handleProcess(Process $process)
+    {
+        $mem = $process->getMemUsage();
+        $max = $this->getMaxMemory($process);
+
+        if ($max > 0 and $mem > $max) {
+            $this->restart($process, $mem);
+        }
     }
 
     /**
