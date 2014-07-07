@@ -126,17 +126,6 @@ You can find detailed info about options for each section here:
 [http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
 
 
-## CLI Usage
-
-You can use CLI commands to manage your Supervisor instance and Processes. If you want to use this feature you need to require [symfony/console](https://github.com/symfony/console) in your own composer.json.
-
-For full list of commands run:
-
-``` bash
-supervisor list
-```
-
-
 ## Event Listeners
 
 Supervisor has this pretty good feature: notify you(r listener) about it's events, so it was obivious to implement this.

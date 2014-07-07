@@ -23,11 +23,9 @@
         "guzzlehttp/guzzle": "~4.1.0",
         "guzzle/guzzle": "~3.9.0",
         "zendframework/zend-xmlrpc": "~2.3.0",
-        "zendframework/zendxml": "1.0.0",
-        "symfony/console": "~2.4.0"
+        "zendframework/zendxml": "1.0.0"
     },
     "suggest": {
-        "symfony/console": "Used for CLI application",
         "guzzlehttp/guzzle": "GuzzleHttp 4 HTTP client",
         "guzzle/guzzle": "Guzzle 3 HTTP client",
         "zendframework/zend-xmlrpc": "XmlRpc component from Zend Framework 2",
