@@ -1,9 +1,10 @@
 <?php
 
-namespace Indigo\Supervisor;
+namespace Test\Unit;
 
 use Codeception\TestCase\Test;
 use Indigo\Supervisor\Exception\SupervisorException;
+use Indigo\Supervisor\Process;
 
 /**
  * Tests for Process

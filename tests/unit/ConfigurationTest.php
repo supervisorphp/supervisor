@@ -1,9 +1,10 @@
 <?php
 
-namespace Indigo\Supervisor;
+namespace Test\Unit;
 
 use Codeception\TestCase\Test;
 use Indigo\Supervisor\Section\SectionInterface;
+use Indigo\Supervisor\Configuration;
 
 /**
  * Tests for Configuration

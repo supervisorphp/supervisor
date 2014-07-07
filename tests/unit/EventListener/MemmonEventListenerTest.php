@@ -1,8 +1,9 @@
 <?php
 
-namespace Indigo\Supervisor\EventListener;
+namespace Test\Unit;
 
 use Indigo\Supervisor\Process;
+use Indigo\Supervisor\EventListener\MemmonEventListener;
 
 class TestMemmonEventListener extends MemmonEventListener
 {
@@ -20,7 +21,7 @@ class TestMemmonEventListener extends MemmonEventListener
  *
  * @coversDefaultClass Indigo\Supervisor\EventListener\MemmonEventListener
  */
-class MemmonEventListenerTest extends EventListenerTest
+class MemmonEventListenerTest extends AbstractEventListenerTest
 {
     public function setUp()
     {
@@ -92,11 +93,6 @@ class MemmonEventListenerTest extends EventListenerTest
         });
 
         $this->listener = new TestMemmonEventListener($supervisor, array(), array(), 1024, 60, 'memmon');
-    }
-
-    public function tearDown()
-    {
-        \Mockery::close();
     }
 
     /**

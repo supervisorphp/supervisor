@@ -1,6 +1,8 @@
 <?php
 
-namespace Indigo\Supervisor\EventListener;
+namespace Test\Unit;
+
+use Indigo\Supervisor\EventListener\NullEventListener;
 
 /**
  * Tests for Null EventListener
@@ -9,7 +11,7 @@ namespace Indigo\Supervisor\EventListener;
  *
  * @coversDefaultClass Indigo\Supervisor\EventListener\NullEventListener
  */
-class NullEventListenerTest extends EventListenerTest
+class NullEventListenerTest extends AbstractEventListenerTest
 {
     public function setUp()
     {
@@ -25,10 +27,5 @@ class NullEventListenerTest extends EventListenerTest
         $event = \Mockery::mock('Indigo\\Supervisor\\Event\\EventInterface');
 
         $this->assertEquals(0, $this->listener->doListen($event));
-    }
-
-    public function tearDown()
-    {
-        \Mockery::close();
     }
 }
