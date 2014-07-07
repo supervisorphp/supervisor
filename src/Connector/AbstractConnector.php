@@ -40,7 +40,7 @@ abstract class AbstractConnector implements ConnectorInterface
     protected $local;
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      */
     public function isLocal()
     {

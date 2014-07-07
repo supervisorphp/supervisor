@@ -48,7 +48,7 @@ class SupervisordSection extends AbstractSection
     );
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      *
      * @codeCoverageIgnore
      */

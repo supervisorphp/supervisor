@@ -22,6 +22,9 @@ use Indigo\Supervisor\Event\EventInterface;
  */
 class NullEventListener extends AbstractEventListener
 {
+    /**
+     * {@inheritdocs}
+     */
     public function doListen(EventInterface $event)
     {
         // Noop

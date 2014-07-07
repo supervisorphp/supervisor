@@ -42,7 +42,7 @@ class InetHttpServerSection extends AbstractSection
     );
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      *
      * @codeCoverageIgnore
      */

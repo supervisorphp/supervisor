@@ -19,53 +19,58 @@ namespace Indigo\Supervisor\Event;
 interface EventInterface
 {
     /**
-     * Get a specific or all header keys
-     * Return default if key not found
+     * Returns a specific or all header keys
+     * Returns default if key not found
      *
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param string|null $key
+     * @param mixed       $default
+     *
      * @return mixed
      */
     public function getHeader($key = null, $default = null);
 
     /**
-     * Set header values
+     * Sets header values
      *
-     * @param  array          $header
-     * @return EventInterface
+     * @param array $header
+     *
+     * @return this
      */
     public function setHeader(array $header);
 
     /**
-     * Get a specific or all payload keys
-     * Return default if key not found
+     * Returns a specific or all payload keys
+     * Returns default if key not found
      *
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param string|null $key
+     * @param mixed       $default
+     *
      * @return mixed
      */
     public function getPayload($key = null, $default = null);
 
     /**
-     * Set payload values
+     * Sets the payload values
      *
-     * @param  array          $payload
-     * @return EventInterface
+     * @param array $payload
+     *
+     * @return this
      */
     public function setPayload(array $payload);
 
     /**
-     * Get body
+     * Returns the body
      *
      * @return string
      */
     public function getBody();
 
     /**
-     * Set body
+     * Sets the body
      *
-     * @param  string         $body
-     * @return EventInterface
+     * @param string $body
+     *
+     * @return this
      */
     public function setBody($body);
 }

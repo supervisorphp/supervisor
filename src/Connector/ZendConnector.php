@@ -75,7 +75,7 @@ class ZendConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      */
     public function call($namespace, $method, array $arguments = array())
     {

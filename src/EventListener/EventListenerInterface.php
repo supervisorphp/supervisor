@@ -31,32 +31,34 @@ interface EventListenerInterface
     public function listen();
 
     /**
-     * Get input stream
+     * Returns the input stream
      *
      * @return resource
      */
     public function getInputStream();
 
     /**
-     * Set input stream
+     * Sets the input stream
      *
-     * @param  resource               $stream
-     * @return EventListenerInterface
+     * @param resource $stream
+     *
+     * @return this
      */
     public function setInputStream($stream);
 
     /**
-     * Get output stream
+     * Returns the output stream
      *
      * @return resource
      */
     public function getOutputStream();
 
     /**
-     * Set output stream
+     * Sets the output stream
      *
-     * @param  resource               $stream
-     * @return EventListenerInterface
+     * @param resource $stream
+     *
+     * @return this
      */
     public function setOutputStream($stream);
 }

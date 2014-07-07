@@ -70,7 +70,7 @@ class ProgramSection extends AbstractNamedSection
     );
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      *
      * @codeCoverageIgnore
      */

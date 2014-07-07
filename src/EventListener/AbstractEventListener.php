@@ -46,7 +46,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     protected $outputStream = STDOUT;
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      */
     public function getInputStream()
     {
@@ -54,7 +54,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      */
     public function setInputStream($stream)
     {
@@ -68,7 +68,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      */
     public function getOutputStream()
     {
@@ -76,7 +76,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      */
     public function setOutputStream($stream)
     {
@@ -90,7 +90,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
      *
      * @codeCoverageIgnore
      */
@@ -99,14 +99,12 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
         while (true) {
             $this->statusReady();
 
-            if (!$event = $this->getEvent()) {
-                continue;
-            }
+            if ($event = $this->getEvent()) {
+                $result = $this->doListen($event);
 
-            $result = $this->doListen($event);
-
-            if (!$this->processResult($result)) {
-                return;
+                if ($this->processResult($result) === false) {
+                    return;
+                }
             }
         }
     }
@@ -114,7 +112,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     /**
      * Get event from input stream
      *
-     * @return Event|false Event object
+     * @return Event Event object
      */
     protected function getEvent()
     {
@@ -138,11 +136,14 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Resolve EventInterface
+     * Resolves an Event
      *
-     * @param  array          $header
-     * @param  array          $payload
-     * @param  string         $body
+     * Overrideable method to be able to resolve custom events
+     *
+     * @param array  $header
+     * @param array  $payload
+     * @param string $body
+     *
      * @return EventInterface
      */
     protected function resolveEvent(array $header, array $payload, $body = null)
@@ -151,9 +152,10 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Process result
+     * Processes result
      *
-     * @param  integer $result Result code
+     * @param integer $result Result code
+     *
      * @return boolean Listener should exit or not
      */
     protected function processResult($result)
@@ -174,7 +176,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Print ready status to output stream
+     * Prints ready status to output stream
      */
     protected function statusReady()
     {
@@ -182,17 +184,19 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Do the actual event handling
+     * Does the actual event handling
      *
-     * @param  EventInterface $event
-     * @return integer        0=success, 1=failure
+     * @param EventInterface $event
+     *
+     * @return integer 0=success, 1=failure
      */
     abstract protected function doListen(EventInterface $event);
 
     /**
      * Parse colon devided data
      *
-     * @param  string $rawData
+     * @param string $rawData
+     *
      * @return array
      */
     protected function parseData($rawData)
@@ -208,24 +212,27 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Read data from input stream
+     * Reads data from input stream
      *
-     * @param  integer $length If given read this size of bytes, read a line anyway
+     * @param integer $length If given read this size of bytes, read a line anyway
+     *
      * @return string
      */
     protected function read($length = null)
     {
         if (is_null($length)) {
             return trim(fgets($this->inputStream));
-        } else {
-            return fread($this->inputStream, $length);
         }
+
+        return fread($this->inputStream, $length);
     }
 
     /**
-     * Write data to output stream
+     * Writes data to output stream
      *
      * @param string $value
+     *
+     * @return integer Bytes written
      */
     protected function write($value)
     {
@@ -233,9 +240,7 @@ abstract class AbstractEventListener implements EventListenerInterface, LoggerAw
     }
 
     /**
-     * Sets a logger
-     *
-     * @param LoggerInterface $logger
+     * {@inheritdocs}
      *
      * @codeCoverageIgnore
      */
