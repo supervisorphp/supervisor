@@ -5,6 +5,13 @@ namespace Test\Unit;
 use Codeception\TestCase\Test;
 use Indigo\Supervisor\Event\Event;
 
+/**
+ * Tests for Inet Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Event\Event
+ */
 class EventTest extends Test
 {
     protected $event;

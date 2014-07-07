@@ -15,7 +15,7 @@ class TestMemmonListener extends MemmonListener
 }
 
 /**
- * Tests for Inet Connector
+ * Tests for Memmon Listener
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *

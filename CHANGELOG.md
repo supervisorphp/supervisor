@@ -3,10 +3,12 @@
 
 ## 2.0.0 (released )
 
-* Removes HTTP request parts
+* Removes HTTP client parts
 * Uses Guzzle as HTTP Client by default
 * Renamed classes for simplicity
 * Adds Zend XML-RPC connector
+* Adds `AbstractNamedSection`
+* Event and Event Listener restructure
 
 
 ## 1.2.0 (released 2014-05-06)
