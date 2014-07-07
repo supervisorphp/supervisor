@@ -6,7 +6,7 @@ use Codeception\TestCase\Test;
 use Indigo\Supervisor\Event\Event;
 
 /**
- * Tests for Inet Connector
+ * Tests for Event
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
