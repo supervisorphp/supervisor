@@ -17,7 +17,7 @@
         "symfony/process": "~2.4.0",
         "psr/log": "~1.0",
         "kriswallsmith/buzz": "v0.10",
-        "jakeasmith/http_build_url": "~0.1.0"
+        "jakeasmith/http_build_url": "0.1.2"
     },
     "require-dev": {
         "mockery/mockery": "dev-master@dev",
