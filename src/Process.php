@@ -160,7 +160,7 @@ class Process implements ArrayAccess, Iterator
      */
     public function call($namespace, $method, array $arguments = array())
     {
-        $arguments = array_merge(array($this->payload['name']), $arguments);
+        array_unshift($arguments, $this->payload['name']);
 
         return $this->connector->call($namespace, $method, $arguments);
     }
@@ -304,6 +304,11 @@ class Process implements ArrayAccess, Iterator
         return $this->call('supervisor', 'clearProcessLogs');
     }
 
+    /**
+     * Alias to getName()
+     *
+     * @return string
+     */
     public function __tostring()
     {
         return $this->getName();

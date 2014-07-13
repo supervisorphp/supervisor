@@ -22,4 +22,9 @@ class ZendConnectorTest extends AbstractConnectorTest
 
         parent::_before();
     }
+
+    public function testSupervisorFail()
+    {
+
+    }
 }
