@@ -143,7 +143,7 @@ class Process implements ArrayAccess, Iterator
         $mem = 0;
 
         if ($this->connector->isLocal() and $this->isRunning()) {
-            $process = new SymfonyProcess('ps -orss= -p ' . $this['pid']);
+            $process = new SymfonyProcess('ps -orss= -p ' . $this->payload['pid']);
             $process->run();
 
             if ($process->isSuccessful()) {
