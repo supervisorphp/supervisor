@@ -12,20 +12,21 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "ext-xmlrpc": "*",
         "symfony/options-resolver": "~2.4.0",
         "symfony/process": "~2.4.0",
         "psr/log": "~1.0"
     },
     "require-dev": {
-        "codeception/codeception": "~1.8.0",
-        "codeception/mockery-module": "dev-master",
+        "ext-xmlrpc": "*",
         "guzzlehttp/guzzle": "~4.1.0",
         "guzzle/guzzle": "~3.9.0",
         "zendframework/zend-xmlrpc": "~2.3.0",
-        "zendframework/zendxml": "1.0.0"
+        "zendframework/zendxml": "~1.0.0",
+        "codeception/codeception": "~1.8.0",
+        "codeception/mockery-module": "dev-master"
     },
     "suggest": {
+        "ext-xmlrpc": "Used by the following connectors: Guzzle, Guzzle3",
         "guzzlehttp/guzzle": "GuzzleHttp 4 HTTP client",
         "guzzle/guzzle": "Guzzle 3 HTTP client",
         "zendframework/zend-xmlrpc": "XmlRpc component from Zend Framework 2",
