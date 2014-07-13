@@ -26,7 +26,7 @@ class EventListenerSection extends ProgramSection
     /**
      * {@inheritdocs}
      */
-    protected $optionalOptionsOverride = array(
+    protected $optionalOverride = array(
         'buffer_size'    => 'integer',
         'events'         => 'array',
         'result_handler' => 'string',
@@ -42,7 +42,7 @@ class EventListenerSection extends ProgramSection
      */
     public function __construct($name, array $options = array())
     {
-        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOverride);
 
         parent::__construct($name, $options);
     }
