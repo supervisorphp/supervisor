@@ -13,7 +13,7 @@ use Indigo\Supervisor\Connector\GuzzleConnector;
  * @coversDefaultClass Indigo\Supervisor\Connector\GuzzleConnector
  * @requires PHP 5.4
  */
-class GuzzleTest extends AbstractConnectorTest
+class GuzzleConnectorTest extends AbstractConnectorTest
 {
     public function _before()
     {

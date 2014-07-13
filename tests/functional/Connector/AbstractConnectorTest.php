@@ -3,6 +3,7 @@
 namespace Test\Functional;
 
 use Codeception\TestCase\Test;
+use Indigo\Supervisor\Supervisor;
 
 /**
  * Tests for connectors
@@ -23,6 +24,17 @@ abstract class AbstractConnectorTest extends Test
         if (isset($GLOBALS['username'])) {
             $this->connector->setCredentials($GLOBALS['username'], $GLOBALS['password']);
         }
+    }
+
+    /**
+     * @covers Indigo\Supervisor\Supervisor
+     * @group  Supervisor
+     */
+    public function testSupervisor()
+    {
+        $supervisor = new Supervisor($this->connector);
+
+        $this->assertGreaterThanOrEqual(3, $supervisor->getAPIVersion());
     }
 
     /**

@@ -12,7 +12,7 @@ use Indigo\Supervisor\Connector\ZendConnector;
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\ZendConnector
  */
-class ZendTest extends AbstractConnectorTest
+class ZendConnectorTest extends AbstractConnectorTest
 {
     public function _before()
     {

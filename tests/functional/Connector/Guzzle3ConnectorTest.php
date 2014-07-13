@@ -12,7 +12,7 @@ use Indigo\Supervisor\Connector\Guzzle3Connector;
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle3Connector
  */
-class Guzzle3Test extends AbstractConnectorTest
+class Guzzle3ConnectorTest extends AbstractConnectorTest
 {
     public function _before()
     {
