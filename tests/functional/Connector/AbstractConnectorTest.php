@@ -38,6 +38,19 @@ abstract class AbstractConnectorTest extends Test
     }
 
     /**
+     * @covers            Indigo\Supervisor\Supervisor
+     * @expectedException Indigo\Supervisor\Exception\SupervisorException
+     * @expectedMessage   INCORRECT_PARAMETERS
+     * @group             Supervisor
+     */
+    public function testSupervisorFail()
+    {
+        $supervisor = new Supervisor($this->connector);
+
+        $supervisor->getAPIVersion('incorrect_param');
+    }
+
+    /**
      * @covers ::call
      * @group  Supervisor
      */

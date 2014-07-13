@@ -53,11 +53,16 @@ class Process implements ArrayAccess, Iterator
     /**
      * Creates new Process instance
      *
-     * @param array              $payload   Process info
+     * @param array|string       $payload   Process name or info array
      * @param ConnectorInterface $connector
      */
-    public function __construct(array $payload, ConnectorInterface $connector)
+    public function __construct($payload, ConnectorInterface $connector)
     {
+        // Gets payload if process name given
+        if (is_array($payload) === false) {
+            $payload = $connector->call('supervisor', 'getProcessInfo', array($payload));
+        }
+
         $this->payload = $payload;
         $this->connector = $connector;
     }
@@ -160,7 +165,7 @@ class Process implements ArrayAccess, Iterator
      */
     public function call($namespace, $method, array $arguments = array())
     {
-        $arguments = array_merge(array($this->payload['name']), $arguments);
+        array_unshift($arguments, $this->payload['name']);
 
         return $this->connector->call($namespace, $method, $arguments);
     }
@@ -304,6 +309,11 @@ class Process implements ArrayAccess, Iterator
         return $this->call('supervisor', 'clearProcessLogs');
     }
 
+    /**
+     * Alias to getName()
+     *
+     * @return string
+     */
     public function __tostring()
     {
         return $this->getName();
