@@ -1,6 +1,11 @@
 # CHANGELOG
 
 
+## 2.0.1 (released 2014-07-13)
+
+* Updates dependencies
+
+
 ## 2.0.0 (released 2014-07-13)
 
 * Removes HTTP client parts
