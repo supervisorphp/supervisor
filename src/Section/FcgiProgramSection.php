@@ -18,21 +18,40 @@ namespace Indigo\Supervisor\Section;
  */
 class FcgiProgramSection extends ProgramSection
 {
-    protected $requiredOptionsOverride = array(
+    /**
+     * {@inheritdocs}
+     */
+    protected $sectionName = 'fcgi-program';
+
+    /**
+     * {@inheritdocs}
+     */
+    protected $requiredOverride = array(
         'socket'  => 'string',
     );
 
-    protected $optionalOptionsOverride = array(
+    /**
+     * {@inheritdocs}
+     */
+    protected $optionalOverride = array(
         'socket_owner' => 'string',
         'socket_mode'  => 'integer',
     );
 
+    /**
+     * Creates an Fcgi-Program section
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @codeCoverageIgnore
+     */
     public function __construct($name, array $options = array())
     {
-        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
-        $this->requiredOptions = array_merge($this->requiredOptions, $this->requiredOptionsOverride);
-        $this->setOptions($options);
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOverride);
+        $this->requiredOptions = array_merge($this->requiredOptions, $this->requiredOverride);
 
-        $this->name = 'fcgi-program:' . trim($name);
+
+        parent::__construct($name, $options);
     }
 }

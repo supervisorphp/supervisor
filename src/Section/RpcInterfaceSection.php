@@ -16,16 +16,17 @@ namespace Indigo\Supervisor\Section;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class RpcInterfaceSection extends AbstractSection
+class RpcInterfaceSection extends AbstractNamedSection
 {
+    /**
+     * {@inheritdocs}
+     */
+    protected $sectionName = 'rpcinterface';
+
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'supervisor.rpcinterface_factory' => 'string',
     );
-
-    public function __construct($name, array $options = array())
-    {
-        $this->setOptions($options);
-
-        $this->name = 'rpcinterface:' . trim($name);
-    }
 }

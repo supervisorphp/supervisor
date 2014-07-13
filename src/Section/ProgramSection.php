@@ -18,12 +18,23 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ProgramSection extends AbstractSection
+class ProgramSection extends AbstractNamedSection
 {
+    /**
+     * {@inheritdocs}
+     */
+    protected $sectionName = 'program';
+
+    /**
+     * {@inheritdocs}
+     */
     protected $requiredOptions = array(
         'command' => 'string',
     );
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'process_name'            => 'string',
         'numprocs'                => 'integer',
@@ -58,15 +69,10 @@ class ProgramSection extends AbstractSection
         'serverurl'               => 'string',
     );
 
-    public function __construct($name, array $options = array())
-    {
-        $this->resolveOptions($options);
-
-        $this->name = 'program:' . trim($name);
-    }
-
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
+     *
+     * @codeCoverageIgnore
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {

@@ -1,4 +1,3 @@
-composer.lock
-phpunit.xml
 /vendor
-/coverage
+composer.lock
+/tests/_log

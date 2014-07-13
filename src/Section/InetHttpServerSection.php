@@ -21,19 +21,30 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class InetHttpServerSection extends AbstractSection
 {
+    /**
+     * {@inheritdocs}
+     */
     protected $name = 'inet_http_server';
 
+    /**
+     * {@inheritdocs}
+     */
     protected $requiredOptions = array(
         'port' => array('string', 'integer'),
     );
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'username' => 'string',
         'password' => 'string',
     );
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
+     *
+     * @codeCoverageIgnore
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {

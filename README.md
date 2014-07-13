@@ -7,7 +7,7 @@
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/indigophp/supervisor/badges/quality-score.png?s=6aaa222466e706bbb6417ba4906c544d72741cbe)](https://scrutinizer-ci.com/g/indigophp/supervisor/)
 [![License](https://poser.pugx.org/indigophp/supervisor/license.png)](https://packagist.org/packages/indigophp/supervisor)
 
-**PHP library for managing supervisord through XML-RPC**
+**PHP library for managing supervisord through XML-RPC API.**
 
 
 ## Install
@@ -22,18 +22,16 @@ Via Composer
 }
 ```
 
-**Note**: Package uses PSR-4 autoloader, make sure you have a fresh version of Composer.
-
 
 ## Usage
 
 ``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
-use Indigo\Supervisor\Connector;
 
-$connector = new Connector\InetConnector('localhost', 9001);
-//$connector = new Connector\UnixSocketConnector('unix:///var/run/supervisor.lock');
+// Create new Connector
+// See available connectors
+$connector = new ConnectorInterface;
 
 $connector->setCredentials('user', '123');
 
@@ -63,6 +61,12 @@ echo $process;
 $process->getPayload();
 ```
 
+**Currently available connectors:**
+
+* Guzzle
+* Guzzle3
+* Zend XML-RPC
+
 
 ## Configuration
 
@@ -72,7 +76,7 @@ Example:
 
 ``` php
 use Indigo\Supervisor\Configuration;
-use Indigo\Supervisor\Section\ProgramSection;
+use Indigo\Supervisor\Section\Program;
 
 $config = new Configuration;
 
@@ -88,15 +92,15 @@ echo $config;
 
 The following sections are available in this pacakge:
 
-* _SupervisordSection_
-* _SupervisorctlSection_
-* _UnixHttpServerSection_
-* _InetHttpServerSection_
-* _IncludeSection_
-* _GroupSection_*
-* _ProgramSection_*
-* _EventListenerSection_*
-* _FcgiProgramSection_*
+* _Supervisord_
+* _Supervisorctl_
+* _UnixHttpServer_
+* _InetHttpServer_
+* _Include_
+* _Group_*
+* _Program_*
+* _EventListener_*
+* _FcgiProgram_*
 
 
 ***Note**: These sections has to be instantiated with a name and optionally an options array:
@@ -122,17 +126,6 @@ You can find detailed info about options for each section here:
 [http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
 
 
-## CLI Usage
-
-You can use CLI commands to manage your Supervisor instance and Processes. If you want to use this feature you need to require [symfony/console](https://github.com/symfony/console) in your own composer.json.
-
-For full list of commands run:
-
-``` bash
-supervisor list
-```
-
-
 ## Event Listeners
 
 Supervisor has this pretty good feature: notify you(r listener) about it's events, so it was obivious to implement this.
@@ -142,10 +135,10 @@ It is important that this is only the logic of event processing. Making it work 
 
 ``` php
 use Indigo\Supervisor;
-use Indigo\Supervisor\EventListener;
+use Indigo\Supervisor\Event\NullListener;
 
 // this is an example listener for development purposes
-$listener = new NullEventListener();
+$listener = new NullListener();
 
 // optional
 $listener->setLogger(new \Psr\Log\NullLogger());
@@ -154,14 +147,14 @@ $listener->setLogger(new \Psr\Log\NullLogger());
 $listener->listen();
 ```
 
-You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a `NullLogger`, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractEventListener`.
+You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a `NullLogger`, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractListener`.
 
 
-### Writting an EventListener
+### Writting an Event Listener
 
 There are three ways to write an event listener:
-* By implementing `EventListenerInterface` and writting the whole logic on your own
-* By extending `AbstractEventListener` and writting only the event process logic
+* By implementing `ListenerInterface` and writting the whole logic on your own
+* By extending `AbstractListener` and writting only the event process logic
 
 An example if you choose the last option:
 
@@ -197,13 +190,15 @@ You can find the XML-RPC documentation here:
 
 ## Notice
 
-All the responses are parsed by PHP XML-RPC extension (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
+All the connectors that extends `AbstractXmlrpcConnector` use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
+
+You will also have to make sure that you always call the functions with correct parameters. `ZendConnector` will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `SupervisorException`.
 
 
 ## Testing
 
 ``` bash
-$ phpunit
+$ codecept run
 ```
 
 

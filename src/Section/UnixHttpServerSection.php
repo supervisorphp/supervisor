@@ -18,8 +18,14 @@ namespace Indigo\Supervisor\Section;
  */
 class UnixHttpServerSection extends AbstractSection
 {
+    /**
+     * {@inheritdocs}
+     */
     protected $name = 'unix_http_server';
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'file'     => 'string',
         'chmod'    => array('integer', 'string'),

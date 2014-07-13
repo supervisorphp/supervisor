@@ -51,19 +51,24 @@ class Process implements ArrayAccess, Iterator
     protected $payload = array();
 
     /**
-     * Create new Process instance
+     * Creates new Process instance
      *
-     * @param array              $payload   Process info
+     * @param array|string       $payload   Process name or info array
      * @param ConnectorInterface $connector
      */
-    public function __construct(array $payload, ConnectorInterface $connector)
+    public function __construct($payload, ConnectorInterface $connector)
     {
+        // Gets payload if process name given
+        if (is_array($payload) === false) {
+            $payload = $connector->call('supervisor', 'getProcessInfo', array($payload));
+        }
+
         $this->payload = $payload;
         $this->connector = $connector;
     }
 
     /**
-     * Return process info array
+     * Returns the process info array
      *
      * @return array
      */
@@ -73,7 +78,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Get name of process
+     * Returns the name of process
      *
      * @return string
      */
@@ -83,7 +88,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Return connector object
+     * Returns the connector object
      *
      * @return ConnectorInterface
      */
@@ -93,9 +98,11 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Set connector
+     * Sets the connector
      *
      * @param ConnectorInterface $connector
+     *
+     * @return this
      */
     public function setConnector(ConnectorInterface $connector)
     {
@@ -105,7 +112,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Is the process currently running?
+     * Checks whether the process is running
      *
      * @return boolean
      */
@@ -117,7 +124,8 @@ class Process implements ArrayAccess, Iterator
     /**
      * Check against state
      *
-     * @param  int     $state
+     * @param integer $state
+     *
      * @return boolean
      */
     public function isState($state = self::RUNNING)
@@ -126,7 +134,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Get memory usage
+     * Returns memory usage
      *
      * @return integer Used memory in bytes
      */
@@ -147,24 +155,26 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Call a method
+     * Calls a method
      *
-     * @param  string $namespace Namespace of method
-     * @param  string $method    Method name
-     * @param  array  $arguments Argument list
+     * @param string $namespace Namespace of method
+     * @param string $method    Method name
+     * @param array  $arguments Argument list
+     *
      * @return mixed
      */
     public function call($namespace, $method, array $arguments = array())
     {
-        $arguments = array_merge(array($this->payload['name']), $arguments);
+        array_unshift($arguments, $this->payload['name']);
 
         return $this->connector->call($namespace, $method, $arguments);
     }
 
     /**
-     * Start the process
+     * Starts the process
      *
-     * @param  boolean $wait Wait for process to be fully started
+     * @param boolean $wait Wait for process to be fully started
+     *
      * @return boolean Always true unless error
      */
     public function start($wait = true)
@@ -173,9 +183,10 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Stop the process
+     * Stops the process
      *
-     * @param  boolean $wait Wait for process to be fully stopped
+     * @param boolean $wait Wait for process to be fully stopped
+     *
      * @return boolean Always true unless error
      */
     public function stop($wait = true)
@@ -184,9 +195,10 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Restart the process
+     * Restarts the process
      *
-     * @param  boolean $wait Wait for process to be fully stopped and started
+     * @param boolean $wait Wait for process to be fully stopped and started
+     *
      * @return boolean Always true unless error
      */
     public function restart($wait = true)
@@ -202,13 +214,14 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Send a string of chars to the stdin of the process name.
+     * Sends a string of chars to the stdin of the process name.
      * If non-7-bit data is sent (unicode), it is encoded to utf-8 before being sent to the process’ stdin.
      * If chars is not a string or is not unicode, raise INCORRECT_PARAMETERS.
      * If the process is not running, raise NOT_RUNNING.
      * If the process’ stdin cannot accept input (e.g. it was closed by the child process), raise NO_FILE.
      *
-     * @param  string  $data The character data to send to the process
+     * @param string $data The character data to send to the process
+     *
      * @return boolean Always return True unless error
      */
     public function sendStdin($data)
@@ -217,10 +230,11 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Read length bytes from stdout log starting at offset
+     * Reads length bytes from stdout log starting at offset
      *
-     * @param  int    $offset Offset to start reading from
-     * @param  int    $length Number of bytes to read from the log
+     * @param integer $offset Offset to start reading from
+     * @param integer $length Number of bytes to read from the log
+     *
      * @return string Result Bytes of log
      */
     public function readStdoutLog($offset, $length)
@@ -229,10 +243,11 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Read length bytes from stderr log starting at offset
+     * Reads length bytes from stderr log starting at offset
      *
-     * @param  int    $offset Offset to start reading from
-     * @param  int    $length Number of bytes to read from the log
+     * @param integer $offset Offset to start reading from
+     * @param integer $length Number of bytes to read from the log
+     *
      * @return string Result Bytes of log
      */
     public function readStderrLog($offset, $length)
@@ -252,9 +267,10 @@ class Process implements ArrayAccess, Iterator
      * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
-     * @param  int   $offset Offset to start reading from
-     * @param  int   $length Maximum number of bytes to return
-     * @return array [string bytes, int offset, bool overflow]
+     * @param integer $offset Offset to start reading from
+     * @param integer $length Maximum number of bytes to return
+     *
+     * @return array [string bytes, integer offset, boolean overflow]
      */
     public function tailStdoutLog($offset, $length)
     {
@@ -273,9 +289,10 @@ class Process implements ArrayAccess, Iterator
      * the maximum number of available bytes will be returned.
      * (offset) returned is always the last offset in the log +1.
      *
-     * @param  int   $offset Offset to start reading from
-     * @param  int   $length Maximum number of bytes to return
-     * @return array [string bytes, int offset, bool overflow]
+     * @param integer $offset Offset to start reading from
+     * @param integer $length Maximum number of bytes to return
+     *
+     * @return array [string bytes, integer offset, boolean overflow]
      */
     public function tailStderrLog($offset, $length)
     {
@@ -283,7 +300,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Clear the stdout and stderr logs for the process and reopen them.
+     * Clears the stdout and stderr logs for the process and reopen them.
      *
      * @return boolean Always return true unless error
      */
@@ -292,15 +309,23 @@ class Process implements ArrayAccess, Iterator
         return $this->call('supervisor', 'clearProcessLogs');
     }
 
+    /**
+     * Alias to getName()
+     *
+     * @return string
+     */
     public function __tostring()
     {
-        return $this['name'];
+        return $this->getName();
     }
 
     /***************************************************************************
      * Implementation of ArrayAccess
      **************************************************************************/
 
+    /**
+     * {@inheritdocs}
+     */
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
@@ -310,16 +335,25 @@ class Process implements ArrayAccess, Iterator
         }
     }
 
+    /**
+     * {@inheritdocs}
+     */
     public function offsetExists($offset)
     {
         return isset($this->payload[$offset]);
     }
 
+    /**
+     * {@inheritdocs}
+     */
     public function offsetUnset($offset)
     {
         unset($this->payload[$offset]);
     }
 
+    /**
+     * {@inheritdocs}
+     */
     public function offsetGet($offset)
     {
         return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
@@ -329,26 +363,41 @@ class Process implements ArrayAccess, Iterator
      * Implementation of Iterable
      **************************************************************************/
 
+    /**
+     * {@inheritdocs}
+     */
     public function rewind()
     {
         reset($this->payload);
     }
 
+    /**
+     * {@inheritdocs}
+     */
     public function current()
     {
         return current($this->payload);
     }
 
+    /**
+     * {@inheritdocs}
+     */
     public function key()
     {
         return key($this->payload);
     }
 
+    /**
+     * {@inheritdocs}
+     */
     public function next()
     {
         return next($this->payload);
     }
 
+    /**
+     * {@inheritdocs}
+     */
     public function valid()
     {
         return key($this->payload) !== null;

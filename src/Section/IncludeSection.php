@@ -21,14 +21,22 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class IncludeSection extends AbstractSection
 {
+    /**
+     * {@inheritdocs}
+     */
     protected $name = 'include';
 
+    /**
+     * {@inheritdocs}
+     */
     protected $optionalOptions = array(
         'files' => array('array', 'string'),
     );
 
     /**
-     * {@inheritdoc}
+     * {@inheritdocs}
+     *
+     * @codeCoverageIgnore
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {

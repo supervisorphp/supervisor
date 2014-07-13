@@ -12,23 +12,38 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Event Listener Section
+ * Event Listener section
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 class EventListenerSection extends ProgramSection
 {
-    protected $optionalOptionsOverride = array(
+    /**
+     * {@inheritdocs}
+     */
+    protected $sectionName = 'eventlistener';
+
+    /**
+     * {@inheritdocs}
+     */
+    protected $optionalOverride = array(
         'buffer_size'    => 'integer',
         'events'         => 'array',
         'result_handler' => 'string',
     );
 
+    /**
+     * Creates an EventListener section
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @codeCoverageIgnore
+     */
     public function __construct($name, array $options = array())
     {
-        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOptionsOverride);
-        $this->resolveOptions($options);
+        $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOverride);
 
-        $this->name = 'eventlistener:' . trim($name);
+        parent::__construct($name, $options);
     }
 }
