@@ -6,6 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/indigophp/supervisor/downloads.png)](https://packagist.org/packages/indigophp/supervisor)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/indigophp/supervisor/badges/quality-score.png?s=6aaa222466e706bbb6417ba4906c544d72741cbe)](https://scrutinizer-ci.com/g/indigophp/supervisor/)
 [![License](https://poser.pugx.org/indigophp/supervisor/license.png)](https://packagist.org/packages/indigophp/supervisor)
+[![Dependency Status](https://www.versioneye.com/user/projects/53c28cef5a1b3479ca000b48/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53c28cef5a1b3479ca000b48)
 
 **PHP library for managing supervisord through XML-RPC API.**
 

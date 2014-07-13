@@ -12,8 +12,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/options-resolver": "~2.4.0",
-        "symfony/process": "~2.4.0",
+        "symfony/options-resolver": "~2.4",
+        "symfony/process": "~2.4",
         "psr/log": "~1.0"
     },
     "require-dev": {
@@ -22,7 +22,7 @@
         "guzzle/guzzle": "~3.9.0",
         "zendframework/zend-xmlrpc": "~2.3.0",
         "zendframework/zendxml": "~1.0.0",
-        "codeception/codeception": "~1.8.0",
+        "codeception/codeception": "~2.0.0",
         "codeception/mockery-module": "dev-master"
     },
     "suggest": {
