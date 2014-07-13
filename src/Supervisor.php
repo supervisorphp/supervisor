@@ -170,6 +170,6 @@ class Supervisor
      */
     public function getProcess($name)
     {
-        return new Process($this->getProcessInfo($name), $this->connector);
+        return new Process($name, $this->connector);
     }
 }

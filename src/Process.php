@@ -53,11 +53,16 @@ class Process implements ArrayAccess, Iterator
     /**
      * Creates new Process instance
      *
-     * @param array              $payload   Process info
+     * @param array|string       $payload   Process name or info array
      * @param ConnectorInterface $connector
      */
-    public function __construct(array $payload, ConnectorInterface $connector)
+    public function __construct($payload, ConnectorInterface $connector)
     {
+        // Gets payload if process name given
+        if (is_array($payload) === false) {
+            $payload = $connector->call('supervisor', 'getProcessInfo', array($payload));
+        }
+
         $this->payload = $payload;
         $this->connector = $connector;
     }

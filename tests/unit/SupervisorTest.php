@@ -26,6 +26,10 @@ class SupervisorTest extends Test
         $this->connector->shouldReceive('isLocal')
             ->andReturn(true);
 
+        $this->connector->shouldReceive('call')
+            ->andReturn(true)
+            ->byDefault();
+
         $this->supervisor = new Supervisor($this->connector);
     }
 
@@ -36,19 +40,18 @@ class SupervisorTest extends Test
      */
     public function testConnector()
     {
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Connector\\ConnectorInterface',
-            $this->supervisor->getConnector()
+        $this->assertSame(
+            $this->supervisor,
+            $this->supervisor->setConnector($this->connector)
         );
 
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Supervisor',
-            $this->supervisor->setConnector($this->connector)
+        $this->assertSame(
+            $this->connector,
+            $this->supervisor->getConnector()
         );
     }
 
     /**
-     * @covers ::getState
      * @covers ::isState
      * @covers ::isRunning
      * @group  Supervisor
@@ -73,115 +76,16 @@ class SupervisorTest extends Test
         $this->assertTrue($this->supervisor->isRunning());
     }
 
-    public function callProvider()
-    {
-        $connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
-        $connector->shouldReceive('call')
-            ->andReturn(true);
-
-        $process = new Process(array('name' => 'test'), $connector);
-
-        return array(
-            array('getAPIVersion', '3.0'),
-            array('getSupervisorVersion', '3.0'),
-            array('getPID', 12345),
-            array(
-                'readLog',
-                'This is a log.',
-                array(0, 1),
-            ),
-            array('clearLog', true),
-            array('shutdown', true),
-            array('restart', true),
-            array('getAllProcess', array()),
-            array('getAllProcessInfo', array()),
-            array('getProcessInfo', array(), array('test')),
-            array('startAllProcesses', true),
-            array('stopAllProcesses', true),
-            array('startProcess', true, array('test')),
-            array('stopProcess', true, array('test')),
-            array('startProcess', true, array($process)),
-            array('stopProcess', true, array($process)),
-            array('startProcessGroup', true, array('test')),
-            array('stopProcessGroup', true, array('test')),
-            array('sendRemoteCommEvent', true, array('test', 'fake')),
-            array('addProcessGroup', true, array('test')),
-            array('removeProcessGroup', true, array('test')),
-            array(
-                'readProcessStdoutLog',
-                'This is a log.',
-                array('test', 0, 1),
-            ),
-            array(
-                'readProcessStdoutLog',
-                true,
-                array($process, 0, 1),
-            ),
-            array(
-                'readProcessStderrLog',
-                'This is a log.',
-                array('test', 0, 1),
-            ),
-            array(
-                'readProcessStderrLog',
-                true,
-                array($process, 0, 1),
-            ),
-            array(
-                'tailProcessStdoutLog',
-                array('This is a log.', 0, false),
-                array('test', 0, 1),
-            ),
-            array(
-                'tailProcessStdoutLog',
-                true,
-                array($process, 0, 1),
-            ),
-            array(
-                'tailProcessStderrLog',
-                array('This is a log.', 0, false),
-                array('test', 0, 1),
-            ),
-            array(
-                'tailProcessStderrLog',
-                true,
-                array($process, 0, 1),
-            ),
-            array('clearAllProcessLogs', true),
-            array(
-                'clearProcessLogs',
-                true,
-                array('test', 0, 1),
-            ),
-            array(
-                'clearProcessLogs',
-                true,
-                array($process, 0, 1),
-            ),
-        );
-    }
-
     /**
-     * @dataProvider callProvider
-     * @group        Supervisor
+     * @covers ::__call
+     * @group  Supervisor
      */
-    public function testCallReturn($method, $value, $params = array())
+    public function testCall()
     {
-        $this->connector
-            ->shouldReceive('call')
-            ->andReturn($value);
+        $process = new Process(array('name' => 'test'), $this->connector);
 
-        if (empty($params) === false) {
-            $this->assertEquals(
-                $value,
-                call_user_func_array(
-                    array($this->supervisor, $method),
-                    $params
-                )
-            );
-        } else {
-            $this->assertEquals($value, $this->supervisor->{$method}());
-        }
+        $this->assertTrue($this->supervisor->startProcess($process));
+        $this->assertTrue($this->supervisor->startProcess('test'));
     }
 
     /**
@@ -201,22 +105,6 @@ class SupervisorTest extends Test
             $process,
             $this->supervisor->getProcess('test')
         );
-    }
-
-    /**
-     * @covers ::sendProcessStdin
-     * @group  Supervisor
-     */
-    public function testSendProcessStdin()
-    {
-        $this->connector->shouldReceive('call')
-            ->andReturn(true);
-
-        $process = new Process(array('name' => 'test'), $this->connector);
-
-        $this->assertTrue($this->supervisor->sendProcessStdin('test', 'fake'));
-
-        $this->assertTrue($this->supervisor->sendProcessStdin($process, 'fake'));
     }
 
     /**

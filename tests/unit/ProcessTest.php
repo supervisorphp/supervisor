@@ -19,13 +19,10 @@ class ProcessTest extends Test
 
     public function _before()
     {
-        $this->connector = \Mockery::mock(
-            'Indigo\\Supervisor\\Connector\\ConnectorInterface',
-            function ($mock) {
-                $mock->shouldReceive('isLocal')
-                    ->andReturn(true);
-            }
-        );
+        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
+
+        $this->connector->shouldReceive('isLocal')
+            ->andReturn(true);
     }
 
     public function provider()
@@ -60,17 +57,37 @@ class ProcessTest extends Test
      * @covers ::setConnector
      * @group  Supervisor
      */
+    public function testConstruct()
+    {
+        $info = array('name' => 'test');
+
+        $this->connector->shouldReceive('call')->andReturn($info);
+
+        $process = new Process('test', $this->connector);
+
+        $this->assertEquals('test', $process->getName());
+
+        $process = new Process($info, $this->connector);
+
+        $this->assertEquals('test', $process->getName());
+    }
+
+    /**
+     * @covers ::getConnector
+     * @covers ::setConnector
+     * @group  Supervisor
+     */
     public function testConnector()
     {
         $process = new Process(array(), $this->connector);
 
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Process',
+        $this->assertSame(
+            $process,
             $process->setConnector($this->connector)
         );
 
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Connector\\ConnectorInterface',
+        $this->assertSame(
+            $this->connector,
             $process->getConnector()
         );
     }
