@@ -3,7 +3,7 @@ php:
   - 5.4
   - 5.5
 
-script: vendor/bin/codecept run --coverage --xml
+script: vendor/bin/codecept run --coverage-xml
 
 before_script:
   - wget https://scrutinizer-ci.com/ocular.phar
