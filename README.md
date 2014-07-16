@@ -196,6 +196,14 @@ All the connectors that extends `AbstractXmlrpcConnector` use PHP XML-RPC extens
 You will also have to make sure that you always call the functions with correct parameters. `ZendConnector` will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `SupervisorException`.
 
 
+## Bundles
+
+Here is a list of framework specific bundle packages:
+
+* [HumusSupervisorModule](https://github.com/prolic/HumusSupervisorModule) *(Zend Framework 2)*
+* [Fuel Supervisor](https://github.com/indigophp/fuel-supervisor) *(FuelPHP 1.x)*
+
+
 ## Testing
 
 ``` bash
