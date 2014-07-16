@@ -102,7 +102,7 @@ class MemmonListener extends AbstractListener
             return 0;
         }
 
-        $processes = $this->supervisor->getAllProcess();
+        $processes = $this->supervisor->getAllProcesses();
 
         foreach ($processes as $process) {
             if ($this->checkProcess($process)) {

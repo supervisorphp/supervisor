@@ -83,7 +83,7 @@ class MemmonListenerTest extends AbstractListenerTest
                 }
             );
 
-            $mock->shouldReceive('getAllProcess')
+            $mock->shouldReceive('getAllProcesses')
                 ->andReturn(array(
                     $process,
                     $process2,
