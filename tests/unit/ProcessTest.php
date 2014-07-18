@@ -2,9 +2,9 @@
 
 namespace Test\Unit;
 
-use Codeception\TestCase\Test;
 use Indigo\Supervisor\Exception\SupervisorException;
 use Indigo\Supervisor\Process;
+use Codeception\TestCase\Test;
 
 /**
  * Tests for Process

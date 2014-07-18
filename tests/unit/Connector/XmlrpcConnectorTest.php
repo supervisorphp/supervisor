@@ -2,8 +2,8 @@
 
 namespace Test\Unit;
 
-use Codeception\TestCase\Test;
 use Indigo\Supervisor\Connector\DummyXmlrpcConnector;
+use Codeception\TestCase\Test;
 
 /**
  * Tests for Xmlrpc connector

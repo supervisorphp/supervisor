@@ -2,8 +2,8 @@
 
 namespace Test\Unit;
 
-use Codeception\TestCase\Test;
 use Indigo\Supervisor\Section\DummyNamedSection;
+use Codeception\TestCase\Test;
 
 /**
  * Tests for Named Sections
