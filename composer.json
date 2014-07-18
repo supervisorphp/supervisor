@@ -36,5 +36,7 @@
         "psr-4": {
             "Indigo\\Supervisor\\": "src/"
         }
-    }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
