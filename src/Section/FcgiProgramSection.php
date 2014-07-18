@@ -19,19 +19,19 @@ namespace Indigo\Supervisor\Section;
 class FcgiProgramSection extends ProgramSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $sectionName = 'fcgi-program';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $requiredOverride = array(
         'socket'  => 'string',
     );
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOverride = array(
         'socket_owner' => 'string',

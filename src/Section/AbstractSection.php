@@ -61,7 +61,7 @@ abstract class AbstractSection implements SectionInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -69,7 +69,7 @@ abstract class AbstractSection implements SectionInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -77,7 +77,7 @@ abstract class AbstractSection implements SectionInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setOptions(array $options = array())
     {
@@ -87,7 +87,7 @@ abstract class AbstractSection implements SectionInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function hasOptions()
     {

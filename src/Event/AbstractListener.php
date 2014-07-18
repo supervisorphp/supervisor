@@ -44,7 +44,7 @@ abstract class AbstractListener implements ListenerInterface, LoggerAwareInterfa
     protected $outputStream = STDOUT;
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getInputStream()
     {
@@ -52,7 +52,7 @@ abstract class AbstractListener implements ListenerInterface, LoggerAwareInterfa
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setInputStream($stream)
     {
@@ -66,7 +66,7 @@ abstract class AbstractListener implements ListenerInterface, LoggerAwareInterfa
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getOutputStream()
     {
@@ -74,7 +74,7 @@ abstract class AbstractListener implements ListenerInterface, LoggerAwareInterfa
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setOutputStream($stream)
     {
@@ -88,7 +88,7 @@ abstract class AbstractListener implements ListenerInterface, LoggerAwareInterfa
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      *
      * @codeCoverageIgnore
      */
@@ -238,7 +238,7 @@ abstract class AbstractListener implements ListenerInterface, LoggerAwareInterfa
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      *
      * @codeCoverageIgnore
      */

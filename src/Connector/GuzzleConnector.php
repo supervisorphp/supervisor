@@ -68,7 +68,7 @@ class GuzzleConnector extends AbstractXmlrpcConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function call($namespace, $method, array $arguments = array())
     {
@@ -82,7 +82,7 @@ class GuzzleConnector extends AbstractXmlrpcConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      *
      * @return StreamInterface
      */

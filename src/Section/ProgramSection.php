@@ -21,19 +21,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProgramSection extends AbstractNamedSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $sectionName = 'program';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $requiredOptions = array(
         'command' => 'string',
     );
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOptions = array(
         'process_name'            => 'string',
@@ -70,7 +70,7 @@ class ProgramSection extends AbstractNamedSection
     );
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      *
      * @codeCoverageIgnore
      */

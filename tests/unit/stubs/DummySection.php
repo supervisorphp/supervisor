@@ -19,12 +19,12 @@ namespace Indigo\Supervisor\Section;
 class DummySection extends AbstractSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $name = 'dummy';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOptions = array(
         'optional' => 'integer',
@@ -39,12 +39,12 @@ class DummySection extends AbstractSection
 class DummyNamedSection extends AbstractNamedSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $sectionName = 'dummy';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOptions = array(
         'optional' => 'integer',

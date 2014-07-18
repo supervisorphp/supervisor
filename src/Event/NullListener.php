@@ -21,7 +21,7 @@ namespace Indigo\Supervisor\Event;
 class NullListener extends AbstractListener
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function doListen(EventInterface $event)
     {

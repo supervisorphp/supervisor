@@ -19,7 +19,7 @@ namespace Indigo\Supervisor\Connector;
 class DummyXmlrpcConnector extends AbstractXmlrpcConnector
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function call($namespace, $method, array $arguments = array()) {}
 }

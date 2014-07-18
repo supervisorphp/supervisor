@@ -19,12 +19,12 @@ namespace Indigo\Supervisor\Section;
 class EventListenerSection extends ProgramSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $sectionName = 'eventlistener';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOverride = array(
         'buffer_size'    => 'integer',

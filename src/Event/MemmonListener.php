@@ -94,7 +94,7 @@ class MemmonListener extends AbstractListener
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected function doListen(EventInterface $event)
     {

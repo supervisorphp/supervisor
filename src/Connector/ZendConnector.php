@@ -41,7 +41,7 @@ class ZendConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setCredentials($username, $password)
     {
@@ -75,7 +75,7 @@ class ZendConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function call($namespace, $method, array $arguments = array())
     {

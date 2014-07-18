@@ -19,12 +19,12 @@ namespace Indigo\Supervisor\Section;
 class SupervisorctlSection extends AbstractSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $name = 'supervisorctl';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOptions = array(
         'serverurl'    => 'string',

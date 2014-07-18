@@ -21,7 +21,7 @@ class DummyConnector extends AbstractConnector
     protected $local = true;
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function call($namespace, $method, array $arguments = array()) {}
 }
