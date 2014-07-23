@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Connector;
 
 /**
- * Abstract Connector class
+ * Abstract Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -40,7 +40,7 @@ abstract class AbstractConnector implements ConnectorInterface
     protected $local;
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function isLocal()
     {
@@ -48,7 +48,7 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setCredentials($username, $password)
     {

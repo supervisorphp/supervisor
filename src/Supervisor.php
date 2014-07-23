@@ -150,7 +150,7 @@ class Supervisor
      *
      * @codeCoverageIgnore
      */
-    public function getAllProcess()
+    public function getAllProcesses()
     {
         $processes = $this->getAllProcessInfo();
 

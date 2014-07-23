@@ -2,8 +2,8 @@
 
 namespace Test\Functional;
 
-use Codeception\TestCase\Test;
 use Indigo\Supervisor\Supervisor;
+use Codeception\TestCase\Test;
 
 /**
  * Tests for connectors

@@ -324,7 +324,7 @@ class Process implements ArrayAccess, Iterator
      **************************************************************************/
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -336,7 +336,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -344,7 +344,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
@@ -352,7 +352,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -364,7 +364,7 @@ class Process implements ArrayAccess, Iterator
      **************************************************************************/
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -372,7 +372,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -380,7 +380,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -388,7 +388,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -396,7 +396,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function valid()
     {

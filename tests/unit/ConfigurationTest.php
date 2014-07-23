@@ -2,9 +2,9 @@
 
 namespace Test\Unit;
 
-use Codeception\TestCase\Test;
 use Indigo\Supervisor\Section\SectionInterface;
 use Indigo\Supervisor\Configuration;
+use Codeception\TestCase\Test;
 
 /**
  * Tests for Configuration

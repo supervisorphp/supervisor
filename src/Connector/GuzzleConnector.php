@@ -18,7 +18,7 @@ use GuzzleHttp\Stream;
 use GuzzleHttp\Stream\StreamInterface;
 
 /**
- * Guzzle connector class
+ * Guzzle Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -68,7 +68,7 @@ class GuzzleConnector extends AbstractXmlrpcConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function call($namespace, $method, array $arguments = array())
     {
@@ -82,7 +82,7 @@ class GuzzleConnector extends AbstractXmlrpcConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      *
      * @return StreamInterface
      */

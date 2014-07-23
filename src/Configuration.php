@@ -268,8 +268,10 @@ class Configuration
 
     /**
      * Alias to render()
+     * 
+     * @return string
      */
-    public function __tostring()
+    public function __toString()
     {
         return $this->render();
     }

@@ -22,19 +22,19 @@ use Symfony\Component\OptionsResolver\Options;
 class IncludeSection extends AbstractSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $name = 'include';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOptions = array(
         'files' => array('array', 'string'),
     );
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      *
      * @codeCoverageIgnore
      */

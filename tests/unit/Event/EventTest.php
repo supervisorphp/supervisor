@@ -2,8 +2,8 @@
 
 namespace Test\Unit;
 
-use Codeception\TestCase\Test;
 use Indigo\Supervisor\Event\Event;
+use Codeception\TestCase\Test;
 
 /**
  * Tests for Event

@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Event;
 
 /**
- * Default Event class
+ * Default Event
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -54,7 +54,7 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getHeader($key = null, $default = null)
     {
@@ -62,7 +62,7 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setHeader(array $header)
     {
@@ -72,7 +72,7 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getPayload($key = null, $default = null)
     {
@@ -80,7 +80,7 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setPayload(array $payload)
     {
@@ -90,7 +90,7 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getBody()
     {
@@ -98,7 +98,7 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setBody($body)
     {

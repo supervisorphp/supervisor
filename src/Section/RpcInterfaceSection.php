@@ -19,12 +19,12 @@ namespace Indigo\Supervisor\Section;
 class RpcInterfaceSection extends AbstractNamedSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $sectionName = 'rpcinterface';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOptions = array(
         'supervisor.rpcinterface_factory' => 'string',

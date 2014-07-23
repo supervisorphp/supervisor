@@ -2,10 +2,10 @@
 
 namespace Test\Unit;
 
-use Codeception\TestCase\Test;
 use Indigo\Supervisor\Section\SectionInterface;
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
+use Codeception\TestCase\Test;
 
 /**
  * Tests for Supervisor

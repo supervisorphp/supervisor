@@ -19,19 +19,19 @@ namespace Indigo\Supervisor\Section;
 class GroupSection extends AbstractNamedSection
 {
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $sectionName = 'group';
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $requiredOptions = array(
         'programs' => 'array',
     );
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     protected $optionalOptions = array(
         'priority' => 'integer',

@@ -17,7 +17,7 @@ use Zend\XmlRpc\Client\Exception\FaultException;
 use Indigo\Supervisor\Exception\SupervisorException;
 
 /**
- * Zend connector class
+ * Zend Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -41,7 +41,7 @@ class ZendConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function setCredentials($username, $password)
     {
@@ -75,7 +75,7 @@ class ZendConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function call($namespace, $method, array $arguments = array())
     {
