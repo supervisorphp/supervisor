@@ -15,7 +15,7 @@ use Indigo\Supervisor\Exception\SupervisorException;
 use UnexpectedValueException;
 
 /**
- * Abstract XMLRPC Connector class
+ * Abstract XMLRPC Connector
  *
  * Uses XMLRPC extension to parse messages
  *

@@ -18,7 +18,7 @@ use GuzzleHttp\Stream;
 use GuzzleHttp\Stream\StreamInterface;
 
 /**
- * Guzzle connector class
+ * Guzzle Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */

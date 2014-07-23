@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Connector;
 
 /**
- * Abstract Connector class
+ * Abstract Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */

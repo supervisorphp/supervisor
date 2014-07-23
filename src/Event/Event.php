@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Event;
 
 /**
- * Default Event class
+ * Default Event
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */

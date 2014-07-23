@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Event Listener section
+ * Event Listener Section
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */

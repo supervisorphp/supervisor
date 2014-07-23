@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Named section
+ * Abstract Named Section
  *
  * Uses a custom name
  *

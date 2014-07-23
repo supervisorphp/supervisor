@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
- * Abstract Section class
+ * Abstract Section
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */

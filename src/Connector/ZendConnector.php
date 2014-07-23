@@ -17,7 +17,7 @@ use Zend\XmlRpc\Client\Exception\FaultException;
 use Indigo\Supervisor\Exception\SupervisorException;
 
 /**
- * Zend connector class
+ * Zend Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
