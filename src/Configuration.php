@@ -249,9 +249,9 @@ class Configuration
     /**
      * Parses an individual section
      *
-     * @param  string $class   Name of SectionInterface class
-     * @param  mixed  $name    Section name or array of name and option
-     * @param  array  $section Array representation of section
+     * @param string $class   Name of SectionInterface class
+     * @param mixed  $name    Section name or array of name and option
+     * @param array  $section Array representation of section
      *
      * @return SectionInterface
      */
@@ -268,7 +268,7 @@ class Configuration
 
     /**
      * Alias to render()
-     * 
+     *
      * @return string
      */
     public function __toString()

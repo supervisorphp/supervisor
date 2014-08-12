@@ -51,7 +51,6 @@ class FcgiProgramSection extends ProgramSection
         $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOverride);
         $this->requiredOptions = array_merge($this->requiredOptions, $this->requiredOverride);
 
-
         parent::__construct($name, $options);
     }
 }

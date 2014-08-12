@@ -13,9 +13,6 @@ namespace Indigo\Supervisor\Connector;
 
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Message\RequestInterface;
-use Guzzle\Http\Message\MessageInterface;
-use Guzzle\Http\Stream;
-use Guzzle\Http\Stream\StreamInterface;
 
 /**
  * Guzzle3 Connector
