@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Connector\GuzzleConnector;
@@ -11,7 +20,8 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\GuzzleConnector
- * @requires PHP 5.4
+ * @group              Supervisor
+ * @group              Connector
  */
 class GuzzleConnectorTest extends AbstractConnectorTest
 {
@@ -26,7 +36,6 @@ class GuzzleConnectorTest extends AbstractConnectorTest
 
     /**
      * @covers ::__construct
-     * @group  Supervisor
      */
     public function testConstruct()
     {
@@ -37,7 +46,6 @@ class GuzzleConnectorTest extends AbstractConnectorTest
 
     /**
      * @covers ::prepareBody
-     * @group  Supervisor
      */
     public function testPrepareBody()
     {
@@ -46,7 +54,6 @@ class GuzzleConnectorTest extends AbstractConnectorTest
 
     /**
      * @covers ::prepareRequest
-     * @group  Supervisor
      */
     public function testPrepareRequest()
     {

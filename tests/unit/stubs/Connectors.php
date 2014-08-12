@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Connector;
 
 /**
- * Dummy Connector class
+ * Dummy Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -20,6 +20,19 @@ class DummyConnector extends AbstractConnector
 {
     protected $local = true;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function call($namespace, $method, array $arguments = array()) {}
+}
+
+/**
+ * Dummy XMLRPC Connector
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ */
+class DummyXmlrpcConnector extends AbstractXmlrpcConnector
+{
     /**
      * {@inheritdoc}
      */

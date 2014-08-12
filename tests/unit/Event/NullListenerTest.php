@@ -10,17 +10,18 @@ use Indigo\Supervisor\Event\NullListener;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Event\NullListener
+ * @group              Supervisor
+ * @group              Listener
  */
 class NullListenerTest extends AbstractListenerTest
 {
-    public function setUp()
+    public function _before()
     {
         $this->listener = new NullListener;
     }
 
     /**
      * @covers ::doListen
-     * @group  Supervisor
      */
     public function testInstance()
     {

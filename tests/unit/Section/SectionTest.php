@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Section\DummySection;
@@ -11,19 +20,20 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Section\AbstractSection
+ * @group              Supervisor
+ * @group              Section
  */
 class SectionTest extends Test
 {
     protected $section;
 
-    public function setUp()
+    public function _before()
     {
         $this->section = new DummySection;
     }
 
     /**
      * @covers ::__construct
-     * @group  Supervisor
      */
     public function testConstruct()
     {
@@ -34,7 +44,6 @@ class SectionTest extends Test
 
     /**
      * @covers ::getName
-     * @group  Supervisor
      */
     public function testName()
     {

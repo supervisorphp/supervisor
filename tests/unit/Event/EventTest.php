@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Event\Event;
@@ -11,6 +20,8 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Event\Event
+ * @group              Supervisor
+ * @group              Event
  */
 class EventTest extends Test
 {
@@ -46,7 +57,6 @@ class EventTest extends Test
      * @covers ::setPayload
      * @covers ::getBody
      * @covers ::setBody
-     * @group  Supervisor
      */
     public function testGetSet()
     {

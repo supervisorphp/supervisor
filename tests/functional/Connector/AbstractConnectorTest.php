@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Functional;
 
 use Indigo\Supervisor\Supervisor;
 use Codeception\TestCase\Test;
 
 /**
- * Tests for connectors
+ * Tests for Connectors
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -28,7 +37,6 @@ abstract class AbstractConnectorTest extends Test
 
     /**
      * @covers Indigo\Supervisor\Supervisor
-     * @group  Supervisor
      */
     public function testSupervisor()
     {
@@ -41,7 +49,6 @@ abstract class AbstractConnectorTest extends Test
      * @covers            Indigo\Supervisor\Supervisor
      * @expectedException Indigo\Supervisor\Exception\SupervisorException
      * @expectedMessage   INCORRECT_PARAMETERS
-     * @group             Supervisor
      */
     public function testSupervisorFail()
     {
@@ -52,7 +59,6 @@ abstract class AbstractConnectorTest extends Test
 
     /**
      * @covers ::call
-     * @group  Supervisor
      */
     public function testVersion()
     {
@@ -63,7 +69,6 @@ abstract class AbstractConnectorTest extends Test
      * @covers                   ::call
      * @expectedException        Indigo\Supervisor\Exception\SupervisorException
      * @expectedExceptionMessage UNKNOWN_METHOD
-     * @group                    Supervisor
      */
     public function testFaultyCall()
     {

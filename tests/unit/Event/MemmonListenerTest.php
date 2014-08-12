@@ -1,18 +1,19 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Event\MemmonListener;
-
-class TestMemmonListener extends MemmonListener
-{
-    protected function processResult($result)
-    {
-        parent::processResult($result);
-        return false;
-    }
-}
+use Indigo\Supervisor\Event\DummyMemmonListener;
 
 /**
  * Tests for Memmon Listener
@@ -20,10 +21,12 @@ class TestMemmonListener extends MemmonListener
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Event\MemmonListener
+ * @group              Supervisor
+ * @group              Listener
  */
 class MemmonListenerTest extends AbstractListenerTest
 {
-    public function setUp()
+    public function _before()
     {
         $supervisor = \Mockery::mock('Indigo\\Supervisor\\Supervisor', function ($mock) {
             $connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
@@ -92,14 +95,13 @@ class MemmonListenerTest extends AbstractListenerTest
                 ));
         });
 
-        $this->listener = new TestMemmonListener($supervisor, array(), array(), 1024, 60, 'memmon');
+        $this->listener = new DummyMemmonListener($supervisor, array(), array(), 1024, 60, 'memmon');
     }
 
     /**
      * @covers ::__construct
-     * @group  Supervisor
      */
-    public function testInstance()
+    public function testConstruct()
     {
         $supervisor = \Mockery::mock('Indigo\\Supervisor\\Supervisor');
         $listener = new MemmonListener($supervisor, array(), array(), 1024, 60, 'memmon');
@@ -110,9 +112,6 @@ class MemmonListenerTest extends AbstractListenerTest
         );
     }
 
-    /**
-     * @group Supervisor
-     */
     public function testBasic()
     {
         $this->regenerate($input, $output);
@@ -128,9 +127,6 @@ class MemmonListenerTest extends AbstractListenerTest
         $this->assertEquals('OK', fgets($output));
     }
 
-    /**
-     * @group Supervisor
-     */
     public function testAdvanced()
     {
         $this->regenerate($input, $output);

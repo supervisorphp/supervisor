@@ -1,16 +1,27 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Connector\DummyXmlrpcConnector;
 use Codeception\TestCase\Test;
 
 /**
- * Tests for Xmlrpc connector
+ * Tests for Xmlrpc Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\AbstractXmlrpcConnector
+ * @group              Supervisor
+ * @group              Connector
  */
 class XmlrpcConnectorTest extends Test
 {
@@ -28,7 +39,6 @@ class XmlrpcConnectorTest extends Test
 
     /**
      * @covers ::prepareBody
-     * @group  Supervisor
      */
     public function testPrepareBody()
     {
@@ -44,7 +54,6 @@ class XmlrpcConnectorTest extends Test
 
     /**
      * @covers ::processResponse
-     * @group  Supervisor
      */
     public function testProcessResponse()
     {
@@ -58,7 +67,6 @@ class XmlrpcConnectorTest extends Test
     /**
      * @covers            ::processResponse
      * @expectedException Indigo\Supervisor\Exception\SupervisorException
-     * @group             Supervisor
      */
     public function testFaultyResponse()
     {
@@ -70,7 +78,6 @@ class XmlrpcConnectorTest extends Test
     /**
      * @covers            ::processResponse
      * @expectedException UnexpectedValueException
-     * @group             Supervisor
      */
     public function testEmptyResponse()
     {

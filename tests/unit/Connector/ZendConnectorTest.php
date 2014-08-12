@@ -1,16 +1,27 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Connector\ZendConnector;
 use Codeception\TestCase\Test;
 
 /**
- * Tests for Zend connector
+ * Tests for Zend Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\ZendConnector
+ * @group              Supervisor
+ * @group              Connector
  */
 class ZendConnectorTest extends AbstractConnectorTest
 {
@@ -25,7 +36,6 @@ class ZendConnectorTest extends AbstractConnectorTest
 
     /**
      * @covers ::__construct
-     * @group  Supervisor
      */
     public function testConstruct()
     {
@@ -36,7 +46,6 @@ class ZendConnectorTest extends AbstractConnectorTest
 
     /**
      * @covers ::setCredentials
-     * @group  Supervisor
      */
     public function testCredentials()
     {
@@ -49,7 +58,6 @@ class ZendConnectorTest extends AbstractConnectorTest
     /**
      * @covers            ::call
      * @expectedException Indigo\Supervisor\Exception\SupervisorException
-     * @group             Supervisor
      */
     public function testCallException()
     {

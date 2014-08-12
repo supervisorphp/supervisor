@@ -1,9 +1,27 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Codeception\TestCase\Test;
 
+/**
+ * Tests for Listeners
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @coversDefaultClass Indigo\Supervisor\Event\Event
+ * @group              Supervisor
+ * @group              Listener
+ */
 abstract class AbstractListenerTest extends Test
 {
     protected $listener;
@@ -41,7 +59,6 @@ abstract class AbstractListenerTest extends Test
      * @covers ::setInputStream
      * @covers ::getOutputStream
      * @covers ::setOutputStream
-     * @group  Supervisor
      */
     public function testStreams()
     {
@@ -64,7 +81,6 @@ abstract class AbstractListenerTest extends Test
     /**
      * @covers            ::setInputStream
      * @expectedException InvalidArgumentException
-     * @group             Supervisor
      */
     public function testInputStreamFailure()
     {
@@ -74,7 +90,6 @@ abstract class AbstractListenerTest extends Test
     /**
      * @covers            ::setOutputStream
      * @expectedException InvalidArgumentException
-     * @group             Supervisor
      */
     public function testOutputStreamFailure()
     {
@@ -83,7 +98,6 @@ abstract class AbstractListenerTest extends Test
 
     /**
      * @covers ::processResult
-     * @group  Supervisor
      */
     public function testProcessResult()
     {

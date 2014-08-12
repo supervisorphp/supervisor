@@ -9,17 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Connector;
+namespace Indigo\Supervisor\Event;
 
 /**
- * Dummy XMLRPC Connector class
+ * Dummy Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class DummyXmlrpcConnector extends AbstractXmlrpcConnector
+class DummyMemmonListener extends MemmonListener
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function call($namespace, $method, array $arguments = array()) {}
+    protected function processResult($result)
+    {
+        parent::processResult($result);
+        return false;
+    }
 }

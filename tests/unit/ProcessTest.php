@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Exception\SupervisorException;
@@ -12,6 +21,8 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Process
+ * @group              Supervisor
+ * @group              Main
  */
 class ProcessTest extends Test
 {
@@ -53,9 +64,7 @@ class ProcessTest extends Test
     }
 
     /**
-     * @covers ::getConnector
-     * @covers ::setConnector
-     * @group  Supervisor
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -75,7 +84,6 @@ class ProcessTest extends Test
     /**
      * @covers ::getConnector
      * @covers ::setConnector
-     * @group  Supervisor
      */
     public function testConnector()
     {
@@ -94,7 +102,6 @@ class ProcessTest extends Test
 
     /**
      * @dataProvider provider
-     * @group        Supervisor
      */
     public function testProcess($payload)
     {
@@ -146,10 +153,9 @@ class ProcessTest extends Test
     }
 
     /**
-     * @covers            ::restart
-     * @covers            Indigo\Supervisor\Exception\SupervisorException
-     * @dataProvider      provider
-     * @group             Supervisor
+     * @covers       ::restart
+     * @covers       Indigo\Supervisor\Exception\SupervisorException
+     * @dataProvider provider
      */
     public function testProcessRestartFailure($payload)
     {

@@ -1,16 +1,27 @@
 <?php
 
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\Unit;
 
 use Indigo\Supervisor\Connector\Guzzle3Connector;
 use Codeception\TestCase\Test;
 
 /**
- * Tests for Guzzle 3 connector
+ * Tests for Guzzle 3 Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Connector\Guzzle3Connector
+ * @group              Supervisor
+ * @group              Connector
  */
 class Guzzle3ConnectorTest extends AbstractConnectorTest
 {
@@ -26,7 +37,6 @@ class Guzzle3ConnectorTest extends AbstractConnectorTest
 
     /**
      * @covers ::__construct
-     * @group  Supervisor
      */
     public function testConstruct()
     {
@@ -37,7 +47,6 @@ class Guzzle3ConnectorTest extends AbstractConnectorTest
 
     /**
      * @covers ::prepareRequest
-     * @group  Supervisor
      */
     public function testPrepareRequest()
     {

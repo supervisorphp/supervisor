@@ -1,9 +1,9 @@
 <?php
 // Here you can initialize variables that will for your tests
 
-require_once __DIR__.'/stubs/DummyConnector.php';
-require_once __DIR__.'/stubs/DummySection.php';
-require_once __DIR__.'/stubs/DummyXmlrpcConnector.php';
+require_once __DIR__.'/stubs/Connectors.php';
+require_once __DIR__.'/stubs/Sections.php';
+require_once __DIR__.'/stubs/Listeners.php';
 
 $GLOBALS['host'] = 'localhost:9001';
 $GLOBALS['username'] = 'user';
