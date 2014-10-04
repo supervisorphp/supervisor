@@ -11,26 +11,26 @@
 
 namespace Test\Unit;
 
-use Indigo\Supervisor\Connector\ZendConnector;
+use Indigo\Supervisor\Connector\fXmlRpcConnector;
 
 /**
  * Tests for Zend Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\ZendConnector
+ * @coversDefaultClass Indigo\Supervisor\Connector\fXmlRpcConnector
  * @group              Supervisor
  * @group              Connector
  */
-class ZendConnectorTest extends AbstractConnectorTest
+class fXmlRpcConnectorTest extends AbstractConnectorTest
 {
     public function _before()
     {
-        $this->client = \Mockery::mock('Zend\\XmlRpc\\Client');
+        $this->client = \Mockery::mock('fXmlRpc\\ClientInterface');
+        $this->client->transport = \Mockery::mock('fXmlRpc\\Transport\\TransportInterface');
+        $this->client->transport->shouldReceive('setHeader');
 
-        $this->client->shouldReceive('getHttpClient->setAuth');
-
-        $this->connector = new ZendConnector($this->client);
+        $this->connector = new fXmlRpcConnector($this->client);
     }
 
     /**
@@ -38,7 +38,7 @@ class ZendConnectorTest extends AbstractConnectorTest
      */
     public function testConstruct()
     {
-        $connector = new ZendConnector($this->client);
+        $connector = new fXmlRpcConnector($this->client);
 
         $this->assertSame($this->client, $connector->getClient());
     }
@@ -61,7 +61,7 @@ class ZendConnectorTest extends AbstractConnectorTest
     public function testCallException()
     {
         $this->client->shouldReceive('call')
-            ->andThrow('Zend\\XmlRpc\\Client\\Exception\\FaultException');
+            ->andThrow('fXmlRpc\\Exception\\ResponseException');
 
         $this->connector->call('asd', 'dsa');
     }
