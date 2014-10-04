@@ -9,6 +9,7 @@
 - [ ] Review exception catch in `Process` on line 204
 - [ ] Review `getMemoryUsage` in `Process`
 - [ ] Review Event tests
+- [ ] Create a client agnostic XML-RPC client library
 - [x] ~~Review EventListenerInterface~~ @done (14-07-07)
 - [x] ~~Way to add multiple Sections to Configuration at once~~ @done (14-07-06)
 - [x] ~~Get Section option~~ @done (14-07-06)
