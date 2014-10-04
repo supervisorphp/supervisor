@@ -12,7 +12,6 @@
 namespace Test\Unit;
 
 use Indigo\Supervisor\Connector\Guzzle3Connector;
-use Codeception\TestCase\Test;
 
 /**
  * Tests for Guzzle 3 Connector
