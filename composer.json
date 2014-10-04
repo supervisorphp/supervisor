@@ -17,6 +17,7 @@
         "psr/log": "~1.0"
     },
     "require-dev": {
+        "lstrojny/fxmlrpc": "dev-master",
         "ext-xmlrpc": "*",
         "guzzlehttp/guzzle": "~4.1.0",
         "guzzle/guzzle": "~3.9.0",
@@ -26,6 +27,7 @@
         "codeception/mockery-module": "dev-master"
     },
     "suggest": {
+        "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4",
         "ext-xmlrpc": "Used by the following connectors: Guzzle, Guzzle3",
         "guzzlehttp/guzzle": "GuzzleHttp 4 HTTP client",
         "guzzle/guzzle": "Guzzle 3 HTTP client",
