@@ -21,6 +21,8 @@ use Exception;
  * Implements memmon listener logic
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ *
+ * @codeCoverageIgnore
  */
 class MemmonListener extends AbstractListener
 {
