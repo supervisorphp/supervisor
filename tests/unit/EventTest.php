@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
+namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Event\Event;
+use Indigo\Supervisor\Event\Processor;
 use Codeception\TestCase\Test;
 
 /**
@@ -19,15 +19,25 @@ use Codeception\TestCase\Test;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Event\Event
+ * @coversDefaultClass Indigo\Supervisor\Event
  * @group              Supervisor
  * @group              Event
  */
 class EventTest extends Test
 {
+    /**
+     * Event object
+     *
+     * @var Event
+     */
     protected $event;
 
-    protected $header = array(
+    /**
+     * Header values
+     *
+     * @var []
+     */
+    protected $header = [
         'ver'        => '3.0',
         'server'     => 'supervisor',
         'serial'     => '21',
@@ -35,13 +45,13 @@ class EventTest extends Test
         'poolserial' => '10',
         'eventname'  => 'PROCESS_COMMUNICATION_STDOUT',
         'len'        => '54',
-    );
+    ];
 
-    protected $payload = array(
+    protected $payload = [
         'process_name' => 'foo',
         'group_name'   => 'bar',
         'pid'          => '123',
-    );
+    ];
 
     protected $body = 'This is the data that was sent between the tags';
 
@@ -51,39 +61,62 @@ class EventTest extends Test
     }
 
     /**
+     * @covers ::__construct
+     */
+    public function testConstruct()
+    {
+        $event = new Event($this->header, $this->payload, $this->body);
+
+        $this->assertEquals($this->header, $event->getHeader());
+        $this->assertEquals($this->payload, $event->getPayload());
+        $this->assertEquals($this->body, $event->getBody());
+        $this->assertNull($event->getResult());
+    }
+
+    /**
      * @covers ::getHeader
      * @covers ::setHeader
-     * @covers ::getPayload
-     * @covers ::setPayload
-     * @covers ::getBody
-     * @covers ::setBody
      */
-    public function testGetSet()
+    public function testHeader()
     {
         $this->assertNull($this->event->getHeader('fake'));
         $this->assertEquals($this->header['ver'], $this->event->getHeader('ver'));
         $this->assertEquals('fake', $this->event->getHeader('fake', 'fake'));
-        $this->assertInstanceOf(
-            get_class($this->event),
-            $this->event->setHeader($this->header)
-        );
+        $this->assertSame($this->event, $this->event->setHeader($this->header));
         $this->assertEquals($this->header, $this->event->getHeader());
+    }
 
-
+    /**
+     * @covers ::getPayload
+     * @covers ::setPayload
+     */
+    public function testPayload()
+    {
         $this->assertNull($this->event->getPayload('fake'));
         $this->assertEquals($this->payload['pid'], $this->event->getPayload('pid'));
         $this->assertEquals('fake', $this->event->getPayload('fake', 'fake'));
-        $this->assertInstanceOf(
-            get_class($this->event),
-            $this->event->setPayload($this->payload)
-        );
+        $this->assertSame($this->event, $this->event->setPayload($this->payload));
         $this->assertEquals($this->payload, $this->event->getPayload());
+    }
 
-
-        $this->assertInstanceOf(
-            get_class($this->event),
-            $this->event->setBody($this->body)
-        );
+    /**
+     * @covers ::getBody
+     * @covers ::setBody
+     */
+    public function testBody()
+    {
+        $this->assertSame($this->event, $this->event->setBody($this->body));
         $this->assertEquals($this->body, $this->event->getBody());
+    }
+
+    /**
+     * @covers ::getResult
+     * @covers ::setResult
+     */
+    public function testResult()
+    {
+        $this->assertNull($this->event->getResult());
+        $this->assertSame($this->event, $this->event->setResult(Processor::OK));
+        $this->assertEquals(Processor::OK, $this->event->getResult());
     }
 }
