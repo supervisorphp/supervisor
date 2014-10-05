@@ -9,28 +9,30 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Event;
+namespace Indigo\Supervisor;
+
+use League\Event\Abstract\AbstractEvent;
 
 /**
- * Default Event
+ * Supervisor Event
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Event implements EventInterface
+class Event extends AbstractEvent
 {
     /**
      * Header values
      *
-     * @var array
+     * @var []
      */
-    protected $header = array();
+    protected $header = [];
 
     /**
      * Payload values
      *
-     * @var array
+     * @var []
      */
-    protected $payload = array();
+    protected $payload = [];
 
     /**
      * Body
@@ -40,10 +42,15 @@ class Event implements EventInterface
     protected $body = null;
 
     /**
-     * Creates a new Event
+     * Event result
      *
-     * @param array  $header
-     * @param array  $payload
+     * @var mixed
+     */
+    protected $result;
+
+    /**
+     * @param []     $header
+     * @param []     $payload
      * @param string $body
      */
     public function __construct(array $header, array $payload, $body = null)
@@ -51,6 +58,14 @@ class Event implements EventInterface
         $this->setHeader($header);
         $this->setPayload($payload);
         $this->setBody($body);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName($name)
+    {
+        return $this->arrGet($this->header, 'eventname');
     }
 
     /**
