@@ -49,6 +49,13 @@ class Event extends AbstractEvent
     protected $result;
 
     /**
+     * Whether processor should stop or not after processing this event
+     *
+     * @var boolean
+     */
+    protected $stopProcessor = false;
+
+    /**
      * @param []     $header
      * @param []     $payload
      * @param string $body
@@ -170,6 +177,30 @@ class Event extends AbstractEvent
         $this->result = $result;
 
         return $this;
+    }
+
+    /**
+     * Stop the running Processor
+     *
+     * @param boolean $stopProcessor
+     *
+     * @return self
+     */
+    public function stopProcessor($stopProcessor = true)
+    {
+        $this->stopProcessor = (bool) $stopProcessor;
+
+        return $this;
+    }
+
+    /**
+     * Checks whether processor should stop
+     *
+     * @return boolean
+     */
+    public function shouldProcessorStop()
+    {
+        return $this->stopProcessor;
     }
 
     /**

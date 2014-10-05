@@ -118,8 +118,9 @@ class GuzzleStreamProcessor implements Processor
 
             if ($event = $this->getEvent()) {
                 $this->emitter->emit($event);
+                $this->processResult($event)
 
-                if ($this->processResult($event) === false) {
+                if ($event->shouldProcessorStop()) {
                     return;
                 }
             }
@@ -151,26 +152,17 @@ class GuzzleStreamProcessor implements Processor
     /**
      * Processes result
      *
-     * @param integer $result Result code
-     *
-     * @return boolean Listener should exit or not
+     * @param Event $event Emitted event
      */
     protected function processResult(Event $event)
     {
-        switch ($result = $event->getResult()) {
-            case self::QUIT:
-                return false;
-                break;
-            case null:
-                // No response should be treated as failure
-                $this->outputStream->write(self::FAIL);
-                break;
-            default:
-                $this->outputStream->write($result);
-                break;
+        $result = $event->getResult();
+
+        if (is_null($result)) {
+            $result = self::FAIL;
         }
 
-        return true;
+        $this->write($result);
     }
 
     /**

@@ -26,11 +26,6 @@ interface Processor
     const FAIL  = "RESULT 4\nFAIL";
 
     /**
-     * Quit result from event
-     */
-    const QUIT = false;
-
-    /**
      * Runs processor, starts listening for events
      */
     public function run();

@@ -119,4 +119,15 @@ class EventTest extends Test
         $this->assertSame($this->event, $this->event->setResult(Processor::OK));
         $this->assertEquals(Processor::OK, $this->event->getResult());
     }
+
+    /**
+     * @covers ::stopProcessor
+     * @covers ::shouldProcessorStop
+     */
+    public function testStopProcessor()
+    {
+        $this->assertFalse($this->event->shouldProcessorStop());
+        $this->assertSame($this->event, $this->event->stopProcessor());
+        $this->assertTrue($this->event->shouldProcessorStop());
+    }
 }
