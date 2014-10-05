@@ -69,7 +69,13 @@ class Event extends AbstractEvent
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a specific or all header keys
+     * Returns default if key not found
+     *
+     * @param string|null $key
+     * @param mixed       $default
+     *
+     * @return mixed
      */
     public function getHeader($key = null, $default = null)
     {
@@ -77,7 +83,11 @@ class Event extends AbstractEvent
     }
 
     /**
-     * {@inheritdoc}
+     * Sets header values
+     *
+     * @param [] $header
+     *
+     * @return self
      */
     public function setHeader(array $header)
     {
@@ -87,7 +97,13 @@ class Event extends AbstractEvent
     }
 
     /**
-     * {@inheritdoc}
+     * Returns a specific or all payload keys
+     * Returns default if key not found
+     *
+     * @param string|null $key
+     * @param mixed       $default
+     *
+     * @return mixed
      */
     public function getPayload($key = null, $default = null)
     {
@@ -95,7 +111,11 @@ class Event extends AbstractEvent
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the payload values
+     *
+     * @param [] $payload
+     *
+     * @return self
      */
     public function setPayload(array $payload)
     {
@@ -105,7 +125,9 @@ class Event extends AbstractEvent
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the body
+     *
+     * @return string
      */
     public function getBody()
     {
@@ -113,7 +135,11 @@ class Event extends AbstractEvent
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the body
+     *
+     * @param string $body
+     *
+     * @return self
      */
     public function setBody($body)
     {
@@ -123,12 +149,37 @@ class Event extends AbstractEvent
     }
 
     /**
+     * Returns the result
+     *
+     * @return mixed
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * Sets the result
+     *
+     * @param mixed $result
+     *
+     * @return self
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    /**
      * Get specific or all items from array
      * Return default if key not found
      *
-     * @param  array       $array
-     * @param  string|null $key
-     * @param  mixed       $default
+     * @param []          $array
+     * @param string|null $key
+     * @param mixed       $default
+     *
      * @return mixed
      *
      * @codeCoverageIgnore
