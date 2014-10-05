@@ -13,11 +13,13 @@ namespace Indigo\Supervisor\Event;
 
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
+use League\Event\AbstractListener;
+use League\Event\AbstractEvent;
 use Psr\Log\NullLogger;
 use Exception;
 
 /**
- * Memmon EventListener
+ * Implements memmon listener logic
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -31,18 +33,18 @@ class MemmonListener extends AbstractListener
     protected $supervisor;
 
     /**
-     * Array of program=>limit pairs
+     * Array of program => limit pairs
      *
-     * @var array
+     * @var []
      */
-    protected $program = array();
+    protected $program = [];
 
     /**
-     * Array of group=>limit pairs
+     * Array of group => limit pairs
      *
-     * @var array
+     * @var []
      */
-    protected $group = array();
+    protected $group = [];
 
     /**
      * Any memory limit
@@ -54,12 +56,15 @@ class MemmonListener extends AbstractListener
     /**
      * Minimum uptime before restart
      *
+     * Prevents restart loops
+     *
      * @var integer
      */
     protected $uptime;
 
     /**
      * Name of memmon instance
+     *
      * Only has a meaning if you use logging
      *
      * @var string
@@ -67,19 +72,17 @@ class MemmonListener extends AbstractListener
     protected $name = null;
 
     /**
-     * Creates a MemmonListener
-     *
      * @param Supervisor $supervisor Supervisor instance
-     * @param array      $program    Limit of specified programs
-     * @param array      $group      Limit of specified groups
+     * @param []         $program    Limit of specified programs
+     * @param []         $group      Limit of specified groups
      * @param integer    $any        Limit of any programs or groups
      * @param integer    $uptime     Minimum uptime before restart
      * @param string     $name       Listener name
      */
     public function __construct(
         Supervisor $supervisor,
-        array $program = array(),
-        array $group = array(),
+        array $program = [],
+        array $group = [],
         $any = 0,
         $uptime = 60,
         $name = null
@@ -96,12 +99,8 @@ class MemmonListener extends AbstractListener
     /**
      * {@inheritdoc}
      */
-    protected function doListen(EventInterface $event)
+    public function handle(AbstractEvent $event)
     {
-        if (strpos($event->getHeader('eventname', ''), 'TICK') === false) {
-            return 0;
-        }
-
         $processes = $this->supervisor->getAllProcesses();
 
         foreach ($processes as $process) {
@@ -110,7 +109,7 @@ class MemmonListener extends AbstractListener
             }
         }
 
-        return 0;
+        $event->setResult(Processor::OK);
     }
 
     /**

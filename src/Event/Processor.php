@@ -12,20 +12,21 @@
 namespace Indigo\Supervisor\Event;
 
 /**
- * Null EventListener
- *
- * Used for development purposes
+ * Processor interface
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class NullListener extends AbstractListener
+interface Processor
 {
     /**
-     * {@inheritdoc}
+     * Responses sent to supervisor
      */
-    public function doListen(EventInterface $event)
-    {
-        // Noop
-        return 0;
-    }
+    const READY = "READY\n";
+    const OK    = "RESULT 2\nOK";
+    const FAIL  = "RESULT 4\nFAIL";
+
+    /**
+     * Runs processor, starts listening for events
+     */
+    public function run();
 }

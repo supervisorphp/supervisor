@@ -60,7 +60,7 @@ class Supervisor
      *
      * @param ConnectorInterface $connector
      *
-     * @return this
+     * @return self
      */
     public function setConnector(ConnectorInterface $connector)
     {

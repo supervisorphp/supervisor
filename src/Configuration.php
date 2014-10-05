@@ -52,7 +52,7 @@ class Configuration
      * @param string $section
      * @param string $className
      *
-     * @return this
+     * @return self
      */
     public function addSectionMap($section, $className)
     {
@@ -102,7 +102,7 @@ class Configuration
      *
      * @param SectionInterface $section
      *
-     * @return this
+     * @return self
      */
     public function addSection(SectionInterface $section)
     {
@@ -116,7 +116,7 @@ class Configuration
      *
      * @param array $sections
      *
-     * @return this
+     * @return self
      */
     public function addSections(array $sections)
     {
@@ -203,7 +203,7 @@ class Configuration
      *
      * @param string $file
      *
-     * @return this
+     * @return self
      */
     public function parseFile($file)
     {
@@ -218,7 +218,7 @@ class Configuration
      *
      * @param string $string
      *
-     * @return this
+     * @return self
      */
     public function parseString($string)
     {

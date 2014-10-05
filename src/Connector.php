@@ -24,7 +24,7 @@ interface Connector
      * @param string $username
      * @param string $password
      *
-     * @return this
+     * @return self
      */
     public function setCredentials($username, $password);
 

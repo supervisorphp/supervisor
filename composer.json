@@ -14,12 +14,13 @@
         "php": ">=5.3.3",
         "symfony/options-resolver": "~2.4",
         "symfony/process": "~2.4",
+        "league/event": "~1.0.0",
         "psr/log": "~1.0"
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "dev-master",
         "ext-xmlrpc": "*",
-        "guzzlehttp/guzzle": "~4.1.0",
+        "guzzlehttp/guzzle": "~4.2.0",
         "guzzle/guzzle": "~3.9.0",
         "zendframework/zend-xmlrpc": "~2.3.0",
         "zendframework/zendxml": "~1.0.0",
