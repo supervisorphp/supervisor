@@ -8,6 +8,7 @@
 - [ ] Remove API from `Process`
 - [ ] Review exception catch in `Process` on line 204
 - [ ] Review `getMemoryUsage` in `Process`
+- [ ] Clear dependencies
 - [x] ~~Review Event tests~~ @done (2014-10-05)
 - [x] ~~Implement a stream wrapper based processor~~ @done (2014-10-05)
 - [x] ~~Create a client agnostic XML-RPC client library (Solved: fXmlRpc)~~ @done (2014-10-04)
