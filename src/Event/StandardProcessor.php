@@ -112,7 +112,7 @@ class StandardProcessor implements Processor
      */
     private function assertValidStreamResource($stream)
     {
-        if (is_resource($stream)) {
+        if (!is_resource($stream)) {
             throw new InvalidArgumentException('Invalid resource for IO stream');
         }
     }
