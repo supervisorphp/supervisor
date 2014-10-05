@@ -125,7 +125,7 @@ class StandardProcessor implements Processor
     public function run()
     {
         while (true) {
-            $this->statusReady();
+            $this->write(self::READY);
 
             if ($event = $this->getEvent()) {
                 $this->emitter->emit($event);
@@ -174,14 +174,6 @@ class StandardProcessor implements Processor
         }
 
         $this->write($result);
-    }
-
-    /**
-     * Prints ready status to output stream
-     */
-    protected function statusReady()
-    {
-        $this->write(self::READY);
     }
 
     /**
