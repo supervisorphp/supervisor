@@ -14,14 +14,13 @@ namespace Indigo\Supervisor;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Indigo\Supervisor\Exception\SupervisorException;
 use ArrayAccess;
-use Iterator;
 
 /**
  * Process object holding data for a single process
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Process implements ArrayAccess, Iterator
+class Process implements ArrayAccess
 {
     /**
      * Process states
@@ -354,49 +353,5 @@ class Process implements ArrayAccess, Iterator
     public function offsetGet($offset)
     {
         return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
-    }
-
-    /***************************************************************************
-     * Implementation of Iterable
-     **************************************************************************/
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        reset($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function current()
-    {
-        return current($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
-    {
-        return key($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
-    {
-        return next($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
-    {
-        return key($this->payload) !== null;
     }
 }
