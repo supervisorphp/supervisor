@@ -15,7 +15,6 @@ use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
 use League\Event\AbstractListener;
 use League\Event\AbstractEvent;
-use Psr\Log\NullLogger;
 use Exception;
 
 /**
@@ -63,15 +62,6 @@ class MemmonListener extends AbstractListener
     protected $uptime;
 
     /**
-     * Name of memmon instance
-     *
-     * Only has a meaning if you use logging
-     *
-     * @var string
-     */
-    protected $name = null;
-
-    /**
      * @param Supervisor $supervisor Supervisor instance
      * @param []         $program    Limit of specified programs
      * @param []         $group      Limit of specified groups
@@ -84,16 +74,14 @@ class MemmonListener extends AbstractListener
         array $program = [],
         array $group = [],
         $any = 0,
-        $uptime = 60,
-        $name = null
+        $uptime = 60
     ) {
         $this->supervisor = $supervisor;
         $this->program    = $program;
         $this->group      = $group;
-        $this->any        = intval($any);
+        $this->any        = (int) $any;
         $this->uptime     = $uptime;
         $this->name       = $name;
-        $this->logger     = new NullLogger;
     }
 
     /**
@@ -113,6 +101,18 @@ class MemmonListener extends AbstractListener
     }
 
     /**
+     * Checks whether listener should care about this process
+     *
+     * @param Process $process
+     *
+     * @return boolean
+     */
+    protected function checkProcess(Process $process)
+    {
+        return $process->isRunning() and $process['now'] - $process['start'] > $this->uptime;
+    }
+
+    /**
      * Handle process
      *
      * @param Process $process
@@ -128,54 +128,6 @@ class MemmonListener extends AbstractListener
     }
 
     /**
-     * Restarts a process
-     *
-     * @param Process $process
-     * @param integer $mem     Current memory usage
-     *
-     * @return boolean Whether restart is successful
-     */
-    protected function restart(Process $process, $mem)
-    {
-        try {
-            $result = $process->restart();
-        } catch (Exception $e) {
-            $result = false;
-        }
-
-        $message = $result ? '[Success]' : '[Failure]';
-        $message .= '(' . ($this->name ? $this->name . '/' : '') . $process['name'] . ') ';
-        $context = array(
-            'subject' => $message,
-            'payload' => $process->getPayload(),
-        );
-
-        $message .= 'Process restart at ' . $mem . ' bytes';
-
-        $this->logger->info($message, $context);
-
-        return $result;
-    }
-
-    /**
-     * Checks whether listener should care about this process
-     *
-     * @param Process $process
-     *
-     * @return boolean
-     */
-    protected function checkProcess(Process $process)
-    {
-        $return = $process->isRunning();
-
-        if ($return) {
-            $return = $process['now'] - $process['start'] > $this->uptime;
-        }
-
-        return $return;
-    }
-
-    /**
      * Returns the maximum memory allowed for this process
      *
      * @param Process $process
@@ -186,12 +138,12 @@ class MemmonListener extends AbstractListener
     {
         $pname = $process['group'] . ':' . $process['name'];
 
-        $mem = array(
+        $mem = [
             $this->hasProgram($process['name']),
             $this->hasProgram($pname),
             $this->hasGroup($process['group']),
             $this->any,
-        );
+        ];
 
         return abs(max($mem));
     }
@@ -205,7 +157,7 @@ class MemmonListener extends AbstractListener
      */
     protected function hasProgram($program)
     {
-        return array_key_exists($program, $this->program) ? $this->program[$program] : 0;
+        return array_key_exists($program, $this->program) ? (int) $this->program[$program] : 0;
     }
 
     /**
@@ -217,6 +169,23 @@ class MemmonListener extends AbstractListener
      */
     protected function hasGroup($group)
     {
-        return array_key_exists($group, $this->group) ? $this->group[$group] : 0;
+        return array_key_exists($group, $this->group) ? (int) $this->group[$group] : 0;
+    }
+
+    /**
+     * Restarts a process
+     *
+     * @param Process $process
+     * @param integer $mem      Current memory usage
+     *
+     * @return boolean Whether restart is successful
+     */
+    protected function restart(Process $process, $mem)
+    {
+        try {
+            return $process->restart();
+        } catch (Exception $e) { }
+
+        return false;
     }
 }
