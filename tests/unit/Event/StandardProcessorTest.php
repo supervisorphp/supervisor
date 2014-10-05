@@ -30,6 +30,7 @@ class StandardProcessorTest extends AbstractProcessorTest
 
         $this->processor = new StandardProcessor($this->getEmitterMock());
 
+        // Since guzzle stream is required for testing we can use it here
         $this->processor->setInputStream(Utils::open('php://temp', 'r+'));
         $this->processor->setOutputStream(Utils::open('php://temp', 'w+'));
     }
