@@ -25,16 +25,3 @@ class DummyConnector extends AbstractConnector
      */
     public function call($namespace, $method, array $arguments = array()) {}
 }
-
-/**
- * Dummy XMLRPC Connector
- *
- * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
- */
-class DummyXmlrpcConnector extends AbstractXmlrpcConnector
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function call($namespace, $method, array $arguments = array()) {}
-}
