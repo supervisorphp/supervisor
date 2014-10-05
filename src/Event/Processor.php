@@ -31,38 +31,6 @@ interface Processor
     const QUIT = false;
 
     /**
-     * Returns the input stream
-     *
-     * @return resource
-     */
-    public function getInputStream();
-
-    /**
-     * Sets the input stream
-     *
-     * @param resource $stream
-     *
-     * @return self
-     */
-    public function setInputStream($stream);
-
-    /**
-     * Returns the output stream
-     *
-     * @return resource
-     */
-    public function getOutputStream();
-
-    /**
-     * Sets the output stream
-     *
-     * @param resource $stream
-     *
-     * @return self
-     */
-    public function setOutputStream($stream);
-
-    /**
      * Runs processor, starts listening for events
      */
     public function run();

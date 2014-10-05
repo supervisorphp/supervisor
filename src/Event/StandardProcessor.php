@@ -52,7 +52,9 @@ class StandardProcessor implements Processor
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the input stream
+     *
+     * @return resource
      */
     public function getInputStream()
     {
@@ -60,7 +62,11 @@ class StandardProcessor implements Processor
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the input stream
+     *
+     * @param resource $stream
+     *
+     * @return self
      */
     public function setInputStream($stream)
     {
@@ -72,7 +78,9 @@ class StandardProcessor implements Processor
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the output stream
+     *
+     * @return resource
      */
     public function getOutputStream()
     {
@@ -80,7 +88,11 @@ class StandardProcessor implements Processor
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the output stream
+     *
+     * @param resource $stream
+     *
+     * @return self
      */
     public function setOutputStream($stream)
     {
