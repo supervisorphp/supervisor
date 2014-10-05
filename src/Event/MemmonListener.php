@@ -186,7 +186,8 @@ class MemmonListener extends AbstractListener
     {
         try {
             return $process->restart();
-        } catch (Exception $e) { }
+        } catch (Exception $e) {
+        }
 
         return false;
     }

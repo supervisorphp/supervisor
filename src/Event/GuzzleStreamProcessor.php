@@ -51,8 +51,7 @@ class GuzzleStreamProcessor implements Processor
         StreamInterface $inputStream,
         StreamInterface $outputStream,
         EmitterInterface $emitter
-    )
-    {
+    ) {
         $this->emitter = $emitter;
         $this->inputStream = $inputStream;
         $this->outputStream = $outputStream;
