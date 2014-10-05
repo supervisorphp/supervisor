@@ -61,4 +61,44 @@ class StandardProcessorTest extends AbstractProcessorTest
     {
         rewind($this->processor->getOutputStream());
     }
+
+    /**
+     * @covers ::getInputStream
+     * @covers ::setInputStream
+     * @covers ::getOutputStream
+     * @covers ::setOutputStream
+     * @covers ::assertValidStreamResource
+     */
+    public function testStreams()
+    {
+        $input = $this->processor->getInputStream();
+
+        $this->assertInternalType('resource', $input);
+        $this->assertSame($this->processor, $this->processor->setInputStream($input));
+
+        $output = $this->processor->getOutputStream();
+
+        $this->assertInternalType('resource', $output);
+        $this->assertSame($this->processor, $this->processor->setOutputStream($output));
+    }
+
+    /**
+     * @covers            ::setInputStream
+     * @covers            ::assertValidStreamResource
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidInputStream()
+    {
+        $this->processor->setInputStream('invalid_stream');
+    }
+
+    /**
+     * @covers            ::setOutputStream
+     * @covers            ::assertValidStreamResource
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidOutputStream()
+    {
+        $this->processor->setOutputStream('invalid_stream');
+    }
 }

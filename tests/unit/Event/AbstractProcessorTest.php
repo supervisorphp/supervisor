@@ -142,11 +142,15 @@ abstract class AbstractProcessorTest extends Test
 
     public function testRun()
     {
-        $this->write($this->event);
+        $this->write("\n".$this->event);
 
         $this->processor->run();
 
         $this->rewindOutput();
+
+        // We added an empty line, so an extra empty cycle is run
+        $this->assertEquals('READY', $this->readLine());
+
         $this->assertEquals('READY', $this->readLine());
         $this->assertEquals('RESULT 4', $this->readLine());
         $this->assertEquals('FAIL', $this->readLine());

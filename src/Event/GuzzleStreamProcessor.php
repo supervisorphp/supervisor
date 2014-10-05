@@ -134,7 +134,7 @@ class GuzzleStreamProcessor implements Processor
      */
     protected function getEvent()
     {
-        if ($header = Utils::readLine($this->inputStream)) {
+        if ($header = trim(Utils::readLine($this->inputStream))) {
             $header = $this->parseData($header);
 
             $payload = $this->inputStream->read((int) $header['len']);

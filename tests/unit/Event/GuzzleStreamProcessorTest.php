@@ -18,7 +18,7 @@ use GuzzleHttp\Stream\Utils;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Event\StandardProcessor
+ * @coversDefaultClass Indigo\Supervisor\Event\GuzzleStreamProcessor
  * @group              Supervisor
  * @group              Event
  */
@@ -60,5 +60,24 @@ class GuzzleStreamProcessorTest extends AbstractProcessorTest
     protected function rewindOutput()
     {
         $this->processor->getOutputStream()->seek(0);
+    }
+
+    /**
+     * @covers ::getInputStream
+     * @covers ::setInputStream
+     * @covers ::getOutputStream
+     * @covers ::setOutputStream
+     */
+    public function testStreams()
+    {
+        $input = $this->processor->getInputStream();
+
+        $this->assertInstanceOf('GuzzleHttp\\Stream\\StreamInterface', $input);
+        $this->assertSame($this->processor, $this->processor->setInputStream($input));
+
+        $output = $this->processor->getOutputStream();
+
+        $this->assertInstanceOf('GuzzleHttp\\Stream\\StreamInterface', $output);
+        $this->assertSame($this->processor, $this->processor->setOutputStream($output));
     }
 }
