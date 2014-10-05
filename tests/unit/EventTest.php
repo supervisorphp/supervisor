@@ -73,6 +73,11 @@ class EventTest extends Test
         $this->assertNull($event->getResult());
     }
 
+    public function testName()
+    {
+        $this->assertEquals('PROCESS_COMMUNICATION_STDOUT', $this->event->getName());
+    }
+
     /**
      * @covers ::getHeader
      * @covers ::setHeader

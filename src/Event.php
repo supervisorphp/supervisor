@@ -70,7 +70,7 @@ class Event extends AbstractEvent
     /**
      * {@inheritdoc}
      */
-    public function getName($name)
+    public function getName()
     {
         return $this->arrGet($this->header, 'eventname');
     }
