@@ -14,7 +14,7 @@ namespace Indigo\Supervisor\Event;
 use Indigo\Supervisor\Event;
 use League\Event\EmitterInterface;
 use GuzzleHttp\Stream\StreamInterface;
-use GuzzleHttp\Stream\read_line;
+use GuzzleHttp\Stream\Utils;
 
 /**
  * Processor for guzzle streams
@@ -114,7 +114,7 @@ class GuzzleStreamProcessor implements Processor
     public function run()
     {
         while (true) {
-            $this->statusReady();
+            $this->outputStream->write(self::READY);
 
             if ($event = $this->getEvent()) {
                 $this->emitter->emit($event);
@@ -134,10 +134,10 @@ class GuzzleStreamProcessor implements Processor
      */
     protected function getEvent()
     {
-        if ($header = read_line($this->inputStream)) {
+        if ($header = Utils::readLine($this->inputStream)) {
             $header = $this->parseData($header);
 
-            $payload = $this->inputStream->read($header['len']);
+            $payload = $this->inputStream->read((int) $header['len']);
             $payload = explode("\n", $payload, 2);
             isset($payload[1]) or $payload[1] = null;
 
@@ -162,15 +162,7 @@ class GuzzleStreamProcessor implements Processor
             $result = self::FAIL;
         }
 
-        $this->write($result);
-    }
-
-    /**
-     * Prints ready status to output stream
-     */
-    protected function statusReady()
-    {
-        $this->outputStream->write(self::READY);
+        $this->outputStream->write($result);
     }
 
     /**
