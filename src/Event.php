@@ -11,7 +11,7 @@
 
 namespace Indigo\Supervisor;
 
-use League\Event\Abstract\AbstractEvent;
+use League\Event\AbstractEvent;
 
 /**
  * Supervisor Event
