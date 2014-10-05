@@ -19,9 +19,7 @@
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "dev-master",
-        "ext-xmlrpc": "*",
-        "guzzlehttp/guzzle": "~4.2.0",
-        "guzzle/guzzle": "~3.9.0",
+        "guzzlehttp/streams": "~2.1.0",
         "zendframework/zend-xmlrpc": "~2.3.0",
         "zendframework/zendxml": "~1.0.0",
         "codeception/codeception": "~2.0.0",
@@ -29,9 +27,7 @@
     },
     "suggest": {
         "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4",
-        "ext-xmlrpc": "Used by the following connectors: Guzzle, Guzzle3",
-        "guzzlehttp/guzzle": "GuzzleHttp 4 HTTP client",
-        "guzzle/guzzle": "Guzzle 3 HTTP client",
+        "guzzlehttp/streams": "GuzzleHttp 4 Streams for Guzzle Event Processor",
         "zendframework/zend-xmlrpc": "XmlRpc component from Zend Framework 2",
         "zendframework/zendxml": "Required by Zend XmlRpc component"
     },
