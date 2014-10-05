@@ -178,7 +178,7 @@ class MemmonListener extends AbstractListener
      * Restarts a process
      *
      * @param Process $process
-     * @param integer $mem      Current memory usage
+     * @param integer $mem     Current memory usage
      *
      * @return boolean Whether restart is successful
      */
