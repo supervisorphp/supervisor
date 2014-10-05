@@ -99,7 +99,7 @@ class MemmonListener extends AbstractListener
     /**
      * {@inheritdoc}
      */
-    protected function handle(AbstractEvent $event)
+    public function handle(AbstractEvent $event)
     {
         $processes = $this->supervisor->getAllProcesses();
 
