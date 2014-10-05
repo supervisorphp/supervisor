@@ -118,7 +118,7 @@ class GuzzleStreamProcessor implements Processor
 
             if ($event = $this->getEvent()) {
                 $this->emitter->emit($event);
-                $this->processResult($event)
+                $this->processResult($event);
 
                 if ($event->shouldProcessorStop()) {
                     return;
