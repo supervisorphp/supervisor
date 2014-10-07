@@ -11,12 +11,14 @@
 
 namespace Indigo\Supervisor\Connector;
 
+use Indigo\Supervisor\Connector;
+
 /**
  * Abstract Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-abstract class AbstractConnector implements ConnectorInterface
+abstract class AbstractConnector implements Connector
 {
     /**
      * Optional username

@@ -30,7 +30,7 @@ abstract class AbstractConnectorTest extends Test
     /**
      * Connector
      *
-     * @var Indigo\Supervisor\Connector\ConnectorInterface
+     * @var Indigo\Supervisor\Connector
      */
     protected $connector;
 

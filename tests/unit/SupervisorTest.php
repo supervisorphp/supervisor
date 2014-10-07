@@ -32,7 +32,7 @@ class SupervisorTest extends Test
 
     public function _before()
     {
-        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
+        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector');
 
         $this->connector->shouldReceive('isLocal')
             ->andReturn(true);
