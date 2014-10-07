@@ -10,8 +10,6 @@ script: vendor/bin/codecept run --coverage-xml
 before_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - composer install --prefer-source
-  - resources/supervisor.sh
-  - sudo supervisord -c resources/supervisord.conf
 
 after_script:
   - php ocular.phar code-coverage:upload --format=php-clover tests/_output/coverage.xml
