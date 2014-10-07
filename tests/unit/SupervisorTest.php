@@ -45,6 +45,16 @@ class SupervisorTest extends Test
     }
 
     /**
+     * @covers ::__construct
+     */
+    public function testConstruct()
+    {
+        $supervisor = new Supervisor($this->connector);
+
+        $this->assertSame($this->connector, $supervisor->getConnector());
+    }
+
+    /**
      * @covers ::getConnector
      * @covers ::setConnector
      */
@@ -86,6 +96,7 @@ class SupervisorTest extends Test
     }
 
     /**
+     * @covers ::call
      * @covers ::__call
      */
     public function testCall()
