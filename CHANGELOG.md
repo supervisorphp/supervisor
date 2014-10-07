@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## 3.0.0 (released )
+
+* Refactors Connectors (interface changed)
+* Adds PHP 5.4 dependency
+* Closes down API
+* Updates tests
+
+
 ## 2.0.1 (released 2014-07-13)
 
 * Updates dependencies
