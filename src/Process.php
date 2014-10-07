@@ -47,8 +47,6 @@ class Process implements ArrayAccess
     protected $payload = [];
 
     /**
-     * Creates new Process instance
-     *
      * @param []|string $payload   Process name or info array
      * @param Connector $connector
      */
@@ -66,7 +64,7 @@ class Process implements ArrayAccess
     /**
      * Returns the process info array
      *
-     * @return array
+     * @return []
      */
     public function getPayload()
     {
@@ -81,30 +79,6 @@ class Process implements ArrayAccess
     public function getName()
     {
         return $this->payload['name'];
-    }
-
-    /**
-     * Returns the Connector
-     *
-     * @return Connector
-     */
-    public function getConnector()
-    {
-        return $this->connector;
-    }
-
-    /**
-     * Sets the connector
-     *
-     * @param Connector $connector
-     *
-     * @return self
-     */
-    public function setConnector(Connector $connector)
-    {
-        $this->connector = $connector;
-
-        return $this;
     }
 
     /**
@@ -155,7 +129,7 @@ class Process implements ArrayAccess
      *
      * @param string $namespace Namespace of method
      * @param string $method    Method name
-     * @param []    $arguments Argument list
+     * @param []     $arguments Argument list
      *
      * @return mixed
      */
@@ -175,7 +149,7 @@ class Process implements ArrayAccess
      */
     public function start($wait = true)
     {
-        return $this->call('supervisor', 'startProcess', array($wait));
+        return $this->call('supervisor', 'startProcess', [$wait]);
     }
 
     /**
@@ -187,7 +161,7 @@ class Process implements ArrayAccess
      */
     public function stop($wait = true)
     {
-        return $this->call('supervisor', 'stopProcess', array($wait));
+        return $this->call('supervisor', 'stopProcess', [$wait]);
     }
 
     /**
@@ -222,7 +196,7 @@ class Process implements ArrayAccess
      */
     public function sendStdin($data)
     {
-        return $this->call('supervisor', 'sendProcessStdin', array($data));
+        return $this->call('supervisor', 'sendProcessStdin', [$data]);
     }
 
     /**
@@ -235,7 +209,7 @@ class Process implements ArrayAccess
      */
     public function readStdoutLog($offset, $length)
     {
-        return $this->call('supervisor', 'readProcessStdoutLog', array($offset, $length));
+        return $this->call('supervisor', 'readProcessStdoutLog', [$offset, $length]);
     }
 
     /**
@@ -248,7 +222,7 @@ class Process implements ArrayAccess
      */
     public function readStderrLog($offset, $length)
     {
-        return $this->call('supervisor', 'readProcessStderrLog', array($offset, $length));
+        return $this->call('supervisor', 'readProcessStderrLog', [$offset, $length]);
     }
 
     /**
@@ -270,7 +244,7 @@ class Process implements ArrayAccess
      */
     public function tailStdoutLog($offset, $length)
     {
-        return $this->call('supervisor', 'tailProcessStdoutLog', array($offset, $length));
+        return $this->call('supervisor', 'tailProcessStdoutLog', [$offset, $length]);
     }
 
     /**
@@ -292,7 +266,7 @@ class Process implements ArrayAccess
      */
     public function tailStderrLog($offset, $length)
     {
-        return $this->call('supervisor', 'tailProcessStderrLog', array($offset, $length));
+        return $this->call('supervisor', 'tailProcessStderrLog', [$offset, $length]);
     }
 
     /**

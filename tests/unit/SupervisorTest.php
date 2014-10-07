@@ -50,25 +50,14 @@ class SupervisorTest extends Test
     public function testConstruct()
     {
         $supervisor = new Supervisor($this->connector);
-
-        $this->assertSame($this->connector, $supervisor->getConnector());
     }
 
     /**
-     * @covers ::getConnector
-     * @covers ::setConnector
+     * @covers ::isLocal
      */
-    public function testConnector()
+    public function testIsLocal()
     {
-        $this->assertSame(
-            $this->supervisor,
-            $this->supervisor->setConnector($this->connector)
-        );
-
-        $this->assertSame(
-            $this->connector,
-            $this->supervisor->getConnector()
-        );
+        $this->assertTrue($this->supervisor->isLocal());
     }
 
     /**
@@ -123,13 +112,5 @@ class SupervisorTest extends Test
             $process,
             $this->supervisor->getProcess('test')
         );
-    }
-
-    /**
-     * @covers ::isLocal
-     */
-    public function testIsLocal()
-    {
-        $this->assertTrue($this->supervisor->isLocal());
     }
 }

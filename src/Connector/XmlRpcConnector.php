@@ -35,33 +35,8 @@ class XmlRpcConnector extends AbstractConnector
      */
     public function __construct(Client $client, $local = false)
     {
-        $this->setClient($client, $local);
-    }
-
-    /**
-     * Returns the client
-     *
-     * @return Client
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * Sets the client
-     *
-     * @param Client  $client
-     * @param boolean $local
-     *
-     * @return self
-     */
-    public function setClient(Client $client, $local = false)
-    {
         $this->client = $client;
         $this->local = (bool) $local;
-
-        return $this;
     }
 
     /**

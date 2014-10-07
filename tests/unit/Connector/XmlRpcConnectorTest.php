@@ -38,7 +38,7 @@ class XmlRpcConnectorTest extends AbstractConnectorTest
     {
         $connector = new XmlRpcConnector($this->client);
 
-        $this->assertSame($this->client, $connector->getClient());
+        $this->assertFalse($connector->isLocal());
     }
 
     /**

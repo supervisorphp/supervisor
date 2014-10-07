@@ -35,16 +35,6 @@ abstract class AbstractConnectorTest extends Test
     protected $connector;
 
     /**
-     * @covers ::getClient
-     * @covers ::setClient
-     */
-    public function testInstance()
-    {
-        $this->assertSame($this->connector, $this->connector->setClient($this->client));
-        $this->assertSame($this->client, $this->connector->getClient());
-    }
-
-    /**
      * @covers ::isLocal
      */
     public function testIsLocal()

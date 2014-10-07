@@ -82,25 +82,6 @@ class ProcessTest extends Test
     }
 
     /**
-     * @covers ::getConnector
-     * @covers ::setConnector
-     */
-    public function testConnector()
-    {
-        $process = new Process(array(), $this->connector);
-
-        $this->assertSame(
-            $process,
-            $process->setConnector($this->connector)
-        );
-
-        $this->assertSame(
-            $this->connector,
-            $process->getConnector()
-        );
-    }
-
-    /**
      * @dataProvider provider
      */
     public function testProcess($payload)
@@ -115,16 +96,6 @@ class ProcessTest extends Test
         $this->assertEquals($payload['name'], $process['name']);
         $this->assertTrue(isset($process['name']));
         $this->assertEquals($payload['state'] == 20, $process->isRunning());
-
-        $this->assertInstanceOf(
-            get_class($this->connector),
-            $process->getConnector()
-        );
-
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Process',
-            $process->setConnector($this->connector)
-        );
 
         if ($payload['state'] == 20) {
             $this->assertGreaterThan(0, $process->getMemUsage());

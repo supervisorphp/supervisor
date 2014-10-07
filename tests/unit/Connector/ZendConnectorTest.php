@@ -38,7 +38,7 @@ class ZendConnectorTest extends AbstractConnectorTest
     {
         $connector = new ZendConnector($this->client);
 
-        $this->assertSame($this->client, $connector->getClient());
+        $this->assertFalse($connector->isLocal());
     }
 
     /**

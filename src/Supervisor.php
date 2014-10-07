@@ -40,30 +40,6 @@ class Supervisor
     }
 
     /**
-     * Returns the Connector
-     *
-     * @return Connector
-     */
-    public function getConnector()
-    {
-        return $this->connector;
-    }
-
-    /**
-     * Sets the Connector
-     *
-     * @param Connector $connector
-     *
-     * @return self
-     */
-    public function setConnector(Connector $connector)
-    {
-        $this->connector = $connector;
-
-        return $this;
-    }
-
-    /**
      * Checks whether connecting to a local Supervisor instance
      *
      * @return boolean
