@@ -32,7 +32,7 @@ use Indigo\Supervisor\Process;
 
 // Create new Connector
 // See available connectors
-$connector = new ConnectorInterface;
+$connector = ...;
 
 $connector->setCredentials('user', '123');
 
@@ -64,9 +64,10 @@ $process->getPayload();
 
 **Currently available connectors:**
 
-* Guzzle
-* Guzzle3
+* [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
 * Zend XML-RPC
+
+**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed.
 
 
 ## Configuration
@@ -129,58 +130,32 @@ You can find detailed info about options for each section here:
 
 ## Event Listeners
 
-Supervisor has this pretty good feature: notify you(r listener) about it's events, so it was obivious to implement this.
+Supervisor has this pretty good feature: notify you(r listener) about it's events.
 
-It is important that this is only the logic of event processing. Making it work is your task. You have to create a console application which calls your `EventListener`. You also have to create your own listeners, however, there are some included. Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
+The main entry point is the `Processor`. `Processor`s handle the connection between the event handling and the Supervisor instance. There are two implemented `Processor`s, however you can implement your own for more features (for example a `LoggerProcessor` to log all the exchanged messages).
+
+Th package uses [league/event](http://event.thephpleague.com) for event handling. `Processor`s need an instance of `EventEmitter` which you can register your listeners in.
 
 
 ``` php
-use Indigo\Supervisor;
-use Indigo\Supervisor\Event\NullListener;
+use Indigo\Supervisor\Event\StandardProcessor;
+use League\Event\EventEmitter;
 
-// this is an example listener for development purposes
-$listener = new NullListener();
+$emitter = new EventEmitter;
 
-// optional
-$listener->setLogger(new \Psr\Log\NullLogger());
+// it is important to set the result of event
+$emitter->addListener('TICK_5', function($event) {
+    $event->setResult(StandardProcessor::OK);
+});
 
-// start listening
-$listener->listen();
+// processor using standard input
+$processor = new StandardProcessor($emitter);
+
+// start the processor
+$processor->run();
 ```
 
-You may have noticed that I used PSR-3 LoggerInterface. By default, the included listeners use a `NullLogger`, so you don't need to add a logger instance to it, but you can if you want. In your listeners it's your job whether you want to use logging or not, but `setLogger` is already implemented in `AbstractListener`.
-
-
-### Writting an Event Listener
-
-There are three ways to write an event listener:
-* By implementing `ListenerInterface` and writting the whole logic on your own
-* By extending `AbstractListener` and writting only the event process logic
-
-An example if you choose the last option:
-
-``` php
-protected function doListen(EventInterface $event)
-{
-    // Checking event name in header
-    if ($event->getHeader('eventname', '') !== 'TICK_5') {
-        return true;
-    }
-
-    $process = $event->getPayload('process_name');
-    $pid = $event->getPayload('pid');
-
-    if ($process == 'kill_me') {
-        exec('kill -9 ' . $pid);
-        return 0;
-    } elseif ($process == 'stop_listener') {
-        // Stop listener
-        return 2;
-    }
-}
-```
-
-**Note**: Exit code 2 does not have the meaning exit. Anything else than 0 and 1 (success and failure) means exit now. This may change in the future.
+Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
 
 
 ## Further info
@@ -191,7 +166,7 @@ You can find the XML-RPC documentation here:
 
 ## Notice
 
-All the connectors that extends `AbstractXmlrpcConnector` use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
+If using PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
 You will also have to make sure that you always call the functions with correct parameters. `ZendConnector` will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `SupervisorException`.
 
