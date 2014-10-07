@@ -31,23 +31,12 @@ class ZendConnector extends AbstractConnector
     protected $client;
 
     /**
-     * Creates new Zend connector
-     *
-     * @param Client $client
+     * @param Client  $client
+     * @param boolean $local
      */
-    public function __construct(Client $client)
+    public function __construct(Client $client, $local = false)
     {
-        $this->setClient($client);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCredentials($username, $password)
-    {
-        $this->client->getHttpClient()->setAuth($username, $password, HttpClient::AUTH_BASIC);
-
-        return parent::setCredentials($username, $password);
+        $this->setClient($client, $local);
     }
 
     /**
@@ -63,13 +52,15 @@ class ZendConnector extends AbstractConnector
     /**
      * Sets the client
      *
-     * @param Client $client
+     * @param Client  $client
+     * @param boolean $local
      *
-     * @return this
+     * @return self
      */
-    public function setClient(Client $client)
+    public function setClient(Client $client, $local = false)
     {
         $this->client = $client;
+        $this->local = (bool) $local;
 
         return $this;
     }
@@ -77,7 +68,7 @@ class ZendConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function call($namespace, $method, array $arguments = array())
+    public function call($namespace, $method, array $arguments = [])
     {
         try {
             return $this->client->call($namespace.'.'.$method, $arguments);

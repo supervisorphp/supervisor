@@ -11,18 +11,16 @@
 
 namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Connector\ConnectorInterface;
 use Symfony\Component\Process\Process as SymfonyProcess;
 use Indigo\Supervisor\Exception\SupervisorException;
 use ArrayAccess;
-use Iterator;
 
 /**
  * Process object holding data for a single process
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Process implements ArrayAccess, Iterator
+class Process implements ArrayAccess
 {
     /**
      * Process states
@@ -37,30 +35,28 @@ class Process implements ArrayAccess, Iterator
     const UNKNOWN  = 1000;
 
     /**
-     * Connector object
-     *
-     * @var ConnectorInterface
+     * @var Connector
      */
     protected $connector;
 
     /**
      * Process info
      *
-     * @var array
+     * @var []
      */
-    protected $payload = array();
+    protected $payload = [];
 
     /**
      * Creates new Process instance
      *
-     * @param array|string       $payload   Process name or info array
-     * @param ConnectorInterface $connector
+     * @param []|string $payload   Process name or info array
+     * @param Connector $connector
      */
-    public function __construct($payload, ConnectorInterface $connector)
+    public function __construct($payload, Connector $connector)
     {
         // Gets payload if process name given
         if (is_array($payload) === false) {
-            $payload = $connector->call('supervisor', 'getProcessInfo', array($payload));
+            $payload = $connector->call('supervisor', 'getProcessInfo', [$payload]);
         }
 
         $this->payload = $payload;
@@ -78,7 +74,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Returns the name of process
+     * Returns the process name
      *
      * @return string
      */
@@ -88,9 +84,9 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Returns the connector object
+     * Returns the Connector
      *
-     * @return ConnectorInterface
+     * @return Connector
      */
     public function getConnector()
     {
@@ -100,11 +96,11 @@ class Process implements ArrayAccess, Iterator
     /**
      * Sets the connector
      *
-     * @param ConnectorInterface $connector
+     * @param Connector $connector
      *
      * @return self
      */
-    public function setConnector(ConnectorInterface $connector)
+    public function setConnector(Connector $connector)
     {
         $this->connector = $connector;
 
@@ -136,7 +132,7 @@ class Process implements ArrayAccess, Iterator
     /**
      * Returns memory usage
      *
-     * @return integer Used memory in bytes
+     * @return integer Used memory in bytes (0 if cannot be determined)
      */
     public function getMemUsage()
     {
@@ -159,11 +155,11 @@ class Process implements ArrayAccess, Iterator
      *
      * @param string $namespace Namespace of method
      * @param string $method    Method name
-     * @param array  $arguments Argument list
+     * @param []    $arguments Argument list
      *
      * @return mixed
      */
-    public function call($namespace, $method, array $arguments = array())
+    public function call($namespace, $method, array $arguments = [])
     {
         array_unshift($arguments, $this->payload['name']);
 
@@ -310,7 +306,7 @@ class Process implements ArrayAccess, Iterator
     }
 
     /**
-     * Alias to getName()
+     * Returns process name
      *
      * @return string
      */
@@ -357,49 +353,5 @@ class Process implements ArrayAccess, Iterator
     public function offsetGet($offset)
     {
         return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
-    }
-
-    /***************************************************************************
-     * Implementation of Iterable
-     **************************************************************************/
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        reset($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function current()
-    {
-        return current($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function key()
-    {
-        return key($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function next()
-    {
-        return next($this->payload);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function valid()
-    {
-        return key($this->payload) !== null;
     }
 }

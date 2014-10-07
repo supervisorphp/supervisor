@@ -28,9 +28,7 @@ class ZendConnectorTest extends AbstractConnectorTest
     {
         $this->client = \Mockery::mock('Zend\\XmlRpc\\Client');
 
-        $this->client->shouldReceive('getHttpClient->setAuth');
-
-        $this->connector = new ZendConnector($this->client);
+        $this->connector = new ZendConnector($this->client, true);
     }
 
     /**
@@ -44,17 +42,6 @@ class ZendConnectorTest extends AbstractConnectorTest
     }
 
     /**
-     * @covers ::setCredentials
-     */
-    public function testCredentials()
-    {
-        $this->assertSame(
-            $this->connector,
-            $this->connector->setCredentials('user', '123')
-        );
-    }
-
-    /**
      * @covers            ::call
      * @expectedException Indigo\Supervisor\Exception\SupervisorException
      */
@@ -63,6 +50,6 @@ class ZendConnectorTest extends AbstractConnectorTest
         $this->client->shouldReceive('call')
             ->andThrow('Zend\\XmlRpc\\Client\\Exception\\FaultException');
 
-        $this->connector->call('asd', 'dsa');
+        parent::testCallException();
     }
 }

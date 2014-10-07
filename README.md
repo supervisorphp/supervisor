@@ -34,7 +34,7 @@ use Indigo\Supervisor\Process;
 // See available connectors
 $connector = ...;
 
-$connector->setCredentials('user', '123');
+// Note: As of 3.0.0 setCredentials function is removed from the interface hence the variety of the clients. Please provide the connector a client with authentication. For this please check each possible HTTP Client's documentation
 
 $supervisor = new Supervisor($connector);
 
