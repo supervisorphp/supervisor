@@ -16,11 +16,11 @@ use fXmlRpc\ClientInterface as Client;
 use fXmlRpc\Exception\ResponseException;
 
 /**
- * fxmlrpc Connector
+ * XmlRpc Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class fXmlRpcConnector extends AbstractConnector
+class XmlRpcConnector extends AbstractConnector
 {
     /**
      * Client object

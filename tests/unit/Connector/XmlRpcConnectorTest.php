@@ -11,24 +11,24 @@
 
 namespace Test\Unit;
 
-use Indigo\Supervisor\Connector\fXmlRpcConnector;
+use Indigo\Supervisor\Connector\XmlRpcConnector;
 
 /**
  * Tests for fXmlRpc Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\fXmlRpcConnector
+ * @coversDefaultClass Indigo\Supervisor\Connector\XmlRpcConnector
  * @group              Supervisor
  * @group              Connector
  */
-class fXmlRpcConnectorTest extends AbstractConnectorTest
+class XmlRpcConnectorTest extends AbstractConnectorTest
 {
     public function _before()
     {
         $this->client = \Mockery::mock('fXmlRpc\\ClientInterface');
 
-        $this->connector = new fXmlRpcConnector($this->client, true);
+        $this->connector = new XmlRpcConnector($this->client, true);
     }
 
     /**
@@ -36,7 +36,7 @@ class fXmlRpcConnectorTest extends AbstractConnectorTest
      */
     public function testConstruct()
     {
-        $connector = new fXmlRpcConnector($this->client);
+        $connector = new XmlRpcConnector($this->client);
 
         $this->assertSame($this->client, $connector->getClient());
     }
