@@ -9,10 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
+namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Section;
-use Indigo\Supervisor\Configuration;
 use Codeception\TestCase\Test;
 
 /**
@@ -93,7 +91,7 @@ class ConfigurationTest extends Test
 
         $this->assertSame(
             $this->config,
-            $this->config->addSections(array($this->section))
+            $this->config->addSections([$this->section])
         );
 
         $this->assertTrue($this->config->hasSection('test'));

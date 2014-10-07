@@ -26,9 +26,9 @@ class DummySection extends AbstractSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'optional' => 'integer',
-    );
+    ];
 }
 
 /**
@@ -46,7 +46,7 @@ class DummyNamedSection extends AbstractNamedSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'optional' => 'integer',
-    );
+    ];
 }

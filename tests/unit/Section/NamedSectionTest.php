@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
+namespace Indigo\Supervisor\Section;
 
-use Indigo\Supervisor\Section\DummyNamedSection;
 use Codeception\TestCase\Test;
 
 /**

@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
-
-use Indigo\Supervisor\Connector\ZendConnector;
+namespace Indigo\Supervisor\Connector;
 
 /**
  * Tests for Zend Connector

@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
-
-use Indigo\Supervisor\Connector\XmlRpcConnector;
+namespace Indigo\Supervisor\Connector;
 
 /**
  * Tests for fXmlRpc Connector

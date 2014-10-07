@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
+namespace Indigo\Supervisor\Connector;
 
 use Codeception\TestCase\Test;
 

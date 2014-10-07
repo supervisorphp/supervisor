@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
+namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Exception\SupervisorException;
-use Indigo\Supervisor\Process;
 use Codeception\TestCase\Test;
 
 /**
@@ -26,6 +25,11 @@ use Codeception\TestCase\Test;
  */
 class ProcessTest extends Test
 {
+    /**
+     * Connector mock
+     *
+     * @var Connector
+     */
     protected $connector;
 
     public function _before()
@@ -38,29 +42,29 @@ class ProcessTest extends Test
 
     public function provider()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'name' => 'test',
                     'state' => 0,
                     'pid' => 0,
-                )
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'name' => 'test',
                     'state' => 0,
                     'pid' => getmypid(),
-                )
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'name' => 'test',
                     'state' => 20,
                     'pid' => getmypid(),
-                )
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -68,7 +72,7 @@ class ProcessTest extends Test
      */
     public function testConstruct()
     {
-        $info = array('name' => 'test');
+        $info = ['name' => 'test'];
 
         $this->connector->shouldReceive('call')->andReturn($info);
 

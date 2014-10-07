@@ -9,11 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Test\Unit;
+namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Section\SectionInterface;
-use Indigo\Supervisor\Supervisor;
-use Indigo\Supervisor\Process;
 use Codeception\TestCase\Test;
 
 /**
