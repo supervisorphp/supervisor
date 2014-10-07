@@ -2,14 +2,16 @@ language: php
 php:
   - 5.4
   - 5.5
+  - 5.6
+  - hhvm
 
-script: vendor/bin/codecept run --coverage-xml
+script:
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then vendor/bin/codecept run --coverage-xml; fi;'
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then vendor/bin/codecept run; fi;'
 
 before_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;'
   - composer install --prefer-source
-  - resources/supervisor.sh
-  - sudo supervisord -c resources/supervisord.conf
 
 after_script:
-  - php ocular.phar code-coverage:upload --format=php-clover tests/_output/coverage.xml
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover tests/_output/coverage.xml; fi;'

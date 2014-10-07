@@ -26,31 +26,28 @@ class FcgiProgramSection extends ProgramSection
     /**
      * {@inheritdoc}
      */
-    protected $requiredOverride = array(
+    protected $requiredOverride = [
         'socket'  => 'string',
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
-    protected $optionalOverride = array(
+    protected $optionalOverride = [
         'socket_owner' => 'string',
         'socket_mode'  => 'integer',
-    );
+    ];
 
     /**
-     * Creates an Fcgi-Program section
-     *
      * @param string $name
-     * @param array  $options
+     * @param []     $options
      *
      * @codeCoverageIgnore
      */
-    public function __construct($name, array $options = array())
+    public function __construct($name, array $options = [])
     {
         $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOverride);
         $this->requiredOptions = array_merge($this->requiredOptions, $this->requiredOverride);
-
 
         parent::__construct($name, $options);
     }

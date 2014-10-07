@@ -1,10 +1,16 @@
 <?php
 
-namespace Test\Unit;
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Indigo\Supervisor\Section\SectionInterface;
-use Indigo\Supervisor\Supervisor;
-use Indigo\Supervisor\Process;
+namespace Indigo\Supervisor;
+
 use Codeception\TestCase\Test;
 
 /**
@@ -13,6 +19,8 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Supervisor
+ * @group              Supervisor
+ * @group              Main
  */
 class SupervisorTest extends Test
 {
@@ -21,7 +29,7 @@ class SupervisorTest extends Test
 
     public function _before()
     {
-        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
+        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector');
 
         $this->connector->shouldReceive('isLocal')
             ->andReturn(true);
@@ -34,27 +42,24 @@ class SupervisorTest extends Test
     }
 
     /**
-     * @covers ::getConnector
-     * @covers ::setConnector
-     * @group  Supervisor
+     * @covers ::__construct
      */
-    public function testConnector()
+    public function testConstruct()
     {
-        $this->assertSame(
-            $this->supervisor,
-            $this->supervisor->setConnector($this->connector)
-        );
+        $supervisor = new Supervisor($this->connector);
+    }
 
-        $this->assertSame(
-            $this->connector,
-            $this->supervisor->getConnector()
-        );
+    /**
+     * @covers ::isLocal
+     */
+    public function testIsLocal()
+    {
+        $this->assertTrue($this->supervisor->isLocal());
     }
 
     /**
      * @covers ::isState
      * @covers ::isRunning
-     * @group  Supervisor
      */
     public function testState()
     {
@@ -77,8 +82,8 @@ class SupervisorTest extends Test
     }
 
     /**
+     * @covers ::call
      * @covers ::__call
-     * @group  Supervisor
      */
     public function testCall()
     {
@@ -91,7 +96,6 @@ class SupervisorTest extends Test
     /**
      * @covers ::getProcess
      * @covers Indigo\Supervisor\Process
-     * @group  Supervisor
      */
     public function testGetProcess()
     {
@@ -105,14 +109,5 @@ class SupervisorTest extends Test
             $process,
             $this->supervisor->getProcess('test')
         );
-    }
-
-    /**
-     * @covers ::isLocal
-     * @group  Supervisor
-     */
-    public function testIsLocal()
-    {
-        $this->assertTrue($this->supervisor->isLocal());
     }
 }

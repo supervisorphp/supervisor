@@ -26,11 +26,11 @@ class SupervisorctlSection extends AbstractSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'serverurl'    => 'string',
         'username'     => 'string',
         'password'     => 'string',
         'prompt'       => 'string',
         'history_file' => 'string',
-    );
+    ];
 }

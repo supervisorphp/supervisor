@@ -12,21 +12,21 @@
 namespace Indigo\Supervisor\Connector;
 
 /**
- * Tests for Zend Connector
+ * Tests for fXmlRpc Connector
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
- * @coversDefaultClass Indigo\Supervisor\Connector\ZendConnector
+ * @coversDefaultClass Indigo\Supervisor\Connector\XmlRpcConnector
  * @group              Supervisor
  * @group              Connector
  */
-class ZendConnectorTest extends AbstractConnectorTest
+class XmlRpcConnectorTest extends AbstractConnectorTest
 {
     public function _before()
     {
-        $this->client = \Mockery::mock('Zend\\XmlRpc\\Client');
+        $this->client = \Mockery::mock('fXmlRpc\\ClientInterface');
 
-        $this->connector = new ZendConnector($this->client, true);
+        $this->connector = new XmlRpcConnector($this->client, true);
     }
 
     /**
@@ -34,7 +34,7 @@ class ZendConnectorTest extends AbstractConnectorTest
      */
     public function testConstruct()
     {
-        $connector = new ZendConnector($this->client);
+        $connector = new XmlRpcConnector($this->client);
 
         $this->assertFalse($connector->isLocal());
     }
@@ -46,7 +46,7 @@ class ZendConnectorTest extends AbstractConnectorTest
     public function testCallException()
     {
         $this->client->shouldReceive('call')
-            ->andThrow('Zend\\XmlRpc\\Client\\Exception\\FaultException');
+            ->andThrow('fXmlRpc\\Exception\\ResponseException');
 
         parent::testCallException();
     }

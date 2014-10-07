@@ -11,7 +11,6 @@
 
 namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Section\SectionInterface;
 use UnexpectedValueException;
 
 /**
@@ -24,16 +23,16 @@ class Configuration
     /**
      * Config sections
      *
-     * @var array
+     * @var []
      */
-    protected $sections = array();
+    protected $sections = [];
 
     /**
      * Available sections
      *
-     * @var array
+     * @var []
      */
-    protected $sectionMap = array(
+    protected $sectionMap = [
         'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
         'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
         'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
@@ -44,7 +43,7 @@ class Configuration
         'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
         'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
         'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterfaceSection',
-    );
+    ];
 
     /**
      * Adds or overrides default section map
@@ -52,7 +51,7 @@ class Configuration
      * @param string $section
      * @param string $className
      *
-     * @return this
+     * @return self
      */
     public function addSectionMap($section, $className)
     {
@@ -66,7 +65,7 @@ class Configuration
      *
      * @param string $section
      *
-     * @return SectionInterface|null
+     * @return Section|null
      */
     public function getSection($section)
     {
@@ -100,11 +99,11 @@ class Configuration
     /**
      * Adds or overrides a section
      *
-     * @param SectionInterface $section
+     * @param Section $section
      *
-     * @return this
+     * @return self
      */
-    public function addSection(SectionInterface $section)
+    public function addSection(Section $section)
     {
         $this->sections[$section->getName()] = $section;
 
@@ -114,9 +113,9 @@ class Configuration
     /**
      * Adds or overrides an array sections
      *
-     * @param array $sections
+     * @param [] $sections
      *
-     * @return this
+     * @return self
      */
     public function addSections(array $sections)
     {
@@ -146,18 +145,18 @@ class Configuration
     /**
      * Resets Configuration
      *
-     * @return array Array of previous sections
+     * @return [] Array of previous sections
      */
     public function reset()
     {
         $sections = $this->sections;
-        $this->sections = array();
+        $this->sections = [];
 
         return $sections;
     }
 
     /**
-     * Renders configuration
+     * Returns rendered configuration
      *
      * @return string
      */
@@ -183,7 +182,7 @@ class Configuration
      *
      * @return string
      */
-    public function renderSection(SectionInterface $section)
+    public function renderSection(Section $section)
     {
         $output = '['.$section->getName()."]\n";
 
@@ -203,7 +202,7 @@ class Configuration
      *
      * @param string $file
      *
-     * @return this
+     * @return self
      */
     public function parseFile($file)
     {
@@ -218,7 +217,7 @@ class Configuration
      *
      * @param string $string
      *
-     * @return this
+     * @return self
      */
     public function parseString($string)
     {
@@ -231,7 +230,7 @@ class Configuration
     /**
      * Parses an INI array
      *
-     * @param array $ini
+     * @param [] $ini
      */
     protected function parseIni(array $ini)
     {
@@ -249,11 +248,11 @@ class Configuration
     /**
      * Parses an individual section
      *
-     * @param  string $class   Name of SectionInterface class
-     * @param  mixed  $name    Section name or array of name and option
-     * @param  array  $section Array representation of section
+     * @param string $class   Name of Section class
+     * @param mixed  $name    Section name or array of name and option
+     * @param []     $section Array representation of section
      *
-     * @return SectionInterface
+     * @return Section
      */
     protected function parseIniSection($class, array $name, array $section)
     {
@@ -267,8 +266,8 @@ class Configuration
     }
 
     /**
-     * Alias to render()
-     * 
+     * Returns rendered configuration
+     *
      * @return string
      */
     public function __toString()

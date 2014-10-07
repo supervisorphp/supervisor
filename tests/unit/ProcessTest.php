@@ -1,9 +1,17 @@
 <?php
 
-namespace Test\Unit;
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Indigo\Supervisor;
 
 use Indigo\Supervisor\Exception\SupervisorException;
-use Indigo\Supervisor\Process;
 use Codeception\TestCase\Test;
 
 /**
@@ -12,14 +20,21 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Process
+ * @group              Supervisor
+ * @group              Main
  */
 class ProcessTest extends Test
 {
+    /**
+     * Connector mock
+     *
+     * @var Connector
+     */
     protected $connector;
 
     public function _before()
     {
-        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector\\ConnectorInterface');
+        $this->connector = \Mockery::mock('Indigo\\Supervisor\\Connector');
 
         $this->connector->shouldReceive('isLocal')
             ->andReturn(true);
@@ -27,39 +42,37 @@ class ProcessTest extends Test
 
     public function provider()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'name' => 'test',
                     'state' => 0,
                     'pid' => 0,
-                )
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'name' => 'test',
                     'state' => 0,
                     'pid' => getmypid(),
-                )
-            ),
-            array(
-                array(
+                ],
+            ],
+            [
+                [
                     'name' => 'test',
                     'state' => 20,
                     'pid' => getmypid(),
-                )
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
-     * @covers ::getConnector
-     * @covers ::setConnector
-     * @group  Supervisor
+     * @covers ::__construct
      */
     public function testConstruct()
     {
-        $info = array('name' => 'test');
+        $info = ['name' => 'test'];
 
         $this->connector->shouldReceive('call')->andReturn($info);
 
@@ -73,28 +86,7 @@ class ProcessTest extends Test
     }
 
     /**
-     * @covers ::getConnector
-     * @covers ::setConnector
-     * @group  Supervisor
-     */
-    public function testConnector()
-    {
-        $process = new Process(array(), $this->connector);
-
-        $this->assertSame(
-            $process,
-            $process->setConnector($this->connector)
-        );
-
-        $this->assertSame(
-            $this->connector,
-            $process->getConnector()
-        );
-    }
-
-    /**
      * @dataProvider provider
-     * @group        Supervisor
      */
     public function testProcess($payload)
     {
@@ -108,16 +100,6 @@ class ProcessTest extends Test
         $this->assertEquals($payload['name'], $process['name']);
         $this->assertTrue(isset($process['name']));
         $this->assertEquals($payload['state'] == 20, $process->isRunning());
-
-        $this->assertInstanceOf(
-            get_class($this->connector),
-            $process->getConnector()
-        );
-
-        $this->assertInstanceOf(
-            'Indigo\\Supervisor\\Process',
-            $process->setConnector($this->connector)
-        );
 
         if ($payload['state'] == 20) {
             $this->assertGreaterThan(0, $process->getMemUsage());
@@ -146,10 +128,9 @@ class ProcessTest extends Test
     }
 
     /**
-     * @covers            ::restart
-     * @covers            Indigo\Supervisor\Exception\SupervisorException
-     * @dataProvider      provider
-     * @group             Supervisor
+     * @covers       ::restart
+     * @covers       Indigo\Supervisor\Exception\SupervisorException
+     * @dataProvider provider
      */
     public function testProcessRestartFailure($payload)
     {

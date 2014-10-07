@@ -1,9 +1,16 @@
 <?php
 
-namespace Test\Unit;
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Indigo\Supervisor\Section\SectionInterface;
-use Indigo\Supervisor\Configuration;
+namespace Indigo\Supervisor;
+
 use Codeception\TestCase\Test;
 
 /**
@@ -12,26 +19,38 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Configuration
+ * @group              Supervisor
+ * @group              Main
  */
 class ConfigurationTest extends Test
 {
+    /**
+     * Configuration object
+     *
+     * @var Configuration
+     */
     protected $config;
+
+    /**
+     * Section mock
+     *
+     * @var Section
+     */
     protected $section;
 
     public function _before()
     {
         $this->config = new Configuration;
 
-        $this->section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface');
+        $this->section = \Mockery::mock('Indigo\\Supervisor\\Section');
 
         $this->section->shouldReceive('getName')->andReturn('test')->byDefault();
-        $this->section->shouldReceive('getOptions')->andReturn(array('test' => true))->byDefault();
+        $this->section->shouldReceive('getOptions')->andReturn(['test' => true])->byDefault();
         $this->section->shouldReceive('hasOptions')->andReturn(true)->byDefault();
     }
 
     /**
      * @covers ::addSectionMap
-     * @group  Supervisor
      */
     public function testSectionMap()
     {
@@ -43,7 +62,6 @@ class ConfigurationTest extends Test
 
     /**
      * @covers ::reset
-     * @group  Supervisor
      */
     public function testReset()
     {
@@ -61,7 +79,6 @@ class ConfigurationTest extends Test
      * @covers ::hasSection
      * @covers ::addSection
      * @covers ::addSections
-     * @group  Supervisor
      */
     public function testSection()
     {
@@ -74,7 +91,7 @@ class ConfigurationTest extends Test
 
         $this->assertSame(
             $this->config,
-            $this->config->addSections(array($this->section))
+            $this->config->addSections([$this->section])
         );
 
         $this->assertTrue($this->config->hasSection('test'));
@@ -95,7 +112,6 @@ class ConfigurationTest extends Test
         /**
      * @covers ::addSection
      * @covers ::removeSection
-     * @group  Supervisor
      */
     public function testRemoveSection()
     {
@@ -108,7 +124,6 @@ class ConfigurationTest extends Test
 
         /**
      * @covers ::removeSection
-     * @group  Supervisor
      */
     public function testRemoveFakeSection()
     {
@@ -118,7 +133,6 @@ class ConfigurationTest extends Test
     /**
      * @covers ::render
      * @covers ::__toString
-     * @group  Supervisor
      */
     public function testRender()
     {
@@ -131,7 +145,6 @@ class ConfigurationTest extends Test
 
     /**
      * @covers ::renderSection
-     * @group  Supervisor
      */
     public function testRenderSection()
     {
@@ -147,7 +160,6 @@ class ConfigurationTest extends Test
      * @covers ::parseFile
      * @covers ::parseIni
      * @covers ::parseIniSection
-     * @group  Supervisor
      */
     public function testParseFile()
     {
@@ -163,7 +175,6 @@ class ConfigurationTest extends Test
      * @covers ::parseString
      * @covers ::parseIni
      * @covers ::parseIniSection
-     * @group  Supervisor
      */
     public function testParseString()
     {
@@ -181,7 +192,6 @@ class ConfigurationTest extends Test
      * @covers            ::parseIni
      * @covers            ::parseIniSection
      * @expectedException UnexpectedValueException
-     * @group             Supervisor
      */
     public function testParseFailure()
     {

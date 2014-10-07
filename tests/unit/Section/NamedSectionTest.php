@@ -1,8 +1,16 @@
 <?php
 
-namespace Test\Unit;
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Indigo\Supervisor\Section\DummyNamedSection;
+namespace Indigo\Supervisor\Section;
+
 use Codeception\TestCase\Test;
 
 /**
@@ -11,31 +19,36 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Section\AbstractNamedSection
+ * @group              Supervisor
+ * @group              Section
  */
 class NamedSectionTest extends Test
 {
+    /**
+     * Section object
+     *
+     * @var Section
+     */
     protected $section;
 
-    public function setUp()
+    public function _before()
     {
         $this->section = new DummyNamedSection('name');
     }
 
     /**
      * @covers ::__construct
-     * @group  Supervisor
      */
     public function testConstruct()
     {
-        $section = new DummyNamedSection('names', array('optional' => 1));
+        $section = new DummyNamedSection('names', ['optional' => 1]);
 
-        $this->assertEquals(array('optional' => 1), $section->getOptions());
+        $this->assertEquals(['optional' => 1], $section->getOptions());
         $this->assertEquals('dummy:names', $section->getName());
     }
 
     /**
      * @covers ::getName
-     * @group  Supervisor
      */
     public function testName()
     {

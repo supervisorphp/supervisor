@@ -1,8 +1,16 @@
 <?php
 
-namespace Test\Unit;
+/*
+ * This file is part of the Indigo Supervisor package.
+ *
+ * (c) Indigo Development Team
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Indigo\Supervisor\Section\DummySection;
+namespace Indigo\Supervisor\Section;
+
 use Codeception\TestCase\Test;
 
 /**
@@ -11,30 +19,35 @@ use Codeception\TestCase\Test;
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * @coversDefaultClass Indigo\Supervisor\Section\AbstractSection
+ * @group              Supervisor
+ * @group              Section
  */
 class SectionTest extends Test
 {
+    /**
+     * Section object
+     *
+     * @var Section
+     */
     protected $section;
 
-    public function setUp()
+    public function _before()
     {
         $this->section = new DummySection;
     }
 
     /**
      * @covers ::__construct
-     * @group  Supervisor
      */
     public function testConstruct()
     {
-        $section = new DummySection(array('optional' => 1));
+        $section = new DummySection(['optional' => 1]);
 
-        $this->assertEquals(array('optional' => 1), $section->getOptions());
+        $this->assertEquals(['optional' => 1], $section->getOptions());
     }
 
     /**
      * @covers ::getName
-     * @group  Supervisor
      */
     public function testName()
     {
@@ -45,13 +58,12 @@ class SectionTest extends Test
      * @covers ::getOptions
      * @covers ::setOptions
      * @covers ::hasOptions
-     * @group  Supervisor
      */
     public function testOptions()
     {
         $this->assertFalse($this->section->hasOptions());
-        $this->assertSame($this->section, $this->section->setOptions(array('optional' => 2)));
-        $this->assertEquals(array('optional' => 2), $this->section->getOptions());
+        $this->assertSame($this->section, $this->section->setOptions(['optional' => 2]));
+        $this->assertEquals(['optional' => 2], $this->section->getOptions());
         $this->assertTrue($this->section->hasOptions());
     }
 }

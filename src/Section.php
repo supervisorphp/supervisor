@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor;
 
 /**
- * Section Interface
+ * Implements details for Configuration sections
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-interface SectionInterface
+interface Section
 {
     /**
      * Gets the section name
@@ -29,14 +29,16 @@ interface SectionInterface
     /**
      * Returns the options as an array
      *
-     * @return array
+     * @return []
      */
     public function getOptions();
 
     /**
      * Sets an array of options
      *
-     * @return SectionInterface
+     * @param [] $options
+     *
+     * @return self
      */
     public function setOptions(array $options);
 

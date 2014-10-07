@@ -11,8 +11,6 @@
 
 namespace Indigo\Supervisor;
 
-use Indigo\Supervisor\Connector\ConnectorInterface;
-
 /**
  * Manage supervisor instance
  *
@@ -29,44 +27,16 @@ class Supervisor
     const FATAL      = 2;
 
     /**
-     * Connector object
-     *
-     * @var ConnectorInterface
+     * @var Connector
      */
     protected $connector;
 
     /**
-     * Creates new Supervisor instance
-     *
-     * @param ConnectorInterface $connector
+     * @param Connector $connector
      */
-    public function __construct(ConnectorInterface $connector)
+    public function __construct(Connector $connector)
     {
         $this->connector = $connector;
-    }
-
-    /**
-     * Returns connector object
-     *
-     * @return ConnectorInterface
-     */
-    public function getConnector()
-    {
-        return $this->connector;
-    }
-
-    /**
-     * Sets connector
-     *
-     * @param ConnectorInterface $connector
-     *
-     * @return this
-     */
-    public function setConnector(ConnectorInterface $connector)
-    {
-        $this->connector = $connector;
-
-        return $this;
     }
 
     /**
@@ -84,11 +54,11 @@ class Supervisor
      *
      * @param string $namespace Namespace of method
      * @param string $method    Method name
-     * @param array  $arguments Argument list
+     * @param []     $arguments Argument list
      *
      * @return mixed
      */
-    public function call($namespace, $method, array $arguments = array())
+    public function call($namespace, $method, array $arguments = [])
     {
         return $this->connector->call($namespace, $method, $arguments);
     }

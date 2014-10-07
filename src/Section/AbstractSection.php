@@ -11,6 +11,7 @@
 
 namespace Indigo\Supervisor\Section;
 
+use Indigo\Supervisor\Section;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -20,14 +21,14 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-abstract class AbstractSection implements SectionInterface
+abstract class AbstractSection implements Section
 {
     /**
      * Options
      *
-     * @var array
+     * @var []
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Name of section (eg. supervisord or program:test)
@@ -39,23 +40,23 @@ abstract class AbstractSection implements SectionInterface
     /**
      * Required options
      *
-     * @var array
+     * @var []
      */
-    protected $requiredOptions = array();
+    protected $requiredOptions = [];
 
     /**
      * Optional options
      *
-     * @var array
+     * @var []
      */
-    protected $optionalOptions = array();
+    protected $optionalOptions = [];
 
     /**
      * Default constructor
      *
-     * @param array $options
+     * @param [] $options
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $this->setOptions($options);
     }
@@ -79,7 +80,7 @@ abstract class AbstractSection implements SectionInterface
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options = array())
+    public function setOptions(array $options = [])
     {
         $this->options = $this->resolveOptions($options);
 
@@ -103,7 +104,7 @@ abstract class AbstractSection implements SectionInterface
      *
      * @codeCoverageIgnore
      */
-    protected function resolveOptions(array $options = array())
+    protected function resolveOptions(array $options = [])
     {
         static $resolver;
 
@@ -142,7 +143,7 @@ abstract class AbstractSection implements SectionInterface
     {
         return function (Options $options, $value) {
             if (is_array($value)) {
-                $return = array();
+                $return = [];
 
                 foreach ($value as $key => $val) {
                     if (is_int($key)) {
