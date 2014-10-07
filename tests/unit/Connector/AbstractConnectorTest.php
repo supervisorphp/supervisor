@@ -43,4 +43,32 @@ abstract class AbstractConnectorTest extends Test
         $this->assertSame($this->connector, $this->connector->setClient($this->client));
         $this->assertSame($this->client, $this->connector->getClient());
     }
+
+    /**
+     * @covers ::isLocal
+     */
+    public function testIsLocal()
+    {
+        $this->assertTrue($this->connector->isLocal());
+    }
+
+    /**
+     * @covers ::call
+     */
+    public function testCall()
+    {
+        $this->client->shouldReceive('call')
+            ->andReturn(true);
+
+        $this->assertTrue($this->connector->call('system', 'isWorking'));
+    }
+
+    /**
+     * @covers            ::call
+     * @expectedException Indigo\Supervisor\Exception\SupervisorException
+     */
+    public function testCallException()
+    {
+        $this->connector->call('asd', 'dsa');
+    }
 }

@@ -12,9 +12,8 @@
 namespace Indigo\Supervisor\Connector;
 
 use Indigo\Supervisor\Exception\SupervisorException;
-use fXmlRpc\ClientInterface;
+use fXmlRpc\ClientInterface as Client;
 use fXmlRpc\Exception\ResponseException;
-use ReflectionProperty;
 
 /**
  * fxmlrpc Connector
@@ -31,19 +30,18 @@ class fXmlRpcConnector extends AbstractConnector
     protected $client;
 
     /**
-     * Creates new fXmlRpc connector
-     *
-     * @param ClientInterface $client
+     * @param Client  $client
+     * @param boolean $local
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(Client $client, $local = false)
     {
-        $this->setClient($client);
+        $this->setClient($client, $local);
     }
 
     /**
      * Returns the client
      *
-     * @return ClientInterface
+     * @return Client
      */
     public function getClient()
     {
@@ -53,13 +51,15 @@ class fXmlRpcConnector extends AbstractConnector
     /**
      * Sets the client
      *
-     * @param ClientInterface $client
+     * @param Client  $client
+     * @param boolean $local
      *
      * @return self
      */
-    public function setClient(ClientInterface $client)
+    public function setClient(Client $client, $local = false)
     {
         $this->client = $client;
+        $this->local = (bool) $local;
 
         return $this;
     }
@@ -67,7 +67,7 @@ class fXmlRpcConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function call($namespace, $method, array $arguments = array())
+    public function call($namespace, $method, array $arguments = [])
     {
         try {
             return $this->client->call($namespace.'.'.$method, $arguments);

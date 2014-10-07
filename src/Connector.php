@@ -23,7 +23,7 @@ interface Connector
      *
      * @param string $namespace Namespace
      * @param string $method    Method
-     * @param array  $arguments Optional arguments
+     * @param []     $arguments Optional arguments
      *
      * @return mixed
      */
