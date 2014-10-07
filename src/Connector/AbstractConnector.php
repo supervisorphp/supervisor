@@ -21,20 +21,6 @@ use Indigo\Supervisor\Connector;
 abstract class AbstractConnector implements Connector
 {
     /**
-     * Optional username
-     *
-     * @var string
-     */
-    protected $username;
-
-    /**
-     * Optional password
-     *
-     * @var string
-     */
-    protected $password;
-
-    /**
      * Whether Supervisor is local or not
      *
      * @var boolean
@@ -47,16 +33,5 @@ abstract class AbstractConnector implements Connector
     public function isLocal()
     {
         return $this->local;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCredentials($username, $password)
-    {
-        $this->username = $username;
-        $this->password = $password;
-
-        return $this;
     }
 }

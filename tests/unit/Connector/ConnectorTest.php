@@ -38,14 +38,6 @@ class ConnectorTest extends Test
     }
 
     /**
-     * @covers ::setCredentials
-     */
-    public function testCredentials()
-    {
-        $this->assertSame($this->connector, $this->connector->setCredentials('user', 123));
-    }
-
-    /**
      * @covers ::isLocal
      */
     public function testIsLocal()

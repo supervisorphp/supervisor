@@ -44,17 +44,6 @@ class fXmlRpcConnectorTest extends AbstractConnectorTest
     }
 
     /**
-     * @covers ::setCredentials
-     */
-    public function testCredentials()
-    {
-        $this->assertSame(
-            $this->connector,
-            $this->connector->setCredentials('user', '123')
-        );
-    }
-
-    /**
      * @covers            ::call
      * @expectedException Indigo\Supervisor\Exception\SupervisorException
      */

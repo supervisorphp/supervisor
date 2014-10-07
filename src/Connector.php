@@ -19,16 +19,6 @@ namespace Indigo\Supervisor;
 interface Connector
 {
     /**
-     * Sets optional credentials
-     *
-     * @param string $username
-     * @param string $password
-     *
-     * @return self
-     */
-    public function setCredentials($username, $password);
-
-    /**
      * Sends a new request to the XML-RPC server
      *
      * @param string $namespace Namespace

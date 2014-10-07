@@ -41,16 +41,6 @@ class ZendConnector extends AbstractConnector
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setCredentials($username, $password)
-    {
-        $this->client->getHttpClient()->setAuth($username, $password, HttpClient::AUTH_BASIC);
-
-        return parent::setCredentials($username, $password);
-    }
-
-    /**
      * Returns the client
      *
      * @return Client

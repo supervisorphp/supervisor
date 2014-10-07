@@ -67,21 +67,6 @@ class fXmlRpcConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function setCredentials($username, $password)
-    {
-        // Ugly hack until transport problem is solved
-        $prop = new ReflectionProperty('fXmlRpc\\Client', 'transport');
-        $prop->setAccessible(true);
-        $transport = $prop->getValue($this->client);
-
-        $transport->setHeader('Authorization', 'Basic ' . base64_encode($username . ':' . $password));
-
-        return parent::setCredentials($username, $password);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function call($namespace, $method, array $arguments = array())
     {
         try {
