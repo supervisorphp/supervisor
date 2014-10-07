@@ -29,17 +29,17 @@ class InetHttpServerSection extends AbstractSection
     /**
      * {@inheritdoc}
      */
-    protected $requiredOptions = array(
-        'port' => array('string', 'integer'),
-    );
+    protected $requiredOptions = [
+        'port' => ['string', 'integer'],
+    ];
 
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'username' => 'string',
         'password' => 'string',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -50,12 +50,12 @@ class InetHttpServerSection extends AbstractSection
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setNormalizers(array(
+        $resolver->setNormalizers([
             'port' => function (Options $options, $value) {
                 is_int($value) and $value = '*:' . $value;
 
                 return $value;
             },
-        ));
+        ]);
     }
 }

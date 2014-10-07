@@ -26,7 +26,7 @@ class RpcInterfaceSection extends AbstractNamedSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'supervisor.rpcinterface_factory' => 'string',
-    );
+    ];
 }

@@ -28,9 +28,9 @@ class SupervisordSection extends AbstractSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'logfile'          => 'string',
-        'logfile_maxbytes' => array('integer', 'string'),
+        'logfile_maxbytes' => ['integer', 'string'],
         'logfile_backups'  => 'integer',
         'loglevel'         => 'string',
         'pidfile'          => 'string',
@@ -43,9 +43,9 @@ class SupervisordSection extends AbstractSection
         'user'             => 'string',
         'directory'        => 'string',
         'strip_ansi'       => 'bool',
-        'environment'      => array('array', 'string'),
+        'environment'      => ['array', 'string'],
         'identifier'       => 'string',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -56,10 +56,10 @@ class SupervisordSection extends AbstractSection
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setAllowedValues(array(
-            'loglevel' => array('critical', 'error', 'warn', 'info', 'debug', 'trace', 'blather'),
-        ))->setNormalizers(array(
+        $resolver->setAllowedValues([
+            'loglevel' => ['critical', 'error', 'warn', 'info', 'debug', 'trace', 'blather'],
+        ])->setNormalizers([
             'environment' => $this->environmentNormalizer(),
-        ));
+        ]);
     }
 }

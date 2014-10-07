@@ -26,21 +26,19 @@ class EventListenerSection extends ProgramSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOverride = array(
+    protected $optionalOverride = [
         'buffer_size'    => 'integer',
         'events'         => 'array',
         'result_handler' => 'string',
-    );
+    ];
 
     /**
-     * Creates an EventListener section
-     *
      * @param string $name
-     * @param array  $options
+     * @param []     $options
      *
      * @codeCoverageIgnore
      */
-    public function __construct($name, array $options = array())
+    public function __construct($name, array $options = [])
     {
         $this->optionalOptions = array_merge($this->optionalOptions, $this->optionalOverride);
 

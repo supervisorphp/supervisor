@@ -26,11 +26,11 @@ class UnixHttpServerSection extends AbstractSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'file'     => 'string',
-        'chmod'    => array('integer', 'string'),
+        'chmod'    => ['integer', 'string'],
         'chown'    => 'string',
         'username' => 'string',
         'password' => 'string',
-    );
+    ];
 }

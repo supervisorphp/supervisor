@@ -29,9 +29,9 @@ class IncludeSection extends AbstractSection
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
-        'files' => array('array', 'string'),
-    );
+    protected $optionalOptions = [
+        'files' => ['array', 'string'],
+    ];
 
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ class IncludeSection extends AbstractSection
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setNormalizers(array(
+        $resolver->setNormalizers([
             'files' => function (Options $options, $value) {
                 if (is_array($value)) {
                     $value = implode(' ', $value);
@@ -50,6 +50,6 @@ class IncludeSection extends AbstractSection
 
                 return $value;
             }
-        ));
+        ]);
     }
 }

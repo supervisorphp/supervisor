@@ -25,6 +25,11 @@ use Codeception\TestCase\Test;
  */
 class NamedSectionTest extends Test
 {
+    /**
+     * Section object
+     *
+     * @var Section
+     */
     protected $section;
 
     public function _before()
@@ -37,9 +42,9 @@ class NamedSectionTest extends Test
      */
     public function testConstruct()
     {
-        $section = new DummyNamedSection('names', array('optional' => 1));
+        $section = new DummyNamedSection('names', ['optional' => 1]);
 
-        $this->assertEquals(array('optional' => 1), $section->getOptions());
+        $this->assertEquals(['optional' => 1], $section->getOptions());
         $this->assertEquals('dummy:names', $section->getName());
     }
 

@@ -26,14 +26,14 @@ class GroupSection extends AbstractNamedSection
     /**
      * {@inheritdoc}
      */
-    protected $requiredOptions = array(
+    protected $requiredOptions = [
         'programs' => 'array',
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'priority' => 'integer',
-    );
+    ];
 }

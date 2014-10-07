@@ -11,7 +11,7 @@
 
 namespace Test\Unit;
 
-use Indigo\Supervisor\Section\SectionInterface;
+use Indigo\Supervisor\Section;
 use Indigo\Supervisor\Configuration;
 use Codeception\TestCase\Test;
 
@@ -26,17 +26,28 @@ use Codeception\TestCase\Test;
  */
 class ConfigurationTest extends Test
 {
+    /**
+     * Configuration object
+     *
+     * @var Configuration
+     */
     protected $config;
+
+    /**
+     * Section mock
+     *
+     * @var Section
+     */
     protected $section;
 
     public function _before()
     {
         $this->config = new Configuration;
 
-        $this->section = \Mockery::mock('Indigo\\Supervisor\\Section\\SectionInterface');
+        $this->section = \Mockery::mock('Indigo\\Supervisor\\Section');
 
         $this->section->shouldReceive('getName')->andReturn('test')->byDefault();
-        $this->section->shouldReceive('getOptions')->andReturn(array('test' => true))->byDefault();
+        $this->section->shouldReceive('getOptions')->andReturn(['test' => true])->byDefault();
         $this->section->shouldReceive('hasOptions')->andReturn(true)->byDefault();
     }
 

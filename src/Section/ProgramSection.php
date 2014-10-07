@@ -28,20 +28,20 @@ class ProgramSection extends AbstractNamedSection
     /**
      * {@inheritdoc}
      */
-    protected $requiredOptions = array(
+    protected $requiredOptions = [
         'command' => 'string',
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
-    protected $optionalOptions = array(
+    protected $optionalOptions = [
         'process_name'            => 'string',
         'numprocs'                => 'integer',
         'numprocs_start'          => 'integer',
         'priority'                => 'integer',
         'autostart'               => 'bool',
-        'autorestart'             => array('bool', 'string'),
+        'autorestart'             => ['bool', 'string'],
         'startsecs'               => 'integer',
         'startretries'            => 'integer',
         'exitcodes'               => 'array',
@@ -52,22 +52,22 @@ class ProgramSection extends AbstractNamedSection
         'user'                    => 'string',
         'redirect_stderr'         => 'bool',
         'stdout_logfile'          => 'string',
-        'stdout_logfile_maxbytes' => array('integer', 'string'),
+        'stdout_logfile_maxbytes' => ['integer', 'string'],
         'stdout_logfile_backups'  => 'integer',
-        'stdout_capture_maxbytes' => array('integer', 'string'),
+        'stdout_capture_maxbytes' => ['integer', 'string'],
         'stdout_events_enabled'   => 'bool',
         'stdout_syslog'           => 'bool',
         'stderr_logfile'          => 'bool',
-        'stderr_logfile_maxbytes' => array('integer', 'string'),
+        'stderr_logfile_maxbytes' => ['integer', 'string'],
         'stderr_logfile_backups'  => 'integer',
-        'stderr_capture_maxbytes' => array('integer', 'string'),
+        'stderr_capture_maxbytes' => ['integer', 'string'],
         'stderr_events_enabled'   => 'bool',
         'stderr_syslog'           => 'bool',
-        'environment'             => array('array', 'string'),
+        'environment'             => ['array', 'string'],
         'directory'               => 'string',
         'umask'                   => 'integer',
         'serverurl'               => 'string',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -79,12 +79,12 @@ class ProgramSection extends AbstractNamedSection
         parent::setDefaultOptions($resolver);
 
         $resolver
-            ->setAllowedValues(array(
-                'autorestart' => array(true, false, 'unexpected'),
-                'stopsignal'  => array('TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'),
-            ))
-            ->setNormalizers(array(
+            ->setAllowedValues([
+                'autorestart' => [true, false, 'unexpected'],
+                'stopsignal'  => ['TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'],
+            ])
+            ->setNormalizers([
                 'environment' => $this->environmentNormalizer(),
-            ));
+            ]);
     }
 }

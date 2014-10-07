@@ -28,12 +28,10 @@ class AbstractNamedSection extends AbstractSection
     protected $sectionName;
 
     /**
-     * Creates a Named section
-     *
      * @param string $name
-     * @param array  $options
+     * @param []     $options
      */
-    public function __construct($name, array $options = array())
+    public function __construct($name, array $options = [])
     {
         $this->name = $this->sectionName . ':' . trim($name);
 
