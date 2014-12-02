@@ -39,7 +39,7 @@ $connector = ...;
 $supervisor = new Supervisor($connector);
 
 // returns Process object
-$process->$supervisor->getProcess('test_process');
+$process = $supervisor->getProcess('test_process');
 
 // returns array of process info
 $supervisor->getProcessInfo('test_process');
@@ -78,7 +78,8 @@ Example:
 
 ``` php
 use Indigo\Supervisor\Configuration;
-use Indigo\Supervisor\Section\Program;
+use Indigo\Supervisor\Section\SupervisordSection;
+use Indigo\Supervisor\Section\ProgramSection;
 
 $config = new Configuration;
 
