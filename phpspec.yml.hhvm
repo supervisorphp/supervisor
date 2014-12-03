@@ -1,0 +1,5 @@
+suites:
+  http_suite:
+    namespace: Indigo\Supervisor
+    psr4_prefix: Indigo\Supervisor
+formatter.name: pretty
