@@ -11,21 +11,19 @@
 
 namespace Indigo\Supervisor\Connector;
 
-use Indigo\Supervisor\Connector;
-
 /**
- * Abstract Connector
+ * Checks whether connectiong to a local instance or not
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-abstract class AbstractConnector implements Connector
+trait LocalInstance
 {
     /**
-     * Whether Supervisor is local or not
+     * Whether Supervisor is running locally or not
      *
      * @var boolean
      */
-    protected $local;
+    protected $local = false;
 
     /**
      * {@inheritdoc}

@@ -36,6 +36,11 @@
             "Indigo\\Supervisor\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Indigo\\Supervisor\\Stub\\": "stub/"
+        }
+    },
     "config": {
         "bin-dir": "bin"
     },

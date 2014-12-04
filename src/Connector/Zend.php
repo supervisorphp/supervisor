@@ -11,20 +11,25 @@
 
 namespace Indigo\Supervisor\Connector;
 
+use Indigo\Supervisor\Connector;
 use Indigo\Supervisor\Exception\SupervisorException;
-use fXmlRpc\ClientInterface as Client;
-use fXmlRpc\Exception\ResponseException;
+use Zend\XmlRpc\Client;
+use Zend\XmlRpc\Client\Exception\FaultException;
 
 /**
- * XmlRpc Connector
+ * Uses Zend XML-RPC
+ *
+ * There are known and tested performance issues with it
+ *
+ * @see https://github.com/lstrojny/fxmlrpc#how-fast-is-it-really
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class XmlRpcConnector extends AbstractConnector
+class Zend implements Connector
 {
+    use LocalInstance;
+
     /**
-     * Client object
-     *
      * @var Client
      */
     protected $client;
@@ -46,8 +51,8 @@ class XmlRpcConnector extends AbstractConnector
     {
         try {
             return $this->client->call($namespace.'.'.$method, $arguments);
-        } catch (ResponseException $e) {
-            throw new SupervisorException($e->getFaultString(), $e->getFaultCode(), $e);
+        } catch (FaultException $e) {
+            throw new SupervisorException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }
