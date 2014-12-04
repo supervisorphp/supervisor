@@ -47,18 +47,28 @@ class Process implements ArrayAccess
     protected $payload = [];
 
     /**
-     * @param []|string $payload   Process name or info array
+     * @param array     $payload   Process name or info array
      * @param Connector $connector
      */
-    public function __construct($payload, Connector $connector)
+    public function __construct(array $payload, Connector $connector)
     {
-        // Gets payload if process name given
-        if (is_array($payload) === false) {
-            $payload = $connector->call('supervisor', 'getProcessInfo', [$payload]);
-        }
-
         $this->payload = $payload;
         $this->connector = $connector;
+    }
+
+    /**
+     * Returns a process by it's name
+     *
+     * @param string    $name
+     * @param Connector $connector
+     *
+     * @return self
+     */
+    public static function get($name, Connector $connector)
+    {
+        $payload = $connector->call('supervisor', 'getProcessInfo', [$name]);
+
+        return new static($payload, $connector);
     }
 
     /**
@@ -88,40 +98,19 @@ class Process implements ArrayAccess
      */
     public function isRunning()
     {
-        return $this->isState();
+        return $this->checkState(self::RUNNING);
     }
 
     /**
-     * Check against state
+     * Checks if process is in the given state
      *
      * @param integer $state
      *
      * @return boolean
      */
-    public function isState($state = self::RUNNING)
+    public function checkState($state)
     {
         return $this->payload['state'] == $state;
-    }
-
-    /**
-     * Returns memory usage
-     *
-     * @return integer Used memory in bytes (0 if cannot be determined)
-     */
-    public function getMemUsage()
-    {
-        $mem = 0;
-
-        if ($this->connector->isLocal() and $this->isRunning()) {
-            $process = new SymfonyProcess('ps -orss= -p ' . $this->payload['pid']);
-            $process->run();
-
-            if ($process->isSuccessful()) {
-                $mem = intval($process->getOutput()) * 1024;
-            }
-        }
-
-        return $mem;
     }
 
     /**
@@ -138,6 +127,14 @@ class Process implements ArrayAccess
         array_unshift($arguments, $this->payload['name']);
 
         return $this->connector->call($namespace, $method, $arguments);
+    }
+
+    /**
+     * Updates the the process information
+     */
+    public function update()
+    {
+        $this->payload = $this->call('supervisor', 'getProcessInfo');
     }
 
     /**
@@ -173,14 +170,8 @@ class Process implements ArrayAccess
      */
     public function restart($wait = true)
     {
-        try {
-            $this->stop($wait);
-            $this->start($wait);
-        } catch (SupervisorException $e) {
-            return false;
-        }
-
-        return true;
+        $this->stop(true);
+        return $this->start($wait);
     }
 
     /**

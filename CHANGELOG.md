@@ -8,13 +8,20 @@
 - Closes down API
 - Updates tests
 
+### Added
+
+- `update` method in `Process` updates the payload
+
 ### Altered
 
-- `isState` method is renamed to `checkState`
+- `isState` method is renamed to `checkState` (in both `Supervisor` and `Process`)
+- Process must wait for the response of stop in `restart`
 
 ### Removed
 
 - Ability to pass `Process` object into `Supervisor` method calls: in case of different connector instances it could have led to an inconsistent state
+- Ability to construct `Process` object from name, use `Process::get` instead
+- Memory usage check form `Process`
 
 
 ## 2.0.1 (released 2014-07-13)
