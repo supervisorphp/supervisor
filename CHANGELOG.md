@@ -8,6 +8,14 @@
 - Closes down API
 - Updates tests
 
+### Altered
+
+- `isState` method is renamed to `checkState`
+
+### Removed
+
+- Ability to pass `Process` object into `Supervisor` method calls: in case of different connector instances it could have led to an inconsistent state
+
 
 ## 2.0.1 (released 2014-07-13)
 

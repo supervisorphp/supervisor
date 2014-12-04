@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor;
 
 /**
- * Manage supervisor instance
+ * Supervisor API
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -52,9 +52,9 @@ class Supervisor
     /**
      * Calls a method
      *
-     * @param string $namespace Namespace of method
-     * @param string $method    Method name
-     * @param []     $arguments Argument list
+     * @param string $namespace
+     * @param string $method
+     * @param array  $arguments
      *
      * @return mixed
      */
@@ -70,20 +70,8 @@ class Supervisor
      */
     public function __call($method, $arguments)
     {
-        $process = reset($arguments);
-
-        if ($process instanceof Process) {
-            array_shift($arguments);
-
-            return $process->call('supervisor', $method, $arguments);
-        }
-
-        return $this->call('supervisor', $method, $arguments);
+        return $this->connector->call('supervisor', $method, $arguments);
     }
-
-    /**
-     * Status and control
-     */
 
     /**
      * Is service running?
@@ -92,33 +80,27 @@ class Supervisor
      */
     public function isRunning()
     {
-        return $this->isState();
+        return $this->checkState(self::RUNNING);
     }
 
     /**
      * Checks if supervisord is in given state
      *
-     * @param integer $isState
+     * @param integer $checkState
      *
      * @return boolean
      */
-    public function isState($isState = self::RUNNING)
+    public function checkState($checkState)
     {
         $state = $this->getState();
 
-        return $state['statecode'] == $isState;
+        return $state['statecode'] == $checkState;
     }
-
-    /**
-     * Process control
-     */
 
     /**
      * Returns all processes as Process objects
      *
      * @return array Array of Process objects
-     *
-     * @codeCoverageIgnore
      */
     public function getAllProcesses()
     {
@@ -140,6 +122,6 @@ class Supervisor
      */
     public function getProcess($name)
     {
-        return new Process($name, $this->connector);
+        return Process::get($name, $this->connector);
     }
 }
