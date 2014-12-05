@@ -12,13 +12,11 @@
 namespace Indigo\Supervisor\Section;
 
 /**
- * Abstract Named Section
- *
- * Uses a custom name
+ * Section name contains identifier
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class AbstractNamedSection extends AbstractSection
+abstract class Named extends Base
 {
     /**
      * Predefined section name
@@ -29,12 +27,12 @@ class AbstractNamedSection extends AbstractSection
 
     /**
      * @param string $name
-     * @param []     $options
+     * @param array  $properties
      */
-    public function __construct($name, array $options = [])
+    public function __construct($name, array $properties = [])
     {
         $this->name = $this->sectionName . ':' . trim($name);
 
-        parent::__construct($options);
+        parent::__construct($properties);
     }
 }
