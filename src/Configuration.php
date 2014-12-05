@@ -33,16 +33,16 @@ class Configuration
      * @var []
      */
     protected $sectionMap = [
-        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
-        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
-        'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
-        'include'          => 'Indigo\\Supervisor\\Section\\IncludeSection',
-        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServerSection',
-        'program'          => 'Indigo\\Supervisor\\Section\\ProgramSection',
-        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\SupervisorctlSection',
-        'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
-        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
-        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterfaceSection',
+        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListener',
+        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgram',
+        'group'            => 'Indigo\\Supervisor\\Section\\Group',
+        'include'          => 'Indigo\\Supervisor\\Section\\Includes',
+        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServer',
+        'program'          => 'Indigo\\Supervisor\\Section\\Program',
+        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\Supervisorctl',
+        'supervisord'      => 'Indigo\\Supervisor\\Section\\Supervisord',
+        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServer',
+        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterface',
     ];
 
     /**
@@ -50,14 +50,10 @@ class Configuration
      *
      * @param string $section
      * @param string $className
-     *
-     * @return self
      */
     public function addSectionMap($section, $className)
     {
         $this->sectionMap[$section] = $className;
-
-        return $this;
     }
 
     /**
@@ -100,30 +96,22 @@ class Configuration
      * Adds or overrides a section
      *
      * @param Section $section
-     *
-     * @return self
      */
     public function addSection(Section $section)
     {
         $this->sections[$section->getName()] = $section;
-
-        return $this;
     }
 
     /**
      * Adds or overrides an array sections
      *
      * @param [] $sections
-     *
-     * @return self
      */
     public function addSections(array $sections)
     {
         foreach ($sections as $section) {
             $this->addSection($section);
         }
-
-        return $this;
     }
 
     /**
@@ -201,30 +189,22 @@ class Configuration
      * Parses an INI file
      *
      * @param string $file
-     *
-     * @return self
      */
     public function parseFile($file)
     {
-        $ini = parse_ini_file($file, true);
+        $ini = parse_ini_file($file, true, INI_SCANNER_RAW);
         $this->parseIni($ini);
-
-        return $this;
     }
 
     /**
      * Parses an INI string
      *
      * @param string $string
-     *
-     * @return self
      */
     public function parseString($string)
     {
         $ini = parse_ini_string($string, true);
         $this->parseIni($ini);
-
-        return $this;
     }
 
     /**

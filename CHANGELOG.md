@@ -4,24 +4,28 @@
 ## UNRELEASED
 
 - Refactors Connectors (interface changed)
-- Adds PHP 5.4 dependency
 - Closes down API
 - Updates tests
 
 ### Added
 
+- PHP 5.4 dependency
 - `update` method in `Process` updates the payload
 
 ### Altered
 
 - `isState` method is renamed to `checkState` (in both `Supervisor` and `Process`)
 - Process must wait for the response of stop in `restart`
+- `Section`s now use the name property instead of option
+- `Section`s are able to return/set separate properties as well
+- Updates dependencies
 
 ### Removed
 
 - Ability to pass `Process` object into `Supervisor` method calls: in case of different connector instances it could have led to an inconsistent state
 - Ability to construct `Process` object from name, use `Process::get` instead
 - Memory usage check form `Process`
+- Fluent interfaces
 
 
 ## 2.0.1 (released 2014-07-13)
