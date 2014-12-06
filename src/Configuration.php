@@ -11,8 +11,6 @@
 
 namespace Indigo\Supervisor;
 
-use UnexpectedValueException;
-
 /**
  * Supervisor configuration parser and generator
  *
@@ -23,7 +21,7 @@ class Configuration
     /**
      * Config sections
      *
-     * @var []
+     * @var Section[]
      */
     protected $sections = [];
 
@@ -83,16 +81,6 @@ class Configuration
     }
 
     /**
-     * Returns all sections
-     *
-     * @return array
-     */
-    public function getSections()
-    {
-        return $this->sections;
-    }
-
-    /**
      * Adds or overrides a section
      *
      * @param Section $section
@@ -100,18 +88,6 @@ class Configuration
     public function addSection(Section $section)
     {
         $this->sections[$section->getName()] = $section;
-    }
-
-    /**
-     * Adds or overrides an array sections
-     *
-     * @param [] $sections
-     */
-    public function addSections(array $sections)
-    {
-        foreach ($sections as $section) {
-            $this->addSection($section);
-        }
     }
 
     /**
@@ -131,16 +107,33 @@ class Configuration
     }
 
     /**
-     * Resets Configuration
+     * Returns all sections
      *
-     * @return [] Array of previous sections
+     * @return array
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * Adds or overrides an array sections
+     *
+     * @param Section[] $sections
+     */
+    public function addSections(array $sections)
+    {
+        foreach ($sections as $section) {
+            $this->addSection($section);
+        }
+    }
+
+    /**
+     * Resets Configuration
      */
     public function reset()
     {
-        $sections = $this->sections;
         $this->sections = [];
-
-        return $sections;
     }
 
     /**
@@ -153,10 +146,7 @@ class Configuration
         $output = '';
 
         foreach ($this->sections as $name => $section) {
-            // Only continue processing this section if there are options in it
-            if ($section->hasOptions()) {
-                $output .= $this->renderSection($section);
-            }
+            $output .= $this->renderSection($section);
         }
 
         return $output;
@@ -165,8 +155,7 @@ class Configuration
     /**
      * Renders a section
      *
-     * @param string $name
-     * @param array  $section
+     * @param Section $section
      *
      * @return string
      */
@@ -174,8 +163,8 @@ class Configuration
     {
         $output = '['.$section->getName()."]\n";
 
-        foreach ($section->getOptions() as $key => $value) {
-            is_array($value) and $value = implode(',', $value);
+        foreach ($section->getProperties() as $key => $value) {
+            $value = $this->normalizeValue($value);
             $output .= "$key = $value\n";
         }
 
@@ -183,6 +172,24 @@ class Configuration
         $output .= "\n";
 
         return $output;
+    }
+
+    /**
+     * Normalize value to valid INI format
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    protected function normalizeValue($value)
+    {
+        if (is_array($value)) {
+            return implode(',', $value);
+        } elseif (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+
+        return $value;
     }
 
     /**
@@ -203,39 +210,43 @@ class Configuration
      */
     public function parseString($string)
     {
-        $ini = parse_ini_string($string, true);
+        $ini = parse_ini_string($string, true, INI_SCANNER_RAW);
         $this->parseIni($ini);
     }
 
     /**
      * Parses an INI array
      *
-     * @param [] $ini
+     * @param array $ini
+     *
+     * @throws Exception\UnknownSection If section is not found in the section map
      */
     protected function parseIni(array $ini)
     {
         foreach ($ini as $name => $section) {
-            $name = explode(':', $name);
-            if (array_key_exists($name[0], $this->sectionMap)) {
-                $section = $this->parseIniSection($this->sectionMap[$name[0]], $name, $section);
-                $this->addSection($section);
-            } else {
-                throw new UnexpectedValueException('Unexpected section name: ' . $name[0]);
-            }
+            $section = $this->parseIniSection($name, $section);
+            $this->addSection($section);
         }
     }
 
     /**
      * Parses an individual section
      *
-     * @param string $class   Name of Section class
-     * @param mixed  $name    Section name or array of name and option
-     * @param []     $section Array representation of section
+     * @param string $name
+     * @param array  $section Array representation of section
      *
      * @return Section
      */
-    protected function parseIniSection($class, array $name, array $section)
+    protected function parseIniSection($name, array $section)
     {
+        $name = explode(':', $name);
+
+        if (!array_key_exists($name[0], $this->sectionMap)) {
+            throw new Exception\UnknownSection($name[0]);
+        }
+
+        $class = $this->sectionMap[$name[0]];
+
         if (isset($name[1])) {
             $section = new $class($name[1], $section);
         } else {
