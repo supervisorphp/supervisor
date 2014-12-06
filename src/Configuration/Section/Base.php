@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor\Configuration\Section;
 
-use Indigo\Supervisor\Section;
+use Indigo\Supervisor\Configuration\Section;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 

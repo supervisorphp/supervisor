@@ -2,7 +2,7 @@
 
 namespace spec\Indigo\Supervisor;
 
-use Indigo\Supervisor\Section;
+use Indigo\Supervisor\Configuration\Section;
 use PhpSpec\ObjectBehavior;
 
 class ConfigurationSpec extends ObjectBehavior

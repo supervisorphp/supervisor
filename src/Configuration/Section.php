@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor;
+namespace Indigo\Supervisor\Configuration;
 
 /**
- * Implements details for Configuration sections
+ * Properties are grouped into sections
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */

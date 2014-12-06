@@ -11,6 +11,8 @@
 
 namespace Indigo\Supervisor;
 
+use Indigo\Supervisor\Configuration\Section;
+
 /**
  * Supervisor configuration parser and generator
  *
@@ -31,16 +33,16 @@ class Configuration
      * @var []
      */
     protected $sectionMap = [
-        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListener',
-        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgram',
-        'group'            => 'Indigo\\Supervisor\\Section\\Group',
-        'include'          => 'Indigo\\Supervisor\\Section\\Includes',
-        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServer',
-        'program'          => 'Indigo\\Supervisor\\Section\\Program',
-        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\Supervisorctl',
-        'supervisord'      => 'Indigo\\Supervisor\\Section\\Supervisord',
-        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServer',
-        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterface',
+        'eventlistener'    => 'Indigo\Supervisor\Configuration\Section\EventListener',
+        'fcgi-program'     => 'Indigo\Supervisor\Configuration\Section\FcgiProgram',
+        'group'            => 'Indigo\Supervisor\Configuration\Section\Group',
+        'include'          => 'Indigo\Supervisor\Configuration\Section\Includes',
+        'inet_http_server' => 'Indigo\Supervisor\Configuration\Section\InetHttpServer',
+        'program'          => 'Indigo\Supervisor\Configuration\Section\Program',
+        'supervisorctl'    => 'Indigo\Supervisor\Configuration\Section\Supervisorctl',
+        'supervisord'      => 'Indigo\Supervisor\Configuration\Section\Supervisord',
+        'unix_http_server' => 'Indigo\Supervisor\Configuration\Section\UnixHttpServer',
+        'rpcinterface'     => 'Indigo\Supervisor\Configuration\Section\RpcInterface',
     ];
 
     /**

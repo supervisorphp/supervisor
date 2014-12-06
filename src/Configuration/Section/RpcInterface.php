@@ -9,24 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor\Configuration\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
- * Include section
+ * RPC Interface section
  *
- * @link http://supervisord.org/configuration.html#include-section-settings
+ * @link http://supervisord.org/configuration.html#rpcinterface-x-section-settings
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Includes extends Base
+class RpcInterface extends Named
 {
     /**
      * {@inheritdoc}
      */
-    protected $name = 'include';
+    protected $sectionName = 'rpcinterface';
 
     /**
      * {@inheritdoc}
@@ -34,10 +33,11 @@ class Includes extends Base
     protected function configureProperties(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('files')
-            ->setAllowedTypes('files', ['string', 'array'])
-            ->setNormalizer('files', function (Options $options, $value) {
-                return is_string($value) ? $value : implode(' ', $value);
-            });
+            ->setDefined('supervisor.rpcinterface_factory')
+            ->setAllowedTypes('supervisor.rpcinterface_factory', 'string');
+
+        // Note: undocumented, based on examples
+        $resolver->setDefined('retries');
+        $this->configureIntegerProperty('retries', $resolver);
     }
 }

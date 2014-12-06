@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor\Configuration\Section;
 
 /**
  * Section name contains identifier
