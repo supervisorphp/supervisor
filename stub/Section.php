@@ -34,5 +34,7 @@ class Section extends Base
         $resolver
             ->setDefined('key')
             ->setAllowedTypes('key', 'string');
+
+        $this->configureEnvironmentProperty($resolver);
     }
 }

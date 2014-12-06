@@ -181,15 +181,15 @@ abstract class Base implements Section
             ->setAllowedTypes('environment', ['array', 'string'])
             ->setNormalizer('environment', function (Options $options, $value) {
                 if (is_array($value)) {
-                    foreach ($value as $key => &$val) {
+                    foreach ($value as $key => $val) {
                         if (is_int($key)) {
                             continue;
                         }
 
-                        $val = strtoupper($key) . '="' . $val . '"';
+                        $normalized[] = sprintf('%s="%s"', strtoupper($key), $val);
                     }
 
-                    $value = implode(',', $value);
+                    $value = implode(',', $normalized);
                 }
 
                 return $value;

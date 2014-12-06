@@ -46,4 +46,15 @@ class SectionSpec extends ObjectBehavior
 
         $this->getProperty('key')->shouldReturn('value2');
     }
+
+    function it_should_allow_to_set_and_normalize_an_environmment_property()
+    {
+        $this->setProperty('environment', [
+            'key1' => 'val1',
+            'key2' => 'val2',
+            'val3', // this should be ommitted
+        ]);
+
+        $this->getProperty('environment')->shouldReturn('KEY1="val1",KEY2="val2"');
+    }
 }
