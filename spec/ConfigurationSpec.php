@@ -83,33 +83,19 @@ class ConfigurationSpec extends ObjectBehavior
         $this->getSections()->shouldReturn([]);
     }
 
-    function it_should_allow_to_render(Section $supervisord)
-    {
-        $supervisord->getName()->willReturn('supervisord');
-        $supervisord->getProperties()->willReturn([
-            'key1' => 'value',
-            'key2' => true,
-            'key3' => ['val1', 'val2', 'val3'],
-        ]);
+    // function it_should_allow_to_be_casted_to_string(Section $supervisord)
+    // {
+    //     $supervisord->getName()->willReturn('supervisord');
+    //     $supervisord->getProperties()->willReturn([
+    //         'key1' => 'value',
+    //         'key2' => true,
+    //         'key3' => ['val1', 'val2', 'val3'],
+    //     ]);
 
-        $this->addSection($supervisord);
+    //     $this->addSection($supervisord);
 
-        $this->render()->shouldReturn("[supervisord]\nkey1 = value\nkey2 = true\nkey3 = val1,val2,val3\n\n");
-    }
-
-    function it_should_allow_to_be_casted_to_string(Section $supervisord)
-    {
-        $supervisord->getName()->willReturn('supervisord');
-        $supervisord->getProperties()->willReturn([
-            'key1' => 'value',
-            'key2' => true,
-            'key3' => ['val1', 'val2', 'val3'],
-        ]);
-
-        $this->addSection($supervisord);
-
-        $this->__toString()->shouldReturn("[supervisord]\nkey1 = value\nkey2 = true\nkey3 = val1,val2,val3\n\n");
-    }
+    //     $this->__toString()->shouldReturn("[supervisord]\nkey1 = value\nkey2 = true\nkey3 = val1,val2,val3\n\n");
+    // }
 
     function it_should_allow_to_parse_an_ini_file()
     {
