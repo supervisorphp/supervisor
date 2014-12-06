@@ -71,41 +71,43 @@ $process->getPayload();
 
 This section is about generating configuration file(s) for supervisord.
 
-Example:
-
 ``` php
 use Indigo\Supervisor\Configuration;
-use Indigo\Supervisor\Section\Program;
+use Indigo\Supervisor\Configuration\Section\Supervisord;
+use Indigo\Supervisor\Configuration\Section\Program;
+use Indigo\Supervisor\Configuration\Renderer\Basic;
 
 $config = new Configuration;
 
-$section = new SupervisordSection(array('identifier' => 'supervisor'));
+$section = new Supervisord(['identifier' => 'supervisor']);
 $config->addSection($section);
 
-$section = new ProgramSection('test', array('command' => 'cat'));
+$section = new Program('test', ['command' => 'cat']);
 $config->addSection($section);
 
-// same as echo $config->render()
-echo $config;
+echo $renderer->render($config);
 ```
 
 The following sections are available in this pacakge:
 
-* _Supervisord_
-* _Supervisorctl_
-* _UnixHttpServer_
-* _InetHttpServer_
-* _Include_
-* _Group_*
-* _Program_*
-* _EventListener_*
-* _FcgiProgram_*
+- _Supervisord_
+- _Supervisorctl_
+- _UnixHttpServer_
+- _InetHttpServer_
+- _Includes_**
+- _Group_*
+- _Program_*
+- _EventListener_*
+- _FcgiProgram_*
 
 
-***Note**: These sections has to be instantiated with a name and optionally an options array:
+***Note**: These sections has to be instantiated with a name and optionally a properties array:
+
 ``` php
-$section = new ProgramSection('test', array('command' => 'cat'));
+$section = new Program('test', ['command' => 'cat']);
 ```
+
+****Note:** The keyword `include` is reserved in PHP, so the class name is `Includes`, but the section name is still `include`.
 
 
 ### Existing configuration
@@ -113,13 +115,22 @@ $section = new ProgramSection('test', array('command' => 'cat'));
 You can parse your existing configuration, and use it as a `Configuration` object.
 
 ``` php
+use Indigo\Supervisor\Configuration;
+use Indigo\Supervisor\Configuration\Parser\File;
+
+$parser = new File('/etc/supervisor/supervisord.conf');
+
 $configuration = new Configuration;
 
-$configuration->parseFile('/etc/supervisor/supervisord.conf');
-
-$ini = file_get_contents('/etc/supervisor/supervisord.conf');
-$configuration->parseIni($ini);
+// argument is optional, returns a new Configuration object if not passed
+$parser->parse($configuration);
 ```
+
+Available parsers:
+
+- _File_
+- _Text_
+
 
 You can find detailed info about options for each section here:
 [http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
