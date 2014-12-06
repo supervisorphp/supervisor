@@ -55,11 +55,25 @@ abstract class Base implements Section
         return $this->name;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getProperty($key)
     {
         if (isset($this->properties[$key])) {
             return $this->properties[$key];
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProperty($key, $value)
+    {
+        $properties = $this->properties;
+        $properties[$key] = $value;
+
+        $this->setProperties($properties);
     }
 
     /**
@@ -76,14 +90,6 @@ abstract class Base implements Section
     public function setProperties(array $properties)
     {
         $this->properties = $this->resolveProperties($properties);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProperties()
-    {
-        return empty($this->properties) === false;
     }
 
     /**
