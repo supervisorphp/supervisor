@@ -40,6 +40,8 @@ class ProcessSpec extends ObjectBehavior
     function it_should_have_a_name()
     {
         $this->getName()->shouldReturn($this->process['name']);
+        $this->offsetExists('name')->shouldReturn(true);
+        $this->offsetGet('name')->shouldReturn($this->process['name']);
         $this->__toString()->shouldReturn($this->process['name']);
     }
 
@@ -54,44 +56,13 @@ class ProcessSpec extends ObjectBehavior
         $this->checkState(2)->shouldReturn(false);
     }
 
-    function it_should_allow_to_call_a_method(Connector $connector)
+    function it_should_throw_an_exception_when_being_altered_by_calling_offset_set()
     {
-        $connector->call('namespace', 'method', [$this->process['name']])->willReturn('response');
-
-        $this->call('namespace', 'method')->shouldReturn('response');
+        $this->shouldThrow('LogicException')->duringOffsetSet('key', 'value');
     }
 
-    function it_should_allow_to_update(Connector $connector)
+    function it_should_throw_an_exception_when_being_altered_by_calling_offset_unset()
     {
-        $process = $this->process;
-        $process['state'] = 0;
-
-        $connector->call('supervisor', 'getProcessInfo', [$this->process['name']])->willReturn($process);
-
-        $this->update();
-
-        $this->isRunning()->shouldReturn(false);
-    }
-
-    function it_should_allow_to_start(Connector $connector)
-    {
-        $connector->call('supervisor', 'startProcess', [$this->process['name'], true])->willReturn(true);
-
-        $this->start()->shouldReturn(true);
-    }
-
-    function it_should_allow_to_stop(Connector $connector)
-    {
-        $connector->call('supervisor', 'stopProcess', [$this->process['name'], true])->willReturn(true);
-
-        $this->stop()->shouldReturn(true);
-    }
-
-    function it_should_allow_to_restart(Connector $connector)
-    {
-        $connector->call('supervisor', 'startProcess', [$this->process['name'], true])->willReturn(true);
-        $connector->call('supervisor', 'stopProcess', [$this->process['name'], true])->willReturn(true);
-
-        $this->restart()->shouldReturn(true);
+        $this->shouldThrow('LogicException')->duringOffsetUnset('key', 'value');
     }
 }

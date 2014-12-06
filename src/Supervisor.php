@@ -122,6 +122,8 @@ class Supervisor
      */
     public function getProcess($name)
     {
-        return Process::get($name, $this->connector);
+        $process = $this->getProcessInfo($name);
+
+        return new Process($process);
     }
 }
