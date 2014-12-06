@@ -80,8 +80,6 @@ abstract class Base implements Parser
      */
     public function parseArray(array $ini)
     {
-        $sections = [];
-
         foreach ($ini as $name => $section) {
             $section = $this->parseSection($name, $section);
             $sections[] = $section;
