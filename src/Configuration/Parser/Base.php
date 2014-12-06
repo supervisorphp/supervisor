@@ -62,7 +62,7 @@ abstract class Base implements Parser
      */
     public function findSection($section)
     {
-        if (!array_key_exists($section, $this->sectionMap)) {
+        if (!isset($this->sectionMap[$section])) {
             throw new UnknownSection($section);
         }
 
