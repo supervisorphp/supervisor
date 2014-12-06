@@ -28,6 +28,13 @@ class SectionSpec extends ObjectBehavior
         $this->getProperty('non_existent_key')->shouldReturn(null);
     }
 
+    function it_should_allow_to_set_a_property()
+    {
+        $this->setProperty('key', 'value2');
+
+        $this->getProperty('key')->shouldReturn('value2');
+    }
+
     function it_should_allow_to_get_properties()
     {
         $this->getProperties()->shouldReturn(['key' => 'value']);
