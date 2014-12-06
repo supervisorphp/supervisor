@@ -41,11 +41,11 @@ class Basic implements Renderer
      */
     public function renderSection(Section $section)
     {
-        $output = '['.$section->getName()."]\n";
+        $output = sprintf("[%s]\n", $section->getName());
 
         foreach ($section->getProperties() as $key => $value) {
             $value = $this->normalizeValue($key, $value);
-            $output .= "$key = $value\n";
+            $output .= sprintf("%s = %s\n", $key, $value);
         }
 
         // Write a linefeed after sections
