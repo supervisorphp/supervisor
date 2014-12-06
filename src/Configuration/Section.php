@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor;
+namespace Indigo\Supervisor\Configuration;
 
 /**
- * Implements details for Configuration sections
+ * Properties are grouped into sections
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -37,6 +37,14 @@ interface Section
     public function getProperty($key);
 
     /**
+     * Sets a specific property
+     *
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function setProperty($key, $value);
+
+    /**
      * Returns the properties as an array
      *
      * @return []
@@ -49,11 +57,4 @@ interface Section
      * @param [] $properties
      */
     public function setProperties(array $properties);
-
-    /**
-     * Checks whether section has any properties
-     *
-     * @return boolean
-     */
-    public function hasProperties();
 }

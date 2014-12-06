@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor\Configuration\Section;
 
-use Indigo\Supervisor\Section;
+use Indigo\Supervisor\Configuration\Section;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -55,11 +55,25 @@ abstract class Base implements Section
         return $this->name;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getProperty($key)
     {
         if (isset($this->properties[$key])) {
             return $this->properties[$key];
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProperty($key, $value)
+    {
+        $properties = $this->properties;
+        $properties[$key] = $value;
+
+        $this->setProperties($properties);
     }
 
     /**
@@ -76,14 +90,6 @@ abstract class Base implements Section
     public function setProperties(array $properties)
     {
         $this->properties = $this->resolveProperties($properties);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProperties()
-    {
-        return empty($this->properties) === false;
     }
 
     /**
@@ -175,15 +181,15 @@ abstract class Base implements Section
             ->setAllowedTypes('environment', ['array', 'string'])
             ->setNormalizer('environment', function (Options $options, $value) {
                 if (is_array($value)) {
-                    foreach ($value as $key => &$val) {
+                    foreach ($value as $key => $val) {
                         if (is_int($key)) {
                             continue;
                         }
 
-                        $val = strtoupper($key) . '="' . $val . '"';
+                        $normalized[] = sprintf('%s="%s"', strtoupper($key), $val);
                     }
 
-                    $value = implode(',', $value);
+                    $value = implode(',', $normalized);
                 }
 
                 return $value;

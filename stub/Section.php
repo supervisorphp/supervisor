@@ -9,24 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor\Stub;
 
+use Indigo\Supervisor\Configuration\Section\Base;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
- * Include section
- *
- * @link http://supervisord.org/configuration.html#include-section-settings
+ * Section Stub
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Includes extends Base
+class Section extends Base
 {
     /**
      * {@inheritdoc}
      */
-    protected $name = 'include';
+    protected $name = 'test';
 
     /**
      * {@inheritdoc}
@@ -34,10 +32,9 @@ class Includes extends Base
     protected function configureProperties(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('files')
-            ->setAllowedTypes('files', ['string', 'array'])
-            ->setNormalizer('files', function (Options $options, $value) {
-                return is_string($value) ? $value : implode(' ', $value);
-            });
+            ->setDefined('key')
+            ->setAllowedTypes('key', 'string');
+
+        $this->configureEnvironmentProperty($resolver);
     }
 }

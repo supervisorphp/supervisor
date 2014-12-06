@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Section;
+namespace Indigo\Supervisor\Configuration\Section;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Unix HTTP section
+ * Supervisorctl section
  *
- * @link http://supervisord.org/configuration.html#unix-http-server-section-settings
+ * @link http://supervisord.org/configuration.html#supervisorctl-section-settings
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class UnixHttpServer extends Base
+class Supervisorctl extends Base
 {
     /**
      * {@inheritdoc}
      */
-    protected $name = 'unix_http_server';
+    protected $name = 'supervisorctl';
 
     /**
      * {@inheritdoc}
@@ -33,16 +33,8 @@ class UnixHttpServer extends Base
     protected function configureProperties(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefined('file')
-            ->setAllowedTypes('file', 'string');
-
-        // TODO: octal vs. decimal value
-        $resolver->setDefined('chmod');
-        $this->configureIntegerProperty('chmod', $resolver);
-
-        $resolver
-            ->setDefined('chown')
-            ->setAllowedTypes('chown', 'string');
+            ->setDefined('serverurl')
+            ->setAllowedTypes('serverurl', 'string');
 
         $resolver
             ->setDefined('username')
@@ -51,5 +43,13 @@ class UnixHttpServer extends Base
         $resolver
             ->setDefined('password')
             ->setAllowedTypes('password', 'string');
+
+        $resolver
+            ->setDefined('prompt')
+            ->setAllowedTypes('prompt', 'string');
+
+        $resolver
+            ->setDefined('history_file')
+            ->setAllowedTypes('history_file', 'string');
     }
 }
