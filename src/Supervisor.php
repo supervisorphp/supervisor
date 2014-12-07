@@ -14,6 +14,35 @@ namespace Indigo\Supervisor;
 /**
  * Supervisor API
  *
+ * @method string  getAPIVersion()
+ * @method string  getSupervisorVersion()
+ * @method string  getIdentification()
+ * @method array   getState()
+ * @method integer getPID()
+ * @method string  readLog(integer $offset, integer $limit)
+ * @method boolean clearLog()
+ * @method boolean shutdown()
+ * @method boolean restart()
+ * @method array   getProcessInfo(string $processName)
+ * @method array   getAllProcessInfo()
+ * @method boolean startProcess(string $name, boolean $wait = true)
+ * @method boolean startAllProcesses(boolean $wait = true)
+ * @method boolean startProcessGroup(string $name, boolean $wait = true)
+ * @method boolean stopProcess(string $name, boolean $wait = true)
+ * @method boolean stopAllProcesses(boolean $wait = true)
+ * @method boolean stopProcessGroup(string $name, boolean $wait = true)
+ * @method boolean sendProcessStdin(string $name, string $chars)
+ * @method boolean addProcessGroup(string $name)
+ * @method boolean removeProcessGroup(string $name)
+ * @method string  readProcessStdoutLog(string $name, integer $offset, integer $limit)
+ * @method string  readProcessStderrLog(string $name, integer $offset, integer $limit)
+ * @method string  tailProcessStdoutLog(string $name, integer $offset, integer $limit)
+ * @method string  tailProcessStderrLog(string $name, integer $offset, integer $limit)
+ * @method boolean clearProcessLogs(string $name)
+ * @method boolean clearAllProcessLogs()
+ *
+ * @link http://supervisord.org/api.html
+ *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 class Supervisor
