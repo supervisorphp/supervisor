@@ -125,7 +125,7 @@ class Supervisor
         $processes = $this->getAllProcessInfo();
 
         foreach ($processes as $key => $processInfo) {
-            $processes[$key] = new Process($processInfo, $this->connector);
+            $processes[$key] = new Process($processInfo);
         }
 
         return $processes;
