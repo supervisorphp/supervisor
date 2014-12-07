@@ -19,11 +19,13 @@
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "dev-master",
-        "guzzlehttp/streams": "~2.1.0",
+        "guzzlehttp/streams": "~3.0.0",
+        "guzzlehttp/guzzle": "~5.0.0",
         "zendframework/zend-xmlrpc": "~2.3.0",
         "zendframework/zendxml": "~1.0.0",
         "phpspec/phpspec": "2.1.*@dev,>=2.1.0-RC2",
-        "henrikbjorn/phpspec-code-coverage" : "1.0.*@dev"
+        "henrikbjorn/phpspec-code-coverage" : "1.0.*@dev",
+        "behat/behat": "~3.0@dev"
     },
     "suggest": {
         "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4",
