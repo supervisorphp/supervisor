@@ -9,13 +9,13 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Indigo\Supervisor\Configuration\Parser\File;
 use Indigo\Supervisor\Configuration\Renderer\Basic as Renderer;
+use Indigo\Supervisor\Configuration\Section;
 use Indigo\Supervisor\Connector\XmlRpc;
 use Indigo\Supervisor\Supervisor;
 use fXmlRpc\Client;
 use fXmlRpc\Transport\Guzzle4Bridge;
 use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\Process\Process;
-use Liip\ProcessManager\ProcessManager;
 
 /**
  * Defines application features from the specific context.
@@ -41,6 +41,11 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $parser = new File(__DIR__.'/../../resources/supervisord.conf');
         $this->configuration = $parser->parse();
 
+        $this->setUpConnector();
+    }
+
+    protected function setUpConnector()
+    {
         $client = new Client(
             'http://127.0.0.1:9001/RPC2',
             new Guzzle4Bridge(new GuzzleClient(['defaults' => ['auth' => ['user', '123']]]))
@@ -54,7 +59,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function stopSupervisor(AfterScenarioScope $scope)
     {
-        $this->processManager->killProcess($this->process);
+        isset($this->process) and posix_kill($this->process, SIGKILL);
     }
 
     /**
@@ -67,13 +72,13 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $file = tempnam(sys_get_temp_dir(), 'supervisord_');
         file_put_contents($file, $configuration);
 
-        $this->processManager = new ProcessManager;
-
         if ($this->supervisor->isConnected()) {
-            $this->processManager->killProcess($this->supervisor->getPID());
+            posix_kill($this->supervisor->getPID(), SIGKILL);
         }
 
-        $this->process = $this->processManager->execProcess(sprintf('supervisord --configuration %s', $file));
+        $command = sprintf('(supervisord --configuration %s > /dev/null 2>&1 & echo $!)&', $file);
+        exec($command, $op);
+        $this->process = (int)$op[0];
 
         $c = 0;
         while (!$this->supervisor->isConnected() and $c < 100) {
@@ -279,7 +284,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetASuccessResponseForRestartingIt()
     {
         if ($this->restart !== true) {
-            throw new \Exception('Restart was unsuccessful');
+            throw new \Exception('Restarting Supervisor was unsuccessful');
         }
     }
 
@@ -291,5 +296,297 @@ class FeatureContext implements Context, SnippetAcceptingContext
         if ($this->supervisor->isConnected() !== true) {
             throw new \Exception('Supervisor is unavailable');
         }
+    }
+
+    /**
+     * @Given I have a process called :process
+     */
+    public function iHaveAProcessCalled($process)
+    {
+        $this->processName = $process;
+
+        $program = new Section\Program($process, [
+            'command' => '/bin/'.$process,
+        ]);
+
+        $this->configuration->addSection($program);
+    }
+
+    /**
+     * @When I wait for start
+     */
+    public function iWaitForStart()
+    {
+        usleep(100000);
+    }
+
+    /**
+     * @When I get information about the process
+     */
+    public function iGetInformationAboutTheProcess()
+    {
+        $this->processInfo = $this->supervisor->getProcessInfo($this->processName);
+    }
+
+    /**
+     * @Then I should see it running
+     */
+    public function iShouldSeeItRunning()
+    {
+        if ($this->processInfo['state'] < 10) {
+            throw new \Exception(sprintf('Process %s failed to start', $this->processInfo['name']));
+        }
+    }
+
+    /**
+     * @When I get information about the processes
+     */
+    public function iGetInformationAboutTheProcesses()
+    {
+        $this->processInfo = $this->supervisor->getAllProcessInfo();
+    }
+
+    /**
+     * @Then I should see them running
+     */
+    public function iShouldSeeThemRunning()
+    {
+        foreach ($this->processInfo as $process) {
+            if ($process['state'] < 10) {
+                throw new \Exception(sprintf('Process %s failed to start', $process['name']));
+            }
+        }
+    }
+
+    /**
+     * @Given autostart is disabled
+     */
+    public function autostartIsDisabled()
+    {
+        $program = $this->configuration->getSection('program:'.$this->processName);
+
+        $program->setProperty('autostart', false);
+    }
+
+    /**
+     * @When I get information about the process before starting it
+     */
+    public function iGetInformationAboutTheProcessBeforeStartingIt()
+    {
+        $this->firstProcessInfo = $this->supervisor->getProcessInfo($this->processName);
+    }
+
+    /**
+     * @When I start the process
+     */
+    public function iStartTheProcess()
+    {
+        $this->start = $this->supervisor->startProcess($this->processName, false);
+    }
+
+    /**
+     * @Then I should see it not running first
+     */
+    public function iShouldSeeItNotRunningFirst()
+    {
+        if ($this->firstProcessInfo['state'] > 0) {
+            throw new \Exception(sprintf('Process %s is already running before start', $this->firstProcessInfo['name']));
+        }
+    }
+
+    /**
+     * @Then I should get a success response for starting it
+     */
+    public function iShouldGetASuccessResponseForStartingIt()
+    {
+        if ($this->start !== true) {
+            throw new \Exception(sprintf('Starting process "%s" was unsuccessful', $this->processName));
+        }
+    }
+
+    /**
+     * @When I get information about the processes before starting them
+     */
+    public function iGetInformationAboutTheProcessesBeforeStartingThem()
+    {
+        $this->firstProcessInfo = $this->supervisor->getAllProcessInfo();
+    }
+
+    /**
+     * @When I start the processes
+     */
+    public function iStartTheProcesses()
+    {
+        $this->start = $this->supervisor->startAllProcesses(false);
+    }
+
+    /**
+     * @Then I should see them not running first
+     */
+    public function iShouldSeeThemNotRunningFirst()
+    {
+        foreach ($this->firstProcessInfo as $process) {
+            if ($process['state'] > 0) {
+                throw new \Exception(sprintf('Process %s is already running before start', $process['name']));
+            }
+        }
+    }
+
+    /**
+     * @Then I should get a success response for starting them
+     */
+    public function iShouldGetASuccessResponseForStartingThem()
+    {
+        foreach ($this->start as $start) {
+            if ($start['description'] !== 'OK') {
+                throw new \Exception(sprintf('Starting process "%s" was unsuccessful', $start['name']));
+            }
+        }
+    }
+
+    /**
+     * @Given it is part of group called :grp
+     */
+    public function itIsPartOfGroupCalled($grp)
+    {
+        $this->groupName = $grp;
+
+        $program = $this->configuration->getSection('program:'.$this->processName);
+        $group = $this->configuration->getSection('group:'.$grp);
+
+        if (is_null($group)) {
+            $group = new Section\Group($grp, ['programs' => $this->processName]);
+            $this->configuration->addSection($group);
+        } else {
+            $programs = $group->getProperty('programs');
+            $programs[] = $this->processName;
+            $group->setProperty('programs', $programs);
+        }
+    }
+
+    /**
+     * @When I start the processes in the group
+     */
+    public function iStartTheProcessesInTheGroup()
+    {
+        $this->groupResponse = $this->start = $this->supervisor->startProcessGroup($this->groupName, false);
+    }
+
+    /**
+     * @Then I should see them as part of the group
+     */
+    public function iShouldSeeThemAsPartOfTheGroup()
+    {
+        foreach ($this->groupResponse as $groupResponse) {
+            if ($groupResponse['group'] !== $this->groupName) {
+                throw new \Exception(sprintf('Process "%s" is not part of the group "%s"', $groupResponse['name'], $this->groupName));
+            }
+        }
+    }
+
+    /**
+     * @When I get information about the process before stopping it
+     */
+    public function iGetInformationAboutTheProcessBeforeStoppingIt()
+    {
+        $this->firstProcessInfo = $this->supervisor->getProcessInfo($this->processName);
+    }
+
+    /**
+     * @When I stop the process
+     */
+    public function iStopTheProcess()
+    {
+        $this->stop = $this->supervisor->stopProcess($this->processName, false);
+    }
+
+    /**
+     * @Then I should see it running first
+     */
+    public function iShouldSeeItRunningFirst()
+    {
+        if ($this->firstProcessInfo['state'] < 10) {
+            throw new \Exception(sprintf('Process %s is not running before stop', $this->firstProcessInfo['name']));
+        }
+    }
+
+    /**
+     * @Then I should get a success response for stopping it
+     */
+    public function iShouldGetASuccessResponseForStoppingIt()
+    {
+        if ($this->stop !== true) {
+            throw new \Exception(sprintf('Stopping process "%s" was unsuccessful', $this->processName));
+        }
+    }
+
+    /**
+     * @Then I should see it not running
+     */
+    public function iShouldSeeItNotRunning()
+    {
+        if ($this->processInfo['state'] > 0) {
+            throw new \Exception(sprintf('Process %s failed to stop', $this->processInfo['name']));
+        }
+    }
+
+    /**
+     * @When I get information about the processes before stopping them
+     */
+    public function iGetInformationAboutTheProcessesBeforeStoppingThem()
+    {
+        $this->firstProcessInfo = $this->supervisor->getAllProcessInfo();
+    }
+
+    /**
+     * @When I stop the processes
+     */
+    public function iStopTheProcesses()
+    {
+        $this->stop = $this->supervisor->stopAllProcesses(false);
+    }
+
+    /**
+     * @Then I should see them running first
+     */
+    public function iShouldSeeThemRunningFirst()
+    {
+        foreach ($this->firstProcessInfo as $process) {
+            if ($process['state'] < 10) {
+                throw new \Exception(sprintf('Process %s is not running before stop', $process['name']));
+            }
+        }
+    }
+
+    /**
+     * @Then I should get a success response for stopping them
+     */
+    public function iShouldGetASuccessResponseForStoppingThem()
+    {
+        foreach ($this->stop as $stop) {
+            if ($stop['description'] !== 'OK') {
+                throw new \Exception(sprintf('Stopping process "%s" was unsuccessful', $stop['name']));
+            }
+        }
+    }
+
+    /**
+     * @Then I should see them not running
+     */
+    public function iShouldSeeThemNotRunning()
+    {
+        foreach ($this->processInfo as $process) {
+            if ($process['state'] > 0) {
+                throw new \Exception(sprintf('Process %s failed to stop', $process['name']));
+            }
+        }
+    }
+
+    /**
+     * @When I stop the processes in the group
+     */
+    public function iStopTheProcessesInTheGroup()
+    {
+        $this->groupResponse = $this->stop = $this->supervisor->stopProcessGroup($this->groupName, false);
     }
 }
