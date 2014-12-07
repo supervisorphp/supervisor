@@ -307,7 +307,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $this->processName = $process;
 
         $program = new Section\Program($process, [
-            'command' => '/bin/'.$process,
+            'command' => exec('which '.$process),
         ]);
 
         $this->configuration->addSection($program);
@@ -438,9 +438,9 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iShouldGetASuccessResponseForStartingThem()
     {
-        foreach ($this->start as $start) {
-            if ($start['description'] !== 'OK') {
-                throw new \Exception(sprintf('Starting process "%s" was unsuccessful', $start['name']));
+        foreach ($this->start as $process) {
+            if ($process['description'] !== 'OK') {
+                throw new \Exception(sprintf('Starting process "%s" was unsuccessful', $process['name']));
             }
         }
     }
