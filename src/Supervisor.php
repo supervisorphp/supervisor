@@ -50,6 +50,24 @@ class Supervisor
     }
 
     /**
+     * Checks if a connection is present
+     *
+     * It is done by sending a bump request to the server and catching any thrown exceptions
+     *
+     * @return boolean
+     */
+    public function isConnected()
+    {
+        try {
+            $this->connector->call('system', 'listMethods');
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Calls a method
      *
      * @param string $namespace

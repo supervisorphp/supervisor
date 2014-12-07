@@ -26,6 +26,18 @@ class SupervisorSpec extends ObjectBehavior
         $this->isLocal()->shouldReturn(false);
     }
 
+    function it_should_allow_to_check_connection(Connector $connector)
+    {
+        $connector->call('system', 'listMethods')->willReturn('response');
+
+        $this->isConnected()->shouldReturn(true);
+
+        $e = new \Exception;
+        $connector->call('system', 'listMethods')->willThrow($e);
+
+        $this->isConnected()->shouldReturn(false);
+    }
+
     function it_should_allow_to_call_a_method(Connector $connector)
     {
         $connector->call('namespace', 'method', [])->willReturn('response');
