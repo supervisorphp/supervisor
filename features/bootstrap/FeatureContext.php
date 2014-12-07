@@ -29,8 +29,9 @@ class FeatureContext implements Context, SnippetAcceptingContext
      * You can also pass arbitrary arguments to the
      * context constructor through behat.yml.
      */
-    public function __construct()
+    public function __construct($bin = 'supervisord')
     {
+        $this->bin = $bin;
     }
 
     /**
@@ -76,7 +77,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
             posix_kill($this->supervisor->getPID(), SIGKILL);
         }
 
-        $command = sprintf('(supervisord --configuration %s > /dev/null 2>&1 & echo $!)&', $file);
+        $command = sprintf('(%s --configuration %s > /dev/null 2>&1 & echo $!)&', $this->bin, $file);
         exec($command, $op);
         $this->process = (int)$op[0];
 
