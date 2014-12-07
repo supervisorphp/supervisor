@@ -17,7 +17,7 @@ Feature: User starts process
   Scenario:
     Given I have a process called "cat"
     And autostart is disabled
-    And I have a process called "ls"
+    And I have a process called "tee"
     And autostart is disabled
     And I have Supervisor running
     When I get information about the processes before starting them
@@ -31,7 +31,7 @@ Feature: User starts process
     Given I have a process called "cat"
     And autostart is disabled
     And it is part of group called "test"
-    And I have a process called "ls"
+    And I have a process called "tee"
     And autostart is disabled
     And it is part of group called "test"
     And I have Supervisor running

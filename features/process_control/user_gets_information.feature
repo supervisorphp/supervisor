@@ -12,7 +12,7 @@ Feature: User gets information
 
   Scenario:
     Given I have a process called "cat"
-    And I have a process called "ls"
+    And I have a process called "tee"
     And I have Supervisor running
     When I wait for start
     And I get information about the processes
