@@ -25,13 +25,16 @@ $ composer require indigophp/supervisor
 
 ``` php
 use Indigo\Supervisor\Supervisor;
-use Indigo\Supervisor\Process;
+use Indigo\Supervisor\Connector\XmlRpc;
+use fXmlRpc\Client;
 
 // Create new Connector
 // See available connectors
-$connector = ...;
+$connector = new XmlRpc(new Client('http://127.0.0.1:9001/RPC2'));
 
-// Note: As of 3.0.0 setCredentials function is removed from the interface hence the variety of the clients. Please provide the connector a client with authentication. For this please check each possible HTTP Client's documentation
+// Note: As of 3.0.0 setCredentials function is removed from the interface hence the variety of the clients.
+// Please provide the connector a client with authentication.
+// For this please check each possible HTTP Client's documentation.
 
 $supervisor = new Supervisor($connector);
 
@@ -42,14 +45,13 @@ $process = $supervisor->getProcess('test_process');
 $supervisor->getProcessInfo('test_process');
 
 // same as $supervisor->stopProcess($process);
-// same as $supervisor->stopProcess('test_process');
-$process->stop();
+$supervisor->stopProcess('test_process');
 
 // Don't wait for process start, return immediately
-$process->start('false');
+$supervisor->startProcess($process, false);
 
 // returns true if running
-// same as $process->isState(Process::RUNNING);
+// same as $process->checkState(Process::RUNNING);
 $process->isRunning();
 
 // returns process name

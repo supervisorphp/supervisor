@@ -13,12 +13,12 @@
     "require": {
         "php": ">=5.4",
         "symfony/options-resolver": "~2.6",
-        "symfony/process": "~2.4",
         "league/event": "~1.0.0",
         "psr/log": "~1.0"
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "dev-master",
+        "indigophp/http-adapter": "dev-develop",
         "guzzlehttp/streams": "~3.0.0",
         "guzzlehttp/guzzle": "~5.0.0",
         "zendframework/zend-xmlrpc": "~2.3.0",
