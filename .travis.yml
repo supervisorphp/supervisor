@@ -16,6 +16,7 @@ script:
   - bin/behat
 
 before_script:
+  - resources/supervisor.sh
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;'
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then composer remove "henrikbjorn/phpspec-code-coverage" --dev --no-update; fi;'
   - composer install --prefer-source
