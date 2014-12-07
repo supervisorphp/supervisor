@@ -1,14 +1,14 @@
-Feature: User gets information
+Feature: Admin gets information
   In order to know what processes are running
-  As a User
+  As an Admin
   I should be able to get information about them
 
   Scenario:
     Given I have a process called "cat"
     And I have Supervisor running
     When I wait for start
-    And I get information about the process
-    Then I should see it running
+    And I get information about the processes
+    Then I should see running
 
   Scenario:
     Given I have a process called "cat"
@@ -16,4 +16,4 @@ Feature: User gets information
     And I have Supervisor running
     When I wait for start
     And I get information about the processes
-    Then I should see them running
+    Then I should see running

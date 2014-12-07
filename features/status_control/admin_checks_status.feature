@@ -1,7 +1,7 @@
-Feature: User checks status
-  In order to get information about Supervisord
-  As a User
-  I should be able to check it's status
+Feature: Admin checks status
+  In order to display details
+  As an Admin
+  I should be able to get information about Supervisor
 
   Scenario:
     Given I have Supervisor running
@@ -33,10 +33,3 @@ Feature: User checks status
     Given I have Supervisor running
     When I ask for the log
     Then I should get an INFO about supervisord started
-
-  Scenario:
-    Given I have Supervisor running
-    When I try to clear the log
-    And I check if it is really empty
-    Then I should get a success response for clearing
-    And I should get a cleared log

@@ -110,7 +110,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetAtLeastVersion($ver)
     {
         if (version_compare($this->version, $ver) == -1) {
-            throw new \UnexpectedValueException(sprintf('Version "%s" does not match the minimum required "%s"', $this->version, $ver));
+            throw new \Exception(sprintf('Version "%s" does not match the minimum required "%s"', $this->version, $ver));
         }
     }
 
@@ -145,7 +145,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetAsIdentifier($identifier)
     {
         if ($this->identifier !== $identifier) {
-            throw new \UnexpectedValueException(sprintf('Identification "%s" does not match the required "%s"', $this->identifier, $identifier));
+            throw new \Exception(sprintf('Identification "%s" does not match the required "%s"', $this->identifier, $identifier));
         }
     }
 
@@ -163,11 +163,11 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetAsStatecodeAndAsStatename($code, $name)
     {
         if ($this->state['statecode'] != $code) {
-            throw new \UnexpectedValueException(sprintf('State code "%s" does not match the required "%s"', $this->state['statecode'], $code));
+            throw new \Exception(sprintf('State code "%s" does not match the required "%s"', $this->state['statecode'], $code));
         }
 
         if ($this->state['statename'] !== $name) {
-            throw new \UnexpectedValueException(sprintf('Statename "%s" does not match the required "%s"', $this->state['statename'], $name));
+            throw new \Exception(sprintf('Statename "%s" does not match the required "%s"', $this->state['statename'], $name));
         }
     }
 
@@ -185,7 +185,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetTheRealPid()
     {
         if ($this->process !== $this->pid) {
-            throw new \UnexpectedValueException(sprintf('PID "%s" does not match the real "%s"', $this->pid, $this->process));
+            throw new \Exception(sprintf('PID "%s" does not match the real "%s"', $this->pid, $this->process));
         }
     }
 
@@ -203,33 +203,34 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetAnInfoAboutSupervisordStarted()
     {
         if ($this->log !== 'INFO supervisord started with pid '.$this->process) {
-            throw new \UnexpectedValueException(sprintf('The following log entry was expected: "%s", but we got this: "%s"', 'INFO supervisord started with pid '.$this->process, $this->log));
+            throw new \Exception(sprintf('The following log entry was expected: "%s", but we got this: "%s"', 'INFO supervisord started with pid '.$this->process, $this->log));
         }
     }
 
     /**
-     * @When I try to clear the log
+     * @When I try to call :action action
      */
-    public function iTryToClearTheLog()
+    public function iTryToCallAction($action)
     {
-        $this->cleared = $this->supervisor->clearLog();
+        $this->action = $action;
+        $this->response = call_user_func([$this->supervisor, $action]);
     }
 
     /**
-     * @When I check if it is really empty
+     * @When I check if the log is really empty
      */
-    public function iCheckIfItIsReallyEmpty()
+    public function iCheckIfTheLogIsReallyEmpty()
     {
         $this->log = trim($this->supervisor->readLog(-24, 0));
     }
 
     /**
-     * @Then I should get a success response for clearing
+     * @Then I should get a success response
      */
-    public function iShouldGetASuccessResponseForClearing()
+    public function iShouldGetASuccessResponse()
     {
-        if ($this->cleared !== true) {
-            throw new \Exception('Clearing the log was unsuccessful');
+        if ($this->response !== true) {
+            throw new \Exception(sprintf('Action "%s" was unsuccessful', $this->action));
         }
     }
 
@@ -244,48 +245,12 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When I try to shut it down
-     */
-    public function iTryToShutItDown()
-    {
-        $this->shutdown = $this->supervisor->shutdown();
-    }
-
-    /**
-     * @Then I should get a success response for shutting it down
-     */
-    public function iShouldGetASuccessResponseForShuttingItDown()
-    {
-        if ($this->shutdown !== true) {
-            throw new \Exception('Shutdown was unsuccessful');
-        }
-    }
-
-    /**
      * @Then it should be stopped
      */
     public function itShouldBeStopped()
     {
         if ($this->supervisor->isConnected() === true) {
             throw new \Exception('Supervisor is still available');
-        }
-    }
-
-    /**
-     * @When I try to restart it
-     */
-    public function iTryToRestartIt()
-    {
-        $this->restart = $this->supervisor->restart();
-    }
-
-    /**
-     * @Then I should get a success response for restarting it
-     */
-    public function iShouldGetASuccessResponseForRestartingIt()
-    {
-        if ($this->restart !== true) {
-            throw new \Exception('Restarting Supervisor was unsuccessful');
         }
     }
 
@@ -304,7 +269,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iHaveAProcessCalled($process)
     {
-        $this->processName = $process;
+        $this->processName = $this->processes[] = $process;
 
         $program = new Section\Program($process, [
             'command' => exec('which '.$process),
@@ -322,39 +287,23 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When I get information about the process
-     */
-    public function iGetInformationAboutTheProcess()
-    {
-        $this->processInfo = $this->supervisor->getProcessInfo($this->processName);
-    }
-
-    /**
-     * @Then I should see it running
-     */
-    public function iShouldSeeItRunning()
-    {
-        if ($this->processInfo['state'] < 10) {
-            throw new \Exception(sprintf('Process %s failed to start', $this->processInfo['name']));
-        }
-    }
-
-    /**
      * @When I get information about the processes
      */
     public function iGetInformationAboutTheProcesses()
     {
-        $this->processInfo = $this->supervisor->getAllProcessInfo();
+        $processInfo = $this->supervisor->getAllProcessInfo();
+        $processNames = array_column($processInfo, 'name');
+        $this->processInfo = array_combine($processNames, $processInfo);
     }
 
     /**
-     * @Then I should see them running
+     * @Then I should see running
      */
-    public function iShouldSeeThemRunning()
+    public function iShouldSeeRunning()
     {
-        foreach ($this->processInfo as $process) {
-            if ($process['state'] < 10) {
-                throw new \Exception(sprintf('Process %s failed to start', $process['name']));
+        foreach ($this->processes as $process) {
+            if (!isset($this->processInfo[$process]) or $this->processInfo[$process]['state'] < 10) {
+                throw new \Exception(sprintf('Process "%s" is not running', $process));
             }
         }
     }
@@ -370,77 +319,77 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When I get information about the process before starting it
+     * @When I get information about the processes before action
      */
-    public function iGetInformationAboutTheProcessBeforeStartingIt()
+    public function iGetInformationAboutTheProcessesBeforeAction()
     {
-        $this->firstProcessInfo = $this->supervisor->getProcessInfo($this->processName);
+        $processInfo = $this->supervisor->getAllProcessInfo();
+        $processNames = array_column($processInfo, 'name');
+        $this->firstProcessInfo = array_combine($processNames, $processInfo);
     }
 
     /**
-     * @When I start the process
+     * @When I :action the process
      */
-    public function iStartTheProcess()
+    public function iTheProcess($action)
     {
-        $this->start = $this->supervisor->startProcess($this->processName, false);
+        $this->action = $action.'Process';
+        $this->response = call_user_func([$this->supervisor, $this->action], $this->processName, false);
     }
 
     /**
-     * @Then I should see it not running first
+     * @Then I should see not running first
      */
-    public function iShouldSeeItNotRunningFirst()
+    public function iShouldSeeNotRunningFirst()
     {
-        if ($this->firstProcessInfo['state'] > 0) {
-            throw new \Exception(sprintf('Process %s is already running before start', $this->firstProcessInfo['name']));
-        }
-    }
-
-    /**
-     * @Then I should get a success response for starting it
-     */
-    public function iShouldGetASuccessResponseForStartingIt()
-    {
-        if ($this->start !== true) {
-            throw new \Exception(sprintf('Starting process "%s" was unsuccessful', $this->processName));
-        }
-    }
-
-    /**
-     * @When I get information about the processes before starting them
-     */
-    public function iGetInformationAboutTheProcessesBeforeStartingThem()
-    {
-        $this->firstProcessInfo = $this->supervisor->getAllProcessInfo();
-    }
-
-    /**
-     * @When I start the processes
-     */
-    public function iStartTheProcesses()
-    {
-        $this->start = $this->supervisor->startAllProcesses(false);
-    }
-
-    /**
-     * @Then I should see them not running first
-     */
-    public function iShouldSeeThemNotRunningFirst()
-    {
-        foreach ($this->firstProcessInfo as $process) {
-            if ($process['state'] > 0) {
-                throw new \Exception(sprintf('Process %s is already running before start', $process['name']));
+        foreach ($this->processes as $process) {
+            if (!isset($this->firstProcessInfo[$process]) or $this->firstProcessInfo[$process]['state'] > 0) {
+                throw new \Exception(sprintf('Process "%s" is running', $process));
             }
         }
     }
 
     /**
-     * @Then I should get a success response for starting them
+     * @When I :action the processes
      */
-    public function iShouldGetASuccessResponseForStartingThem()
+    public function iTheProcesses($action)
     {
-        foreach ($this->start as $process) {
-            if ($process['description'] !== 'OK') {
-                throw new \Exception(sprintf('Starting process "%s" was unsuccessful', $process['name']));
+        $this->action = $action.'AllProcesses';
+        $this->response = call_user_func([$this->supervisor, $this->action], false);
+    }
+
+    /**
+     * @Then I should get a success response for all
+     */
+    public function iShouldGetASuccessResponseForAll()
+    {
+        foreach ($this->response as $response) {
+            if ($response['description'] !== 'OK') {
+                throw new \Exception(sprintf('Action "%s" was unsuccessful', $this->action));
+            }
+        }
+    }
+
+    /**
+     * @Then I should see running first
+     */
+    public function iShouldSeeRunningFirst()
+    {
+        foreach ($this->processes as $process) {
+            if (!isset($this->firstProcessInfo[$process]) or $this->firstProcessInfo[$process]['state'] < 10) {
+                throw new \Exception(sprintf('Process "%s" is not running before "%s"', $process, $this->action));
+            }
+        }
+    }
+
+    /**
+     * @Then I should see not running
+     */
+    public function iShouldSeeNotRunning()
+    {
+        foreach ($this->processes as $process) {
+            if (!isset($this->processInfo[$process]) or $this->processInfo[$process]['state'] > 0) {
+                throw new \Exception(sprintf('Process "%s" is running', $process));
             }
         }
     }
@@ -466,11 +415,12 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When I start the processes in the group
+     * @When I :action the processes in the group
      */
-    public function iStartTheProcessesInTheGroup()
+    public function iTheProcessesInTheGroup($action)
     {
-        $this->groupResponse = $this->start = $this->supervisor->startProcessGroup($this->groupName, false);
+        $this->action = $action.'ProcessGroup';
+        $this->response = call_user_func([$this->supervisor, $this->action], $this->groupName, false);
     }
 
     /**
@@ -478,116 +428,10 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iShouldSeeThemAsPartOfTheGroup()
     {
-        foreach ($this->groupResponse as $groupResponse) {
-            if ($groupResponse['group'] !== $this->groupName) {
-                throw new \Exception(sprintf('Process "%s" is not part of the group "%s"', $groupResponse['name'], $this->groupName));
+        foreach ($this->response as $response) {
+            if ($response['group'] !== $this->groupName) {
+                throw new \Exception(sprintf('Process "%s" is not part of the group "%s"', $response['name'], $this->groupName));
             }
         }
-    }
-
-    /**
-     * @When I get information about the process before stopping it
-     */
-    public function iGetInformationAboutTheProcessBeforeStoppingIt()
-    {
-        $this->firstProcessInfo = $this->supervisor->getProcessInfo($this->processName);
-    }
-
-    /**
-     * @When I stop the process
-     */
-    public function iStopTheProcess()
-    {
-        $this->stop = $this->supervisor->stopProcess($this->processName, false);
-    }
-
-    /**
-     * @Then I should see it running first
-     */
-    public function iShouldSeeItRunningFirst()
-    {
-        if ($this->firstProcessInfo['state'] < 10) {
-            throw new \Exception(sprintf('Process %s is not running before stop', $this->firstProcessInfo['name']));
-        }
-    }
-
-    /**
-     * @Then I should get a success response for stopping it
-     */
-    public function iShouldGetASuccessResponseForStoppingIt()
-    {
-        if ($this->stop !== true) {
-            throw new \Exception(sprintf('Stopping process "%s" was unsuccessful', $this->processName));
-        }
-    }
-
-    /**
-     * @Then I should see it not running
-     */
-    public function iShouldSeeItNotRunning()
-    {
-        if ($this->processInfo['state'] > 0) {
-            throw new \Exception(sprintf('Process %s failed to stop', $this->processInfo['name']));
-        }
-    }
-
-    /**
-     * @When I get information about the processes before stopping them
-     */
-    public function iGetInformationAboutTheProcessesBeforeStoppingThem()
-    {
-        $this->firstProcessInfo = $this->supervisor->getAllProcessInfo();
-    }
-
-    /**
-     * @When I stop the processes
-     */
-    public function iStopTheProcesses()
-    {
-        $this->stop = $this->supervisor->stopAllProcesses(false);
-    }
-
-    /**
-     * @Then I should see them running first
-     */
-    public function iShouldSeeThemRunningFirst()
-    {
-        foreach ($this->firstProcessInfo as $process) {
-            if ($process['state'] < 10) {
-                throw new \Exception(sprintf('Process %s is not running before stop', $process['name']));
-            }
-        }
-    }
-
-    /**
-     * @Then I should get a success response for stopping them
-     */
-    public function iShouldGetASuccessResponseForStoppingThem()
-    {
-        foreach ($this->stop as $stop) {
-            if ($stop['description'] !== 'OK') {
-                throw new \Exception(sprintf('Stopping process "%s" was unsuccessful', $stop['name']));
-            }
-        }
-    }
-
-    /**
-     * @Then I should see them not running
-     */
-    public function iShouldSeeThemNotRunning()
-    {
-        foreach ($this->processInfo as $process) {
-            if ($process['state'] > 0) {
-                throw new \Exception(sprintf('Process %s failed to stop', $process['name']));
-            }
-        }
-    }
-
-    /**
-     * @When I stop the processes in the group
-     */
-    public function iStopTheProcessesInTheGroup()
-    {
-        $this->groupResponse = $this->stop = $this->supervisor->stopProcessGroup($this->groupName, false);
     }
 }
