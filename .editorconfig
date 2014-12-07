@@ -18,6 +18,14 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 
+[*.yml.dist]
+indent_style = space
+indent_size = 2
+
+[*.feature]
+indent_style = space
+indent_size = 2
+
 [phpspec.*]
 indent_style = space
 indent_size = 2
