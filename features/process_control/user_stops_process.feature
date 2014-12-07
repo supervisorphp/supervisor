@@ -16,7 +16,7 @@ Feature: User starts process
 
   Scenario:
     Given I have a process called "cat"
-    And I have a process called "ls"
+    And I have a process called "uname"
     And I have Supervisor running
     When I wait for start
     And I get information about the processes before stopping them
@@ -29,7 +29,7 @@ Feature: User starts process
   Scenario:
     Given I have a process called "cat"
     And it is part of group called "test"
-    And I have a process called "ls"
+    And I have a process called "uname"
     And it is part of group called "test"
     And I have Supervisor running
     When I wait for start
