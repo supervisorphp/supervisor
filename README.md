@@ -30,7 +30,8 @@ use Indigo\Supervisor\XmlRpc\Client;
 use Indigo\Supervisor\XmlRpc\Authentication;
 
 // Pass an instance of Indigo\Http\Adapter as the first argument
-// Optional: if you provid your HTTP Client with authentication data, then you can use directly it's adapter without this decorator
+// Optional: if you provid your HTTP Client with authentication data
+// then you can use directly it's adapter without this decorator
 $authentication = new Authentication($adapter, 'user', '123');
 
 // Pass the url and the adapter to the XmlRpc Client
