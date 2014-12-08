@@ -47,11 +47,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     protected function setUpConnector()
     {
-        $guzzle = new GuzzleClient([
-            'base_url' => 'http://127.0.0.1:9001/RPC2',
-        ]);
-
-        $adapter = new Authentication(new Guzzle($guzzle), 'user', '123');
+        $adapter = new Authentication(new Guzzle(new GuzzleClient), 'user', '123');
 
         $client = new Client('http://127.0.0.1:9001/RPC2', $adapter);
 

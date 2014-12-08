@@ -136,6 +136,7 @@ final class Client implements ClientInterface
         $request->setHeader('Content-Type', 'text/xml; charset=UTF-8');
         $request->setBody($body);
         $request->setMethod(Request::POST);
+        $request->setUrl($this->uri);
 
         $response = $this->adapter->send($request);
 
