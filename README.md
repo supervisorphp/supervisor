@@ -185,9 +185,9 @@ You can find the XML-RPC documentation here:
 
 ## Notice
 
-If using PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
+If you use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
-You will also have to make sure that you always call the functions with correct parameters. `ZendConnector` will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `SupervisorException`.
+You will also have to make sure that you always call the functions with correct parameters. `Zend` connector will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `SupervisorException`.
 
 
 ## Bundles
@@ -201,7 +201,7 @@ Here is a list of framework specific bundle packages:
 ## Testing
 
 ``` bash
-$ codecept run
+$ phpspec run
 ```
 
 
