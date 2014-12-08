@@ -35,7 +35,7 @@ use Indigo\Supervisor\XmlRpc\Authentication;
 $authentication = new Authentication($adapter, 'user', '123');
 
 // Pass the url and the adapter to the XmlRpc Client
-$client = new Client('http://127.0.0.1:9001', $authentication);
+$client = new Client('http://127.0.0.1:9001/RPC2', $authentication);
 
 // Pass the client to the connector
 // See the full list of connectors bellow
