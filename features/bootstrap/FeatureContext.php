@@ -15,7 +15,6 @@ use Indigo\Supervisor\XmlRpc\Client;
 use Indigo\Supervisor\XmlRpc\Authentication;
 use Indigo\Supervisor\Supervisor;
 use Indigo\Http\Adapter\Guzzle;
-use Indigo\Http\Client as HttpClient;
 use GuzzleHttp\Client as GuzzleClient;
 
 /**
