@@ -1,5 +1,5 @@
 suites:
-  http_suite:
+  supervisor_suite:
     namespace: Indigo\Supervisor
     psr4_prefix: Indigo\Supervisor
 extensions:
