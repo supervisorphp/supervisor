@@ -22,11 +22,6 @@ use fXmlRpc\Exception\ResponseException;
 final class Client implements ClientInterface
 {
     /**
-     * @var string
-     */
-    private $uri;
-
-    /**
      * @var HttpClient
      */
     private $client;
@@ -55,8 +50,8 @@ final class Client implements ClientInterface
      * If no specific transport, parser or serializer is passed, default implementations
      * are used.
      *
-     * @param string              $uri
      * @param HttpClient          $transport
+     * @param string              $uri
      * @param ParserInterface     $parser
      * @param SerializerInterface $serializer
      */
@@ -67,10 +62,11 @@ final class Client implements ClientInterface
         SerializerInterface $serializer = null
     )
     {
-        $this->uri = $uri;
         $this->client = $client;
         $this->parser = $parser ?: new XmlReaderParser();
         $this->serializer = $serializer ?: new XmlWriterSerializer();
+
+        $client->setBaseUrl($uri);
     }
 
     /**
@@ -78,7 +74,7 @@ final class Client implements ClientInterface
      */
     public function getUri()
     {
-        return $this->uri;
+        return (string) $this->client->getBaseUrl();
     }
 
     /**
@@ -86,11 +82,7 @@ final class Client implements ClientInterface
      */
     public function setUri($uri)
     {
-        if (!is_string($uri)) {
-            throw InvalidArgumentException::expectedParameter(0, 'string', $uri);
-        }
-
-        $this->uri = $uri;
+        $this->client->setBaseUrl($uri);
     }
 
     /**
@@ -133,7 +125,7 @@ final class Client implements ClientInterface
         $params = array_merge($this->prependParams, $params, $this->appendParams);
 
         $response = $this->parser->parse(
-            $this->client->post($this->uri, [
+            $this->client->post(null, [
                 'headers' => [
                     'Content-Type' => 'text/xml; charset=UTF-8',
                 ],
