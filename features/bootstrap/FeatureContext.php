@@ -54,10 +54,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
         $adapter = new Authentication(new Guzzle($guzzle), 'user', '123');
 
-        $client = new Client(
-            new HttpClient($adapter),
-            'http://127.0.0.1:9001/RPC2'
-        );
+        $client = new Client('http://127.0.0.1:9001/RPC2', $adapter);
 
         $connector = new XmlRpc($client);
         $this->supervisor = new Supervisor($connector);

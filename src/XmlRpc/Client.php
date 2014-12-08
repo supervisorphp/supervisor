@@ -11,7 +11,9 @@
 
 namespace Indigo\Supervisor\XmlRpc;
 
-use Indigo\Http\Client as HttpClient;
+use Indigo\Http\Adapter;
+use Indigo\Http\Stream;
+use Indigo\Http\Message\Request;
 use fXmlRpc\ClientInterface;
 use fXmlRpc\Parser\ParserInterface;
 use fXmlRpc\Parser\XmlReaderParser;
@@ -22,9 +24,14 @@ use fXmlRpc\Exception\ResponseException;
 final class Client implements ClientInterface
 {
     /**
-     * @var HttpClient
+     * @var string
      */
-    private $client;
+    private $uri;
+
+    /**
+     * @var Adapter
+     */
+    private $adapter;
 
     /**
      * @var ParserInterface
@@ -47,26 +54,25 @@ final class Client implements ClientInterface
     private $appendParams = [];
 
     /**
-     * If no specific transport, parser or serializer is passed, default implementations
+     * If no specific parser or serializer is passed, default implementations
      * are used.
      *
-     * @param HttpClient          $transport
      * @param string              $uri
+     * @param Adapter             $adapter
      * @param ParserInterface     $parser
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        HttpClient $client,
-        $uri = null,
+        $uri,
+        Adapter $adapter,
         ParserInterface $parser = null,
         SerializerInterface $serializer = null
     )
     {
-        $this->client = $client;
+        $this->uri = $uri;
+        $this->adapter = $adapter;
         $this->parser = $parser ?: new XmlReaderParser();
         $this->serializer = $serializer ?: new XmlWriterSerializer();
-
-        $client->setBaseUrl($uri);
     }
 
     /**
@@ -74,7 +80,7 @@ final class Client implements ClientInterface
      */
     public function getUri()
     {
-        return (string) $this->client->getBaseUrl();
+        return $this->uri;
     }
 
     /**
@@ -82,7 +88,7 @@ final class Client implements ClientInterface
      */
     public function setUri($uri)
     {
-        $this->client->setBaseUrl($uri);
+        $this->uri = $uri;
     }
 
     /**
@@ -124,15 +130,16 @@ final class Client implements ClientInterface
     {
         $params = array_merge($this->prependParams, $params, $this->appendParams);
 
-        $response = $this->parser->parse(
-            $this->client->post(null, [
-                'headers' => [
-                    'Content-Type' => 'text/xml; charset=UTF-8',
-                ],
-                'body' => $this->serializer->serialize($methodName, $params)
-            ]),
-            $isFault
-        );
+        $request = new Request;
+        $body = Stream::create($this->serializer->serialize($methodName, $params));
+
+        $request->setHeader('Content-Type', 'text/xml; charset=UTF-8');
+        $request->setBody($body);
+        $request->setMethod(Request::POST);
+
+        $response = $this->adapter->send($request);
+
+        $response = $this->parser->parse($response->getBody()->getContents(), $isFault);
 
         if ($isFault) {
             throw ResponseException::fault($response);
