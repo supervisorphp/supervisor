@@ -11,11 +11,12 @@ use Indigo\Supervisor\Configuration\Parser\File;
 use Indigo\Supervisor\Configuration\Renderer\Basic as Renderer;
 use Indigo\Supervisor\Configuration\Section;
 use Indigo\Supervisor\Connector\XmlRpc;
+use Indigo\Supervisor\XmlRpc\Client;
+use Indigo\Supervisor\XmlRpc\Authentication;
 use Indigo\Supervisor\Supervisor;
-use fXmlRpc\Client;
-use fXmlRpc\Transport\Guzzle4Bridge;
+use Indigo\Http\Adapter\Guzzle;
+use Indigo\Http\Client as HttpClient;
 use GuzzleHttp\Client as GuzzleClient;
-use Symfony\Component\Process\Process;
 
 /**
  * Defines application features from the specific context.
@@ -47,10 +48,17 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     protected function setUpConnector()
     {
+        $guzzle = new GuzzleClient([
+            'base_url' => 'http://127.0.0.1:9001/RPC2',
+        ]);
+
+        $adapter = new Authentication(new Guzzle($guzzle), 'user', '123');
+
         $client = new Client(
-            'http://127.0.0.1:9001/RPC2',
-            new Guzzle4Bridge(new GuzzleClient(['defaults' => ['auth' => ['user', '123']]]))
+            new HttpClient($adapter),
+            'http://127.0.0.1:9001/RPC2'
         );
+
         $connector = new XmlRpc($client);
         $this->supervisor = new Supervisor($connector);
     }

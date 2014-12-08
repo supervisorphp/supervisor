@@ -66,7 +66,7 @@ $process->getPayload();
 * [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
 * Zend XML-RPC
 
-**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed.
+**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed. There is also a custom Client implementing `fXmlRpc\ClientInterface` which uses [indigophp/http-adapter](https://github.com/indigophp/http-adapter) package.
 
 
 ## Configuration

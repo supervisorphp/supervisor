@@ -16,6 +16,7 @@
         "league/event": "~1.0.0"
     },
     "require-dev": {
+        "league/url": "~3.3.0",
         "lstrojny/fxmlrpc": "dev-master",
         "indigophp/http-adapter": "dev-develop",
         "guzzlehttp/streams": "~3.0.0",
