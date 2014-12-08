@@ -26,15 +26,19 @@ $ composer require indigophp/supervisor
 ``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Connector\XmlRpc;
-use fXmlRpc\Client;
+use Indigo\Supervisor\XmlRpc\Client;
+use Indigo\Supervisor\XmlRpc\Authentication;
 
-// Create new Connector
-// See available connectors
-$connector = new XmlRpc(new Client('http://127.0.0.1:9001/RPC2'));
+// Pass an instance of Indigo\Http\Adapter as the first argument
+// Optional: if you provid your HTTP Client with authentication data, then you can use directly it's adapter without this decorator
+$authentication = new Authentication($adapter, 'user', '123');
 
-// Note: As of 3.0.0 setCredentials function is removed from the interface hence the variety of the clients.
-// Please provide the connector a client with authentication.
-// For this please check each possible HTTP Client's documentation.
+// Pass the url and the adapter to the XmlRpc Client
+$client = new Client('http://127.0.0.1:9001', $authentication);
+
+// Pass the client to the connector
+// See the full list of connectors bellow
+$connector = new XmlRpc($client);
 
 $supervisor = new Supervisor($connector);
 
@@ -67,6 +71,10 @@ $process->getPayload();
 * Zend XML-RPC
 
 **Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed. There is also a custom Client implementing `fXmlRpc\ClientInterface` which uses [indigophp/http-adapter](https://github.com/indigophp/http-adapter) package.
+
+### Authentication
+
+As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface. As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
 
 
 ## Configuration

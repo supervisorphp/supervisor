@@ -26,6 +26,7 @@
 - Ability to construct `Process` object from name, use `Process::get` instead
 - Memory usage check form `Process`
 - Fluent interfaces
+- `setCredentials` method from connectors
 
 
 ## 2.0.1 (released 2014-07-13)
