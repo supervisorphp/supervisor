@@ -18,7 +18,6 @@ use fXmlRpc\Parser\XmlReaderParser;
 use fXmlRpc\Serializer\SerializerInterface;
 use fXmlRpc\Serializer\XmlWriterSerializer;
 use fXmlRpc\Exception\ResponseException;
-use fXmlRpc\Exception\InvalidArgumentException;
 
 final class Client implements ClientInterface
 {
@@ -128,18 +127,16 @@ final class Client implements ClientInterface
 
     /**
      * {@inheritdoc}
-     * @throws Exception\ResponseException
      */
     public function call($methodName, array $params = [])
     {
-        if (!is_string($methodName)) {
-            throw InvalidArgumentException::expectedParameter(0, 'string', $methodName);
-        }
-
         $params = array_merge($this->prependParams, $params, $this->appendParams);
 
         $response = $this->parser->parse(
-            $this->client->get($this->uri, [
+            $this->client->post($this->uri, [
+                'headers' => [
+                    'Content-Type' => 'text/xml; charset=UTF-8',
+                ],
                 'body' => $this->serializer->serialize($methodName, $params)
             ]),
             $isFault
