@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Find a better name for Faults
 - [ ] Close down the API where needed
 - [ ] The current implementation does not work with log tailing
 - [ ] Find an easy way to use Guzzle with unix socket
