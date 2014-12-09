@@ -30,11 +30,23 @@ class XmlRpcSpec extends ObjectBehavior
     {
         $e = ResponseException::fault([
             'faultString' => 'Invalid response',
+            'faultCode'   => 100,
+        ]);
+
+        $client->call('namespace.method', [])->willThrow($e);
+
+        $this->shouldThrow('Indigo\Supervisor\Exception\Fault')->duringCall('namespace', 'method');
+    }
+
+    function it_should_throw_a_known_exception_when_proper_fault_returned(ClientInterface $client)
+    {
+        $e = ResponseException::fault([
+            'faultString' => 'UNKNOWN_METHOD',
             'faultCode'   => 1,
         ]);
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Indigo\Supervisor\Exception\SupervisorException')->duringCall('namespace', 'method');
+        $this->shouldThrow('Indigo\Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
     }
 }
