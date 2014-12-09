@@ -81,7 +81,7 @@ As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interf
 
 ### Exception handling
 
-For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. See the list of faults [here](resources/faults.php).
+For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. When an unknown fault is returned from the server, an instance if the common exception is thrown. The list of fault responses and the appropriate exception can be found in the class.
 
 
 ## Configuration

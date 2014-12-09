@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__.'/vendor/autoload.php';
+
 /**
  * This is project's console commands configuration for Robo task runner.
  *
@@ -12,7 +14,8 @@ class RoboFile extends \Robo\Tasks
      */
     public function faultsGenerate()
     {
-        $faults = include __DIR__.'/resources/faults.php';
+        $faultReflection = new \ReflectionClass('Indigo\Supervisor\Exception\Fault');
+        $faults = array_flip($faultReflection->getConstants());
 
         $this->taskCleanDir([__DIR__.'/src/Exception/Fault'])->run();
 

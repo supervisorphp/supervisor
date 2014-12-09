@@ -83,6 +83,6 @@ class Fault extends \Exception
             return new self($faultString, $faultCode);
         }
 
-        return new self::$exceptionMap[$faultCode];
+        return new self::$exceptionMap[$faultCode]($faultString, $faultCode);
     }
 }
