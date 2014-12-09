@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Implement `ArrayAccess` in `Configuration` and `Section`
 - [ ] Find a better name for Faults
 - [ ] Close down the API where needed
 - [ ] The current implementation does not work with log tailing
