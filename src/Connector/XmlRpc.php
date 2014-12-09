@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Connector;
 
 use Indigo\Supervisor\Connector;
-use Indigo\Supervisor\Exception\SupervisorException;
+use Indigo\Supervisor\Exception\Fault;
 use fXmlRpc\ClientInterface;
 use fXmlRpc\Exception\ResponseException;
 
@@ -48,7 +48,7 @@ class XmlRpc implements Connector
         try {
             return $this->client->call($namespace.'.'.$method, $arguments);
         } catch (ResponseException $e) {
-            throw new SupervisorException($e->getFaultString(), $e->getFaultCode(), $e);
+            throw Fault::create($e->getFaultString(), $e->getFaultCode());
         }
     }
 }

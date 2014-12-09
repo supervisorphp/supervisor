@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Exception;
+namespace Indigo\Supervisor\Exception\Fault;
 
-use BadMethodCallException;
+use Indigo\Supervisor\Exception\Fault;
 
 /**
- * Thrown in case of faulty XMLRPC response
+ * Implements ABNORMAL_TERMINATION Fault exception
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class SupervisorException extends BadMethodCallException
+class AbnormalTermination extends Fault
 {
+
 }

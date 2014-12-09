@@ -28,10 +28,19 @@ class ZendSpec extends ObjectBehavior
 
     function it_should_throw_an_exception_when_the_call_fails(Client $client)
     {
-        $e = new FaultException('Invalid response', 1);
+        $e = new FaultException('Invalid response', 100);
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Indigo\Supervisor\Exception\SupervisorException')->duringCall('namespace', 'method');
+        $this->shouldThrow('Indigo\Supervisor\Exception\Fault')->duringCall('namespace', 'method');
+    }
+
+    function it_should_throw_a_known_exception_when_proper_fault_returned(Client $client)
+    {
+        $e = new FaultException('UNKNOWN_METHOD', 1);
+
+        $client->call('namespace.method', [])->willThrow($e);
+
+        $this->shouldThrow('Indigo\Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
     }
 }

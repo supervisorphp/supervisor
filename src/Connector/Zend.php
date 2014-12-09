@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor\Connector;
 
 use Indigo\Supervisor\Connector;
-use Indigo\Supervisor\Exception\SupervisorException;
+use Indigo\Supervisor\Exception\Fault;
 use Zend\XmlRpc\Client;
 use Zend\XmlRpc\Client\Exception\FaultException;
 
@@ -52,7 +52,7 @@ class Zend implements Connector
         try {
             return $this->client->call($namespace.'.'.$method, $arguments);
         } catch (FaultException $e) {
-            throw new SupervisorException($e->getMessage(), $e->getCode(), $e);
+            throw Fault::create($e->getMessage(), $e->getCode());
         }
     }
 }

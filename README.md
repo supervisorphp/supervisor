@@ -73,9 +73,15 @@ $process->getPayload();
 
 **Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed. There is also a custom Client implementing `fXmlRpc\ClientInterface` which uses [indigophp/http-adapter](https://github.com/indigophp/http-adapter) package.
 
+
 ### Authentication
 
 As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface. As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
+
+
+### Exception handling
+
+For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. When an unknown fault is returned from the server, an instance if the common exception is thrown. The list of fault responses and the appropriate exception can be found in the class.
 
 
 ## Configuration
@@ -187,7 +193,7 @@ You can find the XML-RPC documentation here:
 
 If you use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
-You will also have to make sure that you always call the functions with correct parameters. `Zend` connector will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `SupervisorException`.
+You will also have to make sure that you always call the functions with correct parameters. `Zend` connector will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `Fault` exception.
 
 
 ## Bundles
