@@ -72,8 +72,8 @@ final class Client implements ClientInterface
     {
         $this->uri = $uri;
         $this->adapter = $adapter;
-        $this->parser = $parser ?: new XmlReaderParser();
-        $this->serializer = $serializer ?: new XmlWriterSerializer();
+        $this->parser = $parser ?: new XmlReaderParser;
+        $this->serializer = $serializer ?: new XmlWriterSerializer;
     }
 
     /**
