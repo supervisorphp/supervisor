@@ -73,9 +73,15 @@ $process->getPayload();
 
 **Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed. There is also a custom Client implementing `fXmlRpc\ClientInterface` which uses [indigophp/http-adapter](https://github.com/indigophp/http-adapter) package.
 
+
 ### Authentication
 
 As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface. As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
+
+
+### Exception handling
+
+For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. See the list of faults [here](resources/faults.php).
 
 
 ## Configuration
