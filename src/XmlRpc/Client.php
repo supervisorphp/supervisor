@@ -20,6 +20,7 @@ use fXmlRpc\Parser\XmlReaderParser;
 use fXmlRpc\Serializer\SerializerInterface;
 use fXmlRpc\Serializer\XmlWriterSerializer;
 use fXmlRpc\Exception\ResponseException;
+use fXmlRpc\Multicall;
 
 final class Client implements ClientInterface
 {
