@@ -9,46 +9,42 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Event;
+namespace Indigo\Supervisor\Event\Listener;
 
-use Indigo\Supervisor\Event;
-use League\Event\EmitterInterface;
-use InvalidArgumentException;
+use Indigo\Supervisor\Event\Listener;
+use Indigo\Supervisor\Event\Handler;
+use Indigo\Supervisor\Event\Notification;
+use Indigo\Supervisor\Exception\EventHandlingFailed;
+use Indigo\Supervisor\Exception\StopListener;
 
 /**
- * Processor for standard IO streams
+ * Listener for standard IO streams
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class StandardProcessor implements Processor
+class Standard implements Listener
 {
     /**
-     * Input stream
-     *
      * @var resource
      */
     protected $inputStream = STDIN;
 
     /**
-     * Output stream
-     *
      * @var resource
      */
     protected $outputStream = STDOUT;
 
     /**
-     * Event Emitter
-     *
-     * @var EmitterInterface
+     * @param resource $inputStream
+     * @param resource $outputStream
      */
-    protected $emitter;
-
-    /**
-     * @param EmitterInterface $emitter
-     */
-    public function __construct(EmitterInterface $emitter)
+    public function __construct($inputStream = STDIN, $outputStream = STDOUT)
     {
-        $this->emitter = $emitter;
+        $this->assertValidStreamResource($inputStream);
+        $this->assertValidStreamResource($outputStream);
+
+        $this->inputStream = $inputStream;
+        $this->outputStream = $outputStream;
     }
 
     /**
@@ -62,22 +58,6 @@ class StandardProcessor implements Processor
     }
 
     /**
-     * Sets the input stream
-     *
-     * @param resource $stream
-     *
-     * @return self
-     */
-    public function setInputStream($stream)
-    {
-        $this->assertValidStreamResource($stream);
-
-        $this->inputStream = $stream;
-
-        return $this;
-    }
-
-    /**
      * Returns the output stream
      *
      * @return resource
@@ -88,62 +68,47 @@ class StandardProcessor implements Processor
     }
 
     /**
-     * Sets the output stream
-     *
-     * @param resource $stream
-     *
-     * @return self
-     */
-    public function setOutputStream($stream)
-    {
-        $this->assertValidStreamResource($stream);
-
-        $this->outputStream = $stream;
-
-        return $this;
-    }
-
-    /**
      * Asserts that a given input is a valid stream resource
      *
      * @param resource $stream
      *
-     * @throws InvalidArgumentException If $stream is not a valid resource
+     * @throws \InvalidArgumentException If $stream is not a valid resource
      */
     private function assertValidStreamResource($stream)
     {
         if (!is_resource($stream)) {
-            throw new InvalidArgumentException('Invalid resource for IO stream');
+            throw new \InvalidArgumentException('Invalid resource for IO stream');
         }
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @codeCoverageIgnore
      */
-    public function run()
+    public function listen(Handler $handler)
     {
         while (true) {
-            $this->write(self::READY);
+            $this->write("READY\n");
 
-            if ($event = $this->getEvent()) {
-                $this->emitter->emit($event);
-                $this->processResult($event);
-
-                if ($event->shouldProcessorStop()) {
-                    return;
+            if ($notification = $this->getNotification()) {
+                try {
+                    $handler->handle($notification);
+                    $this->write("RESULT 2\nOK");
+                } catch (EventHandlingFailed $e) {
+                    $this->write("RESULT 4\nFAIL");
+                } catch (StopListener $e) {
+                    $this->write("RESULT 2\nOK");
+                    break;
                 }
             }
         }
     }
 
     /**
-     * Returns event from input stream if available
+     * Returns notification from input stream if available
      *
-     * @return Event Event object
+     * @return Notification
      */
-    protected function getEvent()
+    protected function getNotification()
     {
         if ($header = $this->read()) {
             $header = $this->parseData($header);
@@ -156,24 +121,8 @@ class StandardProcessor implements Processor
 
             $payload = $this->parseData($payload);
 
-            return new Event($header, $payload, $body);
+            return new Notification($header, $payload, $body);
         }
-    }
-
-    /**
-     * Processes result
-     *
-     * @param Event $event Emitted event
-     */
-    protected function processResult(Event $event)
-    {
-        $result = $event->getResult();
-
-        if (is_null($result)) {
-            $result = self::FAIL;
-        }
-
-        $this->write($result);
     }
 
     /**
@@ -181,7 +130,7 @@ class StandardProcessor implements Processor
      *
      * @param string $rawData
      *
-     * @return []
+     * @return array
      */
     protected function parseData($rawData)
     {
@@ -216,7 +165,7 @@ class StandardProcessor implements Processor
      *
      * @param string $value
      *
-     * @return integer Bytes written
+     * @return integer
      */
     protected function write($value)
     {

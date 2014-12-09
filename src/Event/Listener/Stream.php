@@ -9,50 +9,38 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Event;
+namespace Indigo\Supervisor\Event\Listener;
 
-use Indigo\Supervisor\Event;
-use League\Event\EmitterInterface;
+use Indigo\Supervisor\Event\Listener;
+use Indigo\Supervisor\Event\Handler;
+use Indigo\Supervisor\Event\Notification;
+use Indigo\Supervisor\Exception\EventHandlingFailed;
+use Indigo\Supervisor\Exception\StopListener;
 use GuzzleHttp\Stream\StreamInterface;
 use GuzzleHttp\Stream\Utils;
 
 /**
- * Processor for guzzle streams
+ * Listener using guzzle streams
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class GuzzleStreamProcessor implements Processor
+class Stream implements Listener
 {
     /**
-     * Input stream
-     *
      * @var StreamInterface
      */
     protected $inputStream;
 
     /**
-     * Output stream
-     *
      * @var StreamInterface
      */
     protected $outputStream;
 
     /**
-     * Event Emitter
-     *
-     * @var EmitterInterface
-     */
-    protected $emitter;
-
-    /**
      * @param EmitterInterface $emitter
      */
-    public function __construct(
-        StreamInterface $inputStream,
-        StreamInterface $outputStream,
-        EmitterInterface $emitter
-    ) {
-        $this->emitter = $emitter;
+    public function __construct(StreamInterface $inputStream, StreamInterface $outputStream)
+    {
         $this->inputStream = $inputStream;
         $this->outputStream = $outputStream;
     }
@@ -68,20 +56,6 @@ class GuzzleStreamProcessor implements Processor
     }
 
     /**
-     * Sets the input stream
-     *
-     * @param StreamInterface $stream
-     *
-     * @return self
-     */
-    public function setInputStream(StreamInterface $stream)
-    {
-        $this->inputStream = $stream;
-
-        return $this;
-    }
-
-    /**
      * Returns the output stream
      *
      * @return StreamInterface
@@ -92,46 +66,33 @@ class GuzzleStreamProcessor implements Processor
     }
 
     /**
-     * Sets the output stream
-     *
-     * @param StreamInterface $stream
-     *
-     * @return self
-     */
-    public function setOutputStream(StreamInterface $stream)
-    {
-        $this->outputStream = $stream;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
-     *
-     * @codeCoverageIgnore
      */
-    public function run()
+    public function listen(Handler $handler)
     {
         while (true) {
-            $this->outputStream->write(self::READY);
+            $this->outputStream->write("READY\n");
 
-            if ($event = $this->getEvent()) {
-                $this->emitter->emit($event);
-                $this->processResult($event);
-
-                if ($event->shouldProcessorStop()) {
-                    return;
+            if ($notification = $this->getNotification()) {
+                try {
+                    $handler->handle($notification);
+                    $this->outputStream->write("RESULT 2\nOK");
+                } catch (EventHandlingFailed $e) {
+                    $this->outputStream->write("RESULT 4\nFAIL");
+                } catch (StopListener $e) {
+                    $this->outputStream->write("RESULT 2\nOK");
+                    break;
                 }
             }
         }
     }
 
     /**
-     * Returns event from input stream if available
+     * Returns notification from input stream if available
      *
-     * @return Event Event object
+     * @return Notification
      */
-    protected function getEvent()
+    protected function getNotification()
     {
         if ($header = trim(Utils::readLine($this->inputStream))) {
             $header = $this->parseData($header);
@@ -144,24 +105,8 @@ class GuzzleStreamProcessor implements Processor
 
             $payload = $this->parseData($payload);
 
-            return new Event($header, $payload, $body);
+            return new Notification($header, $payload, $body);
         }
-    }
-
-    /**
-     * Processes result
-     *
-     * @param Event $event Emitted event
-     */
-    protected function processResult(Event $event)
-    {
-        $result = $event->getResult();
-
-        if (is_null($result)) {
-            $result = self::FAIL;
-        }
-
-        $this->outputStream->write($result);
     }
 
     /**

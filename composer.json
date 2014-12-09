@@ -12,8 +12,7 @@
     ],
     "require": {
         "php": ">=5.4",
-        "symfony/options-resolver": "~2.6",
-        "league/event": "~1.0.0"
+        "symfony/options-resolver": "~2.6"
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "dev-master",
