@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Event;
+namespace Indigo\Supervisor\Event\Handler;
 
+use Indigo\Supervisor\Event\Handler;
+use Indigo\Supervisor\Event\Notification;
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
-use League\Event\AbstractListener;
-use League\Event\AbstractEvent;
 use Exception;
 
 /**
@@ -24,11 +24,9 @@ use Exception;
  *
  * @codeCoverageIgnore
  */
-class MemmonListener extends AbstractListener
+class Memmon implements Handler
 {
     /**
-     * Supervisor instance
-     *
      * @var Supervisor
      */
     protected $supervisor;
@@ -64,12 +62,12 @@ class MemmonListener extends AbstractListener
     protected $uptime;
 
     /**
-     * @param Supervisor $supervisor Supervisor instance
-     * @param []         $program    Limit of specified programs
-     * @param []         $group      Limit of specified groups
-     * @param integer    $any        Limit of any programs or groups
-     * @param integer    $uptime     Minimum uptime before restart
-     * @param string     $name       Listener name
+     * @param Supervisor $supervisor
+     * @param []         $program
+     * @param []         $group
+     * @param integer    $any
+     * @param integer    $uptime
+     * @param string     $name
      */
     public function __construct(
         Supervisor $supervisor,
@@ -89,7 +87,7 @@ class MemmonListener extends AbstractListener
     /**
      * {@inheritdoc}
      */
-    public function handle(AbstractEvent $event)
+    public function handle(Notification $notification)
     {
         $processes = $this->supervisor->getAllProcesses();
 
@@ -98,8 +96,6 @@ class MemmonListener extends AbstractListener
                 $this->handleProcess($process);
             }
         }
-
-        $event->setResult(Processor::OK);
     }
 
     /**
