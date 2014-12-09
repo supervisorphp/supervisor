@@ -23,7 +23,7 @@ class RoboFile extends \Robo\Tasks
         foreach ($faults as $code => $name) {
             $exName = $this->createExceptionName($name);
             $file = sprintf(__DIR__.'/src/Exception/Fault/%s.php', $exName);
-            $constants[] = sprintf('    const %s = %d', $name.str_repeat(' ', $maxStringLength - strlen($name)), $code);
+            $constants[] = sprintf('    const %s = %d;', $name.str_repeat(' ', $maxStringLength - strlen($name)), $code);
             $exceptionMap[] = sprintf('        %s => \'Indigo\Supervisor\Exception\Fault\%s\',', $code.str_repeat(' ', $maxCodeLength - strlen($code)), $exName);
 
             $this->taskWriteToFile($file)
