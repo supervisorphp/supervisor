@@ -12,21 +12,14 @@
 namespace Indigo\Supervisor\Event;
 
 /**
- * Processor interface
+ * Listens to events
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-interface Processor
+interface Listener
 {
     /**
-     * Responses sent to supervisor
+     * Starts listening for events
      */
-    const READY = "READY\n";
-    const OK    = "RESULT 2\nOK";
-    const FAIL  = "RESULT 4\nFAIL";
-
-    /**
-     * Runs processor, starts listening for events
-     */
-    public function run();
+    public function listen(Handler $handler);
 }
