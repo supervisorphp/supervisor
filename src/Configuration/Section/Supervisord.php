@@ -33,9 +33,8 @@ class Supervisord extends Base
             ->setDefined('logfile')
             ->setAllowedTypes('logfile', 'string');
 
-        $resolver
-            ->setDefined('logfile_maxbytes')
-            ->setAllowedTypes('logfile_maxbytes', ['integer', 'string']);
+        $resolver->setDefined('logfile_maxbytes');
+        $this->configureByteProperty('logfile_maxbytes', $resolver);
 
         $resolver->setDefined('logfile_backups');
         $this->configureIntegerProperty('logfile_backups', $resolver);

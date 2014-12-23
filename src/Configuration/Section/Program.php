@@ -96,16 +96,14 @@ class Program extends Named
             ->setDefined('stdout_logfile')
             ->setAllowedTypes('stdout_logfile', 'string');
 
-        $resolver
-            ->setDefined('stdout_logfile_maxbytes')
-            ->setAllowedTypes('stdout_logfile_maxbytes', ['integer', 'string']);
+        $resolver->setDefined('stdout_logfile_maxbytes');
+        $this->configureByteProperty('stdout_logfile_maxbytes', $resolver);
 
         $resolver->setDefined('stdout_logfile_backups');
         $this->configureIntegerProperty('stdout_logfile_backups', $resolver);
 
-        $resolver
-            ->setDefined('stdout_capture_maxbytes')
-            ->setAllowedTypes('stdout_capture_maxbytes', ['integer', 'string']);
+        $resolver->setDefined('stdout_capture_maxbytes');
+        $this->configureByteProperty('stdout_capture_maxbytes', $resolver);
 
         $resolver->setDefined('stdout_events_enabled');
         $this->configureBooleanProperty('stdout_events_enabled', $resolver);
@@ -117,16 +115,14 @@ class Program extends Named
             ->setDefined('stderr_logfile')
             ->setAllowedTypes('stderr_logfile', 'string');
 
-        $resolver
-            ->setDefined('stderr_logfile_maxbytes')
-            ->setAllowedTypes('stderr_logfile_maxbytes', ['integer', 'string']);
+        $resolver->setDefined('stderr_logfile_maxbytes');
+        $this->configureByteProperty('stderr_logfile_maxbytes', $resolver);
 
         $resolver->setDefined('stderr_logfile_backups');
         $this->configureIntegerProperty('stderr_logfile_backups', $resolver);
 
-        $resolver
-            ->setDefined('stderr_capture_maxbytes')
-            ->setAllowedTypes('stderr_capture_maxbytes', ['integer', 'string']);
+        $resolver->setDefined('stderr_capture_maxbytes');
+        $this->configureByteProperty('stderr_capture_maxbytes', $resolver);
 
         $resolver->setDefined('stderr_events_enabled');
         $this->configureBooleanProperty('stderr_events_enabled', $resolver);
