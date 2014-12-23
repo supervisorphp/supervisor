@@ -76,12 +76,27 @@ $process->getPayload();
 
 ### Authentication
 
-As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface. As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
+As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed). As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
 
 
 ### Exception handling
 
 For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. When an unknown fault is returned from the server, an instance if the common exception is thrown. The list of fault responses and the appropriate exception can be found in the class.
+
+``` php
+use Indigo\Supervisor\Exception\Fault;
+use Indigo\Supervisor\Exception\Fault\BadName;
+
+try {
+	$supervisor->restart('process');
+} catch (BadName $e) {
+	// handle bad name error here
+} catch (Fault $e) {
+	// handle any other errors here
+}
+```
+
+**For developers:** Fault exceptions are automatically generated, there is no need to manually modify them.
 
 
 ## Configuration
@@ -118,13 +133,13 @@ The following sections are available in this pacakge:
 - _FcgiProgram_*
 
 
-***Note**: These sections has to be instantiated with a name and optionally a properties array:
+*__Note:__ These sections has to be instantiated with a name and optionally a properties array:
 
 ``` php
 $section = new Program('test', ['command' => 'cat']);
 ```
 
-****Note:** The keyword `include` is reserved in PHP, so the class name is `Includes`, but the section name is still `include`.
+**__Note:__ The keyword `include` is reserved in PHP, so the class name is `Includes`, but the section name is still `include`.
 
 
 ### Existing configuration
@@ -157,27 +172,21 @@ You can find detailed info about options for each section here:
 
 Supervisor has this pretty good feature: notify you(r listener) about it's events.
 
-The main entry point is the `Processor`. `Processor`s handle the connection between the event handling and the Supervisor instance. There are two implemented `Processor`s, however you can implement your own for more features (for example a `LoggerProcessor` to log all the exchanged messages).
-
-Th package uses [league/event](http://event.thephpleague.com) for event handling. `Processor`s need an instance of `EventEmitter` which you can register your listeners in.
+The main entry point is the `Listener`. `Listeners`s wait for a `Handler` in the main listening logic. `Handler`s get a `Notification` when an event occurs.
 
 
 ``` php
-use Indigo\Supervisor\Event\StandardProcessor;
-use League\Event\EventEmitter;
+use Indigo\Supervisor\Event\Listener\Standard;
+use Indigo\Supervisor\Event\Handler\Callback;
+use Indigo\Supervisor\Event\Notification;
 
-$emitter = new EventEmitter;
-
-// it is important to set the result of event
-$emitter->addListener('TICK_5', function($event) {
-    $event->setResult(StandardProcessor::OK);
+$handler = new Callback(function(Notification $notification) {
+	echo $notification->getHeader('eventname');
 });
 
-// processor using standard input
-$processor = new StandardProcessor($emitter);
+$listener = new Standard;
 
-// start the processor
-$processor->run();
+$listener->listen($handler);
 ```
 
 Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
@@ -200,8 +209,8 @@ You will also have to make sure that you always call the functions with correct 
 
 Here is a list of framework specific bundle packages:
 
-* [HumusSupervisorModule](https://github.com/prolic/HumusSupervisorModule) *(Zend Framework 2)*
-* [Fuel Supervisor](https://github.com/indigophp/fuel-supervisor) *(FuelPHP 1.x)*
+- [HumusSupervisorModule](https://github.com/prolic/HumusSupervisorModule) *(Zend Framework 2)*
+- [Fuel Supervisor](https://github.com/indigophp/fuel-supervisor) *(FuelPHP 1.x)*
 
 
 ## Testing
