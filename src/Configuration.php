@@ -11,7 +11,7 @@
 
 namespace Indigo\Supervisor;
 
-use UnexpectedValueException;
+use Indigo\Supervisor\Configuration\Section;
 
 /**
  * Supervisor configuration parser and generator
@@ -23,42 +23,9 @@ class Configuration
     /**
      * Config sections
      *
-     * @var []
+     * @var Section[]
      */
     protected $sections = [];
-
-    /**
-     * Available sections
-     *
-     * @var []
-     */
-    protected $sectionMap = [
-        'eventlistener'    => 'Indigo\\Supervisor\\Section\\EventListenerSection',
-        'fcgi-program'     => 'Indigo\\Supervisor\\Section\\FcgiProgramSection',
-        'group'            => 'Indigo\\Supervisor\\Section\\GroupSection',
-        'include'          => 'Indigo\\Supervisor\\Section\\IncludeSection',
-        'inet_http_server' => 'Indigo\\Supervisor\\Section\\InetHttpServerSection',
-        'program'          => 'Indigo\\Supervisor\\Section\\ProgramSection',
-        'supervisorctl'    => 'Indigo\\Supervisor\\Section\\SupervisorctlSection',
-        'supervisord'      => 'Indigo\\Supervisor\\Section\\SupervisordSection',
-        'unix_http_server' => 'Indigo\\Supervisor\\Section\\UnixHttpServerSection',
-        'rpcinterface'     => 'Indigo\\Supervisor\\Section\\RpcInterfaceSection',
-    ];
-
-    /**
-     * Adds or overrides default section map
-     *
-     * @param string $section
-     * @param string $className
-     *
-     * @return self
-     */
-    public function addSectionMap($section, $className)
-    {
-        $this->sectionMap[$section] = $className;
-
-        return $this;
-    }
 
     /**
      * Returns a specific section by name
@@ -87,43 +54,13 @@ class Configuration
     }
 
     /**
-     * Returns all sections
-     *
-     * @return array
-     */
-    public function getSections()
-    {
-        return $this->sections;
-    }
-
-    /**
      * Adds or overrides a section
      *
      * @param Section $section
-     *
-     * @return self
      */
     public function addSection(Section $section)
     {
         $this->sections[$section->getName()] = $section;
-
-        return $this;
-    }
-
-    /**
-     * Adds or overrides an array sections
-     *
-     * @param [] $sections
-     *
-     * @return self
-     */
-    public function addSections(array $sections)
-    {
-        foreach ($sections as $section) {
-            $this->addSection($section);
-        }
-
-        return $this;
     }
 
     /**
@@ -143,135 +80,32 @@ class Configuration
     }
 
     /**
-     * Resets Configuration
+     * Returns all sections
      *
-     * @return [] Array of previous sections
+     * @return array
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * Adds or overrides an array sections
+     *
+     * @param Section[] $sections
+     */
+    public function addSections(array $sections)
+    {
+        foreach ($sections as $section) {
+            $this->addSection($section);
+        }
+    }
+
+    /**
+     * Resets Configuration
      */
     public function reset()
     {
-        $sections = $this->sections;
         $this->sections = [];
-
-        return $sections;
-    }
-
-    /**
-     * Returns rendered configuration
-     *
-     * @return string
-     */
-    public function render()
-    {
-        $output = '';
-
-        foreach ($this->sections as $name => $section) {
-            // Only continue processing this section if there are options in it
-            if ($section->hasOptions()) {
-                $output .= $this->renderSection($section);
-            }
-        }
-
-        return $output;
-    }
-
-    /**
-     * Renders a section
-     *
-     * @param string $name
-     * @param array  $section
-     *
-     * @return string
-     */
-    public function renderSection(Section $section)
-    {
-        $output = '['.$section->getName()."]\n";
-
-        foreach ($section->getOptions() as $key => $value) {
-            is_array($value) and $value = implode(',', $value);
-            $output .= "$key = $value\n";
-        }
-
-        // Write a linefeed after sections
-        $output .= "\n";
-
-        return $output;
-    }
-
-    /**
-     * Parses an INI file
-     *
-     * @param string $file
-     *
-     * @return self
-     */
-    public function parseFile($file)
-    {
-        $ini = parse_ini_file($file, true);
-        $this->parseIni($ini);
-
-        return $this;
-    }
-
-    /**
-     * Parses an INI string
-     *
-     * @param string $string
-     *
-     * @return self
-     */
-    public function parseString($string)
-    {
-        $ini = parse_ini_string($string, true);
-        $this->parseIni($ini);
-
-        return $this;
-    }
-
-    /**
-     * Parses an INI array
-     *
-     * @param [] $ini
-     */
-    protected function parseIni(array $ini)
-    {
-        foreach ($ini as $name => $section) {
-            $name = explode(':', $name);
-            if (array_key_exists($name[0], $this->sectionMap)) {
-                $section = $this->parseIniSection($this->sectionMap[$name[0]], $name, $section);
-                $this->addSection($section);
-            } else {
-                throw new UnexpectedValueException('Unexpected section name: ' . $name[0]);
-            }
-        }
-    }
-
-    /**
-     * Parses an individual section
-     *
-     * @param string $class   Name of Section class
-     * @param mixed  $name    Section name or array of name and option
-     * @param []     $section Array representation of section
-     *
-     * @return Section
-     */
-    protected function parseIniSection($class, array $name, array $section)
-    {
-        if (isset($name[1])) {
-            $section = new $class($name[1], $section);
-        } else {
-            $section = new $class($section);
-        }
-
-        return $section;
-    }
-
-    /**
-     * Returns rendered configuration
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->render();
     }
 }

@@ -1,14 +1,17 @@
 # TODO
 
-- [ ] Implement multicall, the current serialization does NOT support it
+- [ ] Implement `ArrayAccess` in `Configuration` and `Section`
+- [ ] Close down the API where needed
 - [ ] The current implementation does not work with log tailing
-- [ ] Implement more HTTP client adapters
-- [ ] Find an easy way to use Guzzle with unix socket
+- [x] ~~Find an easy way to use Guzzle with unix socket~~ @done (2014-12-23)
+- [x] ~~Find a better name for Faults~~ @done (2014-12-23)
+- [x] ~~Implement multicall, the current serialization does NOT support it~~ @done (2014-12-09)
+- [x] ~~Implement more HTTP client adapters~~ @done (2014-12-09)
+- [x] ~~Remove API from `Process`~~ @done (2014-12-09)
+- [X] ~~Review exception catch in `Process` on line 204~~ @done (2014-12-09)
+- [x] ~~Review `getMemoryUsage` in `Process`~~ @done (2014-12-09)
+- [x] ~~Clear dependencies~~ @done (2014-12-09)
 - [x] ~~Make decision: follow PSR coding style or not (For now: follow)~~ @done (2014-10-05)
-- [ ] Remove API from `Process`
-- [ ] Review exception catch in `Process` on line 204
-- [ ] Review `getMemoryUsage` in `Process`
-- [ ] Clear dependencies
 - [x] ~~Review Event tests~~ @done (2014-10-05)
 - [x] ~~Implement a stream wrapper based processor~~ @done (2014-10-05)
 - [x] ~~Create a client agnostic XML-RPC client library (Solved: fXmlRpc)~~ @done (2014-10-04)

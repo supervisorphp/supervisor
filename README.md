@@ -1,11 +1,12 @@
 # Indigo Supervisor
 
+[![Latest Version](https://img.shields.io/github/release/indigophp/supervisor.svg?style=flat-square)](https://github.com/indigophp/supervisor/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Build Status](https://img.shields.io/travis/indigophp/supervisor/develop.svg?style=flat-square)](https://travis-ci.org/indigophp/supervisor)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/indigophp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/indigophp/supervisor)
-[![Packagist Version](https://img.shields.io/packagist/v/indigophp/supervisor.svg?style=flat-square)](https://packagist.org/packages/indigophp/supervisor)
-[![Total Downloads](https://img.shields.io/packagist/dt/indigophp/supervisor.svg?style=flat-square)](https://packagist.org/packages/indigophp/supervisor)
 [![Quality Score](https://img.shields.io/scrutinizer/g/indigophp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/indigophp/supervisor)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![HHVM Status](https://img.shields.io/hhvm/indigophp/supervisor.svg?style=flat-square)](http://hhvm.h4cc.de/package/indigophp/supervisor)
+[![Total Downloads](https://img.shields.io/packagist/dt/indigophp/supervisor.svg?style=flat-square)](https://packagist.org/packages/indigophp/supervisor)
 [![Dependency Status](https://www.versioneye.com/user/projects/53c28cef5a1b3479ca000b48/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53c28cef5a1b3479ca000b48)
 
 **PHP library for managing supervisord through XML-RPC API.**
@@ -15,12 +16,8 @@
 
 Via Composer
 
-``` json
-{
-    "require": {
-        "indigophp/supervisor": "@stable"
-    }
-}
+``` bash
+$ composer require indigophp/supervisor
 ```
 
 
@@ -28,13 +25,21 @@ Via Composer
 
 ``` php
 use Indigo\Supervisor\Supervisor;
-use Indigo\Supervisor\Process;
+use Indigo\Supervisor\Connector\XmlRpc;
+use Indigo\Supervisor\XmlRpc\Client;
+use Indigo\Supervisor\XmlRpc\Authentication;
 
-// Create new Connector
-// See available connectors
-$connector = ...;
+// Pass an instance of Indigo\Http\Adapter as the first argument
+// Optional: if you provid your HTTP Client with authentication data
+// then you can use directly it's adapter without this decorator
+$authentication = new Authentication($adapter, 'user', '123');
 
-// Note: As of 3.0.0 setCredentials function is removed from the interface hence the variety of the clients. Please provide the connector a client with authentication. For this please check each possible HTTP Client's documentation
+// Pass the url and the adapter to the XmlRpc Client
+$client = new Client('http://127.0.0.1:9001/RPC2', $authentication);
+
+// Pass the client to the connector
+// See the full list of connectors bellow
+$connector = new XmlRpc($client);
 
 $supervisor = new Supervisor($connector);
 
@@ -45,14 +50,13 @@ $process = $supervisor->getProcess('test_process');
 $supervisor->getProcessInfo('test_process');
 
 // same as $supervisor->stopProcess($process);
-// same as $supervisor->stopProcess('test_process');
-$process->stop();
+$supervisor->stopProcess('test_process');
 
 // Don't wait for process start, return immediately
-$process->start('false');
+$supervisor->startProcess($process, false);
 
 // returns true if running
-// same as $process->isState(Process::RUNNING);
+// same as $process->checkState(Process::RUNNING);
 $process->isRunning();
 
 // returns process name
@@ -67,49 +71,80 @@ $process->getPayload();
 * [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
 * Zend XML-RPC
 
-**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed.
+**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed. There is also a custom Client implementing `fXmlRpc\ClientInterface` which uses [indigophp/http-adapter](https://github.com/indigophp/http-adapter) package.
+
+
+### Authentication
+
+As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed). As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
+
+
+### Exception handling
+
+For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. When an unknown fault is returned from the server, an instance if the common exception is thrown. The list of fault responses and the appropriate exception can be found in the class.
+
+``` php
+use Indigo\Supervisor\Exception\Fault;
+use Indigo\Supervisor\Exception\Fault\BadName;
+
+try {
+	$supervisor->restart('process');
+} catch (BadName $e) {
+	// handle bad name error here
+} catch (Fault $e) {
+	// handle any other errors here
+}
+```
+
+**For developers:** Fault exceptions are automatically generated, there is no need to manually modify them.
 
 
 ## Configuration
 
 This section is about generating configuration file(s) for supervisord.
 
-Example:
-
 ``` php
 use Indigo\Supervisor\Configuration;
+<<<<<<< HEAD
 use Indigo\Supervisor\Section\SupervisordSection;
 use Indigo\Supervisor\Section\ProgramSection;
+=======
+use Indigo\Supervisor\Configuration\Section\Supervisord;
+use Indigo\Supervisor\Configuration\Section\Program;
+use Indigo\Supervisor\Configuration\Renderer\Basic;
+>>>>>>> release/3.0.0-beta
 
 $config = new Configuration;
 
-$section = new SupervisordSection(array('identifier' => 'supervisor'));
+$section = new Supervisord(['identifier' => 'supervisor']);
 $config->addSection($section);
 
-$section = new ProgramSection('test', array('command' => 'cat'));
+$section = new Program('test', ['command' => 'cat']);
 $config->addSection($section);
 
-// same as echo $config->render()
-echo $config;
+echo $renderer->render($config);
 ```
 
 The following sections are available in this pacakge:
 
-* _Supervisord_
-* _Supervisorctl_
-* _UnixHttpServer_
-* _InetHttpServer_
-* _Include_
-* _Group_*
-* _Program_*
-* _EventListener_*
-* _FcgiProgram_*
+- _Supervisord_
+- _Supervisorctl_
+- _UnixHttpServer_
+- _InetHttpServer_
+- _Includes_**
+- _Group_*
+- _Program_*
+- _EventListener_*
+- _FcgiProgram_*
 
 
-***Note**: These sections has to be instantiated with a name and optionally an options array:
+*__Note:__ These sections has to be instantiated with a name and optionally a properties array:
+
 ``` php
-$section = new ProgramSection('test', array('command' => 'cat'));
+$section = new Program('test', ['command' => 'cat']);
 ```
+
+**__Note:__ The keyword `include` is reserved in PHP, so the class name is `Includes`, but the section name is still `include`.
 
 
 ### Existing configuration
@@ -117,13 +152,22 @@ $section = new ProgramSection('test', array('command' => 'cat'));
 You can parse your existing configuration, and use it as a `Configuration` object.
 
 ``` php
+use Indigo\Supervisor\Configuration;
+use Indigo\Supervisor\Configuration\Parser\File;
+
+$parser = new File('/etc/supervisor/supervisord.conf');
+
 $configuration = new Configuration;
 
-$configuration->parseFile('/etc/supervisor/supervisord.conf');
-
-$ini = file_get_contents('/etc/supervisor/supervisord.conf');
-$configuration->parseIni($ini);
+// argument is optional, returns a new Configuration object if not passed
+$parser->parse($configuration);
 ```
+
+Available parsers:
+
+- _File_
+- _Text_
+
 
 You can find detailed info about options for each section here:
 [http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
@@ -133,27 +177,21 @@ You can find detailed info about options for each section here:
 
 Supervisor has this pretty good feature: notify you(r listener) about it's events.
 
-The main entry point is the `Processor`. `Processor`s handle the connection between the event handling and the Supervisor instance. There are two implemented `Processor`s, however you can implement your own for more features (for example a `LoggerProcessor` to log all the exchanged messages).
-
-Th package uses [league/event](http://event.thephpleague.com) for event handling. `Processor`s need an instance of `EventEmitter` which you can register your listeners in.
+The main entry point is the `Listener`. `Listeners`s wait for a `Handler` in the main listening logic. `Handler`s get a `Notification` when an event occurs.
 
 
 ``` php
-use Indigo\Supervisor\Event\StandardProcessor;
-use League\Event\EventEmitter;
+use Indigo\Supervisor\Event\Listener\Standard;
+use Indigo\Supervisor\Event\Handler\Callback;
+use Indigo\Supervisor\Event\Notification;
 
-$emitter = new EventEmitter;
-
-// it is important to set the result of event
-$emitter->addListener('TICK_5', function($event) {
-    $event->setResult(StandardProcessor::OK);
+$handler = new Callback(function(Notification $notification) {
+	echo $notification->getHeader('eventname');
 });
 
-// processor using standard input
-$processor = new StandardProcessor($emitter);
+$listener = new Standard;
 
-// start the processor
-$processor->run();
+$listener->listen($handler);
 ```
 
 Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
@@ -167,29 +205,29 @@ You can find the XML-RPC documentation here:
 
 ## Notice
 
-If using PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
+If you use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
-You will also have to make sure that you always call the functions with correct parameters. `ZendConnector` will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `SupervisorException`.
+You will also have to make sure that you always call the functions with correct parameters. `Zend` connector will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `Fault` exception.
 
 
 ## Bundles
 
 Here is a list of framework specific bundle packages:
 
-* [HumusSupervisorModule](https://github.com/prolic/HumusSupervisorModule) *(Zend Framework 2)*
-* [Fuel Supervisor](https://github.com/indigophp/fuel-supervisor) *(FuelPHP 1.x)*
+- [HumusSupervisorModule](https://github.com/prolic/HumusSupervisorModule) *(Zend Framework 2)*
+- [Fuel Supervisor](https://github.com/indigophp/fuel-supervisor) *(FuelPHP 1.x)*
 
 
 ## Testing
 
 ``` bash
-$ codecept run
+$ phpspec run
 ```
 
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/indigophp/supervisor/blob/develop/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 
 ## Credits
@@ -200,4 +238,4 @@ Please see [CONTRIBUTING](https://github.com/indigophp/supervisor/blob/develop/C
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/indigophp/supervisor/blob/develop/LICENSE) for more information.
+The MIT License (MIT). Please see [License File](LICENSE) for more information.

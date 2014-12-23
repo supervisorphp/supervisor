@@ -12,7 +12,7 @@
 namespace Indigo\Supervisor;
 
 /**
- * Implements connection details
+ * Handles requests/responses to/from the Supervisor XML-RPC API
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -21,9 +21,9 @@ interface Connector
     /**
      * Sends a new request to the XML-RPC server
      *
-     * @param string $namespace Namespace
-     * @param string $method    Method
-     * @param []     $arguments Optional arguments
+     * @param string $namespace
+     * @param string $method
+     * @param array  $arguments
      *
      * @return mixed
      */
@@ -31,6 +31,8 @@ interface Connector
 
     /**
      * Checks whether connecting to a local Supervisor instance
+     *
+     * Makes sense when the Process tries to check the memory consumed by the process
      *
      * @return boolean
      */

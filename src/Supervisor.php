@@ -12,7 +12,36 @@
 namespace Indigo\Supervisor;
 
 /**
- * Manage supervisor instance
+ * Supervisor API
+ *
+ * @method string  getAPIVersion()
+ * @method string  getSupervisorVersion()
+ * @method string  getIdentification()
+ * @method array   getState()
+ * @method integer getPID()
+ * @method string  readLog(integer $offset, integer $limit)
+ * @method boolean clearLog()
+ * @method boolean shutdown()
+ * @method boolean restart()
+ * @method array   getProcessInfo(string $processName)
+ * @method array   getAllProcessInfo()
+ * @method boolean startProcess(string $name, boolean $wait = true)
+ * @method boolean startAllProcesses(boolean $wait = true)
+ * @method boolean startProcessGroup(string $name, boolean $wait = true)
+ * @method boolean stopProcess(string $name, boolean $wait = true)
+ * @method boolean stopAllProcesses(boolean $wait = true)
+ * @method boolean stopProcessGroup(string $name, boolean $wait = true)
+ * @method boolean sendProcessStdin(string $name, string $chars)
+ * @method boolean addProcessGroup(string $name)
+ * @method boolean removeProcessGroup(string $name)
+ * @method string  readProcessStdoutLog(string $name, integer $offset, integer $limit)
+ * @method string  readProcessStderrLog(string $name, integer $offset, integer $limit)
+ * @method string  tailProcessStdoutLog(string $name, integer $offset, integer $limit)
+ * @method string  tailProcessStderrLog(string $name, integer $offset, integer $limit)
+ * @method boolean clearProcessLogs(string $name)
+ * @method boolean clearAllProcessLogs()
+ *
+ * @link http://supervisord.org/api.html
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
@@ -50,11 +79,29 @@ class Supervisor
     }
 
     /**
+     * Checks if a connection is present
+     *
+     * It is done by sending a bump request to the server and catching any thrown exceptions
+     *
+     * @return boolean
+     */
+    public function isConnected()
+    {
+        try {
+            $this->connector->call('system', 'listMethods');
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Calls a method
      *
-     * @param string $namespace Namespace of method
-     * @param string $method    Method name
-     * @param []     $arguments Argument list
+     * @param string $namespace
+     * @param string $method
+     * @param array  $arguments
      *
      * @return mixed
      */
@@ -70,20 +117,8 @@ class Supervisor
      */
     public function __call($method, $arguments)
     {
-        $process = reset($arguments);
-
-        if ($process instanceof Process) {
-            array_shift($arguments);
-
-            return $process->call('supervisor', $method, $arguments);
-        }
-
-        return $this->call('supervisor', $method, $arguments);
+        return $this->connector->call('supervisor', $method, $arguments);
     }
-
-    /**
-     * Status and control
-     */
 
     /**
      * Is service running?
@@ -92,40 +127,34 @@ class Supervisor
      */
     public function isRunning()
     {
-        return $this->isState();
+        return $this->checkState(self::RUNNING);
     }
 
     /**
      * Checks if supervisord is in given state
      *
-     * @param integer $isState
+     * @param integer $checkState
      *
      * @return boolean
      */
-    public function isState($isState = self::RUNNING)
+    public function checkState($checkState)
     {
         $state = $this->getState();
 
-        return $state['statecode'] == $isState;
+        return $state['statecode'] == $checkState;
     }
-
-    /**
-     * Process control
-     */
 
     /**
      * Returns all processes as Process objects
      *
      * @return array Array of Process objects
-     *
-     * @codeCoverageIgnore
      */
     public function getAllProcesses()
     {
         $processes = $this->getAllProcessInfo();
 
         foreach ($processes as $key => $processInfo) {
-            $processes[$key] = new Process($processInfo, $this->connector);
+            $processes[$key] = new Process($processInfo);
         }
 
         return $processes;
@@ -140,6 +169,20 @@ class Supervisor
      */
     public function getProcess($name)
     {
-        return new Process($name, $this->connector);
+        $process = $this->getProcessInfo($name);
+
+        return new Process($process);
+    }
+
+    /**
+     * Updates a process object
+     *
+     * @param Process $process
+     */
+    public function updateProcess(Process $process)
+    {
+        $payload = $this->getProcessInfo($process->getName());
+
+        $process->__construct($payload);
     }
 }
