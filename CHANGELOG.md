@@ -5,12 +5,14 @@
 
 - Refactors Connectors (interface changed)
 - Closes down API
-- Updates tests
+- Updates tests (uses PhpSpec and Behat)
+- Major API change (BC break!)
 
 ### Added
 
 - PHP 5.4 dependency
 - `update` method in `Process` updates the payload
+- byte value check in configuration sections
 
 ### Altered
 

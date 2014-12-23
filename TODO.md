@@ -1,10 +1,10 @@
 # TODO
 
 - [ ] Implement `ArrayAccess` in `Configuration` and `Section`
-- [ ] Find a better name for Faults
 - [ ] Close down the API where needed
 - [ ] The current implementation does not work with log tailing
-- [ ] Find an easy way to use Guzzle with unix socket
+- [x] ~~Find an easy way to use Guzzle with unix socket~~ @done (2014-12-23)
+- [x] ~~Find a better name for Faults~~ @done (2014-12-23)
 - [x] ~~Implement multicall, the current serialization does NOT support it~~ @done (2014-12-09)
 - [x] ~~Implement more HTTP client adapters~~ @done (2014-12-09)
 - [x] ~~Remove API from `Process`~~ @done (2014-12-09)
