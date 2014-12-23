@@ -195,4 +195,19 @@ abstract class Base implements Section
                 return $value;
             });
     }
+
+    /**
+     * Configures a byte property for OptionsResolver
+     *
+     * @param string          $property
+     * @param OptionsResolver $resolver
+     */
+    protected function configureByteProperty($property, OptionsResolver $resolver)
+    {
+        $resolver
+            ->setAllowedTypes($property, 'byte')
+            ->setNormalizer($property, function (Options $options, $value) {
+                return is_numeric($value) ? intval($value) : $value;
+            });
+    }
 }

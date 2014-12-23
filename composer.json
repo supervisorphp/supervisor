@@ -37,7 +37,8 @@
     "autoload-dev": {
         "psr-4": {
             "Indigo\\Supervisor\\Stub\\": "stub/"
-        }
+        },
+        "files": ["src/functions.php"]
     },
     "config": {
         "bin-dir": "bin"
