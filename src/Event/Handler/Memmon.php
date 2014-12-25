@@ -63,8 +63,8 @@ class Memmon implements Handler
 
     /**
      * @param Supervisor $supervisor
-     * @param []         $program
-     * @param []         $group
+     * @param array      $program
+     * @param array      $group
      * @param integer    $any
      * @param integer    $uptime
      */
