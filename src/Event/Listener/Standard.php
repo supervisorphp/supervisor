@@ -96,7 +96,6 @@ class Standard implements Listener
                 } catch (EventHandlingFailed $e) {
                     $this->write("RESULT 4\nFAIL");
                 } catch (StopListener $e) {
-                    $this->write("RESULT 2\nOK");
                     break;
                 }
             }

@@ -80,7 +80,6 @@ class Stream implements Listener
                 } catch (EventHandlingFailed $e) {
                     $this->outputStream->write("RESULT 4\nFAIL");
                 } catch (StopListener $e) {
-                    $this->outputStream->write("RESULT 2\nOK");
                     break;
                 }
             }
