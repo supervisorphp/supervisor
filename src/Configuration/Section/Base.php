@@ -184,7 +184,7 @@ abstract class Base implements Section
                     $normalized = [];
 
                     foreach ($value as $key => $val) {
-                        $normalized[] = sprintf('%s="%s"', strtoupper($key), $val);
+                        is_string($key) and $normalized[] = sprintf('%s="%s"', strtoupper($key), $val);
                     }
 
                     $value = implode(',', $normalized);
