@@ -114,7 +114,7 @@ class Stream implements Listener
      *
      * @param string $rawData
      *
-     * @return []
+     * @return array
      */
     protected function parseData($rawData)
     {
