@@ -184,10 +184,6 @@ abstract class Base implements Section
                     $normalized = [];
 
                     foreach ($value as $key => $val) {
-                        if (is_int($key)) {
-                            continue;
-                        }
-
                         $normalized[] = sprintf('%s="%s"', strtoupper($key), $val);
                     }
 
