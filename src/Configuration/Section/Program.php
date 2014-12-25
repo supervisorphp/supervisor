@@ -50,7 +50,8 @@ class Program extends Named
         $resolver->setDefined('priority');
         $this->configureIntegerProperty('priority', $resolver);
 
-        $this->configureProcessControlProperties($resolver);
+        $this->configureStartControlProperties($resolver);
+        $this->configureStopControlProperties($resolver);
 
         $resolver
             ->setDefined('user')
@@ -74,11 +75,11 @@ class Program extends Named
     }
 
     /**
-     * Configures process control related properties
+     * Configures start control related properties
      *
      * @param OptionsResolver $resolver
      */
-    protected function configureProcessControlProperties(OptionsResolver $resolver)
+    protected function configureStartControlProperties(OptionsResolver $resolver)
     {
         $resolver->setDefined('autostart');
         $this->configureBooleanProperty('autostart', $resolver);
@@ -97,7 +98,15 @@ class Program extends Named
 
         $resolver->setDefined('startretries');
         $this->configureIntegerProperty('startretries', $resolver);
+    }
 
+    /**
+     * Configures stop control related properties
+     *
+     * @param OptionsResolver $resolver
+     */
+    protected function configureStopControlProperties(OptionsResolver $resolver)
+    {
         $resolver->setDefined('exitcodes');
         $this->configureArrayProperty('exitcodes', $resolver);
 
