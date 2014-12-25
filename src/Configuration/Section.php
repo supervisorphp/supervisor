@@ -47,14 +47,14 @@ interface Section
     /**
      * Returns the properties as an array
      *
-     * @return []
+     * @return array
      */
     public function getProperties();
 
     /**
      * Sets an array of properties
      *
-     * @param [] $properties
+     * @param array $properties
      */
     public function setProperties(array $properties);
 }
