@@ -62,7 +62,7 @@ class Notification
      *
      * @param string|null $key
      *
-     * @return string|null
+     * @return string|null|array
      */
     public function getHeader($key = null)
     {
@@ -78,7 +78,7 @@ class Notification
      *
      * @param string|null $key
      *
-     * @return string|null
+     * @return string|null|array
      */
     public function getPayload($key = null)
     {
