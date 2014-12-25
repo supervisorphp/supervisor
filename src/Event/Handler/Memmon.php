@@ -34,14 +34,14 @@ class Memmon implements Handler
     /**
      * Array of program => limit pairs
      *
-     * @var []
+     * @var array
      */
     protected $program = [];
 
     /**
      * Array of group => limit pairs
      *
-     * @var []
+     * @var array
      */
     protected $group = [];
 
@@ -67,7 +67,6 @@ class Memmon implements Handler
      * @param []         $group
      * @param integer    $any
      * @param integer    $uptime
-     * @param string     $name
      */
     public function __construct(
         Supervisor $supervisor,
@@ -81,7 +80,6 @@ class Memmon implements Handler
         $this->group      = $group;
         $this->any        = (int) $any;
         $this->uptime     = $uptime;
-        $this->name       = $name;
     }
 
     /**
