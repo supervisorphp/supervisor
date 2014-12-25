@@ -44,7 +44,7 @@ class Basic implements Renderer
         $output = sprintf("[%s]\n", $section->getName());
 
         foreach ($section->getProperties() as $key => $value) {
-            $value = $this->normalizeValue($key, $value);
+            $value = $this->normalizeValue($value);
             $output .= sprintf("%s = %s\n", $key, $value);
         }
 
@@ -57,14 +57,11 @@ class Basic implements Renderer
     /**
      * Normalize value to valid INI format
      *
-     * Passing key allows key based normalizations
-     *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return string
      */
-    protected function normalizeValue($key, $value)
+    protected function normalizeValue($value)
     {
         if (is_array($value)) {
             return implode(',', $value);
