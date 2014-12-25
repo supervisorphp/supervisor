@@ -12,6 +12,7 @@
 namespace Indigo\Supervisor\Configuration;
 
 use Indigo\Supervisor\Configuration;
+use Indigo\Supervisor\Exception\ParsingFailed;
 
 /**
  * Parses configuration from various sources
@@ -26,6 +27,8 @@ interface Parser
      * @param Configuration $configuration If null passed, it is created automatically
      *
      * @return Configuration
+     *
+     * @throws ParsingFailed If the given data cannot be parsed
      */
     public function parse(Configuration $configuration = null);
 }

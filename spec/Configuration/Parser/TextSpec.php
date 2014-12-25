@@ -38,4 +38,11 @@ class TextSpec extends ObjectBehavior
 
         $configuration->shouldHaveType('Indigo\Supervisor\Configuration');
     }
+
+    function it_should_throw_an_exception_when_parsing_failed()
+    {
+        $this->beConstructedWith('?{}|&~![()^"');
+
+        $this->shouldThrow('Indigo\Supervisor\Exception\ParsingFailed')->duringParse();
+    }
 }

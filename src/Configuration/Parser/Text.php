@@ -12,6 +12,7 @@
 namespace Indigo\Supervisor\Configuration\Parser;
 
 use Indigo\Supervisor\Configuration;
+use Indigo\Supervisor\Exception\ParsingFailed;
 
 /**
  * Parse configuration from string
@@ -46,7 +47,11 @@ class Text extends Base
             $configuration = new Configuration;
         }
 
-        $ini = parse_ini_string($this->text, true, INI_SCANNER_RAW);
+        // Suppress error to handle it
+        if (false === ($ini = @parse_ini_string($this->text, true, INI_SCANNER_RAW))) {
+            throw new ParsingFailed('Given string cannot be parsed as INI');
+        }
+
         $sections = $this->parseArray($ini);
         $configuration->addSections($sections);
 

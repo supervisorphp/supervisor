@@ -38,4 +38,11 @@ class FileSpec extends ObjectBehavior
 
         $configuration->shouldHaveType('Indigo\Supervisor\Configuration');
     }
+
+    function it_should_throw_an_exception_when_parsing_failed()
+    {
+        $this->beConstructedWith(__DIR__.'/../../../resources/invalid.conf');
+
+        $this->shouldThrow('Indigo\Supervisor\Exception\ParsingFailed')->duringParse();
+    }
 }

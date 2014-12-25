@@ -12,6 +12,7 @@
 namespace Indigo\Supervisor\Configuration\Parser;
 
 use Indigo\Supervisor\Configuration;
+use Indigo\Supervisor\Exception\ParsingFailed;
 
 /**
  * Parses a file into a Configuration
@@ -46,7 +47,11 @@ class File extends Base
             $configuration = new Configuration;
         }
 
-        $ini = parse_ini_file($this->file, true, INI_SCANNER_RAW);
+        // Suppress error to handle it
+        if (false === ($ini = @parse_ini_file($this->file, true, INI_SCANNER_RAW))) {
+            throw new ParsingFailed(sprintf('File "%s" cannot be parsed as INI', $this->file));
+        }
+
         $sections = $this->parseArray($ini);
         $configuration->addSections($sections);
 
