@@ -181,6 +181,8 @@ abstract class Base implements Section
             ->setAllowedTypes('environment', ['array', 'string'])
             ->setNormalizer('environment', function (Options $options, $value) {
                 if (is_array($value)) {
+                    $normalized = [];
+
                     foreach ($value as $key => $val) {
                         if (is_int($key)) {
                             continue;
