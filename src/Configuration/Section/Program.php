@@ -50,6 +50,36 @@ class Program extends Named
         $resolver->setDefined('priority');
         $this->configureIntegerProperty('priority', $resolver);
 
+        $this->configureProcessControlProperties($resolver);
+
+        $resolver
+            ->setDefined('user')
+            ->setAllowedTypes('user', 'string');
+
+        $this->configureLogProperties($resolver);
+
+        $this->configureEnvironmentProperty($resolver);
+
+        $resolver
+            ->setDefined('directory')
+            ->setAllowedTypes('directory', 'string');
+
+        // TODO: octal vs. decimal value
+        $resolver->setDefined('umask');
+        $this->configureIntegerProperty('umask', $resolver);
+
+        $resolver
+            ->setDefined('serverurl')
+            ->setAllowedTypes('serverurl', 'string');
+    }
+
+    /**
+     * Configures process control related properties
+     *
+     * @param OptionsResolver $resolver
+     */
+    protected function configureProcessControlProperties(OptionsResolver $resolver)
+    {
         $resolver->setDefined('autostart');
         $this->configureBooleanProperty('autostart', $resolver);
 
@@ -84,26 +114,6 @@ class Program extends Named
 
         $resolver->setDefined('killasgroup');
         $this->configureBooleanProperty('killasgroup', $resolver);
-
-        $resolver
-            ->setDefined('user')
-            ->setAllowedTypes('user', 'string');
-
-        $this->configureLogProperties($resolver);
-
-        $this->configureEnvironmentProperty($resolver);
-
-        $resolver
-            ->setDefined('directory')
-            ->setAllowedTypes('directory', 'string');
-
-        // TODO: octal vs. decimal value
-        $resolver->setDefined('umask');
-        $this->configureIntegerProperty('umask', $resolver);
-
-        $resolver
-            ->setDefined('serverurl')
-            ->setAllowedTypes('serverurl', 'string');
     }
 
     /**
@@ -116,6 +126,17 @@ class Program extends Named
         $resolver->setDefined('redirect_stderr');
         $this->configureBooleanProperty('redirect_stderr', $resolver);
 
+        $this->configureStdoutLogProperties($resolver);
+        $this->configureStderrLogProperties($resolver);
+    }
+
+    /**
+     * Configures stdout log related properties
+     *
+     * @param OptionsResolver $resolver
+     */
+    protected function configureStdoutLogProperties(OptionsResolver $resolver)
+    {
         $resolver
             ->setDefined('stdout_logfile')
             ->setAllowedTypes('stdout_logfile', 'string');
@@ -134,7 +155,15 @@ class Program extends Named
 
         $resolver->setDefined('stdout_syslog');
         $this->configureBooleanProperty('stdout_syslog', $resolver);
+    }
 
+    /**
+     * Configures stderr log related properties
+     *
+     * @param OptionsResolver $resolver
+     */
+    protected function configureStderrLogProperties(OptionsResolver $resolver)
+    {
         $resolver
             ->setDefined('stderr_logfile')
             ->setAllowedTypes('stderr_logfile', 'string');
