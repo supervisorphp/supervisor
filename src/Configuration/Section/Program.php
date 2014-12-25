@@ -89,6 +89,30 @@ class Program extends Named
             ->setDefined('user')
             ->setAllowedTypes('user', 'string');
 
+        $this->configureLogProperties($resolver);
+
+        $this->configureEnvironmentProperty($resolver);
+
+        $resolver
+            ->setDefined('directory')
+            ->setAllowedTypes('directory', 'string');
+
+        // TODO: octal vs. decimal value
+        $resolver->setDefined('umask');
+        $this->configureIntegerProperty('umask', $resolver);
+
+        $resolver
+            ->setDefined('serverurl')
+            ->setAllowedTypes('serverurl', 'string');
+    }
+
+    /**
+     * Configures log related properties
+     *
+     * @param OptionsResolver $resolver
+     */
+    protected function configureLogProperties(OptionsResolver $resolver)
+    {
         $resolver->setDefined('redirect_stderr');
         $this->configureBooleanProperty('redirect_stderr', $resolver);
 
@@ -129,19 +153,5 @@ class Program extends Named
 
         $resolver->setDefined('stderr_syslog');
         $this->configureBooleanProperty('stderr_syslog', $resolver);
-
-        $this->configureEnvironmentProperty($resolver);
-
-        $resolver
-            ->setDefined('directory')
-            ->setAllowedTypes('directory', 'string');
-
-        // TODO: octal vs. decimal value
-        $resolver->setDefined('umask');
-        $this->configureIntegerProperty('umask', $resolver);
-
-        $resolver
-            ->setDefined('serverurl')
-            ->setAllowedTypes('serverurl', 'string');
     }
 }
