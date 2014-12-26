@@ -101,7 +101,7 @@ try {
 
 ## Configuration and Event listening
 
-[Configuration](https://github.com/indigophp/supervisor-configuration) and [Event](https://github.com/indigophp/supervisor-event) components have been moved into their own repository. See #24 for explanation.
+[Configuration](https://github.com/indigophp/supervisor-configuration) and [Event](https://github.com/indigophp/supervisor-event) components have been moved into their own repository. See [#24](https://github.com/indigophp/supervisor/issues/24) for explanation.
 
 
 ## Further info
