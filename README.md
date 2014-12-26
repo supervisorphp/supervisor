@@ -99,35 +99,6 @@ try {
 **For developers:** Fault exceptions are automatically generated, there is no need to manually modify them.
 
 
-## Event Listeners
-
-Supervisor has this pretty good feature: notify you(r listener) about it's events.
-
-The main entry point is the `Listener`. `Listeners`s wait for a `Handler` in the main listening logic. `Handler`s get a `Notification` when an event occurs.
-
-
-``` php
-use Indigo\Supervisor\Event\Listener\Standard;
-use Indigo\Supervisor\Event\Handler\Callback;
-use Indigo\Supervisor\Event\Notification;
-
-$handler = new Callback(function(Notification $notification) {
-	echo $notification->getHeader('eventname');
-});
-
-$listener = new Standard;
-
-$listener->listen($handler);
-```
-
-Additionally you can use two exceptions to control the listeners itself:
-
-- `Indigo\Supervisor\Exception\StopListener`: indicates that the `Listener` should stop listening for further events.
-- `Indigo\Supervisor\Exception\EventHandlingFailed`: indicates that handling the event failed, `Listener` should return with a FAIL response.
-
-Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
-
-
 ## Further info
 
 You can find the XML-RPC documentation here:

@@ -8,6 +8,7 @@
 - Updates tests (uses PhpSpec and Behat)
 - Major API change (BC break!)
 - Configuration moved to a different package
+- Event moved to a different package
 
 ### Added
 
