@@ -99,6 +99,11 @@ try {
 **For developers:** Fault exceptions are automatically generated, there is no need to manually modify them.
 
 
+## Configuration and Event listening
+
+[Configuration](https://github.com/indigophp/supervisor-configuration) and [Event](https://github.com/indigophp/supervisor-event) components have been moved into their own repository. See #24 for explanation.
+
+
 ## Further info
 
 You can find the XML-RPC documentation here:
