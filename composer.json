@@ -15,7 +15,6 @@
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "dev-master",
-        "indigophp/http-adapter": "dev-develop",
         "guzzlehttp/guzzle": ">=4.0.0",
         "zendframework/zend-xmlrpc": ">=2.3.3",
         "phpspec/phpspec": "~2.1.0",

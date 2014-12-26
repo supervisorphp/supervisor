@@ -26,16 +26,14 @@ $ composer require indigophp/supervisor
 ``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Connector\XmlRpc;
-use Indigo\Supervisor\XmlRpc\Client;
-use Indigo\Supervisor\XmlRpc\Authentication;
+use fXmlRpc\Client;
+use fXmlRpc\Transport\Guzzle4Bridge;
 
-// Pass an instance of Indigo\Http\Adapter as the first argument
-// Optional: if you provid your HTTP Client with authentication data
-// then you can use directly it's adapter without this decorator
-$authentication = new Authentication($adapter, 'user', '123');
-
-// Pass the url and the adapter to the XmlRpc Client
-$client = new Client('http://127.0.0.1:9001/RPC2', $authentication);
+// Pass the url and the bridge to the XmlRpc Client
+$client = new Client(
+	'http://127.0.0.1:9001/RPC2',
+	new Guzzle4Bridge(new \GuzzleHttp\Client(['defaults' => ['auth' => ['user', '123']]]))
+);
 
 // Pass the client to the connector
 // See the full list of connectors bellow
@@ -71,12 +69,12 @@ $process->getPayload();
 * [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
 * Zend XML-RPC
 
-**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed. There is also a custom Client implementing `fXmlRpc\ClientInterface` which uses [indigophp/http-adapter](https://github.com/indigophp/http-adapter) package.
+**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed.
 
 
 ### Authentication
 
-As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed). As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
+As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed).You have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box) Also, Bridges implemented by fXmlRpc supports to set custom headers.
 
 
 ### Exception handling
