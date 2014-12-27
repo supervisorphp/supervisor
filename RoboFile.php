@@ -12,7 +12,7 @@ class RoboFile extends \Robo\Tasks
     /**
      * Generates fault exception classes
      */
-    public function faultsGenerate()
+    public function faults()
     {
         $faultReflection = new \ReflectionClass('Indigo\Supervisor\Exception\Fault');
         $faults = array_flip($faultReflection->getConstants());
