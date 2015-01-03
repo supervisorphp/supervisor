@@ -17,7 +17,7 @@ class LocalInstanceSpec extends ObjectBehavior
         $this->shouldUseTrait('Indigo\Supervisor\Connector\LocalInstance');
     }
 
-    function it_should_allow_to_check_local_instance()
+    function it_checks_local_instance()
     {
         $this->isLocal()->shouldReturn(true);
     }

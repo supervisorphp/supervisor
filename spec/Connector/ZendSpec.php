@@ -16,17 +16,21 @@ class ZendSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Indigo\Supervisor\Connector\Zend');
+    }
+
+    function it_is_a_conncetor()
+    {
         $this->shouldImplement('Indigo\Supervisor\Connector');
     }
 
-    function it_should_allow_to_send_a_call(Client $client)
+    function it_calls_a_method(Client $client)
     {
         $client->call('namespace.method', [])->willReturn('response');
 
         $this->call('namespace', 'method')->shouldReturn('response');
     }
 
-    function it_should_throw_an_exception_when_the_call_fails(Client $client)
+    function it_throws_an_exception_when_the_call_fails(Client $client)
     {
         $e = new FaultException('Invalid response', 100);
 
@@ -35,7 +39,7 @@ class ZendSpec extends ObjectBehavior
         $this->shouldThrow('Indigo\Supervisor\Exception\Fault')->duringCall('namespace', 'method');
     }
 
-    function it_should_throw_a_known_exception_when_proper_fault_returned(Client $client)
+    function it_throws_a_known_exception_when_proper_fault_returned(Client $client)
     {
         $e = new FaultException('UNKNOWN_METHOD', 1);
 
