@@ -7,8 +7,8 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Indigo\Supervisor\Configuration\Parser\File;
-use Indigo\Supervisor\Configuration\Renderer\Basic as Renderer;
+use Indigo\Supervisor\Configuration\Parser\File as Parser;
+use Indigo\Supervisor\Configuration\Writer\File as Writer;
 use Indigo\Supervisor\Configuration\Section;
 use Indigo\Supervisor\Connector\XmlRpc;
 use Indigo\Supervisor\Supervisor;
@@ -38,7 +38,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function setUpSupervisor(BeforeScenarioScope $scope)
     {
-        $parser = new File(__DIR__.'/../../resources/supervisord.conf');
+        $parser = new Parser(__DIR__.'/../../resources/supervisord.conf');
         $this->configuration = $parser->parse();
 
         $this->setUpConnector();
@@ -68,10 +68,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iHaveSupervisorRunning()
     {
-        $renderer = new Renderer;
-        $configuration = $renderer->render($this->configuration);
-        $file = tempnam(sys_get_temp_dir(), 'supervisord_');
-        file_put_contents($file, $configuration);
+        $writer = new Writer($file = tempnam(sys_get_temp_dir(), 'supervisord_'));
+        $writer->write($this->configuration);
 
         if ($this->supervisor->isConnected()) {
             posix_kill($this->supervisor->getPID(), SIGKILL);
