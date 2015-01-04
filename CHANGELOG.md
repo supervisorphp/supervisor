@@ -5,8 +5,8 @@
 
 ### Added
 
-- PHP 5.4 dependency
-- `update` method in `Process` updates the payload
+- PHP 5.4 minimum requirement
+- `updateProcess` method in `Supervisor` updates the payload in `Process`
 - byte value check in configuration sections
 
 ### Changed
