@@ -39,7 +39,7 @@
 - Updates dependencies
 
 
-## 2.0.0 (released 2014-07-13)
+## 2.0.0 - 2014-07-13
 
 ### Added
 
