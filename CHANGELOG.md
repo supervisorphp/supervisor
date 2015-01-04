@@ -1,21 +1,22 @@
-# CHANGELOG
+# Change Log
 
 
-## UNRELEASED
+## Unreleased
+
+### Added
+
+- PHP 5.4 minimum requirement
+- `updateProcess` method in `Supervisor` updates the payload in `Process`
+- byte value check in configuration sections
+
+### Changed
 
 - Refactors Connectors (interface changed)
 - Closes down API
 - Updates tests (uses PhpSpec and Behat)
 - Major API change (BC break!)
-
-### Added
-
-- PHP 5.4 dependency
-- `update` method in `Process` updates the payload
-- byte value check in configuration sections
-
-### Altered
-
+- Configuration moved to a different package
+- Event moved to a different package
 - `isState` method is renamed to `checkState` (in both `Supervisor` and `Process`)
 - Process must wait for the response of stop in `restart`
 - `Section`s now use the name property instead of option
@@ -31,23 +32,35 @@
 - `setCredentials` method from connectors
 
 
-## 2.0.1 (released 2014-07-13)
+## 2.0.1 - 2014-07-13
+
+### Changed
 
 - Updates dependencies
 
 
 ## 2.0.0 (released 2014-07-13)
 
-- Removes HTTP client parts
+### Added
+
+- Zend XML-RPC connector
+- `AbstractNamedSection`
+
+### Changed
+
 - Uses Guzzle as HTTP Client by default
-- Adds Zend XML-RPC connector
-- Adds `AbstractNamedSection`
 - Event and Event Listener restructure
-- Removes API from `Supervisor`
 - Major test changes (unit, functional)
 
+### Removed
 
-## 1.2.0 (released 2014-05-06)
+- HTTP client parts
+- API from `Supervisor`
+
+
+## 1.2.0 - 2014-05-06
+
+### Changed
 
 - Code coverage improved
 - Unit tests improved
@@ -55,26 +68,38 @@
 - Minor fixes
 
 
-## 1.1.1 (released 2014-01-29)
+## 1.1.1 - 2014-01-29
+
+### Changed
 
 - Unit tests moved into Test namespace
 - Fixed license issues
 
 
-## 1.1.0 (released 2014-01-20)
+## 1.1.0 - 2014-01-20
 
-- Added Symfony Commands
-- Added Symfony Console Application
-- Added Event Listeners
-- Added `isLocal` to Connectors and Supervisor
-- Added `SupervisorException`
-- Added `RpcInterfaceSection`
+### Added
+
+- Symfony Commands
+- Symfony Console Application
+- Event Listeners
+- `isLocal` to Connectors and Supervisor
+- `SupervisorException`
+- `RpcInterfaceSection`
+
+### Changed
+
 - Improved unit tests
 - Fixed several bugs
-- Removed `ResponseException`
+
+### Removed
+
+- `ResponseException`
 
 
-## 1.0.0 (released 2014-01-17)
+## 1.0.0 - 2014-01-17
+
+### Added
 
 - Initial release
 - Supervisor

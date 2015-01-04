@@ -19,47 +19,46 @@ class SupervisorSpec extends ObjectBehavior
         $this->shouldHaveType('Indigo\Supervisor\Supervisor');
     }
 
-    function it_should_allow_to_check_local_instance(Connector $connector)
+    function it_checks_local_instance(Connector $connector)
     {
         $connector->isLocal()->willReturn(false);
 
         $this->isLocal()->shouldReturn(false);
     }
 
-    function it_should_allow_to_check_connection(Connector $connector)
+    function it_checks_connection(Connector $connector)
     {
         $connector->call('system', 'listMethods')->willReturn('response');
 
         $this->isConnected()->shouldReturn(true);
 
-        $e = new \Exception;
-        $connector->call('system', 'listMethods')->willThrow($e);
+        $connector->call('system', 'listMethods')->willThrow('Exception');
 
         $this->isConnected()->shouldReturn(false);
     }
 
-    function it_should_allow_to_call_a_method(Connector $connector)
+    function it_calls_a_method(Connector $connector)
     {
         $connector->call('namespace', 'method', [])->willReturn('response');
 
         $this->call('namespace', 'method')->shouldReturn('response');
     }
 
-    function it_should_allow_to_check_running(Connector $connector)
+    function it_checks_if_supervisor_is_running(Connector $connector)
     {
         $connector->call('supervisor', 'getState', [])->willReturn(['statecode' => 1]);
 
         $this->isRunning()->shouldReturn(true);
     }
 
-    function it_should_allow_to_check_state(Connector $connector)
+    function it_checks_supervisor_state(Connector $connector)
     {
         $connector->call('supervisor', 'getState', [])->willReturn(['statecode' => 1]);
 
         $this->checkState(1)->shouldReturn(true);
     }
 
-    function it_should_allow_to_get_all_processes(Connector $connector)
+    function it_returns_all_processes(Connector $connector)
     {
         $connector->call('supervisor', 'getAllProcessInfo', [])->willReturn([
             [
@@ -74,7 +73,7 @@ class SupervisorSpec extends ObjectBehavior
         $processes[0]->getName()->shouldReturn('process_name');
     }
 
-    function it_should_allow_to_get_a_process_(Connector $connector)
+    function it_returns_a_process_(Connector $connector)
     {
         $connector->call('supervisor', 'getProcessInfo', ['process_name'])->willReturn(['name' => 'process_name']);
 
@@ -84,7 +83,7 @@ class SupervisorSpec extends ObjectBehavior
         $process->getName()->shouldReturn('process_name');
     }
 
-    function it_should_allow_to_update_a_process_(Connector $connector, Process $process)
+    function it_updates_a_process_(Connector $connector, Process $process)
     {
         $process->getName()->willReturn('process_name');
 

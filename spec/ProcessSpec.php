@@ -32,12 +32,12 @@ class ProcessSpec extends ObjectBehavior
         $this->shouldHaveType('Indigo\Supervisor\Process');
     }
 
-    function it_should_have_payload()
+    function it_has_payload()
     {
         $this->getPayload()->shouldReturn($this->process);
     }
 
-    function it_should_have_a_name()
+    function it_has_a_name()
     {
         $this->getName()->shouldReturn($this->process['name']);
         $this->offsetExists('name')->shouldReturn(true);
@@ -45,23 +45,23 @@ class ProcessSpec extends ObjectBehavior
         $this->__toString()->shouldReturn($this->process['name']);
     }
 
-    function it_should_allow_to_check_running()
+    function it_checks_if_process_is_running()
     {
         $this->isRunning()->shouldReturn(true);
     }
 
-    function it_should_allow_to_check_state()
+    function it_checks_process_state()
     {
         $this->checkState(20)->shouldReturn(true);
         $this->checkState(2)->shouldReturn(false);
     }
 
-    function it_should_throw_an_exception_when_being_altered_by_calling_offset_set()
+    function it_throws_an_exception_when_being_altered_by_calling_offset_set()
     {
         $this->shouldThrow('LogicException')->duringOffsetSet('key', 'value');
     }
 
-    function it_should_throw_an_exception_when_being_altered_by_calling_offset_unset()
+    function it_throws_an_exception_when_being_altered_by_calling_offset_unset()
     {
         $this->shouldThrow('LogicException')->duringOffsetUnset('key', 'value');
     }

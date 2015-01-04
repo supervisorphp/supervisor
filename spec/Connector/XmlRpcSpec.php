@@ -16,17 +16,21 @@ class XmlRpcSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Indigo\Supervisor\Connector\XmlRpc');
+    }
+
+    function it_is_a_conncetor()
+    {
         $this->shouldImplement('Indigo\Supervisor\Connector');
     }
 
-    function it_should_allow_to_send_a_call(ClientInterface $client)
+    function it_calls_a_method(ClientInterface $client)
     {
         $client->call('namespace.method', [])->willReturn('response');
 
         $this->call('namespace', 'method')->shouldReturn('response');
     }
 
-    function it_should_throw_an_exception_when_the_call_fails(ClientInterface $client)
+    function it_throws_an_exception_when_the_call_fails(ClientInterface $client)
     {
         $e = ResponseException::fault([
             'faultString' => 'Invalid response',
@@ -38,7 +42,7 @@ class XmlRpcSpec extends ObjectBehavior
         $this->shouldThrow('Indigo\Supervisor\Exception\Fault')->duringCall('namespace', 'method');
     }
 
-    function it_should_throw_a_known_exception_when_proper_fault_returned(ClientInterface $client)
+    function it_throws_a_known_exception_when_proper_fault_returned(ClientInterface $client)
     {
         $e = ResponseException::fault([
             'faultString' => 'UNKNOWN_METHOD',

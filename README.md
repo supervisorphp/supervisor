@@ -26,16 +26,14 @@ $ composer require indigophp/supervisor
 ``` php
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Connector\XmlRpc;
-use Indigo\Supervisor\XmlRpc\Client;
-use Indigo\Supervisor\XmlRpc\Authentication;
+use fXmlRpc\Client;
+use fXmlRpc\Transport\Guzzle4Bridge;
 
-// Pass an instance of Indigo\Http\Adapter as the first argument
-// Optional: if you provid your HTTP Client with authentication data
-// then you can use directly it's adapter without this decorator
-$authentication = new Authentication($adapter, 'user', '123');
-
-// Pass the url and the adapter to the XmlRpc Client
-$client = new Client('http://127.0.0.1:9001/RPC2', $authentication);
+// Pass the url and the bridge to the XmlRpc Client
+$client = new Client(
+	'http://127.0.0.1:9001/RPC2',
+	new Guzzle4Bridge(new \GuzzleHttp\Client(['defaults' => ['auth' => ['user', '123']]]))
+);
 
 // Pass the client to the connector
 // See the full list of connectors bellow
@@ -71,12 +69,12 @@ $process->getPayload();
 * [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
 * Zend XML-RPC
 
-**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed. There is also a custom Client implementing `fXmlRpc\ClientInterface` which uses [indigophp/http-adapter](https://github.com/indigophp/http-adapter) package.
+**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed.
 
 
 ### Authentication
 
-As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed). As in the example you can use the `Authentication` adapter, but that only works if you use [indigophp/http-adapter](https://github.com/indigophp/http-adapter) adapters. Otherwise you have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box)
+As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed).You have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box) Also, Bridges implemented by fXmlRpc supports to set custom headers.
 
 
 ### Exception handling
@@ -99,102 +97,9 @@ try {
 **For developers:** Fault exceptions are automatically generated, there is no need to manually modify them.
 
 
-## Configuration
+## Configuration and Event listening
 
-This section is about generating configuration file(s) for supervisord.
-
-``` php
-use Indigo\Supervisor\Configuration;
-<<<<<<< HEAD
-use Indigo\Supervisor\Section\SupervisordSection;
-use Indigo\Supervisor\Section\ProgramSection;
-=======
-use Indigo\Supervisor\Configuration\Section\Supervisord;
-use Indigo\Supervisor\Configuration\Section\Program;
-use Indigo\Supervisor\Configuration\Renderer\Basic;
->>>>>>> release/3.0.0-beta
-
-$config = new Configuration;
-
-$section = new Supervisord(['identifier' => 'supervisor']);
-$config->addSection($section);
-
-$section = new Program('test', ['command' => 'cat']);
-$config->addSection($section);
-
-echo $renderer->render($config);
-```
-
-The following sections are available in this pacakge:
-
-- _Supervisord_
-- _Supervisorctl_
-- _UnixHttpServer_
-- _InetHttpServer_
-- _Includes_**
-- _Group_*
-- _Program_*
-- _EventListener_*
-- _FcgiProgram_*
-
-
-*__Note:__ These sections has to be instantiated with a name and optionally a properties array:
-
-``` php
-$section = new Program('test', ['command' => 'cat']);
-```
-
-**__Note:__ The keyword `include` is reserved in PHP, so the class name is `Includes`, but the section name is still `include`.
-
-
-### Existing configuration
-
-You can parse your existing configuration, and use it as a `Configuration` object.
-
-``` php
-use Indigo\Supervisor\Configuration;
-use Indigo\Supervisor\Configuration\Parser\File;
-
-$parser = new File('/etc/supervisor/supervisord.conf');
-
-$configuration = new Configuration;
-
-// argument is optional, returns a new Configuration object if not passed
-$parser->parse($configuration);
-```
-
-Available parsers:
-
-- _File_
-- _Text_
-
-
-You can find detailed info about options for each section here:
-[http://supervisord.org/configuration.html](http://supervisord.org/configuration.html)
-
-
-## Event Listeners
-
-Supervisor has this pretty good feature: notify you(r listener) about it's events.
-
-The main entry point is the `Listener`. `Listeners`s wait for a `Handler` in the main listening logic. `Handler`s get a `Notification` when an event occurs.
-
-
-``` php
-use Indigo\Supervisor\Event\Listener\Standard;
-use Indigo\Supervisor\Event\Handler\Callback;
-use Indigo\Supervisor\Event\Notification;
-
-$handler = new Callback(function(Notification $notification) {
-	echo $notification->getHeader('eventname');
-});
-
-$listener = new Standard;
-
-$listener->listen($handler);
-```
-
-Check the Supervisor docs for more about [Events](http://supervisord.org/events.htm).
+[Configuration](https://github.com/indigophp/supervisor-configuration) and [Event](https://github.com/indigophp/supervisor-event) components have been moved into their own repository. See [#24](https://github.com/indigophp/supervisor/issues/24) for explanation.
 
 
 ## Further info

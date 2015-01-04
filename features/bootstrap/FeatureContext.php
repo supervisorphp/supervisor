@@ -7,14 +7,13 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Indigo\Supervisor\Configuration\Parser\File;
-use Indigo\Supervisor\Configuration\Renderer\Basic as Renderer;
+use Indigo\Supervisor\Configuration\Parser\File as Parser;
+use Indigo\Supervisor\Configuration\Writer\File as Writer;
 use Indigo\Supervisor\Configuration\Section;
 use Indigo\Supervisor\Connector\XmlRpc;
-use Indigo\Supervisor\XmlRpc\Client;
-use Indigo\Supervisor\XmlRpc\Authentication;
 use Indigo\Supervisor\Supervisor;
-use Indigo\Http\Adapter\Guzzle;
+use fXmlRpc\Client;
+use fXmlRpc\Transport\Guzzle4Bridge;
 use GuzzleHttp\Client as GuzzleClient;
 
 /**
@@ -39,7 +38,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function setUpSupervisor(BeforeScenarioScope $scope)
     {
-        $parser = new File(__DIR__.'/../../resources/supervisord.conf');
+        $parser = new Parser(__DIR__.'/../../resources/supervisord.conf');
         $this->configuration = $parser->parse();
 
         $this->setUpConnector();
@@ -47,9 +46,10 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     protected function setUpConnector()
     {
-        $adapter = new Authentication(new Guzzle(new GuzzleClient), 'user', '123');
-
-        $client = new Client('http://127.0.0.1:9001/RPC2', $adapter);
+        $client = new Client(
+            'http://127.0.0.1:9001/RPC2',
+            new Guzzle4Bridge(new GuzzleClient(['defaults' => ['auth' => ['user', '123']]]))
+        );
 
         $connector = new XmlRpc($client);
         $this->supervisor = new Supervisor($connector);
@@ -68,10 +68,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iHaveSupervisorRunning()
     {
-        $renderer = new Renderer;
-        $configuration = $renderer->render($this->configuration);
-        $file = tempnam(sys_get_temp_dir(), 'supervisord_');
-        file_put_contents($file, $configuration);
+        $writer = new Writer($file = tempnam(sys_get_temp_dir(), 'supervisord_'));
+        $writer->write($this->configuration);
 
         if ($this->supervisor->isConnected()) {
             posix_kill($this->supervisor->getPID(), SIGKILL);
