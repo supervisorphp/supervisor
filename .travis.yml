@@ -6,25 +6,20 @@ php:
   - 5.6
   - hhvm
 
-matrix:
-  allow_failures:
-    - php: hhvm
-  fast_finish: true
-
 env:
   - SUPERVISOR_VERSION=3.0
   - SUPERVISOR_VERSION=3.1.3
 
 before_script:
   - resources/supervisor.sh
-  - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;'
+  - travis_retry composer self-update
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then composer remove "henrikbjorn/phpspec-code-coverage" --dev --no-update; fi;'
-  - composer install --prefer-source
+  - travis_retry composer install --prefer-source --no-interaction
 
 script:
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then bin/phpspec run -c phpspec.yml.ci; fi;'
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then bin/phpspec run; fi;'
-  - bin/behat
 
 after_script:
+  - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;'
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml; fi;'
