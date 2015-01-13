@@ -101,10 +101,6 @@ class Process implements ArrayAccess
         return $this->getName();
     }
 
-    /***************************************************************************
-     * Implementation of ArrayAccess
-     **************************************************************************/
-
     /**
      * {@inheritdoc}
      */
