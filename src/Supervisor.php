@@ -173,16 +173,4 @@ class Supervisor
 
         return new Process($process);
     }
-
-    /**
-     * Updates a process object
-     *
-     * @param Process $process
-     */
-    public function updateProcess(Process $process)
-    {
-        $payload = $this->getProcessInfo($process->getName());
-
-        $process->__construct($payload);
-    }
 }
