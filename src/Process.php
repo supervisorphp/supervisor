@@ -11,16 +11,12 @@
 
 namespace Indigo\Supervisor;
 
-use Symfony\Component\Process\Process as SymfonyProcess;
-use Indigo\Supervisor\Exception\SupervisorException;
-use ArrayAccess;
-
 /**
  * Process object holding data for a single process
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Process implements ArrayAccess
+class Process implements \ArrayAccess
 {
     /**
      * Process states
