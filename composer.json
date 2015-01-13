@@ -3,7 +3,7 @@
     "description": "PHP library for managing Supervisor through XML-RPC API",
     "license": "MIT",
     "keywords": ["supervisor", "process manager"],
-    "homepage": "https://supervisorphp.com",
+    "homepage": "http://supervisorphp.com",
     "authors": [
         {
             "name": "Márk Sági-Kazár",
