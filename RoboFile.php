@@ -14,7 +14,7 @@ class RoboFile extends \Robo\Tasks
      */
     public function faults()
     {
-        $faultReflection = new \ReflectionClass('Indigo\Supervisor\Exception\Fault');
+        $faultReflection = new \ReflectionClass('Supervisor\Exception\Fault');
         $faults = array_flip($faultReflection->getConstants());
 
         $this->taskCleanDir([__DIR__.'/src/Exception/Fault'])->run();

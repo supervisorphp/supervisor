@@ -1,7 +1,7 @@
 <?php
 
-use Indigo\Supervisor\Connector\Zend;
-use Indigo\Supervisor\Supervisor;
+use Supervisor\Connector\Zend;
+use Supervisor\Supervisor;
 use Zend\XmlRpc\Client;
 use Zend\Http\Client as HttpClient;
 

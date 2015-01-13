@@ -1,5 +1,5 @@
 suites:
   supervisor_suite:
-    namespace: Indigo\Supervisor
-    psr4_prefix: Indigo\Supervisor
+    namespace: Supervisor
+    psr4_prefix: Supervisor
 formatter.name: pretty

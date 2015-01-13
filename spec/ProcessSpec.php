@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Indigo\Supervisor;
+namespace spec\Supervisor;
 
-use Indigo\Supervisor\Connector;
+use Supervisor\Connector;
 use PhpSpec\ObjectBehavior;
 
 class ProcessSpec extends ObjectBehavior
@@ -29,7 +29,7 @@ class ProcessSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Indigo\Supervisor\Process');
+        $this->shouldHaveType('Supervisor\Process');
     }
 
     function it_has_payload()

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Indigo\Supervisor;
+namespace spec\Supervisor;
 
-use Indigo\Supervisor\Connector;
-use Indigo\Supervisor\Process;
+use Supervisor\Connector;
+use Supervisor\Process;
 use PhpSpec\ObjectBehavior;
 
 class SupervisorSpec extends ObjectBehavior
@@ -15,7 +15,7 @@ class SupervisorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Indigo\Supervisor\Supervisor');
+        $this->shouldHaveType('Supervisor\Supervisor');
     }
 
     function it_checks_connection(Connector $connector)
@@ -61,7 +61,7 @@ class SupervisorSpec extends ObjectBehavior
         $processes = $this->getAllProcesses();
 
         $processes->shouldBeArray();
-        $processes[0]->shouldHaveType('Indigo\Supervisor\Process');
+        $processes[0]->shouldHaveType('Supervisor\Process');
         $processes[0]->getName()->shouldReturn('process_name');
     }
 
@@ -71,7 +71,7 @@ class SupervisorSpec extends ObjectBehavior
 
         $process = $this->getProcess('process_name');
 
-        $process->shouldHaveType('Indigo\Supervisor\Process');
+        $process->shouldHaveType('Supervisor\Process');
         $process->getName()->shouldReturn('process_name');
     }
 }

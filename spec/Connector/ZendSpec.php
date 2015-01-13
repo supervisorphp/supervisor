@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Indigo\Supervisor\Connector;
+namespace spec\Supervisor\Connector;
 
 use Zend\XmlRpc\Client;
 use Zend\XmlRpc\Client\Exception\FaultException;
@@ -15,12 +15,12 @@ class ZendSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Indigo\Supervisor\Connector\Zend');
+        $this->shouldHaveType('Supervisor\Connector\Zend');
     }
 
     function it_is_a_conncetor()
     {
-        $this->shouldImplement('Indigo\Supervisor\Connector');
+        $this->shouldImplement('Supervisor\Connector');
     }
 
     function it_calls_a_method(Client $client)
@@ -36,7 +36,7 @@ class ZendSpec extends ObjectBehavior
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Indigo\Supervisor\Exception\Fault')->duringCall('namespace', 'method');
+        $this->shouldThrow('Supervisor\Exception\Fault')->duringCall('namespace', 'method');
     }
 
     function it_throws_a_known_exception_when_proper_fault_returned(Client $client)
@@ -45,6 +45,6 @@ class ZendSpec extends ObjectBehavior
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Indigo\Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
+        $this->shouldThrow('Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the Indigo Supervisor package.
+ * This file is part of the Supervisor package.
  *
- * (c) Indigo Development Team
+ * (c) Márk Sági-Kazár <mark.sagikazar@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Indigo\Supervisor\Exception;
+namespace Supervisor\Exception;
 
 /**
  * Fault codes are taken from the source code, not the documentation
@@ -47,24 +47,24 @@ class Fault extends \Exception
      * @var array
      */
     private static $exceptionMap = [
-        1  => 'Indigo\Supervisor\Exception\Fault\UnknownMethod',
-        2  => 'Indigo\Supervisor\Exception\Fault\IncorrectParameters',
-        3  => 'Indigo\Supervisor\Exception\Fault\BadArguments',
-        4  => 'Indigo\Supervisor\Exception\Fault\SignatureUnsupported',
-        6  => 'Indigo\Supervisor\Exception\Fault\ShutdownState',
-        10 => 'Indigo\Supervisor\Exception\Fault\BadName',
-        11 => 'Indigo\Supervisor\Exception\Fault\BadSignal',
-        20 => 'Indigo\Supervisor\Exception\Fault\NoFile',
-        21 => 'Indigo\Supervisor\Exception\Fault\NotExecutable',
-        30 => 'Indigo\Supervisor\Exception\Fault\Failed',
-        40 => 'Indigo\Supervisor\Exception\Fault\AbnormalTermination',
-        50 => 'Indigo\Supervisor\Exception\Fault\SpawnError',
-        60 => 'Indigo\Supervisor\Exception\Fault\AlreadyStarted',
-        70 => 'Indigo\Supervisor\Exception\Fault\NotRunning',
-        80 => 'Indigo\Supervisor\Exception\Fault\Success',
-        90 => 'Indigo\Supervisor\Exception\Fault\AlreadyAdded',
-        91 => 'Indigo\Supervisor\Exception\Fault\StillRunning',
-        92 => 'Indigo\Supervisor\Exception\Fault\CantReread',
+        1  => 'Supervisor\Exception\Fault\UnknownMethod',
+        2  => 'Supervisor\Exception\Fault\IncorrectParameters',
+        3  => 'Supervisor\Exception\Fault\BadArguments',
+        4  => 'Supervisor\Exception\Fault\SignatureUnsupported',
+        6  => 'Supervisor\Exception\Fault\ShutdownState',
+        10 => 'Supervisor\Exception\Fault\BadName',
+        11 => 'Supervisor\Exception\Fault\BadSignal',
+        20 => 'Supervisor\Exception\Fault\NoFile',
+        21 => 'Supervisor\Exception\Fault\NotExecutable',
+        30 => 'Supervisor\Exception\Fault\Failed',
+        40 => 'Supervisor\Exception\Fault\AbnormalTermination',
+        50 => 'Supervisor\Exception\Fault\SpawnError',
+        60 => 'Supervisor\Exception\Fault\AlreadyStarted',
+        70 => 'Supervisor\Exception\Fault\NotRunning',
+        80 => 'Supervisor\Exception\Fault\Success',
+        90 => 'Supervisor\Exception\Fault\AlreadyAdded',
+        91 => 'Supervisor\Exception\Fault\StillRunning',
+        92 => 'Supervisor\Exception\Fault\CantReread',
     ];
 
     /**

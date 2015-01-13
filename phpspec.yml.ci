@@ -1,7 +1,7 @@
 suites:
   supervisor_suite:
-    namespace: Indigo\Supervisor
-    psr4_prefix: Indigo\Supervisor
+    namespace: Supervisor
+    psr4_prefix: Supervisor
 extensions:
   - PhpSpec\Extension\CodeCoverageExtension
 formatter.name: pretty

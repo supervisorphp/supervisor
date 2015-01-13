@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Indigo\Supervisor\Connector;
+namespace spec\Supervisor\Connector;
 
 use fXmlRpc\ClientInterface;
 use fXmlRpc\Exception\ResponseException;
@@ -15,12 +15,12 @@ class XmlRpcSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Indigo\Supervisor\Connector\XmlRpc');
+        $this->shouldHaveType('Supervisor\Connector\XmlRpc');
     }
 
     function it_is_a_conncetor()
     {
-        $this->shouldImplement('Indigo\Supervisor\Connector');
+        $this->shouldImplement('Supervisor\Connector');
     }
 
     function it_calls_a_method(ClientInterface $client)
@@ -39,7 +39,7 @@ class XmlRpcSpec extends ObjectBehavior
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Indigo\Supervisor\Exception\Fault')->duringCall('namespace', 'method');
+        $this->shouldThrow('Supervisor\Exception\Fault')->duringCall('namespace', 'method');
     }
 
     function it_throws_a_known_exception_when_proper_fault_returned(ClientInterface $client)
@@ -51,6 +51,6 @@ class XmlRpcSpec extends ObjectBehavior
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Indigo\Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
+        $this->shouldThrow('Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
     }
 }
