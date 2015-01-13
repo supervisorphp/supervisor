@@ -104,9 +104,9 @@ class Process implements ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetGet($offset)
     {
-        throw new \LogicException('Process object cannot be altered');
+        return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
     }
 
     /**
@@ -120,7 +120,7 @@ class Process implements ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetSet($offset, $value)
     {
         throw new \LogicException('Process object cannot be altered');
     }
@@ -128,8 +128,8 @@ class Process implements ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetGet($offset)
+    public function offsetUnset($offset)
     {
-        return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
+        throw new \LogicException('Process object cannot be altered');
     }
 }
