@@ -2,8 +2,6 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-Check the current [todo list](TODO.md).
-
 We accept contributions via Pull Requests on [Github](/../../).
 
 
@@ -61,7 +59,7 @@ By making a contribution to this project, I certify that:
 ## Testing
 
 ``` bash
-$ codecept run
+$ phpspec run
 ```
 
 

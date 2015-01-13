@@ -23,8 +23,6 @@ use fXmlRpc\Exception\ResponseException;
  */
 class XmlRpc implements Connector
 {
-    use LocalInstance;
-
     /**
      * @var ClientInterface
      */
@@ -32,12 +30,10 @@ class XmlRpc implements Connector
 
     /**
      * @param ClientInterface $client
-     * @param boolean         $local
      */
-    public function __construct(ClientInterface $client, $local = false)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
-        $this->local = (bool) $local;
     }
 
     /**

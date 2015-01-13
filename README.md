@@ -2,12 +2,12 @@
 
 [![Latest Version](https://img.shields.io/github/release/indigophp/supervisor.svg?style=flat-square)](https://github.com/indigophp/supervisor/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/travis/indigophp/supervisor/develop.svg?style=flat-square)](https://travis-ci.org/indigophp/supervisor)
+[![Build Status](https://img.shields.io/travis/indigophp/supervisor.svg?style=flat-square)](https://travis-ci.org/indigophp/supervisor)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/indigophp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/indigophp/supervisor)
 [![Quality Score](https://img.shields.io/scrutinizer/g/indigophp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/indigophp/supervisor)
 [![HHVM Status](https://img.shields.io/hhvm/indigophp/supervisor.svg?style=flat-square)](http://hhvm.h4cc.de/package/indigophp/supervisor)
 [![Total Downloads](https://img.shields.io/packagist/dt/indigophp/supervisor.svg?style=flat-square)](https://packagist.org/packages/indigophp/supervisor)
-[![Dependency Status](https://www.versioneye.com/user/projects/53c28cef5a1b3479ca000b48/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53c28cef5a1b3479ca000b48)
+[![Dependency Status](https://img.shields.io/versioneye/d/php/indigophp:supervisor.svg?style=flat-square)](https://www.versioneye.com/php/indigophp:supervisor)
 
 **PHP library for managing supervisord through XML-RPC API.**
 

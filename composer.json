@@ -32,17 +32,9 @@
             "Indigo\\Supervisor\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Indigo\\Supervisor\\Stub\\": "stub/"
-        }
-    },
-    "config": {
-        "bin-dir": "bin"
-    },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0-dev"
+            "dev-master": "3.1-dev"
         }
     },
     "prefer-stable": true,

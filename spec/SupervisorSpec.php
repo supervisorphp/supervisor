@@ -5,7 +5,6 @@ namespace spec\Indigo\Supervisor;
 use Indigo\Supervisor\Connector;
 use Indigo\Supervisor\Process;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class SupervisorSpec extends ObjectBehavior
 {
@@ -17,13 +16,6 @@ class SupervisorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Indigo\Supervisor\Supervisor');
-    }
-
-    function it_checks_local_instance(Connector $connector)
-    {
-        $connector->isLocal()->willReturn(false);
-
-        $this->isLocal()->shouldReturn(false);
     }
 
     function it_checks_connection(Connector $connector)
@@ -81,17 +73,5 @@ class SupervisorSpec extends ObjectBehavior
 
         $process->shouldHaveType('Indigo\Supervisor\Process');
         $process->getName()->shouldReturn('process_name');
-    }
-
-    function it_updates_a_process_(Connector $connector, Process $process)
-    {
-        $process->getName()->willReturn('process_name');
-
-        $connector->call('supervisor', 'getProcessInfo', ['process_name'])->willReturn([
-            'name'  => 'process_name',
-            'state' => 0,
-        ]);
-
-        $this->updateProcess($process);
     }
 }

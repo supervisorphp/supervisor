@@ -28,13 +28,4 @@ interface Connector
      * @return mixed
      */
     public function call($namespace, $method, array $arguments = []);
-
-    /**
-     * Checks whether connecting to a local Supervisor instance
-     *
-     * Makes sense when the Process tries to check the memory consumed by the process
-     *
-     * @return boolean
-     */
-    public function isLocal();
 }

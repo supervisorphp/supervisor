@@ -1,12 +1,11 @@
 # Change Log
 
 
-## Unreleased
+## 3.0.0 - 2015-01-13
 
 ### Added
 
 - PHP 5.4 minimum requirement
-- `updateProcess` method in `Supervisor` updates the payload in `Process`
 - byte value check in configuration sections
 
 ### Changed
@@ -22,6 +21,7 @@
 - `Section`s now use the name property instead of option
 - `Section`s are able to return/set separate properties as well
 - Updates dependencies
+- Process object is immutable
 
 ### Removed
 
@@ -29,7 +29,8 @@
 - Ability to construct `Process` object from name, use `Process::get` instead
 - Memory usage check form `Process`
 - Fluent interfaces
-- `setCredentials` method from connectors
+- `setCredentials` method from `Connector` interface
+- `isLocal` method from `Connector` interface
 
 
 ## 2.0.1 - 2014-07-13
@@ -39,7 +40,7 @@
 - Updates dependencies
 
 
-## 2.0.0 (released 2014-07-13)
+## 2.0.0 - 2014-07-13
 
 ### Added
 

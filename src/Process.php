@@ -11,16 +11,12 @@
 
 namespace Indigo\Supervisor;
 
-use Symfony\Component\Process\Process as SymfonyProcess;
-use Indigo\Supervisor\Exception\SupervisorException;
-use ArrayAccess;
-
 /**
  * Process object holding data for a single process
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Process implements ArrayAccess
+class Process implements \ArrayAccess
 {
     /**
      * Process states
@@ -101,16 +97,12 @@ class Process implements ArrayAccess
         return $this->getName();
     }
 
-    /***************************************************************************
-     * Implementation of ArrayAccess
-     **************************************************************************/
-
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetGet($offset)
     {
-        throw new \LogicException('Process object cannot be altered');
+        return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
     }
 
     /**
@@ -124,7 +116,7 @@ class Process implements ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetSet($offset, $value)
     {
         throw new \LogicException('Process object cannot be altered');
     }
@@ -132,8 +124,8 @@ class Process implements ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetGet($offset)
+    public function offsetUnset($offset)
     {
-        return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
+        throw new \LogicException('Process object cannot be altered');
     }
 }
