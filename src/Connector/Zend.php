@@ -27,8 +27,6 @@ use Zend\XmlRpc\Client\Exception\FaultException;
  */
 class Zend implements Connector
 {
-    use LocalInstance;
-
     /**
      * @var Client
      */
@@ -36,12 +34,10 @@ class Zend implements Connector
 
     /**
      * @param Client  $client
-     * @param boolean $local
      */
-    public function __construct(Client $client, $local = false)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->local = (bool) $local;
     }
 
     /**

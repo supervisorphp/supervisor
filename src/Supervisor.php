@@ -69,16 +69,6 @@ class Supervisor
     }
 
     /**
-     * Checks whether connecting to a local Supervisor instance
-     *
-     * @return boolean
-     */
-    public function isLocal()
-    {
-        return $this->connector->isLocal();
-    }
-
-    /**
      * Checks if a connection is present
      *
      * It is done by sending a bump request to the server and catching any thrown exceptions

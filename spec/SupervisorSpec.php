@@ -18,13 +18,6 @@ class SupervisorSpec extends ObjectBehavior
         $this->shouldHaveType('Indigo\Supervisor\Supervisor');
     }
 
-    function it_checks_local_instance(Connector $connector)
-    {
-        $connector->isLocal()->willReturn(false);
-
-        $this->isLocal()->shouldReturn(false);
-    }
-
     function it_checks_connection(Connector $connector)
     {
         $connector->call('system', 'listMethods')->willReturn('response');
