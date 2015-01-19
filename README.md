@@ -127,8 +127,17 @@ $ phpspec run
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 
+## Deprecated libraries
+
+While this tries to a be a complete Supervisor client, this isn't the first one. However some authors decided to deprecate their packages in favor of this:
+
+- [Supervisord PHP Client](https://github.com/mondalaci/supervisord-php-client)
+- [Indigo Supervisor](https://github.com/indigophp/supervisor)
+
+
 ## Credits
 
+- [László Monda](https://github.com/mondalaci) (author of Supervisord PHP Client)
 - [Márk Sági-Kazár](https://github.com/sagikazarmark)
 - [All Contributors](https://github.com/supervisorphp/supervisor/contributors)
 
