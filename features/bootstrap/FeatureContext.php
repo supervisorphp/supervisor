@@ -41,6 +41,9 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $parser = new Parser(__DIR__.'/../../resources/supervisord.conf');
         $this->configuration = $parser->parse();
 
+        $supervisord = $this->configuration->getSection('supervisord');
+        $supervisord->setProperty('nodaemon', true);
+
         $this->setUpConnector();
     }
 

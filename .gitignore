@@ -1,5 +1,6 @@
-/build
-/vendor
+.vagrant/
+build/
+vendor/
 behat.yml
 composer.lock
 phpspec.yml
