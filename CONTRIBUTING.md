@@ -62,5 +62,11 @@ By making a contribution to this project, I certify that:
 $ phpspec run
 ```
 
+Functional tests (behat):
+
+``` bash
+$ behat
+```
+
 
 **Happy coding**!

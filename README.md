@@ -121,6 +121,17 @@ You will also have to make sure that you always call the functions with correct 
 $ phpspec run
 ```
 
+Functional tests (behat):
+
+``` bash
+$ behat
+```
+
+
+## Vagrant
+
+There is a `Vagrantfile` provided in this repo which you can use to run functional tests without installing Supervisor on your local machine. It installs the latest version from PyPi, but the library itself is tested against 3.0, which is the lowest officially supported Supervisor version.
+
 
 ## Contributing
 
