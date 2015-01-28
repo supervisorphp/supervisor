@@ -1,5 +1,7 @@
 # Supervisor
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/supervisorphp/supervisor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Latest Version](https://img.shields.io/github/release/supervisorphp/supervisor.svg?style=flat-square)](https://github.com/supervisorphp/supervisor/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Build Status](https://img.shields.io/travis/supervisorphp/supervisor.svg?style=flat-square)](https://travis-ci.org/supervisorphp/supervisor)
