@@ -9,6 +9,8 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/supervisorphp/supervisor.svg?style=flat-square)](https://packagist.org/packages/supervisorphp/supervisor)
 [![Dependency Status](https://img.shields.io/versioneye/d/php/supervisorphp:supervisor.svg?style=flat-square)](https://www.versioneye.com/php/supervisorphp:supervisor)
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/supervisorphp/supervisor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **PHP library for managing Supervisor through XML-RPC API.**
 
 
