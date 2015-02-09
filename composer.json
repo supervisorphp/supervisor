@@ -15,7 +15,7 @@
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "1.0.*@dev",
-        "guzzlehttp/guzzle": ">=4.0",
+        "egeloen/http-adapter": "0.6.*@dev",
         "phpspec/phpspec": "~2.1",
         "henrikbjorn/phpspec-code-coverage" : "~1.0",
         "behat/behat": "~3.0",
