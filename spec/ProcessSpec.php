@@ -2,7 +2,6 @@
 
 namespace spec\Supervisor;
 
-use Supervisor\Connector;
 use PhpSpec\ObjectBehavior;
 
 class ProcessSpec extends ObjectBehavior
@@ -22,9 +21,9 @@ class ProcessSpec extends ObjectBehavior
         'pid'            => 1,
     ];
 
-    function let(Connector $connector)
+    function let()
     {
-        $this->beConstructedWith($this->process, $connector);
+        $this->beConstructedWith($this->process);
     }
 
     function it_is_initializable()
