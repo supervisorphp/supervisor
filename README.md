@@ -27,21 +27,12 @@ $ composer require supervisorphp/supervisor
 
 ``` php
 use Supervisor\Supervisor;
-use Supervisor\Connector\XmlRpc;
 use fXmlRpc\Client;
-use fXmlRpc\Transport\Guzzle4Bridge;
 
-// Pass the url and the bridge to the XmlRpc Client
-$client = new Client(
-	'http://127.0.0.1:9001/RPC2',
-	new Guzzle4Bridge(new \GuzzleHttp\Client(['defaults' => ['auth' => ['user', '123']]]))
-);
+// Pass the url to the XmlRpc Client
+$client = new Client('http://127.0.0.1:9001/RPC2');
 
-// Pass the client to the connector
-// See the full list of connectors bellow
-$connector = new XmlRpc($client);
-
-$supervisor = new Supervisor($connector);
+$supervisor = new Supervisor($client);
 
 // returns Process object
 $process = $supervisor->getProcess('test_process');
@@ -66,12 +57,7 @@ echo $process;
 $process->getPayload();
 ```
 
-**Currently available connectors:**
-
-* [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
-* Zend XML-RPC
-
-**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed.
+As of 4.0.0 Connectors are replaced by one client implementation: [fXmlRpc](https://github.com/lstrojny/fxmlrpc). The reason behind this change is that in the future this client will be the only one supported (Zend and HTTP Client specific connectors are deprecated) and it has a simple interface which can be used to create custom "connectors"/clients.
 
 
 ### Authentication
@@ -113,8 +99,6 @@ You can find the XML-RPC documentation here:
 ## Notice
 
 If you use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
-
-You will also have to make sure that you always call the functions with correct parameters. `Zend` connector will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `Fault` exception.
 
 
 ## Testing
