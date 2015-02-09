@@ -13,8 +13,10 @@ use Supervisor\Configuration\Section;
 use Supervisor\Connector\XmlRpc;
 use Supervisor\Supervisor;
 use fXmlRpc\Client;
-use fXmlRpc\Transport\Guzzle4Bridge;
-use GuzzleHttp\Client as GuzzleClient;
+use fXmlRpc\Transport\HttpAdapterTransport;
+use Ivory\HttpAdapter\HttpAdapterFactory;
+use Ivory\HttpAdapter\Event\BasicAuth\BasicAuth;
+use Ivory\HttpAdapter\Event\Subscriber\BasicAuthSubscriber;
 
 /**
  * Defines application features from the specific context.
@@ -44,18 +46,15 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $supervisord = $this->configuration->getSection('supervisord');
         $supervisord->setProperty('nodaemon', true);
 
-        $this->setUpConnector();
-    }
+        $httpClient = HttpAdapterFactory::guess();
 
-    protected function setUpConnector()
-    {
-        $client = new Client(
-            'http://127.0.0.1:9001/RPC2',
-            new Guzzle4Bridge(new GuzzleClient(['defaults' => ['auth' => ['user', '123']]]))
-        );
+        $basicAuthSubscriber = new BasicAuthSubscriber(new BasicAuth('user', '123'));
 
-        $connector = new XmlRpc($client);
-        $this->supervisor = new Supervisor($connector);
+        $httpClient->getConfiguration()->getEventDispatcher()->addSubscriber($basicAuthSubscriber);
+
+        $client = new Client('http://127.0.0.1:9001/RPC2', new HttpAdapterTransport($httpClient));
+
+        $this->supervisor = new Supervisor($client);
     }
 
     /**
