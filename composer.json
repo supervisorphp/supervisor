@@ -14,7 +14,7 @@
         "php": ">=5.4.0"
     },
     "require-dev": {
-        "lstrojny/fxmlrpc": "dev-master",
+        "lstrojny/fxmlrpc": "1.0.*@dev",
         "guzzlehttp/guzzle": ">=4.0",
         "zendframework/zend-xmlrpc": ">=2.3.3",
         "phpspec/phpspec": "~2.1",
