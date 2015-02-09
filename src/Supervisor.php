@@ -11,6 +11,10 @@
 
 namespace Supervisor;
 
+use fXmlRpc\CallClientInterface;
+use fXmlRpc\Exception\ResponseException;
+use Supervisor\Exception\Fault;
+
 /**
  * Supervisor API
  *
@@ -56,16 +60,16 @@ class Supervisor
     const FATAL      = 2;
 
     /**
-     * @var Connector
+     * @var CallClientInterface
      */
-    protected $connector;
+    protected $client;
 
     /**
-     * @param Connector $connector
+     * @param CallClientInterface $client
      */
-    public function __construct(Connector $connector)
+    public function __construct(CallClientInterface $client)
     {
-        $this->connector = $connector;
+        $this->client = $client;
     }
 
     /**
@@ -78,7 +82,7 @@ class Supervisor
     public function isConnected()
     {
         try {
-            $this->connector->call('system', 'listMethods');
+            $this->client->call('system.listMethods');
         } catch (\Exception $e) {
             return false;
         }
@@ -97,7 +101,11 @@ class Supervisor
      */
     public function call($namespace, $method, array $arguments = [])
     {
-        return $this->connector->call($namespace, $method, $arguments);
+        try {
+            return $this->client->call(sprintf('%s.%s', $namespace, $method), $arguments);
+        } catch (ResponseException $e) {
+            throw Fault::create($e->getFaultString(), $e->getFaultCode());
+        }
     }
 
     /**
@@ -105,9 +113,9 @@ class Supervisor
      *
      * Handles all calls to supervisor namespace
      */
-    public function __call($method, $arguments)
+    public function __call($method, array $arguments = [])
     {
-        return $this->connector->call('supervisor', $method, $arguments);
+        return $this->call('supervisor', $method, $arguments);
     }
 
     /**
