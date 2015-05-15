@@ -10,13 +10,13 @@ use Behat\Gherkin\Node\TableNode;
 use Supervisor\Configuration\Parser\File as Parser;
 use Supervisor\Configuration\Writer\File as Writer;
 use Supervisor\Configuration\Section;
-use Supervisor\Connector\XmlRpc;
 use Supervisor\Supervisor;
 use fXmlRpc\Client\Client;
-use fXmlRpc\Transport\HttpAdapterTransport;
-use Ivory\HttpAdapter\HttpAdapterFactory;
-use Ivory\HttpAdapter\Event\BasicAuth\BasicAuth;
-use Ivory\HttpAdapter\Event\Subscriber\BasicAuthSubscriber;
+use fXmlRpc\Client\Transport\HttpAdapterTransport;
+use fXmlRpc\Serialization\Parser\NativeParser;
+use fXmlRpc\Serialization\Serializer\NativeSerializer;
+use Http\Adapter\Guzzle5HttpAdapter;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Defines application features from the specific context.
@@ -46,13 +46,16 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $supervisord = $this->configuration->getSection('supervisord');
         $supervisord->setProperty('nodaemon', true);
 
-        $httpClient = HttpAdapterFactory::guess();
-
-        $basicAuthSubscriber = new BasicAuthSubscriber(new BasicAuth('user', '123'));
-
-        $httpClient->getConfiguration()->getEventDispatcher()->addSubscriber($basicAuthSubscriber);
-
-        $client = new Client('http://127.0.0.1:9001/RPC2', new HttpAdapterTransport($httpClient));
+        $client = new Client(
+            new HttpAdapterTransport(new Guzzle5HttpAdapter(new GuzzleClient([
+                'defaults' => [
+                    'auth' => ['user', '123'],
+                ],
+            ]))),
+            new NativeParser(),
+            new NativeSerializer(),
+            'http://127.0.0.1:9001/RPC2'
+        );
 
         $this->supervisor = new Supervisor($client);
     }
