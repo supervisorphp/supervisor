@@ -25,6 +25,7 @@ matrix:
 
 install:
   - resources/bootstrap.sh
+  - phpenv config-add resources/hhvm.ini
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
 
