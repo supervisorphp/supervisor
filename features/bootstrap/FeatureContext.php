@@ -12,7 +12,7 @@ use Supervisor\Configuration\Writer\File as Writer;
 use Supervisor\Configuration\Section;
 use Supervisor\Connector\XmlRpc;
 use Supervisor\Supervisor;
-use fXmlRpc\Client;
+use fXmlRpc\Client\Client;
 use fXmlRpc\Transport\HttpAdapterTransport;
 use Ivory\HttpAdapter\HttpAdapterFactory;
 use Ivory\HttpAdapter\Event\BasicAuth\BasicAuth;

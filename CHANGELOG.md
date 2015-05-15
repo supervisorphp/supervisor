@@ -1,6 +1,15 @@
 # Change Log
 
 
+## Unreleased
+
+### Removed
+
+- Connectors are replaced with fXmlRpc `CallClient`
+- Custom exceptions are replaced with generic `FaultException` from fXmlRpc
+- `call` method from `Supervisor` object
+
+
 ## 3.0.0 - 2015-01-13
 
 ### Added

@@ -62,27 +62,22 @@ As of 4.0.0 Connectors are replaced by one client implementation: [fXmlRpc](http
 
 ### Authentication
 
-As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed).You have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box) Also, Bridges implemented by fXmlRpc supports to set custom headers.
+As of version 4.0.0 Connectors are replaced by fXmlRpc which relies on php-http/adapter by default. You can use any of your favorite HTTP Client libraries with it which also means authentication methods vary.
 
 
 ### Exception handling
 
-For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. When an unknown fault is returned from the server, an instance if the common exception is thrown. The list of fault responses and the appropriate exception can be found in the class.
+XML RPC faults are thrown as `fXmlRpc\Exception\FaultException`. The one exception/fault is removed.
 
 ``` php
-use Supervisor\Exception\Fault;
-use Supervisor\Exception\Fault\BadName;
+use fXmlRpc\Exception\FaultException;
 
 try {
 	$supervisor->restart('process');
-} catch (BadName $e) {
-	// handle bad name error here
-} catch (Fault $e) {
-	// handle any other errors here
+} catch (FaultException $e) {
+	// handle any faults here
 }
 ```
-
-**For developers:** Fault exceptions are automatically generated, there is no need to manually modify them.
 
 
 ## Configuration and Event listening
@@ -107,7 +102,7 @@ If you use PHP XML-RPC extension to parse responses (which is marked as *EXPERIM
 $ phpspec run
 ```
 
-Functional tests (behat):
+Integration tests (behat):
 
 ``` bash
 $ behat

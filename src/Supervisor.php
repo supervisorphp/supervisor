@@ -12,8 +12,6 @@
 namespace Supervisor;
 
 use fXmlRpc\CallClient;
-use fXmlRpc\Exception\ResponseException;
-use Supervisor\Exception\Fault;
 
 /**
  * Supervisor API
@@ -91,31 +89,13 @@ class Supervisor
     }
 
     /**
-     * Calls a method
-     *
-     * @param string $namespace
-     * @param string $method
-     * @param array  $arguments
-     *
-     * @return mixed
-     */
-    public function call($namespace, $method, array $arguments = [])
-    {
-        try {
-            return $this->client->call(sprintf('%s.%s', $namespace, $method), $arguments);
-        } catch (ResponseException $e) {
-            throw Fault::create($e->getFaultString(), $e->getFaultCode());
-        }
-    }
-
-    /**
      * Magic __call method
      *
      * Handles all calls to supervisor namespace
      */
     public function __call($method, array $arguments = [])
     {
-        return $this->call('supervisor', $method, $arguments);
+        return $this->client->call(sprintf('supervisor.%s', $method), $arguments);
     }
 
     /**

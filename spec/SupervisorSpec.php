@@ -2,13 +2,13 @@
 
 namespace spec\Supervisor;
 
-use fXmlRpc\CallClientInterface;
+use fXmlRpc\CallClient;
 use Supervisor\Process;
 use PhpSpec\ObjectBehavior;
 
 class SupervisorSpec extends ObjectBehavior
 {
-    function let(CallClientInterface $client)
+    function let(CallClient $client)
     {
         $this->beConstructedWith($client);
     }
@@ -18,7 +18,7 @@ class SupervisorSpec extends ObjectBehavior
         $this->shouldHaveType('Supervisor\Supervisor');
     }
 
-    function it_checks_connection(CallClientInterface $client)
+    function it_checks_connection(CallClient $client)
     {
         $client->call('system.listMethods')->willReturn('response');
 
@@ -29,28 +29,21 @@ class SupervisorSpec extends ObjectBehavior
         $this->isConnected()->shouldReturn(false);
     }
 
-    function it_calls_a_method(CallClientInterface $client)
-    {
-        $client->call('namespace.method', [])->willReturn('response');
-
-        $this->call('namespace', 'method')->shouldReturn('response');
-    }
-
-    function it_checks_if_supervisor_is_running(CallClientInterface $client)
+    function it_checks_if_supervisor_is_running(CallClient $client)
     {
         $client->call('supervisor.getState', [])->willReturn(['statecode' => 1]);
 
         $this->isRunning()->shouldReturn(true);
     }
 
-    function it_checks_supervisor_state(CallClientInterface $client)
+    function it_checks_supervisor_state(CallClient $client)
     {
         $client->call('supervisor.getState', [])->willReturn(['statecode' => 1]);
 
         $this->checkState(1)->shouldReturn(true);
     }
 
-    function it_returns_all_processes(CallClientInterface $client)
+    function it_returns_all_processes(CallClient $client)
     {
         $client->call('supervisor.getAllProcessInfo', [])->willReturn([
             [
@@ -65,7 +58,7 @@ class SupervisorSpec extends ObjectBehavior
         $processes[0]->getName()->shouldReturn('process_name');
     }
 
-    function it_returns_a_process_(CallClientInterface $client)
+    function it_returns_a_process_(CallClient $client)
     {
         $client->call('supervisor.getProcessInfo', ['process_name'])->willReturn(['name' => 'process_name']);
 
