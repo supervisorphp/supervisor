@@ -11,7 +11,7 @@
 
 namespace Supervisor;
 
-use fXmlRpc\CallClientInterface;
+use fXmlRpc\CallClient;
 use fXmlRpc\Exception\ResponseException;
 use Supervisor\Exception\Fault;
 
@@ -60,14 +60,14 @@ class Supervisor
     const FATAL      = 2;
 
     /**
-     * @var CallClientInterface
+     * @var CallClient
      */
     protected $client;
 
     /**
-     * @param CallClientInterface $client
+     * @param CallClient $client
      */
-    public function __construct(CallClientInterface $client)
+    public function __construct(CallClient $client)
     {
         $this->client = $client;
     }

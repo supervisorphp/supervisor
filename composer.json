@@ -11,15 +11,17 @@
         }
     ],
     "require": {
-        "php": ">=5.4"
+        "php": ">=5.4",
+        "fxmlrpc/fxmlrpc": "dev-initial_import"
     },
     "require-dev": {
-        "lstrojny/fxmlrpc": "1.0.*@dev",
-        "egeloen/http-adapter": "0.6.*@dev",
+        "fxmlrpc/client": "dev-initial_import",
+        "fxmlrpc/native-serialization": "dev-initial_import",
+        "php-http/guzzle5-adapter": "dev-initial_import",
         "phpspec/phpspec": "~2.1",
         "henrikbjorn/phpspec-code-coverage" : "~1.0",
         "behat/behat": "~3.0",
-        "rhumsaa/array_column": "~1.1",
+        "ramsey/array_column": "~1.1",
         "supervisorphp/configuration": "~0.1"
     },
     "autoload": {
@@ -29,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.1-dev"
+            "dev-master": "4.0-dev"
         }
     },
     "prefer-stable": true,
