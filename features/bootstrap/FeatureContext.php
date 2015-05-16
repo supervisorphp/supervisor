@@ -13,8 +13,8 @@ use Supervisor\Configuration\Section;
 use Supervisor\Supervisor;
 use fXmlRpc\Client\Client;
 use fXmlRpc\Client\Transport\HttpAdapterTransport;
-use fXmlRpc\Serialization\Parser\NativeParser;
-use fXmlRpc\Serialization\Serializer\NativeSerializer;
+use fXmlRpc\Serialization\Parser\XmlReaderParser;
+use fXmlRpc\Serialization\Serializer\XmlWriterSerializer;
 use Http\Adapter\Guzzle5HttpAdapter;
 use GuzzleHttp\Client as GuzzleClient;
 
@@ -52,8 +52,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
                     'auth' => ['user', '123'],
                 ],
             ]))),
-            new NativeParser(),
-            new NativeSerializer(),
+            new XmlReaderParser(),
+            new XmlWriterSerializer(),
             'http://127.0.0.1:9001/RPC2'
         );
 

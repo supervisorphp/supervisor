@@ -16,7 +16,7 @@
     },
     "require-dev": {
         "fxmlrpc/client": "dev-initial_import",
-        "fxmlrpc/native-serialization": "dev-initial_import",
+        "fxmlrpc/sax-serialization": "dev-initial_import",
         "fxmlrpc/http-transport": "dev-initial_import",
         "php-http/guzzle5-adapter": "dev-initial_import",
         "phpspec/phpspec": "~2.1",
