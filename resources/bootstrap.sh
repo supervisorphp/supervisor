@@ -1,10 +1,8 @@
 #!/bin/bash
 
-sudo apt-get install -qq -y python-pip
-
 if [[ -z $SUPERVISOR_VERSION ]]; then
-	sudo pip install supervisor
+	pip install --user supervisor
 else
-	sudo pip install supervisor==$SUPERVISOR_VERSION
+	pip install --user supervisor==$SUPERVISOR_VERSION
 fi
 
