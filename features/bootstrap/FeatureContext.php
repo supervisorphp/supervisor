@@ -1,14 +1,14 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Supervisor\Configuration\Parser\File as Parser;
-use Supervisor\Configuration\Writer\File as Writer;
+use Indigo\Ini\Renderer;
+use Supervisor\Configuration\Configuration;
+use Supervisor\Configuration\Loader\IniStringLoader;
 use Supervisor\Configuration\Section;
 use Supervisor\Connector\XmlRpc;
 use Supervisor\Supervisor;
@@ -22,11 +22,12 @@ use GuzzleHttp\Client as GuzzleClient;
 class FeatureContext implements Context, SnippetAcceptingContext
 {
     /**
-     * Initializes context.
-     *
-     * Every scenario gets its own context instance.
-     * You can also pass arbitrary arguments to the
-     * context constructor through behat.yml.
+     * @var Configuration
+     */
+    protected $conciguration;
+
+    /**
+     * @param string $bin
      */
     public function __construct($bin = 'supervisord')
     {
@@ -38,8 +39,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function setUpSupervisor(BeforeScenarioScope $scope)
     {
-        $parser = new Parser(__DIR__.'/../../resources/supervisord.conf');
-        $this->configuration = $parser->parse();
+        $loader = new IniStringLoader(file_get_contents(__DIR__.'/../../resources/supervisord.conf'));
+        $this->configuration = $loader->load();
 
         $supervisord = $this->configuration->getSection('supervisord');
         $supervisord->setProperty('nodaemon', true);
@@ -71,8 +72,10 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iHaveSupervisorRunning()
     {
-        $writer = new Writer($file = tempnam(sys_get_temp_dir(), 'supervisord_'));
-        $writer->write($this->configuration);
+        $renderer = new Renderer(Renderer::ARRAY_MODE_CONCAT | Renderer::BOOLEAN_MODE_BOOL_STRING);
+        $ini = $renderer->render($this->configuration->toArray());
+
+        file_put_contents($file = tempnam(sys_get_temp_dir(), 'supervisord_'), $ini);
 
         if ($this->supervisor->isConnected()) {
             posix_kill($this->supervisor->getPID(), SIGKILL);
