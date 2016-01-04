@@ -17,10 +17,10 @@
         "lstrojny/fxmlrpc": "0.9.3",
         "guzzlehttp/guzzle": "^4.0",
         "zendframework/zend-xmlrpc": ">=2.3.3",
-        "phpspec/phpspec": "~2.1",
-        "henrikbjorn/phpspec-code-coverage" : "~1.0",
-        "behat/behat": "~3.0",
-        "rhumsaa/array_column": "~1.1",
+        "phpspec/phpspec": "^2.4",
+        "henrikbjorn/phpspec-code-coverage" : "^1.0",
+        "behat/behat": "^3.0",
+        "ramsey/array_column": "^1.1",
         "supervisorphp/configuration": "^0.2"
     },
     "suggest": {
