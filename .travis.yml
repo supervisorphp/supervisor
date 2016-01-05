@@ -16,8 +16,9 @@ php:
 env:
     global:
         - TEST_COMMAND="composer test"
-    - SUPERVISOR_VERSION=3.0
-    - SUPERVISOR_VERSION=3.1.3
+    matrix:
+        - SUPERVISOR_VERSION=3.0
+        - SUPERVISOR_VERSION=3.1.3
 
 branches:
     except:
