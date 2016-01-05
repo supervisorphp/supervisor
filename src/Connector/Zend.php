@@ -8,7 +8,7 @@ use Zend\XmlRpc\Client;
 use Zend\XmlRpc\Client\Exception\FaultException;
 
 /**
- * Uses Zend XML-RPC
+ * Uses Zend XML-RPC.
  *
  * There are known and tested performance issues with it
  *
@@ -24,7 +24,7 @@ class Zend implements Connector
     protected $client;
 
     /**
-     * @param Client  $client
+     * @param Client $client
      */
     public function __construct(Client $client)
     {

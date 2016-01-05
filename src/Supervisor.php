@@ -3,34 +3,34 @@
 namespace Supervisor;
 
 /**
- * Supervisor API
+ * Supervisor API.
  *
  * @method string  getAPIVersion()
  * @method string  getSupervisorVersion()
  * @method string  getIdentification()
  * @method array   getState()
- * @method integer getPID()
+ * @method int getPID()
  * @method string  readLog(integer $offset, integer $limit)
- * @method boolean clearLog()
- * @method boolean shutdown()
- * @method boolean restart()
+ * @method bool clearLog()
+ * @method bool shutdown()
+ * @method bool restart()
  * @method array   getProcessInfo(string $processName)
  * @method array   getAllProcessInfo()
- * @method boolean startProcess(string $name, boolean $wait = true)
- * @method boolean startAllProcesses(boolean $wait = true)
- * @method boolean startProcessGroup(string $name, boolean $wait = true)
- * @method boolean stopProcess(string $name, boolean $wait = true)
- * @method boolean stopAllProcesses(boolean $wait = true)
- * @method boolean stopProcessGroup(string $name, boolean $wait = true)
- * @method boolean sendProcessStdin(string $name, string $chars)
- * @method boolean addProcessGroup(string $name)
- * @method boolean removeProcessGroup(string $name)
+ * @method bool startProcess(string $name, boolean $wait = true)
+ * @method bool startAllProcesses(boolean $wait = true)
+ * @method bool startProcessGroup(string $name, boolean $wait = true)
+ * @method bool stopProcess(string $name, boolean $wait = true)
+ * @method bool stopAllProcesses(boolean $wait = true)
+ * @method bool stopProcessGroup(string $name, boolean $wait = true)
+ * @method bool sendProcessStdin(string $name, string $chars)
+ * @method bool addProcessGroup(string $name)
+ * @method bool removeProcessGroup(string $name)
  * @method string  readProcessStdoutLog(string $name, integer $offset, integer $limit)
  * @method string  readProcessStderrLog(string $name, integer $offset, integer $limit)
  * @method string  tailProcessStdoutLog(string $name, integer $offset, integer $limit)
  * @method string  tailProcessStderrLog(string $name, integer $offset, integer $limit)
- * @method boolean clearProcessLogs(string $name)
- * @method boolean clearAllProcessLogs()
+ * @method bool clearProcessLogs(string $name)
+ * @method bool clearAllProcessLogs()
  *
  * @link http://supervisord.org/api.html
  *
@@ -39,12 +39,12 @@ namespace Supervisor;
 class Supervisor
 {
     /**
-     * Service states
+     * Service states.
      */
-    const SHUTDOWN   = -1;
+    const SHUTDOWN = -1;
     const RESTARTING = 0;
-    const RUNNING    = 1;
-    const FATAL      = 2;
+    const RUNNING = 1;
+    const FATAL = 2;
 
     /**
      * @var Connector
@@ -60,11 +60,11 @@ class Supervisor
     }
 
     /**
-     * Checks if a connection is present
+     * Checks if a connection is present.
      *
      * It is done by sending a bump request to the server and catching any thrown exceptions
      *
-     * @return boolean
+     * @return bool
      */
     public function isConnected()
     {
@@ -78,7 +78,7 @@ class Supervisor
     }
 
     /**
-     * Calls a method
+     * Calls a method.
      *
      * @param string $namespace
      * @param string $method
@@ -92,7 +92,7 @@ class Supervisor
     }
 
     /**
-     * Magic __call method
+     * Magic __call method.
      *
      * Handles all calls to supervisor namespace
      */
@@ -104,7 +104,7 @@ class Supervisor
     /**
      * Is service running?
      *
-     * @return boolean
+     * @return bool
      */
     public function isRunning()
     {
@@ -112,11 +112,11 @@ class Supervisor
     }
 
     /**
-     * Checks if supervisord is in given state
+     * Checks if supervisord is in given state.
      *
-     * @param integer $checkState
+     * @param int $checkState
      *
-     * @return boolean
+     * @return bool
      */
     public function checkState($checkState)
     {
@@ -126,7 +126,7 @@ class Supervisor
     }
 
     /**
-     * Returns all processes as Process objects
+     * Returns all processes as Process objects.
      *
      * @return array Array of Process objects
      */
@@ -142,7 +142,7 @@ class Supervisor
     }
 
     /**
-     * Returns a specific Process
+     * Returns a specific Process.
      *
      * @param string $name Process name or 'group:name'
      *

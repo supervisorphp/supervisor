@@ -8,7 +8,7 @@ use fXmlRpc\ClientInterface;
 use fXmlRpc\Exception\ResponseException;
 
 /**
- * Basic XML-RPC Connector using fXmlRpc
+ * Basic XML-RPC Connector using fXmlRpc.
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
