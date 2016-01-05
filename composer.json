@@ -32,6 +32,10 @@
             "Supervisor\\": "src/"
         }
     },
+    "scripts": {
+        "test": "vendor/bin/phpspec run",
+        "test-ci": "vendor/bin/phpspec run -c phpspec.yml.ci"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.1-dev"

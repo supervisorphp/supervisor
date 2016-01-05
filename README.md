@@ -120,7 +120,7 @@ You will also have to make sure that you always call the functions with correct 
 ## Testing
 
 ``` bash
-$ phpspec run
+$ composer test
 ```
 
 Functional tests (behat):

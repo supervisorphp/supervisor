@@ -4,3 +4,4 @@ vendor/
 behat.yml
 composer.lock
 phpspec.yml
+phpunit.xml

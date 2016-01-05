@@ -1,0 +1,15 @@
+preset: symfony
+
+finder:
+    exclude:
+        - "resources"
+        - "spec"
+        - "tests"
+    path:
+        - "src"
+
+enabled:
+    - short_array_syntax
+
+disabled:
+    - unalign_double_arrow
