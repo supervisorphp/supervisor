@@ -1,37 +1,28 @@
 <?php
 
-/*
- * This file is part of the Supervisor package.
- *
- * (c) Márk Sági-Kazár <mark.sagikazar@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Supervisor;
 
 /**
- * Process object holding data for a single process
+ * Process object holding data for a single process.
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 class Process implements \ArrayAccess
 {
     /**
-     * Process states
+     * Process states.
      */
-    const STOPPED  = 0;
+    const STOPPED = 0;
     const STARTING = 10;
-    const RUNNING  = 20;
-    const BACKOFF  = 30;
+    const RUNNING = 20;
+    const BACKOFF = 30;
     const STOPPING = 40;
-    const EXITED   = 100;
-    const FATAL    = 200;
-    const UNKNOWN  = 1000;
+    const EXITED = 100;
+    const FATAL = 200;
+    const UNKNOWN = 1000;
 
     /**
-     * Process info
+     * Process info.
      *
      * @var array
      */
@@ -46,7 +37,7 @@ class Process implements \ArrayAccess
     }
 
     /**
-     * Returns the process info array
+     * Returns the process info array.
      *
      * @return array
      */
@@ -56,7 +47,7 @@ class Process implements \ArrayAccess
     }
 
     /**
-     * Returns the process name
+     * Returns the process name.
      *
      * @return string
      */
@@ -66,9 +57,9 @@ class Process implements \ArrayAccess
     }
 
     /**
-     * Checks whether the process is running
+     * Checks whether the process is running.
      *
-     * @return boolean
+     * @return bool
      */
     public function isRunning()
     {
@@ -76,11 +67,11 @@ class Process implements \ArrayAccess
     }
 
     /**
-     * Checks if process is in the given state
+     * Checks if process is in the given state.
      *
-     * @param integer $state
+     * @param int $state
      *
-     * @return boolean
+     * @return bool
      */
     public function checkState($state)
     {
@@ -88,7 +79,7 @@ class Process implements \ArrayAccess
     }
 
     /**
-     * Returns process name
+     * Returns process name.
      *
      * @return string
      */

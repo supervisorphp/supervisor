@@ -1,35 +1,51 @@
 language: php
 
+sudo: false
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
 php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
+    - 5.4
+    - 5.5
+    - 5.6
+    - 7.0
+    - hhvm
 
 env:
-  - SUPERVISOR_VERSION=3.0
-  - SUPERVISOR_VERSION=3.1.3
+    global:
+        - TEST_COMMAND="composer test"
+    matrix:
+        - SUPERVISOR_VERSION=3.0
+        - SUPERVISOR_VERSION=3.1.3
+
+branches:
+    except:
+        - /^analysis-.*$/
 
 matrix:
-  allow_failures:
-    - php: 7.0
-  include:
-    - php: 5.4
-      env:
-        - COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
-        - PHPSPEC_FLAGS="-c phpspec.yml.ci"
-        - COVERAGE=true
+    allow_failures:
+        - php: 7.0
+          env: SUPERVISOR_VERSION=3.0
+        - php: hhvm
+          env: SUPERVISOR_VERSION=3.0
+    fast_finish: true
+    include:
+        - php: 5.4
+          env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
+
+before_install:
+    - travis_retry composer self-update
 
 install:
-  - resources/bootstrap.sh
-  - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
+    - resources/bootstrap.sh
+    - travis_retry composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
 
 script:
-  - vendor/bin/phpspec ${PHPSPEC_FLAGS}
-  - vendor/bin/behat
+    - $TEST_COMMAND
+    - vendor/bin/behat
 
 after_script:
-  - if [[ "$COVERAGE" = true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ "$COVERAGE" = true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml; fi
+    - if [[ "$COVERAGE" = true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+    - if [[ "$COVERAGE" = true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml; fi
