@@ -29,12 +29,16 @@ $ composer require supervisorphp/supervisor
 use Supervisor\Supervisor;
 use Supervisor\Connector\XmlRpc;
 use fXmlRpc\Client;
-use fXmlRpc\Transport\Guzzle4Bridge;
+use fXmlRpc\Transport\HttpAdapterTransport;
+use Ivory\HttpAdapter\Guzzle6HttpAdapter;
 
-// Pass the url and the bridge to the XmlRpc Client
+//Create GuzzleHttp client
+$guzzleClient = new \GuzzleHttp\Client(['auth' => ['user', '123']]);
+
+// Pass the url and the guzzle client to the XmlRpc Client
 $client = new Client(
-	'http://127.0.0.1:9001/RPC2',
-	new Guzzle4Bridge(new \GuzzleHttp\Client(['defaults' => ['auth' => ['user', '123']]]))
+    'http://127.0.0.1:9001/RPC2',
+    new HttpAdapterTransport(new Guzzle6HttpAdapter($guzzleClient))
 );
 
 // Pass the client to the connector
