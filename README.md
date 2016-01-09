@@ -116,6 +116,8 @@ If you use PHP XML-RPC extension to parse responses (which is marked as *EXPERIM
 
 You will also have to make sure that you always call the functions with correct parameters. `Zend` connector will trigger an error when incorrect parameters are passed. See [this](https://github.com/zendframework/zf2/issues/6455) issue for details. (Probably this won't change in near future based on my inspections of the code.) Other connectors will throw a `Fault` exception.
 
+Please note that Supervisor tests currently fail on PHP 7.0 and HHVM using Supervisor 3.0.
+
 
 ## Testing
 

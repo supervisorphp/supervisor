@@ -27,6 +27,9 @@ branches:
 matrix:
     allow_failures:
         - php: 7.0
+          env: SUPERVISOR_VERSION=3.0
+        - php: hhvm
+          env: SUPERVISOR_VERSION=3.0
     fast_finish: true
     include:
         - php: 5.4
