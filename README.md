@@ -5,9 +5,7 @@
 [![Build Status](https://img.shields.io/travis/supervisorphp/supervisor.svg?style=flat-square)](https://travis-ci.org/supervisorphp/supervisor)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/supervisorphp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/supervisorphp/supervisor)
 [![Quality Score](https://img.shields.io/scrutinizer/g/supervisorphp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/supervisorphp/supervisor)
-[![HHVM Status](https://img.shields.io/hhvm/supervisorphp/supervisor.svg?style=flat-square)](http://hhvm.h4cc.de/package/supervisorphp/supervisor)
 [![Total Downloads](https://img.shields.io/packagist/dt/supervisorphp/supervisor.svg?style=flat-square)](https://packagist.org/packages/supervisorphp/supervisor)
-[![Dependency Status](https://img.shields.io/versioneye/d/php/supervisorphp:supervisor.svg?style=flat-square)](https://www.versioneye.com/php/supervisorphp:supervisor)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/supervisorphp/supervisor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
