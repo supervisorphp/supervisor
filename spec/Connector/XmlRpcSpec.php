@@ -3,7 +3,7 @@
 namespace spec\Supervisor\Connector;
 
 use fXmlRpc\ClientInterface;
-use fXmlRpc\Exception\ResponseException;
+use fXmlRpc\Exception\FaultException;
 use PhpSpec\ObjectBehavior;
 
 class XmlRpcSpec extends ObjectBehavior
@@ -32,7 +32,7 @@ class XmlRpcSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_the_call_fails(ClientInterface $client)
     {
-        $e = ResponseException::fault([
+        $e = FaultException::fault([
             'faultString' => 'Invalid response',
             'faultCode'   => 100,
         ]);
@@ -44,7 +44,7 @@ class XmlRpcSpec extends ObjectBehavior
 
     function it_throws_a_known_exception_when_proper_fault_returned(ClientInterface $client)
     {
-        $e = ResponseException::fault([
+        $e = FaultException::fault([
             'faultString' => 'UNKNOWN_METHOD',
             'faultCode'   => 1,
         ]);
