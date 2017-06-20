@@ -13,7 +13,6 @@ use Supervisor\Configuration\Section;
 use Supervisor\Connector\XmlRpc;
 use Supervisor\Supervisor;
 use fXmlRpc\Client;
-use fXmlRpc\Transport\Guzzle4Bridge;
 use GuzzleHttp\Client as GuzzleClient;
 
 /**
@@ -50,9 +49,14 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     protected function setUpConnector()
     {
+        $guzzleClient = new GuzzleClient(['defaults' => ['auth' => ['user', '123']]]);
+
         $client = new Client(
             'http://127.0.0.1:9001/RPC2',
-            new Guzzle4Bridge(new GuzzleClient(['defaults' => ['auth' => ['user', '123']]]))
+            new \fXmlRpc\Transport\HttpAdapterTransport(
+                new \Http\Message\MessageFactory\GuzzleMessageFactory(),
+                new \Http\Adapter\Guzzle5\Client($guzzleClient)
+            )
         );
 
         $connector = new XmlRpc($client);

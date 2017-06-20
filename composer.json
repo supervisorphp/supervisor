@@ -15,13 +15,15 @@
     },
     "require-dev": {
         "lstrojny/fxmlrpc": "^0.12",
-        "guzzlehttp/guzzle": "^4.0",
+        "guzzlehttp/guzzle": "^5.0",
         "zendframework/zend-xmlrpc": ">=2.3.3",
         "phpspec/phpspec": "^2.4",
         "henrikbjorn/phpspec-code-coverage" : "^1.0",
-        "behat/behat": "^3.0",
         "ramsey/array_column": "^1.1",
-        "supervisorphp/configuration": "^0.2"
+        "supervisorphp/configuration": "^0.2",
+        "php-http/message": "^1.5",
+        "php-http/guzzle5-adapter": "^0.5",
+        "guzzlehttp/psr7": "^1.4"
     },
     "suggest": {
         "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4",
