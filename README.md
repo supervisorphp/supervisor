@@ -28,15 +28,18 @@ use Supervisor\Supervisor;
 use Supervisor\Connector\XmlRpc;
 use fXmlRpc\Client;
 use fXmlRpc\Transport\HttpAdapterTransport;
-use Ivory\HttpAdapter\Guzzle6HttpAdapter;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use \Http\Message\MessageFactory\DiactorosMessageFactory as MessageFactory;
 
 //Create GuzzleHttp client
-$guzzleClient = new \GuzzleHttp\Client(['auth' => ['user', '123']]);
+$guzzleClient = new \GuzzleHttp\Client(['auth' => ['user', 'password']]);
 
 // Pass the url and the guzzle client to the XmlRpc Client
 $client = new Client(
     'http://127.0.0.1:9001/RPC2',
-    new HttpAdapterTransport(new Guzzle6HttpAdapter($guzzleClient))
+    new HttpAdapterTransport(
+        new MessageFactory(),
+        new GuzzleAdapter($guzzleClient))
 );
 
 // Pass the client to the connector
