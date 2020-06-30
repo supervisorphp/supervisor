@@ -1,0 +1,37 @@
+name: Test Suite
+
+on:
+  push:
+    branches-ignore:
+     - 'analysis-*'
+  pull_request:
+    branches-ignore:
+     - 'analysis-*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix: 
+        php: ['7.3', '7.4']
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        coverage: xdebug
+        tools: composer
+
+    - name: Install dependencies
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Install Supervisor
+      run: |
+        sudo apt-get install -y --no-install-recommends supervisor
+    
+    - name: Run CI Tests
+      run: composer run test-ci
