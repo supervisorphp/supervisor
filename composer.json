@@ -8,6 +8,10 @@
         {
             "name": "Márk Sági-Kazár",
             "email": "mark.sagikazar@gmail.com"
+        },
+        {
+            "name": "Buster Neece",
+            "email": "buster@busterneece.com"
         }
     ],
     "require": {
@@ -33,8 +37,14 @@
         }
     },
     "scripts": {
+        "ci": [
+            "@composer install --prefer-dist --no-progress --no-suggest",
+            "@test-ci",
+            "@behat"
+        ],
         "test": "vendor/bin/phpspec run",
-        "test-ci": "vendor/bin/phpspec run -c phpspec.yml.ci"
+        "test-ci": "vendor/bin/phpspec run -c phpspec.yml.ci",
+        "behat": "vendor/bin/behat"
     },
     "extra": {
         "branch-alias": {
