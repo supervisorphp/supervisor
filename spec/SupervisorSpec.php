@@ -2,9 +2,9 @@
 
 namespace spec\Supervisor;
 
+use PhpSpec\ObjectBehavior;
 use Supervisor\Connector;
 use Supervisor\Process;
-use PhpSpec\ObjectBehavior;
 use Supervisor\Supervisor;
 
 class SupervisorSpec extends ObjectBehavior
@@ -60,8 +60,8 @@ class SupervisorSpec extends ObjectBehavior
     {
         $connector->call('supervisor', 'getAllProcessInfo', [])->willReturn([
             [
-                'name' => 'process_name'
-            ]
+                'name' => 'process_name',
+            ],
         ]);
 
         $processes = $this->getAllProcesses();

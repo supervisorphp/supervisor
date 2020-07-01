@@ -1,9 +1,9 @@
 <?php
 
+use Laminas\Http\Client as HttpClient;
+use Laminas\XmlRpc\Client;
 use Supervisor\Connector\Laminas;
 use Supervisor\Supervisor;
-use Laminas\XmlRpc\Client;
-use Laminas\Http\Client as HttpClient;
 
 class LaminasContext extends FeatureContext
 {

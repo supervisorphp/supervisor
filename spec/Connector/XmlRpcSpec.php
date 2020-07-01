@@ -3,12 +3,12 @@
 namespace spec\Supervisor\Connector;
 
 use fXmlRpc\ClientInterface;
-use fXmlRpc\Exception\HttpException;
+use fXmlRpc\Exception\FaultException;
 use PhpSpec\ObjectBehavior;
-use Supervisor\Exception\Fault\UnknownMethod;
-use Supervisor\Exception\Fault;
 use Supervisor\Connector;
 use Supervisor\Connector\XmlRpc;
+use Supervisor\Exception\Fault;
+use Supervisor\Exception\Fault\UnknownMethod;
 
 class XmlRpcSpec extends ObjectBehavior
 {
@@ -37,7 +37,10 @@ class XmlRpcSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_the_call_fails(ClientInterface $client)
     {
-        $e = HttpException::httpError('Invalid Response', 100);
+        $e = FaultException::fault([
+            'faultString' => 'Invalid Response',
+            'faultCode' => 100,
+        ]);
 
         $client->call('namespace.method', [])
             ->willThrow($e);
@@ -48,7 +51,10 @@ class XmlRpcSpec extends ObjectBehavior
 
     function it_throws_a_known_exception_when_proper_fault_returned(ClientInterface $client)
     {
-        $e = HttpException::httpError('UNKNOWN_METHOD', 1);
+        $e = FaultException::fault([
+            'faultString' => 'UNKNOWN_METHOD',
+            'faultCode' => 1,
+        ]);
 
         $client->call('namespace.method', [])
             ->willThrow($e);

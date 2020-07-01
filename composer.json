@@ -1,4 +1,12 @@
 {
+    "name": "supervisorphp/supervisor",
+    "description": "PHP library for managing Supervisor through XML-RPC API",
+    "homepage": "http://supervisorphp.com",
+    "license": "MIT",
+    "keywords": [
+        "supervisor",
+        "process manager"
+    ],
     "authors": [
         {
             "name": "Márk Sági-Kazár",
@@ -14,25 +22,19 @@
             "Supervisor\\": "src/"
         }
     },
-    "description": "PHP library for managing Supervisor through XML-RPC API",
     "extra": {
         "branch-alias": {
             "dev-master": "3.1-dev"
         }
     },
-    "homepage": "http://supervisorphp.com",
-    "keywords": [
-        "supervisor",
-        "process manager"
-    ],
-    "license": "MIT",
     "minimum-stability": "dev",
-    "name": "supervisorphp/supervisor",
     "prefer-stable": true,
     "require": {
         "php": ">=7.3"
     },
     "require-dev": {
+        "ext-posix": "*",
+        "ext-pcntl": "*",
         "behat/behat": "^3.0",
         "friends-of-phpspec/phpspec-code-coverage": "^4.3",
         "guzzlehttp/guzzle": "^6.0",

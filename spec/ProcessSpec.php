@@ -8,18 +8,18 @@ use Supervisor\Process;
 class ProcessSpec extends ObjectBehavior
 {
     protected $process = [
-        'name'           => 'process name',
-        'group'          => 'group name',
-        'start'          => 1200361776,
-        'stop'           => 0,
-        'now'            => 1200361812,
-        'state'          => 20,
-        'statename'      => 'RUNNING',
-        'spawnerr'       => '',
-        'exitstatus'     => 0,
+        'name' => 'process name',
+        'group' => 'group name',
+        'start' => 1200361776,
+        'stop' => 0,
+        'now' => 1200361812,
+        'state' => 20,
+        'statename' => 'RUNNING',
+        'spawnerr' => '',
+        'exitstatus' => 0,
         'stdout_logfile' => '/path/to/stdout-log',
         'stderr_logfile' => '/path/to/stderr-log',
-        'pid'            => 1,
+        'pid' => 1,
     ];
 
     function let()

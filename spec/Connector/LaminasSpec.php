@@ -5,6 +5,10 @@ namespace spec\Supervisor\Connector;
 use Laminas\XmlRpc\Client;
 use Laminas\XmlRpc\Client\Exception\FaultException;
 use PhpSpec\ObjectBehavior;
+use Supervisor\Connector;
+use Supervisor\Connector\Laminas;
+use Supervisor\Exception\Fault;
+use Supervisor\Exception\Fault\UnknownMethod;
 
 class LaminasSpec extends ObjectBehavior
 {
@@ -15,12 +19,12 @@ class LaminasSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Supervisor\Connector\Laminas');
+        $this->shouldHaveType(Laminas::class);
     }
 
     function it_is_a_conncetor()
     {
-        $this->shouldImplement('Supervisor\Connector');
+        $this->shouldImplement(Connector::class);
     }
 
     function it_calls_a_method(Client $client)
@@ -36,7 +40,7 @@ class LaminasSpec extends ObjectBehavior
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Supervisor\Exception\Fault')->duringCall('namespace', 'method');
+        $this->shouldThrow(Fault::class)->duringCall('namespace', 'method');
     }
 
     function it_throws_a_known_exception_when_proper_fault_returned(Client $client)
@@ -45,6 +49,6 @@ class LaminasSpec extends ObjectBehavior
 
         $client->call('namespace.method', [])->willThrow($e);
 
-        $this->shouldThrow('Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
+        $this->shouldThrow(UnknownMethod::class)->duringCall('namespace', 'method');
     }
 }

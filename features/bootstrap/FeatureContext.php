@@ -2,10 +2,9 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use fXmlRpc\Client;
 use fXmlRpc\Transport\HttpAdapterTransport;
 use Indigo\Ini\Renderer;
 use Supervisor\Configuration\Configuration;
@@ -13,9 +12,6 @@ use Supervisor\Configuration\Loader\IniStringLoader;
 use Supervisor\Configuration\Section;
 use Supervisor\Connector\XmlRpc;
 use Supervisor\Supervisor;
-use fXmlRpc\Client;
-use fXmlRpc\Transport\Guzzle4Bridge;
-use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Defines application features from the specific context.
@@ -40,7 +36,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function setUpSupervisor(BeforeScenarioScope $scope)
     {
-        $loader = new IniStringLoader(file_get_contents(__DIR__.'/../../resources/supervisord.conf'));
+        $loader = new IniStringLoader(file_get_contents(__DIR__ . '/../../resources/supervisord.conf'));
         $this->configuration = $loader->load();
 
         $supervisord = $this->configuration->getSection('supervisord');
@@ -72,7 +68,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function stopSupervisor(AfterScenarioScope $scope)
     {
-        isset($this->process) and posix_kill($this->process, SIGKILL);
+        isset($this->process) and posix_kill($this->process, \SIGKILL);
     }
 
     /**
@@ -86,7 +82,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
         file_put_contents($file = tempnam(sys_get_temp_dir(), 'supervisord_'), $ini);
 
         if ($this->supervisor->isConnected()) {
-            posix_kill($this->supervisor->getPID(), SIGKILL);
+            posix_kill($this->supervisor->getPID(), \SIGKILL);
         }
 
         $command = sprintf('(%s --configuration %s > /dev/null 2>&1 & echo $!)&', $this->bin, $file);
@@ -122,7 +118,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetAtLeastVersion($ver)
     {
         if (version_compare($this->version, $ver) == -1) {
-            throw new \Exception(sprintf('Version "%s" does not match the minimum required "%s"', $this->version, $ver));
+            throw new \Exception(sprintf('Version "%s" does not match the minimum required "%s"', $this->version,
+                $ver));
         }
     }
 
@@ -157,7 +154,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetAsIdentifier($identifier)
     {
         if ($this->identifier !== $identifier) {
-            throw new \Exception(sprintf('Identification "%s" does not match the required "%s"', $this->identifier, $identifier));
+            throw new \Exception(sprintf('Identification "%s" does not match the required "%s"', $this->identifier,
+                $identifier));
         }
     }
 
@@ -175,11 +173,13 @@ class FeatureContext implements Context, SnippetAcceptingContext
     public function iShouldGetAsStatecodeAndAsStatename($code, $name)
     {
         if ($this->state['statecode'] != $code) {
-            throw new \Exception(sprintf('State code "%s" does not match the required "%s"', $this->state['statecode'], $code));
+            throw new \Exception(sprintf('State code "%s" does not match the required "%s"', $this->state['statecode'],
+                $code));
         }
 
         if ($this->state['statename'] !== $name) {
-            throw new \Exception(sprintf('Statename "%s" does not match the required "%s"', $this->state['statename'], $name));
+            throw new \Exception(sprintf('Statename "%s" does not match the required "%s"', $this->state['statename'],
+                $name));
         }
     }
 
@@ -214,8 +214,9 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iShouldGetAnInfoAboutSupervisordStarted()
     {
-        if ($this->log !== 'INFO supervisord started with pid '.$this->process) {
-            throw new \Exception(sprintf('The following log entry was expected: "%s", but we got this: "%s"', 'INFO supervisord started with pid '.$this->process, $this->log));
+        if ($this->log !== 'INFO supervisord started with pid ' . $this->process) {
+            throw new \Exception(sprintf('The following log entry was expected: "%s", but we got this: "%s"',
+                'INFO supervisord started with pid ' . $this->process, $this->log));
         }
     }
 
@@ -247,16 +248,6 @@ class FeatureContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then I should get a cleared log
-     */
-    public function iShouldGetAClearedLog()
-    {
-        if ($this->log !== 'INFO reopening log file') {
-            throw new \Exception('Empty log cannot be confirmed');
-        }
-    }
-
-    /**
      * @Then it should be stopped
      */
     public function itShouldBeStopped()
@@ -284,7 +275,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
         $this->processName = $this->processes[] = $process;
 
         $program = new Section\Program($process, [
-            'command' => exec('which '.$process),
+            'command' => exec('which ' . $process),
         ]);
 
         $this->configuration->addSection($program);
@@ -325,7 +316,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function autostartIsDisabled()
     {
-        $program = $this->configuration->getSection('program:'.$this->processName);
+        $program = $this->configuration->getSection('program:' . $this->processName);
 
         $program->setProperty('autostart', false);
     }
@@ -345,7 +336,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iTheProcess($action)
     {
-        $this->action = $action.'Process';
+        $this->action = $action . 'Process';
         $this->response = call_user_func([$this->supervisor, $this->action], $this->processName, false);
     }
 
@@ -366,8 +357,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iTheProcesses($action)
     {
-        $this->action = $action.'AllProcesses';
-        $this->response = call_user_func([$this->supervisor, $this->action], false);
+        $this->action = $action . 'AllProcesses';
+        $this->response = call_user_func([$this->supervisor, $this->action], true);
     }
 
     /**
@@ -413,8 +404,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
     {
         $this->groupName = $grp;
 
-        $program = $this->configuration->getSection('program:'.$this->processName);
-        $group = $this->configuration->getSection('group:'.$grp);
+        $program = $this->configuration->getSection('program:' . $this->processName);
+        $group = $this->configuration->getSection('group:' . $grp);
 
         if (is_null($group)) {
             $group = new Section\Group($grp, ['programs' => $this->processName]);
@@ -431,7 +422,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
      */
     public function iTheProcessesInTheGroup($action)
     {
-        $this->action = $action.'ProcessGroup';
+        $this->action = $action . 'ProcessGroup';
         $this->response = call_user_func([$this->supervisor, $this->action], $this->groupName, false);
     }
 
@@ -442,7 +433,8 @@ class FeatureContext implements Context, SnippetAcceptingContext
     {
         foreach ($this->response as $response) {
             if ($response['group'] !== $this->groupName) {
-                throw new \Exception(sprintf('Process "%s" is not part of the group "%s"', $response['name'], $this->groupName));
+                throw new \Exception(sprintf('Process "%s" is not part of the group "%s"', $response['name'],
+                    $this->groupName));
             }
         }
     }

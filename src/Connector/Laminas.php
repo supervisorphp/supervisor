@@ -2,10 +2,10 @@
 
 namespace Supervisor\Connector;
 
-use Supervisor\Connector;
-use Supervisor\Exception\Fault;
 use Laminas\XmlRpc\Client;
 use Laminas\XmlRpc\Client\Exception\FaultException;
+use Supervisor\Connector;
+use Supervisor\Exception\Fault;
 
 /**
  * Uses Laminas XML-RPC.
@@ -37,7 +37,7 @@ class Laminas implements Connector
     public function call($namespace, $method, array $arguments = [])
     {
         try {
-            return $this->client->call($namespace.'.'.$method, $arguments);
+            return $this->client->call($namespace . '.' . $method, $arguments);
         } catch (FaultException $e) {
             throw Fault::create($e->getMessage(), $e->getCode());
         }
