@@ -7,7 +7,7 @@ namespace Supervisor;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Process implements \ArrayAccess
+final class Process implements \ArrayAccess
 {
     /**
      * Process states.

@@ -1,7 +1,3 @@
 .idea/
 .vagrant/
-build/
 vendor/
-behat.yml
-phpspec.yml
-phpunit.xml

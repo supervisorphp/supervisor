@@ -19,15 +19,17 @@ composer require supervisorphp/supervisor
 
 ## Usage
 
-### Example Setup with fXmlRpc and Guzzle 6
+This library depends on the fast and powerful fXmlRpc library, which supports a number of adapters to use your preferred HTTP client to make connections.
 
-The example below requires some additional libraries to function. To include the necessary extra components, you can run:
+In the example below, we will use the popular Guzzle HTTP client library.
+
+This example requires some additional libraries to function. To include the necessary extra components, you can run:
 
 ```bash
-composer require lstrojny/fxmlrpc guzzlehttp/guzzle:^6.0 php-http/guzzle6-adapter http-interop/http-factory-guzzle php-http/httplug php-http/message
+composer require guzzlehttp/guzzle:^6.0 php-http/guzzle6-adapter http-interop/http-factory-guzzle php-http/httplug php-http/message
 ```
 
-Note that the fXmlRpc library supports multiple HTTP client adapters; this is just one recommended example.
+This example shows how to pass authentication credentials to Guzzle, initiate the fXmlRpc client, and pass that to SupervisorPHP.
 
 ```php
 <?php
@@ -45,11 +47,8 @@ $client = new \fXmlRpc\Client(
     )
 );
 
-// Pass the client to the connector
-// See the full list of connectors bellow
-$connector = new \Supervisor\Connector\XmlRpc($client);
-
-$supervisor = new \Supervisor\Supervisor($connector);
+// Pass the client to the Supervisor library.
+$supervisor = new \Supervisor\Supervisor($client);
 
 // returns Process object
 $process = $supervisor->getProcess('test_process');
@@ -73,14 +72,6 @@ echo $process;
 // returns process information
 $process->getPayload();
 ```
-
-**Currently available connectors:**
-
-* [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
-* Laminas XML-RPC
-
-**Note:** fXmlRpc can be used with several HTTP Clients. See the list on its website. This is the reason why Client-specific connectors has been removed.
-
 
 ### Exception handling
 

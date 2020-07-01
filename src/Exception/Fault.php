@@ -2,6 +2,8 @@
 
 namespace Supervisor\Exception;
 
+use fXmlRpc\Exception\FaultException;
+
 /**
  * Fault codes are taken from the source code, not the documentation.
  * The most common ones are covered by the XML-RPC doc.
@@ -10,68 +12,68 @@ namespace Supervisor\Exception;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Fault extends \Exception
+class Fault extends \RuntimeException
 {
     /**
      * Fault responses.
      */
-    const UNKNOWN_METHOD = 1;
-    const INCORRECT_PARAMETERS = 2;
-    const BAD_ARGUMENTS = 3;
-    const SIGNATURE_UNSUPPORTED = 4;
-    const SHUTDOWN_STATE = 6;
-    const BAD_NAME = 10;
-    const BAD_SIGNAL = 11;
-    const NO_FILE = 20;
-    const NOT_EXECUTABLE = 21;
-    const FAILED = 30;
-    const ABNORMAL_TERMINATION = 40;
-    const SPAWN_ERROR = 50;
-    const ALREADY_STARTED = 60;
-    const NOT_RUNNING = 70;
-    const SUCCESS = 80;
-    const ALREADY_ADDED = 90;
-    const STILL_RUNNING = 91;
-    const CANT_REREAD = 92;
+    private const UNKNOWN_METHOD = 1;
+    private const INCORRECT_PARAMETERS = 2;
+    private const BAD_ARGUMENTS = 3;
+    private const SIGNATURE_UNSUPPORTED = 4;
+    private const SHUTDOWN_STATE = 6;
+    private const BAD_NAME = 10;
+    private const BAD_SIGNAL = 11;
+    private const NO_FILE = 20;
+    private const NOT_EXECUTABLE = 21;
+    private const FAILED = 30;
+    private const ABNORMAL_TERMINATION = 40;
+    private const SPAWN_ERROR = 50;
+    private const ALREADY_STARTED = 60;
+    private const NOT_RUNNING = 70;
+    private const SUCCESS = 80;
+    private const ALREADY_ADDED = 90;
+    private const STILL_RUNNING = 91;
+    private const CANT_REREAD = 92;
 
     /**
      * @var array
      */
     private static $exceptionMap = [
-        1 => Fault\UnknownMethod::class,
-        2 => Fault\IncorrectParameters::class,
-        3 => Fault\BadArguments::class,
-        4 => Fault\SignatureUnsupported::class,
-        6 => Fault\ShutdownState::class,
-        10 => Fault\BadName::class,
-        11 => Fault\BadSignal::class,
-        20 => Fault\NoFile::class,
-        21 => Fault\NotExecutable::class,
-        30 => Fault\Failed::class,
-        40 => Fault\AbnormalTermination::class,
-        50 => Fault\SpawnError::class,
-        60 => Fault\AlreadyStarted::class,
-        70 => Fault\NotRunning::class,
-        80 => Fault\Success::class,
-        90 => Fault\AlreadyAdded::class,
-        91 => Fault\StillRunning::class,
-        92 => Fault\CantReread::class,
+        self::UNKNOWN_METHOD => Fault\UnknownMethod::class,
+        self::INCORRECT_PARAMETERS => Fault\IncorrectParameters::class,
+        self::BAD_ARGUMENTS => Fault\BadArguments::class,
+        self::SIGNATURE_UNSUPPORTED => Fault\SignatureUnsupported::class,
+        self::SHUTDOWN_STATE => Fault\ShutdownState::class,
+        self::BAD_NAME => Fault\BadName::class,
+        self::BAD_SIGNAL => Fault\BadSignal::class,
+        self::NO_FILE => Fault\NoFile::class,
+        self::NOT_EXECUTABLE => Fault\NotExecutable::class,
+        self::FAILED => Fault\Failed::class,
+        self::ABNORMAL_TERMINATION => Fault\AbnormalTermination::class,
+        self::SPAWN_ERROR => Fault\SpawnError::class,
+        self::ALREADY_STARTED => Fault\AlreadyStarted::class,
+        self::NOT_RUNNING => Fault\NotRunning::class,
+        self::SUCCESS => Fault\Success::class,
+        self::ALREADY_ADDED => Fault\AlreadyAdded::class,
+        self::STILL_RUNNING => Fault\StillRunning::class,
+        self::CANT_REREAD => Fault\CantReread::class,
     ];
 
     /**
-     * Creates a new Fault.
+     * Creates a new Fault exception if a named one from the table above is present.
      *
-     * If there is a mach for the fault code in the exception map then the matched exception will be returned
+     * @param FaultException $faultException
      *
-     * @param string $faultString
-     * @param int $faultCode
-     *
-     * @return self
+     * @return FaultException|self
      */
-    public static function create($faultString, $faultCode)
+    public static function create(FaultException $faultException)
     {
+        $faultCode = $faultException->getFaultCode();
+        $faultString = $faultException->getFaultString();
+
         if (!isset(self::$exceptionMap[$faultCode])) {
-            return new self($faultString, $faultCode);
+            return $faultException;
         }
 
         return new self::$exceptionMap[$faultCode]($faultString, $faultCode);

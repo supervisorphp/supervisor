@@ -2,6 +2,10 @@
 
 namespace Supervisor;
 
+use fXmlRpc\ClientInterface;
+use fXmlRpc\Exception\FaultException;
+use Supervisor\Exception\Fault;
+
 /**
  * Supervisor API.
  *
@@ -37,7 +41,7 @@ namespace Supervisor;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Supervisor
+final class Supervisor
 {
     /**
      * Service states.
@@ -48,13 +52,13 @@ class Supervisor
     public const FATAL = 2;
 
     /**
-     * @var Connector
+     * @var ClientInterface
      */
-    protected $connector;
+    protected $client;
 
-    public function __construct(Connector $connector)
+    public function __construct(ClientInterface $client)
     {
-        $this->connector = $connector;
+        $this->client = $client;
     }
 
     /**
@@ -67,7 +71,7 @@ class Supervisor
     public function isConnected(): bool
     {
         try {
-            $this->connector->call('system', 'listMethods');
+            $this->call('system', 'listMethods');
         } catch (\Exception $e) {
             return false;
         }
@@ -84,9 +88,13 @@ class Supervisor
      *
      * @return mixed
      */
-    public function call($namespace, $method, array $arguments = [])
+    public function call(string $namespace, string $method, array $arguments = [])
     {
-        return $this->connector->call($namespace, $method, $arguments);
+        try {
+            return $this->client->call($namespace . '.' . $method, $arguments);
+        } catch (FaultException $faultException) {
+            throw Fault::create($faultException);
+        }
     }
 
     /**
@@ -101,7 +109,7 @@ class Supervisor
      */
     public function __call(string $method, array $arguments)
     {
-        return $this->connector->call('supervisor', $method, $arguments);
+        return $this->call('supervisor', $method, $arguments);
     }
 
     /**
@@ -131,7 +139,7 @@ class Supervisor
     /**
      * Returns all processes as Process objects.
      *
-     * @return array Array of Process objects
+     * @return Process[]
      */
     public function getAllProcesses(): array
     {

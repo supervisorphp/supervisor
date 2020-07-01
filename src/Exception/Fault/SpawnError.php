@@ -9,6 +9,6 @@ use Supervisor\Exception\Fault;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class SpawnError extends Fault
+final class SpawnError extends Fault
 {
 }

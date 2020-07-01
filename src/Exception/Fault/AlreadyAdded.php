@@ -9,6 +9,6 @@ use Supervisor\Exception\Fault;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class AlreadyAdded extends Fault
+final class AlreadyAdded extends Fault
 {
 }

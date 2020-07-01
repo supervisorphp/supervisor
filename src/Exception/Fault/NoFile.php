@@ -9,6 +9,6 @@ use Supervisor\Exception\Fault;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class NoFile extends Fault
+final class NoFile extends Fault
 {
 }

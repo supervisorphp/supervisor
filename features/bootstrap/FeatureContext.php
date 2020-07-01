@@ -10,7 +10,6 @@ use Indigo\Ini\Renderer;
 use Supervisor\Configuration\Configuration;
 use Supervisor\Configuration\Loader\IniStringLoader;
 use Supervisor\Configuration\Section;
-use Supervisor\Connector\XmlRpc;
 use Supervisor\Supervisor;
 
 /**
@@ -59,8 +58,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
             )
         );
 
-        $connector = new XmlRpc($client);
-        $this->supervisor = new Supervisor($connector);
+        $this->supervisor = new Supervisor($client);
     }
 
     /**

@@ -9,6 +9,6 @@ use Supervisor\Exception\Fault;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class AbnormalTermination extends Fault
+final class AbnormalTermination extends Fault
 {
 }

@@ -1,5 +1,0 @@
-suites:
-    supervisor_suite:
-        namespace: Supervisor
-        psr4_prefix: Supervisor
-formatter.name: pretty
