@@ -49,7 +49,7 @@
     },
     "scripts": {
         "ci": [
-            "@composer update --prefer-dist --no-progress --no-suggest",
+            "@composer install --prefer-dist --no-progress --no-suggest",
             "@test-ci",
             "@behat"
         ],
