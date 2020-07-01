@@ -1,5 +1,22 @@
 # Change Log
 
+## 4.0.0 - 2020-07-01
+
+### Added
+
+- PHP 7.3 minimum requirement
+- Depends directly on fXmlRpc library
+- `Supervisor\Supervisor->reloadConfig()` method call added
+
+### Changed
+
+- Constructor of `Supervisor\Supervisor` now directly accepts an `fXmlRpc\ClientInterface` instead
+- Classes `Supervisor\Supervisor` and `Supervisor\Process` are final
+- Test suite updated
+
+### Removed
+
+- `Supervisor\Connector` and fXmlRpc and Zend/XmlRpc connector classes removed
 
 ## 3.0.0 - 2015-01-13
 
