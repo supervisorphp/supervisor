@@ -1,9 +1,4 @@
 {
-    "name": "supervisorphp/supervisor",
-    "description": "PHP library for managing Supervisor through XML-RPC API",
-    "license": "MIT",
-    "keywords": ["supervisor", "process manager"],
-    "homepage": "http://supervisorphp.com",
     "authors": [
         {
             "name": "Márk Sági-Kazár",
@@ -14,31 +9,45 @@
             "email": "buster@busterneece.com"
         }
     ],
-    "require": {
-        "php": ">=5.4.0"
-    },
-    "require-dev": {
-        "lstrojny/fxmlrpc": "0.9.3",
-        "guzzlehttp/guzzle": "^4.0",
-        "zendframework/zend-xmlrpc": ">=2.3.3",
-        "phpspec/phpspec": "^2.4",
-        "henrikbjorn/phpspec-code-coverage" : "^1.0",
-        "behat/behat": "^3.0",
-        "ramsey/array_column": "^1.1",
-        "supervisorphp/configuration": "^0.2"
-    },
-    "suggest": {
-        "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4",
-        "zendframework/zend-xmlrpc": "XmlRpc component from Zend Framework 2"
-    },
     "autoload": {
         "psr-4": {
             "Supervisor\\": "src/"
         }
     },
+    "description": "PHP library for managing Supervisor through XML-RPC API",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.1-dev"
+        }
+    },
+    "homepage": "http://supervisorphp.com",
+    "keywords": [
+        "supervisor",
+        "process manager"
+    ],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "name": "supervisorphp/supervisor",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.3"
+    },
+    "require-dev": {
+        "behat/behat": "^3.0",
+        "friends-of-phpspec/phpspec-code-coverage": "^4.3",
+        "guzzlehttp/guzzle": "^6.0",
+        "laminas/laminas-xmlrpc": "^2.9",
+        "lstrojny/fxmlrpc": "^0.15",
+        "phpspec/phpspec": "^6.2",
+        "supervisorphp/configuration": "^0.2",
+        "php-http/guzzle6-adapter": "^2.0",
+        "http-interop/http-factory-guzzle": "^1.0",
+        "php-http/httplug": "^2.1",
+        "php-http/message": "^1.8"
+    },
     "scripts": {
         "ci": [
-            "@composer install --prefer-dist --no-progress --no-suggest",
+            "@composer update --prefer-dist --no-progress --no-suggest",
             "@test-ci",
             "@behat"
         ],
@@ -46,11 +55,8 @@
         "test-ci": "vendor/bin/phpspec run -c phpspec.yml.ci",
         "behat": "vendor/bin/behat"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "3.1-dev"
-        }
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev"
+    "suggest": {
+        "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4",
+        "laminas/laminas-xmlrpc": "XmlRpc Laminas component"
+    }
 }

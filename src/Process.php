@@ -12,14 +12,14 @@ class Process implements \ArrayAccess
     /**
      * Process states.
      */
-    const STOPPED = 0;
-    const STARTING = 10;
-    const RUNNING = 20;
-    const BACKOFF = 30;
-    const STOPPING = 40;
-    const EXITED = 100;
-    const FATAL = 200;
-    const UNKNOWN = 1000;
+    public const STOPPED = 0;
+    public const STARTING = 10;
+    public const RUNNING = 20;
+    public const BACKOFF = 30;
+    public const STOPPING = 40;
+    public const EXITED = 100;
+    public const FATAL = 200;
+    public const UNKNOWN = 1000;
 
     /**
      * Process info.
@@ -28,9 +28,6 @@ class Process implements \ArrayAccess
      */
     protected $payload = [];
 
-    /**
-     * @param array $payload
-     */
     public function __construct(array $payload)
     {
         $this->payload = $payload;
@@ -41,7 +38,7 @@ class Process implements \ArrayAccess
      *
      * @return array
      */
-    public function getPayload()
+    public function getPayload(): array
     {
         return $this->payload;
     }
@@ -51,7 +48,7 @@ class Process implements \ArrayAccess
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->payload['name'];
     }
@@ -61,7 +58,7 @@ class Process implements \ArrayAccess
      *
      * @return bool
      */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return $this->checkState(self::RUNNING);
     }
@@ -73,9 +70,9 @@ class Process implements \ArrayAccess
      *
      * @return bool
      */
-    public function checkState($state)
+    public function checkState($state): bool
     {
-        return $this->payload['state'] == $state;
+        return $this->payload['state'] === $state;
     }
 
     /**
@@ -83,7 +80,7 @@ class Process implements \ArrayAccess
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
@@ -93,7 +90,7 @@ class Process implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return isset($this->payload[$offset]) ? $this->payload[$offset] : null;
+        return $this->payload[$offset] ?? null;
     }
 
     /**

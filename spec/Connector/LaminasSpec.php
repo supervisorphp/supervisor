@@ -2,11 +2,11 @@
 
 namespace spec\Supervisor\Connector;
 
-use Zend\XmlRpc\Client;
-use Zend\XmlRpc\Client\Exception\FaultException;
+use Laminas\XmlRpc\Client;
+use Laminas\XmlRpc\Client\Exception\FaultException;
 use PhpSpec\ObjectBehavior;
 
-class ZendSpec extends ObjectBehavior
+class LaminasSpec extends ObjectBehavior
 {
     function let(Client $client)
     {
@@ -15,7 +15,7 @@ class ZendSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Supervisor\Connector\Zend');
+        $this->shouldHaveType('Supervisor\Connector\Laminas');
     }
 
     function it_is_a_conncetor()

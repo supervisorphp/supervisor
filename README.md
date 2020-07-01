@@ -2,51 +2,54 @@
 
 [![Latest Version](https://img.shields.io/github/release/supervisorphp/supervisor.svg?style=flat-square)](https://github.com/supervisorphp/supervisor/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/travis/supervisorphp/supervisor.svg?style=flat-square)](https://travis-ci.org/supervisorphp/supervisor)
+[![Test Suite](https://github.com/supervisorphp/supervisor/workflows/Test%20Suite/badge.svg?event=push)](https://github.com/supervisorphp/supervisor/actions)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/supervisorphp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/supervisorphp/supervisor)
 [![Quality Score](https://img.shields.io/scrutinizer/g/supervisorphp/supervisor.svg?style=flat-square)](https://scrutinizer-ci.com/g/supervisorphp/supervisor)
 [![Total Downloads](https://img.shields.io/packagist/dt/supervisorphp/supervisor.svg?style=flat-square)](https://packagist.org/packages/supervisorphp/supervisor)
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/supervisorphp/supervisor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 **PHP library for managing Supervisor through XML-RPC API.**
-
 
 ## Install
 
 Via Composer
 
-``` bash
-$ composer require supervisorphp/supervisor
+```bash
+composer require supervisorphp/supervisor
 ```
-
 
 ## Usage
 
-``` php
-use Supervisor\Supervisor;
-use Supervisor\Connector\XmlRpc;
-use fXmlRpc\Client;
-use fXmlRpc\Transport\HttpAdapterTransport;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
-use \Http\Message\MessageFactory\DiactorosMessageFactory as MessageFactory;
+### Example Setup with fXmlRpc and Guzzle 6
 
-//Create GuzzleHttp client
-$guzzleClient = new \GuzzleHttp\Client(['auth' => ['user', 'password']]);
+The example below requires some additional libraries to function. To include the necessary extra components, you can run:
+
+```bash
+composer require lstrojny/fxmlrpc guzzlehttp/guzzle:^6.0 php-http/guzzle6-adapter http-interop/http-factory-guzzle php-http/httplug php-http/message
+```
+
+Note that the fXmlRpc library supports multiple HTTP client adapters; this is just one recommended example.
+
+```php
+<?php
+//Create Guzzle 6 HTTP client
+$guzzleClient = new \GuzzleHttp\Client([
+    'auth' => ['user', '123'],
+]);
 
 // Pass the url and the guzzle client to the XmlRpc Client
-$client = new Client(
+$client = new \fXmlRpc\Client(
     'http://127.0.0.1:9001/RPC2',
-    new HttpAdapterTransport(
-        new MessageFactory(),
-        new GuzzleAdapter($guzzleClient))
+    new \fXmlRpc\Transport\HttpAdapterTransport(
+        new \Http\Message\MessageFactory\GuzzleMessageFactory(),
+        new \Http\Adapter\Guzzle6\Client($guzzleClient)
+    )
 );
 
 // Pass the client to the connector
 // See the full list of connectors bellow
-$connector = new XmlRpc($client);
+$connector = new \Supervisor\Connector\XmlRpc($client);
 
-$supervisor = new Supervisor($connector);
+$supervisor = new \Supervisor\Supervisor($connector);
 
 // returns Process object
 $process = $supervisor->getProcess('test_process');
@@ -74,14 +77,9 @@ $process->getPayload();
 **Currently available connectors:**
 
 * [fXmlRpc](https://github.com/lstrojny/fxmlrpc)
-* Zend XML-RPC
+* Laminas XML-RPC
 
-**Note:** fXmlRpc can be used with several HTTP Clients. See the list on it's website. This is the reason why Client specific connectors has been removed.
-
-
-### Authentication
-
-As of version 3.0.0 `setCredentials` is no longer part of the `Connector` interface (meaning responsibility has been fully removed).You have to provide authentication data to the HTTP Client of your choice. (For example Guzzle supports it out-of-the-box) Also, Bridges implemented by fXmlRpc supports to set custom headers.
+**Note:** fXmlRpc can be used with several HTTP Clients. See the list on its website. This is the reason why Client-specific connectors has been removed.
 
 
 ### Exception handling
@@ -123,24 +121,27 @@ You will also have to make sure that you always call the functions with correct 
 
 Please note that Supervisor tests currently fail on PHP 7.0 and HHVM using Supervisor 3.0.
 
+## For Developers
 
-## Testing
+### Testing
 
-``` bash
+```bash
 $ composer test
 ```
 
 Functional tests (behat):
 
-``` bash
+```bash
 $ behat
 ```
 
+### Docker Image
 
-## Vagrant
+This repository ships with a Docker Compose configuration and a Dockerfile for easy testing. Tests can be run via:
 
-There is a `Vagrantfile` provided in this repo which you can use to run functional tests without installing Supervisor on your local machine. It installs the latest version from PyPi, but the library itself is tested against 3.0, which is the lowest officially supported Supervisor version.
-
+```bash
+docker-compose run --rm ci
+```
 
 ## Contributing
 
@@ -149,7 +150,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Deprecated libraries
 
-While this tries to a be a complete Supervisor client, this isn't the first one. However some authors decided to deprecate their packages in favor of this:
+While this tries to be a complete Supervisor client, this isn't the first one. However some authors decided to deprecate their packages in favor of this:
 
 - [Supervisord PHP Client](https://github.com/mondalaci/supervisord-php-client)
 - [Indigo Supervisor](https://github.com/indigophp/supervisor)

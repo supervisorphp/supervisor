@@ -4,11 +4,11 @@ namespace Supervisor\Connector;
 
 use Supervisor\Connector;
 use Supervisor\Exception\Fault;
-use Zend\XmlRpc\Client;
-use Zend\XmlRpc\Client\Exception\FaultException;
+use Laminas\XmlRpc\Client;
+use Laminas\XmlRpc\Client\Exception\FaultException;
 
 /**
- * Uses Zend XML-RPC.
+ * Uses Laminas XML-RPC.
  *
  * There are known and tested performance issues with it
  *
@@ -16,7 +16,7 @@ use Zend\XmlRpc\Client\Exception\FaultException;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Zend implements Connector
+class Laminas implements Connector
 {
     /**
      * @var Client

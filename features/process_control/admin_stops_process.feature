@@ -1,4 +1,4 @@
-Feature: Admin starts process
+Feature: Admin stops process
     In order to make some processes stopped
     As an Admin
     I should be able to stop them various ways

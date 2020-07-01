@@ -3,8 +3,7 @@ suites:
         namespace: Supervisor
         psr4_prefix: Supervisor
 extensions:
-    - PhpSpec\Extension\CodeCoverageExtension
-formatter.name: pretty
-code_coverage:
-    format: clover
-    output: build/coverage.xml
+    FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
+        format: clover
+        output:
+            clover: build/coverage.xml

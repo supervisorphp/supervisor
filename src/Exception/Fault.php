@@ -38,24 +38,24 @@ class Fault extends \Exception
      * @var array
      */
     private static $exceptionMap = [
-        1  => 'Supervisor\Exception\Fault\UnknownMethod',
-        2  => 'Supervisor\Exception\Fault\IncorrectParameters',
-        3  => 'Supervisor\Exception\Fault\BadArguments',
-        4  => 'Supervisor\Exception\Fault\SignatureUnsupported',
-        6  => 'Supervisor\Exception\Fault\ShutdownState',
-        10 => 'Supervisor\Exception\Fault\BadName',
-        11 => 'Supervisor\Exception\Fault\BadSignal',
-        20 => 'Supervisor\Exception\Fault\NoFile',
-        21 => 'Supervisor\Exception\Fault\NotExecutable',
-        30 => 'Supervisor\Exception\Fault\Failed',
-        40 => 'Supervisor\Exception\Fault\AbnormalTermination',
-        50 => 'Supervisor\Exception\Fault\SpawnError',
-        60 => 'Supervisor\Exception\Fault\AlreadyStarted',
-        70 => 'Supervisor\Exception\Fault\NotRunning',
-        80 => 'Supervisor\Exception\Fault\Success',
-        90 => 'Supervisor\Exception\Fault\AlreadyAdded',
-        91 => 'Supervisor\Exception\Fault\StillRunning',
-        92 => 'Supervisor\Exception\Fault\CantReread',
+        1 => Fault\UnknownMethod::class,
+        2 => Fault\IncorrectParameters::class,
+        3 => Fault\BadArguments::class,
+        4 => Fault\SignatureUnsupported::class,
+        6 => Fault\ShutdownState::class,
+        10 => Fault\BadName::class,
+        11 => Fault\BadSignal::class,
+        20 => Fault\NoFile::class,
+        21 => Fault\NotExecutable::class,
+        30 => Fault\Failed::class,
+        40 => Fault\AbnormalTermination::class,
+        50 => Fault\SpawnError::class,
+        60 => Fault\AlreadyStarted::class,
+        70 => Fault\NotRunning::class,
+        80 => Fault\Success::class,
+        90 => Fault\AlreadyAdded::class,
+        91 => Fault\StillRunning::class,
+        92 => Fault\CantReread::class,
     ];
 
     /**
@@ -64,7 +64,7 @@ class Fault extends \Exception
      * If there is a mach for the fault code in the exception map then the matched exception will be returned
      *
      * @param string $faultString
-     * @param int    $faultCode
+     * @param int $faultCode
      *
      * @return self
      */

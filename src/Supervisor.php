@@ -31,6 +31,7 @@ namespace Supervisor;
  * @method string  tailProcessStderrLog(string $name, integer $offset, integer $limit)
  * @method bool clearProcessLogs(string $name)
  * @method bool clearAllProcessLogs()
+ * @method bool reloadConfig()
  *
  * @link http://supervisord.org/api.html
  *
@@ -41,19 +42,16 @@ class Supervisor
     /**
      * Service states.
      */
-    const SHUTDOWN = -1;
-    const RESTARTING = 0;
-    const RUNNING = 1;
-    const FATAL = 2;
+    public const SHUTDOWN = -1;
+    public const RESTARTING = 0;
+    public const RUNNING = 1;
+    public const FATAL = 2;
 
     /**
      * @var Connector
      */
     protected $connector;
 
-    /**
-     * @param Connector $connector
-     */
     public function __construct(Connector $connector)
     {
         $this->connector = $connector;
@@ -66,7 +64,7 @@ class Supervisor
      *
      * @return bool
      */
-    public function isConnected()
+    public function isConnected(): bool
     {
         try {
             $this->connector->call('system', 'listMethods');
@@ -82,7 +80,7 @@ class Supervisor
      *
      * @param string $namespace
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return mixed
      */
@@ -95,8 +93,13 @@ class Supervisor
      * Magic __call method.
      *
      * Handles all calls to supervisor namespace
+     *
+     * @param string $method
+     * @param array $arguments
+     *
+     * @return mixed
      */
-    public function __call($method, $arguments)
+    public function __call(string $method, array $arguments)
     {
         return $this->connector->call('supervisor', $method, $arguments);
     }
@@ -106,7 +109,7 @@ class Supervisor
      *
      * @return bool
      */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return $this->checkState(self::RUNNING);
     }
@@ -118,11 +121,11 @@ class Supervisor
      *
      * @return bool
      */
-    public function checkState($checkState)
+    public function checkState(int $checkState): bool
     {
         $state = $this->getState();
 
-        return $state['statecode'] == $checkState;
+        return $state['statecode'] === $checkState;
     }
 
     /**
@@ -130,7 +133,7 @@ class Supervisor
      *
      * @return array Array of Process objects
      */
-    public function getAllProcesses()
+    public function getAllProcesses(): array
     {
         $processes = $this->getAllProcessInfo();
 
@@ -148,7 +151,7 @@ class Supervisor
      *
      * @return Process
      */
-    public function getProcess($name)
+    public function getProcess(string $name): Process
     {
         $process = $this->getProcessInfo($name);
 

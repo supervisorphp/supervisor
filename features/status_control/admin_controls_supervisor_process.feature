@@ -5,13 +5,6 @@ Feature: Admin controls Supervisor process
 
     Scenario:
         Given I have Supervisor running
-        When I try to call "clearLog" action
-        And I check if the log is really empty
-        Then I should get a success response
-        And I should get a cleared log
-
-    Scenario:
-        Given I have Supervisor running
         When I try to call "shutdown" action
         Then I should get a success response
         And it should be stopped

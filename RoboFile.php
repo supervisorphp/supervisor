@@ -1,6 +1,8 @@
 <?php
 
-require __DIR__.'/vendor/autoload.php';
+use Supervisor\Exception\Fault;
+
+require __DIR__ . '/vendor/autoload.php';
 
 /**
  * This is project's console commands configuration for Robo task runner.
@@ -12,19 +14,19 @@ class RoboFile extends \Robo\Tasks
     /**
      * Generates fault exception classes
      */
-    public function faults()
+    public function faults(): void
     {
-        $faultReflection = new \ReflectionClass('Supervisor\Exception\Fault');
+        $faultReflection = new \ReflectionClass(Fault::class);
         $faults = array_flip($faultReflection->getConstants());
 
-        $this->taskCleanDir([__DIR__.'/src/Exception/Fault'])->run();
+        $this->taskCleanDir([__DIR__ . '/src/Exception/Fault'])->run();
 
         foreach ($faults as $code => $name) {
             $exName = $this->createExceptionName($name);
-            $file = sprintf(__DIR__.'/src/Exception/Fault/%s.php', $exName);
+            $file = sprintf(__DIR__ . '/src/Exception/Fault/%s.php', $exName);
 
             $this->taskWriteToFile($file)
-                ->textFromFile(__DIR__.'/resources/FaultTemplate.php')
+                ->textFromFile(__DIR__ . '/resources/FaultTemplate.php.tmpl')
                 ->place('FAULT_NAME', $name)
                 ->place('FaultName', $exName)
                 ->run();
@@ -38,11 +40,13 @@ class RoboFile extends \Robo\Tasks
      *
      * @return string
      */
-    protected function createExceptionName($faultString)
+    protected function createExceptionName($faultString): string
     {
         $parts = explode('_', $faultString);
 
-        $parts = array_map(function($el) { return ucfirst(strtolower($el)); }, $parts);
+        $parts = array_map(function ($el) {
+            return ucfirst(strtolower($el));
+        }, $parts);
 
         return implode('', $parts);
     }

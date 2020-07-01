@@ -5,6 +5,7 @@ namespace spec\Supervisor;
 use Supervisor\Connector;
 use Supervisor\Process;
 use PhpSpec\ObjectBehavior;
+use Supervisor\Supervisor;
 
 class SupervisorSpec extends ObjectBehavior
 {
@@ -15,16 +16,18 @@ class SupervisorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Supervisor\Supervisor');
+        $this->shouldHaveType(Supervisor::class);
     }
 
     function it_checks_connection(Connector $connector)
     {
-        $connector->call('system', 'listMethods')->willReturn('response');
+        $connector->call('system', 'listMethods')
+            ->willReturn('response');
 
         $this->isConnected()->shouldReturn(true);
 
-        $connector->call('system', 'listMethods')->willThrow('Exception');
+        $connector->call('system', 'listMethods')
+            ->willThrow('Exception');
 
         $this->isConnected()->shouldReturn(false);
     }
@@ -33,19 +36,22 @@ class SupervisorSpec extends ObjectBehavior
     {
         $connector->call('namespace', 'method', [])->willReturn('response');
 
-        $this->call('namespace', 'method')->shouldReturn('response');
+        $this->call('namespace', 'method')
+            ->shouldReturn('response');
     }
 
     function it_checks_if_supervisor_is_running(Connector $connector)
     {
-        $connector->call('supervisor', 'getState', [])->willReturn(['statecode' => 1]);
+        $connector->call('supervisor', 'getState', [])
+            ->willReturn(['statecode' => 1]);
 
         $this->isRunning()->shouldReturn(true);
     }
 
     function it_checks_supervisor_state(Connector $connector)
     {
-        $connector->call('supervisor', 'getState', [])->willReturn(['statecode' => 1]);
+        $connector->call('supervisor', 'getState', [])
+            ->willReturn(['statecode' => 1]);
 
         $this->checkState(1)->shouldReturn(true);
     }
@@ -61,7 +67,7 @@ class SupervisorSpec extends ObjectBehavior
         $processes = $this->getAllProcesses();
 
         $processes->shouldBeArray();
-        $processes[0]->shouldHaveType('Supervisor\Process');
+        $processes[0]->shouldHaveType(Process::class);
         $processes[0]->getName()->shouldReturn('process_name');
     }
 
@@ -71,7 +77,7 @@ class SupervisorSpec extends ObjectBehavior
 
         $process = $this->getProcess('process_name');
 
-        $process->shouldHaveType('Supervisor\Process');
+        $process->shouldHaveType(Process::class);
         $process->getName()->shouldReturn('process_name');
     }
 }

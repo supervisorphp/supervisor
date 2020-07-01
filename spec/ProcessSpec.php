@@ -3,6 +3,7 @@
 namespace spec\Supervisor;
 
 use PhpSpec\ObjectBehavior;
+use Supervisor\Process;
 
 class ProcessSpec extends ObjectBehavior
 {
@@ -28,7 +29,7 @@ class ProcessSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Supervisor\Process');
+        $this->shouldHaveType(Process::class);
     }
 
     function it_has_payload()
@@ -57,11 +58,13 @@ class ProcessSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_being_altered_by_calling_offset_set()
     {
-        $this->shouldThrow('LogicException')->duringOffsetSet('key', 'value');
+        $this->shouldThrow(\LogicException::class)
+            ->duringOffsetSet('key', 'value');
     }
 
     function it_throws_an_exception_when_being_altered_by_calling_offset_unset()
     {
-        $this->shouldThrow('LogicException')->duringOffsetUnset('key', 'value');
+        $this->shouldThrow(\LogicException::class)
+            ->duringOffsetUnset('key', 'value');
     }
 }

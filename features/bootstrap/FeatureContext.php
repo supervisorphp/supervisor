@@ -6,6 +6,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use fXmlRpc\Transport\HttpAdapterTransport;
 use Indigo\Ini\Renderer;
 use Supervisor\Configuration\Configuration;
 use Supervisor\Configuration\Loader\IniStringLoader;
@@ -24,7 +25,7 @@ class FeatureContext implements Context, SnippetAcceptingContext
     /**
      * @var Configuration
      */
-    protected $conciguration;
+    protected $configuration;
 
     /**
      * @param string $bin
@@ -50,9 +51,16 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
     protected function setUpConnector()
     {
+        $guzzleClient = new \GuzzleHttp\Client([
+            'auth' => ['user', '123'],
+        ]);
+
         $client = new Client(
             'http://127.0.0.1:9001/RPC2',
-            new Guzzle4Bridge(new GuzzleClient(['defaults' => ['auth' => ['user', '123']]]))
+            new HttpAdapterTransport(
+                new \Http\Message\MessageFactory\GuzzleMessageFactory(),
+                new \Http\Adapter\Guzzle6\Client($guzzleClient)
+            )
         );
 
         $connector = new XmlRpc($client);

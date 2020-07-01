@@ -3,8 +3,12 @@
 namespace spec\Supervisor\Connector;
 
 use fXmlRpc\ClientInterface;
-use fXmlRpc\Exception\ResponseException;
+use fXmlRpc\Exception\HttpException;
 use PhpSpec\ObjectBehavior;
+use Supervisor\Exception\Fault\UnknownMethod;
+use Supervisor\Exception\Fault;
+use Supervisor\Connector;
+use Supervisor\Connector\XmlRpc;
 
 class XmlRpcSpec extends ObjectBehavior
 {
@@ -15,42 +19,41 @@ class XmlRpcSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Supervisor\Connector\XmlRpc');
+        $this->shouldHaveType(XmlRpc::class);
     }
 
-    function it_is_a_conncetor()
+    function it_is_a_connector()
     {
-        $this->shouldImplement('Supervisor\Connector');
+        $this->shouldImplement(Connector::class);
     }
 
     function it_calls_a_method(ClientInterface $client)
     {
         $client->call('namespace.method', [])->willReturn('response');
 
-        $this->call('namespace', 'method')->shouldReturn('response');
+        $this->call('namespace', 'method')
+            ->shouldReturn('response');
     }
 
     function it_throws_an_exception_when_the_call_fails(ClientInterface $client)
     {
-        $e = ResponseException::fault([
-            'faultString' => 'Invalid response',
-            'faultCode'   => 100,
-        ]);
+        $e = HttpException::httpError('Invalid Response', 100);
 
-        $client->call('namespace.method', [])->willThrow($e);
+        $client->call('namespace.method', [])
+            ->willThrow($e);
 
-        $this->shouldThrow('Supervisor\Exception\Fault')->duringCall('namespace', 'method');
+        $this->shouldThrow(Fault::class)
+            ->duringCall('namespace', 'method');
     }
 
     function it_throws_a_known_exception_when_proper_fault_returned(ClientInterface $client)
     {
-        $e = ResponseException::fault([
-            'faultString' => 'UNKNOWN_METHOD',
-            'faultCode'   => 1,
-        ]);
+        $e = HttpException::httpError('UNKNOWN_METHOD', 1);
 
-        $client->call('namespace.method', [])->willThrow($e);
+        $client->call('namespace.method', [])
+            ->willThrow($e);
 
-        $this->shouldThrow('Supervisor\Exception\Fault\UnknownMethod')->duringCall('namespace', 'method');
+        $this->shouldThrow(UnknownMethod::class)
+            ->duringCall('namespace', 'method');
     }
 }

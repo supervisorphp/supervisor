@@ -14,9 +14,9 @@ interface Connector
      *
      * @param string $namespace
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return mixed
      */
-    public function call($namespace, $method, array $arguments = []);
+    public function call(string $namespace, string $method, array $arguments = []);
 }
