@@ -19,7 +19,7 @@ composer require supervisorphp/supervisor
 
 ## Usage
 
-This library depends on the fast and powerful fXmlRpc library, which supports a number of adapters to use your preferred HTTP client to make connections.
+This library depends on the fast and powerful [fXmlRpc](https://github.com/lstrojny/fxmlrpc) library, which supports a number of adapters to use your preferred HTTP client to make connections.
 
 In the example below, we will use the popular Guzzle HTTP client library.
 
