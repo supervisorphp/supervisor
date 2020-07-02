@@ -79,9 +79,9 @@ For each possible fault response there is an exception. These exceptions extend 
 
 try {
 	$supervisor->startProcess('process', true);
-} catch (\Supervisor\Exception\Fault\BadName $e) {
+} catch (\Supervisor\Exception\Fault\BadNameException $e) {
 	// handle bad name error here
-} catch (\Supervisor\Exception\Fault $e) {
+} catch (\Supervisor\Exception\SupervisorException $e) {
 	// handle any other errors here
 }
 ```

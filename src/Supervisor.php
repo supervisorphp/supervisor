@@ -4,7 +4,7 @@ namespace Supervisor;
 
 use fXmlRpc\ClientInterface;
 use fXmlRpc\Exception\FaultException;
-use Supervisor\Exception\Fault;
+use Supervisor\Exception\SupervisorException;
 
 /**
  * Supervisor API.
@@ -93,7 +93,7 @@ final class Supervisor
         try {
             return $this->client->call($namespace . '.' . $method, $arguments);
         } catch (FaultException $faultException) {
-            throw Fault::create($faultException);
+            throw SupervisorException::create($faultException);
         }
     }
 

@@ -12,7 +12,7 @@ use fXmlRpc\Exception\FaultException;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Fault extends \RuntimeException
+class SupervisorException extends \RuntimeException
 {
     /**
      * Fault responses.
@@ -40,24 +40,24 @@ class Fault extends \RuntimeException
      * @var array
      */
     private static $exceptionMap = [
-        self::UNKNOWN_METHOD => Fault\UnknownMethod::class,
-        self::INCORRECT_PARAMETERS => Fault\IncorrectParameters::class,
-        self::BAD_ARGUMENTS => Fault\BadArguments::class,
-        self::SIGNATURE_UNSUPPORTED => Fault\SignatureUnsupported::class,
-        self::SHUTDOWN_STATE => Fault\ShutdownState::class,
-        self::BAD_NAME => Fault\BadName::class,
-        self::BAD_SIGNAL => Fault\BadSignal::class,
-        self::NO_FILE => Fault\NoFile::class,
-        self::NOT_EXECUTABLE => Fault\NotExecutable::class,
-        self::FAILED => Fault\Failed::class,
-        self::ABNORMAL_TERMINATION => Fault\AbnormalTermination::class,
-        self::SPAWN_ERROR => Fault\SpawnError::class,
-        self::ALREADY_STARTED => Fault\AlreadyStarted::class,
-        self::NOT_RUNNING => Fault\NotRunning::class,
-        self::SUCCESS => Fault\Success::class,
-        self::ALREADY_ADDED => Fault\AlreadyAdded::class,
-        self::STILL_RUNNING => Fault\StillRunning::class,
-        self::CANT_REREAD => Fault\CantReread::class,
+        self::UNKNOWN_METHOD => Fault\UnknownMethodException::class,
+        self::INCORRECT_PARAMETERS => Fault\IncorrectParametersException::class,
+        self::BAD_ARGUMENTS => Fault\BadArgumentsException::class,
+        self::SIGNATURE_UNSUPPORTED => Fault\SignatureUnsupportedException::class,
+        self::SHUTDOWN_STATE => Fault\ShutdownStateException::class,
+        self::BAD_NAME => Fault\BadNameException::class,
+        self::BAD_SIGNAL => Fault\BadSignalException::class,
+        self::NO_FILE => Fault\NoFileException::class,
+        self::NOT_EXECUTABLE => Fault\NotExecutableException::class,
+        self::FAILED => Fault\FailedException::class,
+        self::ABNORMAL_TERMINATION => Fault\AbnormalTerminationException::class,
+        self::SPAWN_ERROR => Fault\SpawnErrorException::class,
+        self::ALREADY_STARTED => Fault\AlreadyStartedException::class,
+        self::NOT_RUNNING => Fault\NotRunningException::class,
+        self::SUCCESS => Fault\SuccessException::class,
+        self::ALREADY_ADDED => Fault\AlreadyAddedException::class,
+        self::STILL_RUNNING => Fault\StillRunningException::class,
+        self::CANT_REREAD => Fault\CantRereadException::class,
     ];
 
     /**

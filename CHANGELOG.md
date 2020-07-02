@@ -12,6 +12,7 @@
 
 - Constructor of `Supervisor\Supervisor` now directly accepts an `fXmlRpc\ClientInterface` instead
 - Classes `Supervisor\Supervisor` and `Supervisor\Process` are final
+- The base exception is now called `Supervisor\Exception\SupervisorException` (to avoid confusion with fXmlRpc's own `FaultException`) and specific fault classes end in the `Exception` class name
 - Test suite updated
 
 ### Removed

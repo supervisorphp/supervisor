@@ -2,13 +2,13 @@
 
 namespace Supervisor\Exception\Fault;
 
-use Supervisor\Exception\Fault;
+use Supervisor\Exception\SupervisorException;
 
 /**
  * Implements SPAWN_ERROR Fault exception.
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-final class SpawnError extends Fault
+final class SpawnErrorException extends SupervisorException
 {
 }
