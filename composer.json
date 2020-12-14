@@ -25,8 +25,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.3",
-        "lstrojny/fxmlrpc": ">=0.12"
+        "php": ">=7.4",
+        "lstrojny/fxmlrpc": ">=0.12",
+        "psr/log": "^1.1"
     },
     "require-dev": {
         "ext-pcntl": "*",
@@ -56,5 +57,10 @@
         "phpstan": "phpstan analyze",
         "phpspec": "phpspec run",
         "behat": "behat"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "discard-changes": true,
+        "sort-packages": true
     }
 }

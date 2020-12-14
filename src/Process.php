@@ -21,12 +21,7 @@ final class Process implements \ArrayAccess
     public const FATAL = 200;
     public const UNKNOWN = 1000;
 
-    /**
-     * Process info.
-     *
-     * @var array
-     */
-    protected $payload = [];
+    protected array $payload = [];
 
     public function __construct(array $payload)
     {
@@ -96,7 +91,7 @@ final class Process implements \ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->payload[$offset]);
     }
@@ -104,7 +99,7 @@ final class Process implements \ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \LogicException('Process object cannot be altered');
     }
@@ -112,7 +107,7 @@ final class Process implements \ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \LogicException('Process object cannot be altered');
     }

@@ -2,8 +2,3 @@ suites:
     supervisor_suite:
         namespace: Supervisor
         psr4_prefix: Supervisor
-extensions:
-    FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
-        format: clover
-        output:
-            clover: build/coverage.xml

@@ -4,6 +4,8 @@ namespace Supervisor;
 
 use fXmlRpc\ClientInterface;
 use fXmlRpc\Exception\FaultException;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Supervisor\Exception\SupervisorException;
 
 /**
@@ -51,14 +53,14 @@ final class Supervisor
     public const RUNNING = 1;
     public const FATAL = 2;
 
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected ClientInterface $client;
 
-    public function __construct(ClientInterface $client)
+    protected LoggerInterface $logger;
+
+    public function __construct(ClientInterface $client, ?LoggerInterface $logger = null)
     {
         $this->client = $client;
+        $this->logger = $logger ?? new NullLogger();
     }
 
     /**
@@ -91,8 +93,21 @@ final class Supervisor
     public function call(string $namespace, string $method, array $arguments = [])
     {
         try {
+            $this->logger->debug(
+                sprintf('Supervisor call to "%s"', $namespace . '.' . $method),
+                $arguments
+            );
+
             return $this->client->call($namespace . '.' . $method, $arguments);
         } catch (FaultException $faultException) {
+            $this->logger->error(
+                sprintf('Supervisor fault: ' . $faultException->getMessage()),
+                [
+                    'faultString' => $faultException->getFaultString(),
+                    'faultCode' => $faultException->getFaultCode(),
+                ]
+            );
+
             throw SupervisorException::create($faultException);
         }
     }

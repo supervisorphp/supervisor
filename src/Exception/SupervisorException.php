@@ -39,7 +39,7 @@ class SupervisorException extends \RuntimeException
     /**
      * @var array
      */
-    private static $exceptionMap = [
+    private static array $exceptionMap = [
         self::UNKNOWN_METHOD => Fault\UnknownMethodException::class,
         self::INCORRECT_PARAMETERS => Fault\IncorrectParametersException::class,
         self::BAD_ARGUMENTS => Fault\BadArgumentsException::class,
