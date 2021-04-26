@@ -1,3 +1,4 @@
 .idea/
 .vagrant/
 vendor/
+composer.lock
