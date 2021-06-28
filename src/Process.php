@@ -6,32 +6,19 @@ namespace Supervisor;
  * Process object holding data for a single process.
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ * @author Buster Neece <buster@busterneece.com>
  */
-final class Process implements \ArrayAccess
+final class Process implements ProcessInterface
 {
-    /**
-     * Process states.
-     */
-    public const STOPPED = 0;
-    public const STARTING = 10;
-    public const RUNNING = 20;
-    public const BACKOFF = 30;
-    public const STOPPING = 40;
-    public const EXITED = 100;
-    public const FATAL = 200;
-    public const UNKNOWN = 1000;
+    private array $payload;
 
-    protected array $payload = [];
-
-    public function __construct(array $payload)
+    public function __construct(array $payload = [])
     {
         $this->payload = $payload;
     }
 
     /**
-     * Returns the process info array.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getPayload(): array
     {
@@ -39,9 +26,7 @@ final class Process implements \ArrayAccess
     }
 
     /**
-     * Returns the process name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -49,9 +34,7 @@ final class Process implements \ArrayAccess
     }
 
     /**
-     * Checks whether the process is running.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isRunning(): bool
     {
@@ -59,21 +42,15 @@ final class Process implements \ArrayAccess
     }
 
     /**
-     * Checks if process is in the given state.
-     *
-     * @param int $state
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function checkState($state): bool
+    public function checkState(int $state): bool
     {
         return $this->payload['state'] === $state;
     }
 
     /**
-     * Returns process name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function __toString(): string
     {
@@ -81,7 +58,7 @@ final class Process implements \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetGet($offset)
     {
@@ -89,7 +66,7 @@ final class Process implements \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetExists($offset): bool
     {
@@ -97,7 +74,7 @@ final class Process implements \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetSet($offset, $value): void
     {
@@ -105,7 +82,7 @@ final class Process implements \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetUnset($offset): void
     {
