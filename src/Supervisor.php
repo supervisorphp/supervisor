@@ -41,6 +41,9 @@ use Supervisor\Exception\SupervisorException;
  * @method bool clearProcessLogs(string $name)
  * @method bool clearAllProcessLogs()
  * @method array reloadConfig()
+ * @method bool signalProcess(string $name, string $signal)
+ * @method bool signalProcessGroup(string $name, string $signal)
+ * @method bool signalAllProcesses(string $signal)
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  * @author Buster Neece <buster@busterneece.com>

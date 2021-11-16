@@ -32,6 +32,9 @@ namespace Supervisor;
  * @method bool clearProcessLogs(string $name)
  * @method bool clearAllProcessLogs()
  * @method array reloadConfig()
+ * @method bool signalProcess(string $name, string $signal)
+ * @method bool signalProcessGroup(string $name, string $signal)
+ * @method bool signalAllProcesses(string $signal)
  *
  * @link http://supervisord.org/api.html
  *
