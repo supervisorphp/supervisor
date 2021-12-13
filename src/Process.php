@@ -2,6 +2,8 @@
 
 namespace Supervisor;
 
+use ReturnTypeWillChange;
+
 /**
  * Process object holding data for a single process.
  *
@@ -60,7 +62,8 @@ final class Process implements ProcessInterface
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset): mixed
+    #[ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->payload[$offset] ?? null;
     }
