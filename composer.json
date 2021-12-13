@@ -41,11 +41,11 @@
         "php-http/message": "^1.8",
         "php-parallel-lint/php-console-highlighter": "^0.5.0",
         "php-parallel-lint/php-parallel-lint": "^1.3",
-        "phpspec/phpspec": "^6.2",
-        "phpstan/phpstan": "^0.12.32",
-        "phpstan/phpstan-strict-rules": "^0.12.2",
+        "phpspec/phpspec": "^7",
+        "phpstan/phpstan": "^1",
+        "phpstan/phpstan-strict-rules": "^1",
         "roave/security-advisories": "dev-master",
-        "supervisorphp/configuration": "^0.2"
+        "supervisorphp/configuration": "^0.3"
     },
     "scripts": {
         "ci": [
