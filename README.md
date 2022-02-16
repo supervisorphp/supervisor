@@ -24,7 +24,7 @@ In the example below, we will use the popular Guzzle HTTP client library.
 This example requires some additional libraries to function. To include the necessary extra components, you can run:
 
 ```bash
-composer require guzzlehttp/guzzle:^6.0 php-http/guzzle6-adapter http-interop/http-factory-guzzle php-http/httplug php-http/message
+composer require guzzlehttp/guzzle:^7.0 http-interop/http-factory-guzzle
 ```
 
 This example shows how to pass authentication credentials to Guzzle, initiate the fXmlRpc client, and pass that to SupervisorPHP.
@@ -36,11 +36,11 @@ $guzzleClient = new \GuzzleHttp\Client([
 ]);
 
 // Pass the url and the guzzle client to the fXmlRpc Client
-$client = new \fXmlRpc\Client(
+$client = new fXmlRpc\Client(
     'http://127.0.0.1:9001/RPC2',
-    new \fXmlRpc\Transport\HttpAdapterTransport(
-        new \Http\Message\MessageFactory\GuzzleMessageFactory(),
-        new \Http\Adapter\Guzzle6\Client($guzzleClient)
+    new fXmlRpc\Transport\PsrTransport(
+        new Http\Factory\Guzzle\RequestFactory,
+        $guzzleClient
     )
 );
 
