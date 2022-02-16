@@ -30,7 +30,7 @@ composer require guzzlehttp/guzzle:^7.0 http-interop/http-factory-guzzle
 This example shows how to pass authentication credentials to Guzzle, initiate the fXmlRpc client, and pass that to SupervisorPHP.
 
 ```php
-// Create Guzzle 6 HTTP client
+// Create Guzzle HTTP client
 $guzzleClient = new \GuzzleHttp\Client([
     'auth' => ['user', '123'],
 ]);
