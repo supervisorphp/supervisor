@@ -52,9 +52,9 @@ class FeatureContext implements Context, SnippetAcceptingContext
 
         $client = new Client(
             'http://127.0.0.1:9001/RPC2',
-            new HttpAdapterTransport(
-                new \Http\Message\MessageFactory\GuzzleMessageFactory(),
-                new \Http\Adapter\Guzzle6\Client($guzzleClient)
+            new \fXmlRpc\Transport\PsrTransport(
+                new \Http\Factory\Guzzle\RequestFactory(),
+                $guzzleClient
             )
         );
 

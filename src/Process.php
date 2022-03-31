@@ -62,8 +62,7 @@ final class Process implements ProcessInterface
     /**
      * @inheritDoc
      */
-    #[ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->payload[$offset] ?? null;
     }

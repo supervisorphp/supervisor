@@ -25,7 +25,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "lstrojny/fxmlrpc": ">=0.12",
         "psr/log": "^1.1"
     },
@@ -33,18 +33,17 @@
         "ext-pcntl": "*",
         "ext-posix": "*",
         "behat/behat": "^3.0",
-        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/guzzle": "^7",
         "http-interop/http-factory-guzzle": "^1.0",
-        "overtrue/phplint": "^2.0",
-        "php-http/guzzle6-adapter": "^2.0",
+        "overtrue/phplint": "^3.0",
         "php-http/httplug": "^2.1",
         "php-http/message": "^1.8",
-        "php-parallel-lint/php-console-highlighter": "^0.5.0",
+        "php-parallel-lint/php-console-highlighter": "^1",
         "php-parallel-lint/php-parallel-lint": "^1.3",
         "phpspec/phpspec": "^7",
         "phpstan/phpstan": "^1",
         "phpstan/phpstan-strict-rules": "^1",
-        "roave/security-advisories": "dev-master",
+        "roave/security-advisories": "dev-latest",
         "supervisorphp/configuration": "^0.3"
     },
     "scripts": {
