@@ -9,10 +9,10 @@ use Psr\Log\NullLogger;
 use Supervisor\Exception\SupervisorException;
 
 /**
- * Class Supervisor
- * @package Supervisor
- *
  * @link http://supervisord.org/api.html
+ *
+ * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ * @author Buster Neece <buster@busterneece.com>
  *
  * @method string getAPIVersion()
  * @method string getSupervisorVersion()
@@ -26,27 +26,24 @@ use Supervisor\Exception\SupervisorException;
  * @method array getProcessInfo(string $processName)
  * @method array getAllProcessInfo()
  * @method bool startProcess(string $name, boolean $wait = true)
- * @method bool startAllProcesses(boolean $wait = true)
- * @method bool startProcessGroup(string $name, boolean $wait = true)
+ * @method array startAllProcesses(boolean $wait = true)
+ * @method array startProcessGroup(string $name, boolean $wait = true)
  * @method bool stopProcess(string $name, boolean $wait = true)
- * @method bool stopAllProcesses(boolean $wait = true)
- * @method bool stopProcessGroup(string $name, boolean $wait = true)
+ * @method array stopAllProcesses(boolean $wait = true)
+ * @method array stopProcessGroup(string $name, boolean $wait = true)
  * @method bool sendProcessStdin(string $name, string $chars)
  * @method bool addProcessGroup(string $name)
  * @method bool removeProcessGroup(string $name)
  * @method string readProcessStdoutLog(string $name, integer $offset, integer $limit)
  * @method string readProcessStderrLog(string $name, integer $offset, integer $limit)
- * @method string tailProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method string tailProcessStderrLog(string $name, integer $offset, integer $limit)
+ * @method array tailProcessStdoutLog(string $name, integer $offset, integer $limit)
+ * @method array tailProcessStderrLog(string $name, integer $offset, integer $limit)
  * @method bool clearProcessLogs(string $name)
- * @method bool clearAllProcessLogs()
+ * @method array clearAllProcessLogs()
  * @method array reloadConfig()
  * @method bool signalProcess(string $name, string $signal)
- * @method bool signalProcessGroup(string $name, string $signal)
- * @method bool signalAllProcesses(string $signal)
- *
- * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
- * @author Buster Neece <buster@busterneece.com>
+ * @method array signalProcessGroup(string $name, string $signal)
+ * @method array signalAllProcesses(string $signal)
  */
 final class Supervisor implements SupervisorInterface
 {
