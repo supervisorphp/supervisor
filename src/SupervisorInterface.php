@@ -44,14 +44,6 @@ namespace Supervisor;
 interface SupervisorInterface
 {
     /**
-     * Service states.
-     */
-    public const SHUTDOWN = -1;
-    public const RESTARTING = 0;
-    public const RUNNING = 1;
-    public const FATAL = 2;
-
-    /**
      * Calls a method.
      *
      * @param string $namespace
@@ -60,7 +52,7 @@ interface SupervisorInterface
      *
      * @return mixed
      */
-    public function call(string $namespace, string $method, array $arguments = []);
+    public function call(string $namespace, string $method, array $arguments = []): mixed;
 
     /**
      * Magic __call method.
@@ -78,26 +70,23 @@ interface SupervisorInterface
      * Checks if a connection is present.
      *
      * It is done by sending a bump request to the server and catching any thrown exceptions
-     *
-     * @return bool
      */
     public function isConnected(): bool;
 
     /**
      * Is service running?
-     *
-     * @return bool
      */
     public function isRunning(): bool;
 
     /**
-     * Checks if supervisord is in given state.
-     *
-     * @param int $checkState
-     *
-     * @return bool
+     * Get the supervisord service state.
      */
-    public function checkState(int $checkState): bool;
+    public function getServiceState(): ServiceStates;
+
+    /**
+     * Checks if supervisord is in given state.
+     */
+    public function checkState(int|ServiceStates $checkState): bool;
 
     /**
      * Returns all processes as Process objects.

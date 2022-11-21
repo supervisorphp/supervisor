@@ -10,7 +10,7 @@ jobs :
 
     strategy :
       matrix :
-        php_version : [ '8.0', '8.1' ]
+        php_version : [ '8.1' ]
     steps :
       - uses : actions/checkout@v2
 
@@ -35,7 +35,7 @@ jobs :
 
       - name : Run PHPStan
         run : |
-          vendor/bin/phpstan analyze --error-format=checkstyle | cs2pr
+          vendor/bin/phpstan analyze --xdebug --memory-limit=-1 --error-format=checkstyle | cs2pr
 
       - name : Run CI Tests
         run : |

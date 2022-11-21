@@ -11,51 +11,32 @@ namespace Supervisor;
 interface ProcessInterface extends \ArrayAccess
 {
     /**
-     * Process states.
-     */
-    public const STOPPED = 0;
-    public const STARTING = 10;
-    public const RUNNING = 20;
-    public const BACKOFF = 30;
-    public const STOPPING = 40;
-    public const EXITED = 100;
-    public const FATAL = 200;
-    public const UNKNOWN = 1000;
-
-    /**
      * Returns the process info array.
-     *
-     * @return array
      */
     public function getPayload(): array;
 
     /**
      * Returns the process name.
-     *
-     * @return string
      */
     public function getName(): string;
 
     /**
      * Checks whether the process is running.
-     *
-     * @return bool
      */
     public function isRunning(): bool;
 
     /**
-     * Checks if process is in the given state.
-     *
-     * @param int $state
-     *
-     * @return bool
+     * Checks whether the process is running.
      */
-    public function checkState(int $state): bool;
+    public function getState(): ProcessStates;
+
+    /**
+     * Checks if process is in the given state.
+     */
+    public function checkState(int|ProcessStates $state): bool;
 
     /**
      * Returns process name.
-     *
-     * @return string
      */
     public function __toString(): string;
 }

@@ -12,11 +12,9 @@ use ReturnTypeWillChange;
  */
 final class Process implements ProcessInterface
 {
-    private array $payload;
-
-    public function __construct(array $payload = [])
-    {
-        $this->payload = $payload;
+    public function __construct(
+        private readonly array $payload = []
+    ) {
     }
 
     /**
@@ -38,17 +36,29 @@ final class Process implements ProcessInterface
     /**
      * @inheritDoc
      */
-    public function isRunning(): bool
+    public function getState(): ProcessStates
     {
-        return $this->checkState(self::RUNNING);
+        return ProcessStates::from($this->payload['state']);
     }
 
     /**
      * @inheritDoc
      */
-    public function checkState(int $state): bool
+    public function isRunning(): bool
     {
-        return $this->payload['state'] === $state;
+        return $this->checkState(ProcessStates::Running);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function checkState(int|ProcessStates $state): bool
+    {
+        if (is_int($state)) {
+            $state = ProcessStates::tryFrom($state);
+        }
+
+        return $this->getState() === $state;
     }
 
     /**

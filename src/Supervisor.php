@@ -47,20 +47,19 @@ use Supervisor\Exception\SupervisorException;
  */
 final class Supervisor implements SupervisorInterface
 {
-    private ClientInterface $client;
+    private readonly LoggerInterface $logger;
 
-    private LoggerInterface $logger;
-
-    public function __construct(ClientInterface $client, ?LoggerInterface $logger = null)
-    {
-        $this->client = $client;
+    public function __construct(
+        private readonly ClientInterface $client,
+        ?LoggerInterface $logger = null
+    ) {
         $this->logger = $logger ?? new NullLogger();
     }
 
     /**
      * @inheritDoc
      */
-    public function call(string $namespace, string $method, array $arguments = [])
+    public function call(string $namespace, string $method, array $arguments = []): mixed
     {
         try {
             $this->logger->debug(
@@ -109,17 +108,27 @@ final class Supervisor implements SupervisorInterface
      */
     public function isRunning(): bool
     {
-        return $this->checkState(self::RUNNING);
+        return $this->checkState(ServiceStates::Running);
     }
 
     /**
      * @inheritDoc
      */
-    public function checkState(int $checkState): bool
+    public function getServiceState(): ServiceStates
     {
-        $state = $this->getState();
+        return ServiceStates::from($this->getState()['statecode']);
+    }
 
-        return $state['statecode'] === $checkState;
+    /**
+     * @inheritDoc
+     */
+    public function checkState(int|ServiceStates $checkState): bool
+    {
+        if (is_int($checkState)) {
+            $checkState = ServiceStates::tryFrom($checkState);
+        }
+
+        return $this->getServiceState() === $checkState;
     }
 
     /**

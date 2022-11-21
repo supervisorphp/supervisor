@@ -25,7 +25,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "lstrojny/fxmlrpc": ">=0.12",
         "psr/log": ">=1"
     },
@@ -53,7 +53,7 @@
             "@behat"
         ],
         "phplint": "parallel-lint . --exclude vendor",
-        "phpstan": "phpstan analyze",
+        "phpstan": "phpstan analyze --xdebug --memory-limit=-1",
         "phpspec": "phpspec run",
         "behat": "behat"
     },
