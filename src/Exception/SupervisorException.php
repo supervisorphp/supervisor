@@ -23,8 +23,12 @@ class SupervisorException extends \RuntimeException
         $faultString = $faultException->getFaultString();
 
         $faultEnum = FaultCodes::tryFrom($faultCode);
-        return (null !== $faultEnum)
-            ? (new ($faultEnum->getExceptionClass()))($faultString, $faultCode)
-            : $faultException;
+
+        if (null === $faultEnum) {
+            return $faultException;
+        }
+
+        $faultClass = $faultEnum->getExceptionClass();
+        return new $faultClass($faultString, $faultCode);
     }
 }
