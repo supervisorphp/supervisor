@@ -24,7 +24,7 @@ In the example below, we will use the popular Guzzle HTTP client library.
 This example requires some additional libraries to function. To include the necessary extra components, you can run:
 
 ```bash
-composer require guzzlehttp/guzzle:^7.0
+composer require guzzlehttp/guzzle:^7.5
 ```
 
 This example shows how to pass authentication credentials to Guzzle, initiate the fXmlRpc client, and pass that to SupervisorPHP.
@@ -61,9 +61,6 @@ $client = new fXmlRpc\Client(
 
 // Pass the client to the Supervisor library.
 $supervisor = new Supervisor\Supervisor($client);
-
-// returns Process object
-$process = $supervisor->getProcess('test_process');
 
 // returns array of process info
 $supervisor->getProcessInfo('test_process');
