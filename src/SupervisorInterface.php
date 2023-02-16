@@ -2,6 +2,9 @@
 
 namespace Supervisor;
 
+use Supervisor\Exception\ReloadExceptions;
+use Supervisor\Exception\SupervisorException;
+
 /**
  * Supervisor API.
  *
@@ -103,4 +106,22 @@ interface SupervisorInterface
      * @return ProcessInterface
      */
     public function getProcess(string $name): ProcessInterface;
+
+    /**
+     * Reload configuration and apply process changes immediately, i.e.:
+     *   - Start any processes newly added in the configuration,
+     *   - Stop and restart any processes modified in the configuration, and
+     *   - Stop any processes
+     *
+     * @param bool $wait Wait for processes to stop before continuing execution.
+     * @param bool $stopModifiedGroups Fully stop all modified groups.
+     *
+     * @throws SupervisorException
+     *
+     * @return ReloadResultInterface
+     */
+    public function reloadAndApplyConfig(
+        bool $wait = true,
+        bool $stopModifiedGroups = true
+    ): ReloadResultInterface;
 }

@@ -6,6 +6,7 @@ use fXmlRpc\ClientInterface;
 use fXmlRpc\Exception\FaultException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Supervisor\Exception\ReloadExceptions;
 use Supervisor\Exception\SupervisorException;
 
 /**
@@ -153,5 +154,52 @@ final class Supervisor implements SupervisorInterface
         $process = $this->getProcessInfo($name);
 
         return new Process($process);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function reloadAndApplyConfig(
+        bool $wait = true,
+        bool $stopModifiedGroups = true
+    ): ReloadResultInterface {
+        $reloadResult = ReloadResult::fromReloadConfig(
+            $this->reloadConfig()
+        );
+
+        $reloadRemoved = $reloadResult->getRemoved();
+        if (!empty($reloadRemoved)) {
+            $this->logger->debug('Removing supervisor groups.', $reloadRemoved);
+
+            foreach ($reloadRemoved as $group) {
+                $this->stopProcessGroup($group, $wait);
+                $this->removeProcessGroup($group);
+            }
+        }
+
+        $reloadModified = $reloadResult->getModified();
+        if (!empty($reloadModified)) {
+            $this->logger->debug('Reloading modified supervisor groups.', $reloadModified);
+
+            foreach ($reloadModified as $group) {
+                if ($stopModifiedGroups) {
+                    $this->stopProcessGroup($group, $wait);
+                    $this->removeProcessGroup($group);
+                }
+
+                $this->addProcessGroup($group);
+            }
+        }
+
+        $reloadAdded = $reloadResult->getAdded();
+        if (!empty($reloadAdded)) {
+            $this->logger->debug('Adding new supervisor groups.', $reloadAdded);
+
+            foreach ($reloadAdded as $group) {
+                $this->addProcessGroup($group);
+            }
+        }
+
+        return $reloadResult;
     }
 }
