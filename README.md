@@ -62,6 +62,9 @@ $client = new fXmlRpc\Client(
 // Pass the client to the Supervisor library.
 $supervisor = new Supervisor\Supervisor($client);
 
+// returns Process object
+$process = $supervisor->getProcess('test_process');
+ 
 // returns array of process info
 $supervisor->getProcessInfo('test_process');
 
