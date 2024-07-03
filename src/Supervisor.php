@@ -161,7 +161,8 @@ final class Supervisor implements SupervisorInterface
      */
     public function reloadAndApplyConfig(
         bool $wait = true,
-        bool $stopModifiedGroups = true
+        bool $stopModifiedGroups = true,
+        bool $startNewProcesses = true
     ): ReloadResultInterface {
         $reloadResult = ReloadResult::fromReloadConfig(
             $this->reloadConfig()
@@ -188,6 +189,10 @@ final class Supervisor implements SupervisorInterface
                 }
 
                 $this->addProcessGroup($group);
+
+                if ($startNewProcesses) {
+                    $this->startProcessGroup($group);
+                }
             }
         }
 
@@ -197,6 +202,10 @@ final class Supervisor implements SupervisorInterface
 
             foreach ($reloadAdded as $group) {
                 $this->addProcessGroup($group);
+
+                if ($startNewProcesses) {
+                    $this->startProcessGroup($group);
+                }
             }
         }
 

@@ -115,6 +115,7 @@ interface SupervisorInterface
      *
      * @param bool $wait Wait for processes to stop before continuing execution.
      * @param bool $stopModifiedGroups Fully stop all modified groups.
+     * @param bool $startNewProcesses Start all processes in the process group.
      *
      * @throws SupervisorException
      *
@@ -122,6 +123,7 @@ interface SupervisorInterface
      */
     public function reloadAndApplyConfig(
         bool $wait = true,
-        bool $stopModifiedGroups = true
+        bool $stopModifiedGroups = true,
+        bool $startNewProcesses = true
     ): ReloadResultInterface;
 }
