@@ -6,7 +6,6 @@ use fXmlRpc\ClientInterface;
 use fXmlRpc\Exception\FaultException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Supervisor\Exception\ReloadExceptions;
 use Supervisor\Exception\SupervisorException;
 
 /**
@@ -18,27 +17,24 @@ use Supervisor\Exception\SupervisorException;
  * @method string getAPIVersion()
  * @method string getSupervisorVersion()
  * @method string getIdentification()
- * @method array getState()
  * @method int getPID()
- * @method string readLog(integer $offset, integer $limit)
+ * @method string readLog(int $offset, int $limit)
  * @method bool clearLog()
  * @method bool shutdown()
  * @method bool restart()
  * @method array getProcessInfo(string $processName)
  * @method array getAllProcessInfo()
- * @method bool startProcess(string $name, boolean $wait = true)
- * @method array startAllProcesses(boolean $wait = true)
- * @method array startProcessGroup(string $name, boolean $wait = true)
- * @method bool stopProcess(string $name, boolean $wait = true)
- * @method array stopAllProcesses(boolean $wait = true)
- * @method array stopProcessGroup(string $name, boolean $wait = true)
+ * @method bool startProcess(string $name, bool $wait = true)
+ * @method array startAllProcesses(bool $wait = true)
+ * @method array startProcessGroup(string $name, bool $wait = true)
+ * @method bool stopProcess(string $name, bool $wait = true)
+ * @method array stopAllProcesses(bool $wait = true)
+ * @method array stopProcessGroup(string $name, bool $wait = true)
  * @method bool sendProcessStdin(string $name, string $chars)
  * @method bool addProcessGroup(string $name)
  * @method bool removeProcessGroup(string $name)
- * @method string readProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method string readProcessStderrLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStderrLog(string $name, integer $offset, integer $limit)
+ * @method string readProcessStdoutLog(string $name, int $offset, int $limit)
+ * @method string readProcessStderrLog(string $name, int $offset, int $limit)
  * @method bool clearProcessLogs(string $name)
  * @method array clearAllProcessLogs()
  * @method array reloadConfig()
@@ -60,6 +56,7 @@ final class Supervisor implements SupervisorInterface
     /**
      * @inheritDoc
      */
+    /** @param array<int, mixed> $arguments */
     public function call(string $namespace, string $method, array $arguments = []): mixed
     {
         try {
@@ -85,6 +82,7 @@ final class Supervisor implements SupervisorInterface
     /**
      * @inheritDoc
      */
+    /** @param array<int, mixed> $arguments */
     public function __call(string $method, array $arguments)
     {
         return $this->call('supervisor', $method, $arguments);
@@ -98,10 +96,21 @@ final class Supervisor implements SupervisorInterface
         try {
             $this->call('system', 'listMethods');
         } catch (\Exception $e) {
+            $this->logger->debug('Could not connect to supervisord.', ['error' => $e->getMessage()]);
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getState(): StateInfoInterface
+    {
+        return StateInfo::fromGetState(
+            $this->call('supervisor', 'getState', [])
+        );
     }
 
     /**
@@ -117,7 +126,7 @@ final class Supervisor implements SupervisorInterface
      */
     public function getServiceState(): ServiceStates
     {
-        return ServiceStates::from($this->getState()['statecode']);
+        return $this->getState()->getStateCode();
     }
 
     /**
@@ -127,6 +136,9 @@ final class Supervisor implements SupervisorInterface
     {
         if (is_int($checkState)) {
             $checkState = ServiceStates::tryFrom($checkState);
+            if ($checkState === null) {
+                return false;
+            }
         }
 
         return $this->getServiceState() === $checkState;
@@ -154,6 +166,26 @@ final class Supervisor implements SupervisorInterface
         $process = $this->getProcessInfo($name);
 
         return new Process($process);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function tailProcessStdoutLog(string $name, int $offset, int $limit): TailLogInterface
+    {
+        return TailLog::fromTailLog(
+            $this->call('supervisor', 'tailProcessStdoutLog', [$name, $offset, $limit])
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function tailProcessStderrLog(string $name, int $offset, int $limit): TailLogInterface
+    {
+        return TailLog::fromTailLog(
+            $this->call('supervisor', 'tailProcessStderrLog', [$name, $offset, $limit])
+        );
     }
 
     /**

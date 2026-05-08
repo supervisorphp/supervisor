@@ -9,6 +9,11 @@ namespace Supervisor;
  */
 final class ReloadResult implements ReloadResultInterface
 {
+    /**
+     * @param list<string> $added
+     * @param list<string> $modified
+     * @param list<string> $removed
+     */
     public function __construct(
         private readonly array $added = [],
         private readonly array $modified = [],
@@ -47,6 +52,7 @@ final class ReloadResult implements ReloadResultInterface
         return $this->removed;
     }
 
+    /** @param array<mixed> $reloadResult */
     public static function fromReloadConfig(array $reloadResult): self
     {
         [$added, $modified, $removed] = $reloadResult[0] ?? [null, null, null];

@@ -56,6 +56,12 @@ class ProcessSpec extends ObjectBehavior
         $this->checkState(2)->shouldReturn(false);
     }
 
+    function it_throws_when_accessing_unknown_key()
+    {
+        $this->shouldThrow(\OutOfBoundsException::class)
+            ->duringOffsetGet('nonexistent_key');
+    }
+
     function it_throws_an_exception_when_being_altered_by_calling_offset_set()
     {
         $this->shouldThrow(\LogicException::class)

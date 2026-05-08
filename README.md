@@ -85,6 +85,27 @@ echo $process;
 $process->getPayload();
 ```
 
+### Tailing process logs
+
+`tailProcessStdoutLog()` and `tailProcessStderrLog()` return a `TailLogInterface` object with the log
+chunk, the next offset to request, and an overflow flag.
+
+```php
+$offset = 0;
+
+do {
+    $tail = $supervisor->tailProcessStdoutLog('my_process', $offset, 4096);
+
+    echo $tail->getBytes();
+
+    $offset = $tail->getOffset();
+} while ($tail->isOverflow());
+```
+
+> `FailedException` (fault 30) is thrown when the process log file does not exist yet, e.g. the
+> process has never been started or was configured without a `stdout_logfile`. Wrap tail calls in a
+> try/catch when the log may not exist yet.
+
 ### Exception handling
 
 For each possible fault response there is an exception. These exceptions extend a [common exception](src/Exception/Fault.php), so you are able to catch a specific fault or all. When an unknown fault is returned from the server, an instance if the common exception is thrown. The list of fault responses and the appropriate exception can be found in the class.
@@ -109,10 +130,6 @@ try {
 
 You can find the Supervisor XML-RPC documentation here:
 [http://supervisord.org/api.html](http://supervisord.org/api.html)
-
-## Notice
-
-If you use PHP XML-RPC extension to parse responses (which is marked as *EXPERIMENTAL*). This can cause issues when you are trying to read/tail log of a PROCESS. Make sure you clean your log messages. The only information I found about this is a [comment](http://www.php.net/function.xmlrpc-decode#44213).
 
 ## Contributing
 

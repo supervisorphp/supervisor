@@ -29,6 +29,7 @@ enum FaultCodes: int
     case StillRunning = 91;
     case CantReread = 92;
 
+    /** @return class-string<SupervisorException> */
     public function getExceptionClass(): string
     {
         return match($this) {
