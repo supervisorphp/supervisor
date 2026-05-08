@@ -35,8 +35,6 @@ use Supervisor\Exception\SupervisorException;
  * @method bool removeProcessGroup(string $name)
  * @method string readProcessStdoutLog(string $name, integer $offset, integer $limit)
  * @method string readProcessStderrLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStderrLog(string $name, integer $offset, integer $limit)
  * @method bool clearProcessLogs(string $name)
  * @method array clearAllProcessLogs()
  * @method array reloadConfig()
@@ -106,6 +104,10 @@ interface SupervisorInterface
      * @return ProcessInterface
      */
     public function getProcess(string $name): ProcessInterface;
+
+    public function tailProcessStdoutLog(string $name, int $offset, int $limit): TailLogInterface;
+
+    public function tailProcessStderrLog(string $name, int $offset, int $limit): TailLogInterface;
 
     /**
      * Reload configuration and apply process changes immediately, i.e.:

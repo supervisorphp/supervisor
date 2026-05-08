@@ -6,6 +6,7 @@ use fXmlRpc\ClientInterface;
 use PhpSpec\ObjectBehavior;
 use Supervisor\Process;
 use Supervisor\Supervisor;
+use Supervisor\TailLog;
 
 class SupervisorSpec extends ObjectBehavior
 {
@@ -82,5 +83,31 @@ class SupervisorSpec extends ObjectBehavior
 
         $process->shouldHaveType(Process::class);
         $process->getName()->shouldReturn('process_name');
+    }
+
+    function it_tails_process_stdout_log(ClientInterface $client)
+    {
+        $client->call('supervisor.tailProcessStdoutLog', ['process_name', 0, 100])
+            ->willReturn(['log content', 11, false]);
+
+        $result = $this->tailProcessStdoutLog('process_name', 0, 100);
+
+        $result->shouldHaveType(TailLog::class);
+        $result->getBytes()->shouldReturn('log content');
+        $result->getOffset()->shouldReturn(11);
+        $result->isOverflow()->shouldReturn(false);
+    }
+
+    function it_tails_process_stderr_log(ClientInterface $client)
+    {
+        $client->call('supervisor.tailProcessStderrLog', ['process_name', 0, 100])
+            ->willReturn(['error content', 13, true]);
+
+        $result = $this->tailProcessStderrLog('process_name', 0, 100);
+
+        $result->shouldHaveType(TailLog::class);
+        $result->getBytes()->shouldReturn('error content');
+        $result->getOffset()->shouldReturn(13);
+        $result->isOverflow()->shouldReturn(true);
     }
 }
