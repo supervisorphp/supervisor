@@ -2,7 +2,6 @@
 
 namespace Supervisor;
 
-use Supervisor\Exception\ReloadExceptions;
 use Supervisor\Exception\SupervisorException;
 
 /**
@@ -16,27 +15,24 @@ use Supervisor\Exception\SupervisorException;
  * @method string getAPIVersion()
  * @method string getSupervisorVersion()
  * @method string getIdentification()
- * @method array getState()
  * @method int getPID()
- * @method string readLog(integer $offset, integer $limit)
+ * @method string readLog(int $offset, int $limit)
  * @method bool clearLog()
  * @method bool shutdown()
  * @method bool restart()
  * @method array getProcessInfo(string $processName)
  * @method array getAllProcessInfo()
- * @method bool startProcess(string $name, boolean $wait = true)
- * @method array startAllProcesses(boolean $wait = true)
- * @method array startProcessGroup(string $name, boolean $wait = true)
- * @method bool stopProcess(string $name, boolean $wait = true)
- * @method array stopAllProcesses(boolean $wait = true)
- * @method array stopProcessGroup(string $name, boolean $wait = true)
+ * @method bool startProcess(string $name, bool $wait = true)
+ * @method array startAllProcesses(bool $wait = true)
+ * @method array startProcessGroup(string $name, bool $wait = true)
+ * @method bool stopProcess(string $name, bool $wait = true)
+ * @method array stopAllProcesses(bool $wait = true)
+ * @method array stopProcessGroup(string $name, bool $wait = true)
  * @method bool sendProcessStdin(string $name, string $chars)
  * @method bool addProcessGroup(string $name)
  * @method bool removeProcessGroup(string $name)
- * @method string readProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method string readProcessStderrLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStderrLog(string $name, integer $offset, integer $limit)
+ * @method string readProcessStdoutLog(string $name, int $offset, int $limit)
+ * @method string readProcessStderrLog(string $name, int $offset, int $limit)
  * @method bool clearProcessLogs(string $name)
  * @method array clearAllProcessLogs()
  * @method array reloadConfig()
@@ -51,7 +47,7 @@ interface SupervisorInterface
      *
      * @param string $namespace
      * @param string $method
-     * @param array $arguments
+     * @param array<int, mixed> $arguments
      *
      * @return mixed
      */
@@ -63,7 +59,7 @@ interface SupervisorInterface
      * Handles all calls to supervisor namespace
      *
      * @param string $method
-     * @param array $arguments
+     * @param array<int, mixed> $arguments
      *
      * @return mixed
      */
@@ -80,6 +76,8 @@ interface SupervisorInterface
      * Is service running?
      */
     public function isRunning(): bool;
+
+    public function getState(): StateInfoInterface;
 
     /**
      * Get the supervisord service state.
@@ -106,6 +104,10 @@ interface SupervisorInterface
      * @return ProcessInterface
      */
     public function getProcess(string $name): ProcessInterface;
+
+    public function tailProcessStdoutLog(string $name, int $offset, int $limit): TailLogInterface;
+
+    public function tailProcessStderrLog(string $name, int $offset, int $limit): TailLogInterface;
 
     /**
      * Reload configuration and apply process changes immediately, i.e.:

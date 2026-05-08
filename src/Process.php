@@ -2,7 +2,6 @@
 
 namespace Supervisor;
 
-use ReturnTypeWillChange;
 
 /**
  * Process object holding data for a single process.
@@ -12,6 +11,7 @@ use ReturnTypeWillChange;
  */
 final class Process implements ProcessInterface
 {
+    /** @param array<string, mixed> $payload */
     public function __construct(
         private readonly array $payload = []
     ) {
@@ -20,6 +20,7 @@ final class Process implements ProcessInterface
     /**
      * @inheritDoc
      */
+    /** @return array<string, mixed> */
     public function getPayload(): array
     {
         return $this->payload;
@@ -56,6 +57,9 @@ final class Process implements ProcessInterface
     {
         if (is_int($state)) {
             $state = ProcessStates::tryFrom($state);
+            if ($state === null) {
+                return false;
+            }
         }
 
         return $this->getState() === $state;
@@ -74,7 +78,10 @@ final class Process implements ProcessInterface
      */
     public function offsetGet($offset): mixed
     {
-        return $this->payload[$offset] ?? null;
+        if (!array_key_exists($offset, $this->payload)) {
+            throw new \OutOfBoundsException(sprintf('Unknown process key "%s"', $offset));
+        }
+        return $this->payload[$offset];
     }
 
     /**

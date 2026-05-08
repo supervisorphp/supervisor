@@ -7,12 +7,14 @@ namespace Supervisor;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  * @author Buster Neece <buster@busterneece.com>
+ * @extends \ArrayAccess<string, mixed>
  */
 interface ProcessInterface extends \ArrayAccess
 {
     /**
      * Returns the process info array.
      */
+    /** @return array<string, mixed> */
     public function getPayload(): array;
 
     /**
@@ -26,7 +28,7 @@ interface ProcessInterface extends \ArrayAccess
     public function isRunning(): bool;
 
     /**
-     * Checks whether the process is running.
+     * Returns the current process state.
      */
     public function getState(): ProcessStates;
 
