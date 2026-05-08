@@ -37,8 +37,6 @@ use Supervisor\Exception\SupervisorException;
  * @method bool removeProcessGroup(string $name)
  * @method string readProcessStdoutLog(string $name, integer $offset, integer $limit)
  * @method string readProcessStderrLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStdoutLog(string $name, integer $offset, integer $limit)
- * @method array tailProcessStderrLog(string $name, integer $offset, integer $limit)
  * @method bool clearProcessLogs(string $name)
  * @method array clearAllProcessLogs()
  * @method array reloadConfig()
@@ -154,6 +152,26 @@ final class Supervisor implements SupervisorInterface
         $process = $this->getProcessInfo($name);
 
         return new Process($process);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function tailProcessStdoutLog(string $name, int $offset, int $limit): TailLogInterface
+    {
+        return TailLog::fromTailLog(
+            $this->call('supervisor', 'tailProcessStdoutLog', [$name, $offset, $limit])
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function tailProcessStderrLog(string $name, int $offset, int $limit): TailLogInterface
+    {
+        return TailLog::fromTailLog(
+            $this->call('supervisor', 'tailProcessStderrLog', [$name, $offset, $limit])
+        );
     }
 
     /**
